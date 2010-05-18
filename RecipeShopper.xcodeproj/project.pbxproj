@@ -41,7 +41,7 @@
 		CE71733711A2C3B700D71D08 /* UIViewController-Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController-Extended.h"; sourceTree = "<group>"; };
 		CE71733811A2C3B700D71D08 /* UIViewController-Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController-Extended.m"; sourceTree = "<group>"; };
 		CE7173AD11A2C48600D71D08 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		F20D2F6C11A2E32E006EA070 /* icon_cart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_cart.png; path = Classes/icon_cart.png; sourceTree = "<group>"; };
+		F20D2F6C11A2E32E006EA070 /* icon_cart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_cart.png; sourceTree = "<group>"; };
 		F20D2F6E11A2E466006EA070 /* icon_book.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_book.png; sourceTree = "<group>"; };
 		F20D2F7011A2E4B9006EA070 /* icon_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_home.png; sourceTree = "<group>"; };
 		F20D2F7211A2E4C9006EA070 /* icon_license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = icon_license.txt; sourceTree = "<group>"; };
