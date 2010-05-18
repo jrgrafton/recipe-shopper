@@ -1,0 +1,338 @@
+// !$*UTF8*$!
+{
+	1D3623240D0F684500981E51 /* RecipeShopperAppDelegate.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {861, 412}}";
+			sepNavSelRange = "{639, 0}";
+			sepNavVisRange = "{0, 648}";
+		};
+	};
+	1D3623250D0F684500981E51 /* RecipeShopperAppDelegate.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {861, 468}}";
+			sepNavSelRange = "{240, 0}";
+			sepNavVisRange = "{0, 712}";
+		};
+	};
+	1D6058900D05DD3D006BFB54 /* RecipeShopper */ = {
+		activeExec = 0;
+		executables = (
+			F20D2F5611A2C86B006EA070 /* RecipeShopper */,
+		);
+	};
+	28D7ACF60DDB3853001CB0EB /* HomeViewNavController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {495, 221}}";
+			sepNavSelRange = "{191, 0}";
+			sepNavVisRange = "{0, 260}";
+			sepNavWindowFrame = "{{15, 91}, {750, 687}}";
+		};
+	};
+	28D7ACF70DDB3853001CB0EB /* HomeViewNavController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {861, 858}}";
+			sepNavSelRange = "{238, 0}";
+			sepNavVisRange = "{0, 688}";
+		};
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = F20D2F5611A2C86B006EA070 /* RecipeShopper */;
+		activeTarget = 1D6058900D05DD3D006BFB54 /* RecipeShopper */;
+		addToTargets = (
+			1D6058900D05DD3D006BFB54 /* RecipeShopper */,
+		);
+		codeSenseManager = F20D2F6811A2C86F006EA070 /* Code sense */;
+		executables = (
+			F20D2F5611A2C86B006EA070 /* RecipeShopper */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXBookmarksDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXBookmarksDataSource_NameID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					200,
+					200,
+					497,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXBookmarksDataSource_LocationID,
+					PBXBookmarksDataSource_NameID,
+					PBXBookmarksDataSource_CommentsID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					683,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.XCSCMDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					20,
+					663,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_SCM_ColumnID,
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 295880812;
+			PBXWorkspaceStateSaveDate = 295880812;
+		};
+		perUserProjectItems = {
+			F20D2F9A11A2F248006EA070 /* PBXBookmark */ = F20D2F9A11A2F248006EA070 /* PBXBookmark */;
+			F20D2F9B11A2F248006EA070 /* PBXBookmark */ = F20D2F9B11A2F248006EA070 /* PBXBookmark */;
+			F20D2F9C11A2F248006EA070 /* PBXTextBookmark */ = F20D2F9C11A2F248006EA070 /* PBXTextBookmark */;
+			F20D2F9E11A2F248006EA070 /* PBXTextBookmark */ = F20D2F9E11A2F248006EA070 /* PBXTextBookmark */;
+			F20D2FA011A2F248006EA070 /* PBXTextBookmark */ = F20D2FA011A2F248006EA070 /* PBXTextBookmark */;
+			F20D2FA211A2F248006EA070 /* PBXTextBookmark */ = F20D2FA211A2F248006EA070 /* PBXTextBookmark */;
+			F20D2FA311A2F248006EA070 /* PBXTextBookmark */ = F20D2FA311A2F248006EA070 /* PBXTextBookmark */;
+			F20D2FAA11A2F422006EA070 /* PBXTextBookmark */ = F20D2FAA11A2F422006EA070 /* PBXTextBookmark */;
+			F20D2FAB11A2F422006EA070 /* PBXTextBookmark */ = F20D2FAB11A2F422006EA070 /* PBXTextBookmark */;
+			F20D2FAC11A2F422006EA070 /* PBXTextBookmark */ = F20D2FAC11A2F422006EA070 /* PBXTextBookmark */;
+			F20D2FBF11A2FCC9006EA070 /* PBXBookmark */ = F20D2FBF11A2FCC9006EA070 /* PBXBookmark */;
+			F20D2FC011A2FCC9006EA070 /* PBXTextBookmark */ = F20D2FC011A2FCC9006EA070 /* PBXTextBookmark */;
+			F20D2FE711A302D6006EA070 /* PBXTextBookmark */ = F20D2FE711A302D6006EA070 /* PBXTextBookmark */;
+			F20D2FF011A30319006EA070 /* PBXTextBookmark */ = F20D2FF011A30319006EA070 /* PBXTextBookmark */;
+		};
+		sourceControlManager = F20D2F6711A2C86F006EA070 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	32CA4F630368D1EE00C91783 /* RecipeShopper_Prefix.pch */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {861, 477}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 195}";
+		};
+	};
+	F20D2F5611A2C86B006EA070 /* RecipeShopper */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = RecipeShopper;
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	F20D2F6711A2C86F006EA070 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "iPhone Recipe Shopper Trunk";
+			};
+		};
+	};
+	F20D2F6811A2C86F006EA070 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	F20D2F7211A2E4C9006EA070 /* icon_license.txt */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {2966, 477}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1656}";
+		};
+	};
+	F20D2F8911A2EEE6006EA070 /* HomeTableViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {861, 412}}";
+			sepNavSelRange = "{339, 0}";
+			sepNavVisRange = "{0, 346}";
+		};
+	};
+	F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1069, 2106}}";
+			sepNavSelRange = "{836, 0}";
+			sepNavVisRange = "{3, 1011}";
+		};
+	};
+	F20D2F9A11A2F248006EA070 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = F20D2F7011A2E4B9006EA070 /* icon_home.png */;
+	};
+	F20D2F9B11A2F248006EA070 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = F20D2F6E11A2E466006EA070 /* icon_book.png */;
+	};
+	F20D2F9C11A2F248006EA070 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F7211A2E4C9006EA070 /* icon_license.txt */;
+		name = "icon_license.txt: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1656;
+		vrLoc = 0;
+	};
+	F20D2F9E11A2F248006EA070 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F9F11A2F248006EA070 /* project.pbxproj */;
+		name = "project.pbxproj: 317";
+		rLen = 0;
+		rLoc = 15110;
+		rType = 0;
+		vrLen = 4646;
+		vrLoc = 0;
+	};
+	F20D2F9F11A2F248006EA070 /* project.pbxproj */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.pbxproject;
+		name = project.pbxproj;
+		path = /Users/jamgraft/Documents/RecipeShopper/RecipeShopper.xcodeproj/project.pbxproj;
+		sourceTree = "<absolute>";
+	};
+	F20D2FA011A2F248006EA070 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2FA111A2F248006EA070 /* jamgraft.pbxuser */;
+		name = "jamgraft.pbxuser: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1223;
+		vrLoc = 0;
+	};
+	F20D2FA111A2F248006EA070 /* jamgraft.pbxuser */ = {
+		isa = PBXFileReference;
+		name = jamgraft.pbxuser;
+		path = /Users/jamgraft/Documents/RecipeShopper/RecipeShopper.xcodeproj/jamgraft.pbxuser;
+		sourceTree = "<absolute>";
+	};
+	F20D2FA211A2F248006EA070 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 32CA4F630368D1EE00C91783 /* RecipeShopper_Prefix.pch */;
+		name = "RecipeShopper_Prefix.pch: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 195;
+		vrLoc = 0;
+	};
+	F20D2FA311A2F248006EA070 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1D3623240D0F684500981E51 /* RecipeShopperAppDelegate.h */;
+		name = "RecipeShopperAppDelegate.h: 21";
+		rLen = 0;
+		rLoc = 639;
+		rType = 0;
+		vrLen = 648;
+		vrLoc = 0;
+	};
+	F20D2FAA11A2F422006EA070 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1D3623250D0F684500981E51 /* RecipeShopperAppDelegate.m */;
+		name = "RecipeShopperAppDelegate.m: 11";
+		rLen = 0;
+		rLoc = 240;
+		rType = 0;
+		vrLen = 712;
+		vrLoc = 0;
+	};
+	F20D2FAB11A2F422006EA070 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28D7ACF70DDB3853001CB0EB /* HomeViewNavController.m */;
+		name = "HomeViewNavController.m: 11";
+		rLen = 0;
+		rLoc = 238;
+		rType = 0;
+		vrLen = 688;
+		vrLoc = 0;
+	};
+	F20D2FAC11A2F422006EA070 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28D7ACF60DDB3853001CB0EB /* HomeViewNavController.h */;
+		name = "HomeViewNavController.h: 16";
+		rLen = 0;
+		rLoc = 260;
+		rType = 0;
+		vrLen = 261;
+		vrLoc = 0;
+	};
+	F20D2FBF11A2FCC9006EA070 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = F20D2FB811A2FB3A006EA070 /* tesco_header.png */;
+	};
+	F20D2FC011A2FCC9006EA070 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8911A2EEE6006EA070 /* HomeTableViewController.h */;
+		name = "HomeTableViewController.h: 14";
+		rLen = 0;
+		rLoc = 339;
+		rType = 0;
+		vrLen = 346;
+		vrLoc = 0;
+	};
+	F20D2FE711A302D6006EA070 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		name = "HomeTableViewController.m: 29";
+		rLen = 0;
+		rLoc = 836;
+		rType = 0;
+		vrLen = 965;
+		vrLoc = 3;
+	};
+	F20D2FF011A30319006EA070 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		name = "HomeTableViewController.m: 29";
+		rLen = 0;
+		rLoc = 836;
+		rType = 0;
+		vrLen = 1011;
+		vrLoc = 3;
+	};
+}
