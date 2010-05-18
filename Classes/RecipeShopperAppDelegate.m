@@ -2,29 +2,31 @@
 //  RecipeShopperAppDelegate.m
 //  RecipeShopper
 //
-//  Created by User on 5/6/10.
-//  Copyright __MyCompanyName__ 2010. All rights reserved.
+//  Created by James Grafton on 5/6/10.
+//  Copyright Asset Enhancing Technologies 2010. All rights reserved.
 //
 
 #import "RecipeShopperAppDelegate.h"
-#import "RecipeShopperViewController.h"
+#import "HomeViewNavController.h"
 
 @implementation RecipeShopperAppDelegate
 
 @synthesize window;
-@synthesize viewController;
+@synthesize rootController;
+@synthesize homeViewNavController;
 
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
     
     // Override point for customization after app launch    
-    [window addSubview:viewController.view];
+    [window addSubview:rootController.view];
     [window makeKeyAndVisible];
 }
 
 
 - (void)dealloc {
-    [viewController release];
+	[homeViewNavController release];
+	[rootController release];
     [window release];
     [super dealloc];
 }

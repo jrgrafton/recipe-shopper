@@ -12,9 +12,17 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
-		2899E5220DE3E06400AC0155 /* RecipeShopperViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* RecipeShopperViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
-		28D7ACF80DDB3853001CB0EB /* RecipeShopperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* RecipeShopperViewController.m */; };
+		28D7ACF80DDB3853001CB0EB /* HomeViewNavController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* HomeViewNavController.m */; };
+		CE71733911A2C3B700D71D08 /* UIViewController-Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = CE71733811A2C3B700D71D08 /* UIViewController-Extended.m */; };
+		CE7173AE11A2C48600D71D08 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7173AD11A2C48600D71D08 /* QuartzCore.framework */; };
+		F20D2F6D11A2E32E006EA070 /* icon_cart.png in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F6C11A2E32E006EA070 /* icon_cart.png */; };
+		F20D2F6F11A2E466006EA070 /* icon_book.png in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F6E11A2E466006EA070 /* icon_book.png */; };
+		F20D2F7111A2E4B9006EA070 /* icon_home.png in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F7011A2E4B9006EA070 /* icon_home.png */; };
+		F20D2F7311A2E4C9006EA070 /* icon_license.txt in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F7211A2E4C9006EA070 /* icon_license.txt */; };
+		F20D2F8311A2EAB1006EA070 /* HomeTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F8211A2EAB1006EA070 /* HomeTableView.xib */; };
+		F20D2F8B11A2EEE6006EA070 /* HomeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */; };
+		F20D2FB911A2FB3A006EA070 /* tesco_header.png in Resources */ = {isa = PBXBuildFile; fileRef = F20D2FB811A2FB3A006EA070 /* tesco_header.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,13 +32,23 @@
 		1D6058910D05DD3D006BFB54 /* RecipeShopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecipeShopper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		2899E5210DE3E06400AC0155 /* RecipeShopperViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeShopperViewController.xib; sourceTree = "<group>"; };
-		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
-		28D7ACF60DDB3853001CB0EB /* RecipeShopperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecipeShopperViewController.h; sourceTree = "<group>"; };
-		28D7ACF70DDB3853001CB0EB /* RecipeShopperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecipeShopperViewController.m; sourceTree = "<group>"; };
-		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		32CA4F630368D1EE00C91783 /* RecipeShopper_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecipeShopper_Prefix.pch; sourceTree = "<group>"; };
+		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = ../MainWindow.xib; sourceTree = "<group>"; };
+		28D7ACF60DDB3853001CB0EB /* HomeViewNavController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewNavController.h; sourceTree = "<group>"; };
+		28D7ACF70DDB3853001CB0EB /* HomeViewNavController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewNavController.m; sourceTree = "<group>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ../main.m; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* RecipeShopper_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecipeShopper_Prefix.pch; path = ../RecipeShopper_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* RecipeShopper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RecipeShopper-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		CE71733711A2C3B700D71D08 /* UIViewController-Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController-Extended.h"; sourceTree = "<group>"; };
+		CE71733811A2C3B700D71D08 /* UIViewController-Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController-Extended.m"; sourceTree = "<group>"; };
+		CE7173AD11A2C48600D71D08 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F20D2F6C11A2E32E006EA070 /* icon_cart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_cart.png; path = Classes/icon_cart.png; sourceTree = "<group>"; };
+		F20D2F6E11A2E466006EA070 /* icon_book.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_book.png; sourceTree = "<group>"; };
+		F20D2F7011A2E4B9006EA070 /* icon_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_home.png; sourceTree = "<group>"; };
+		F20D2F7211A2E4C9006EA070 /* icon_license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = icon_license.txt; sourceTree = "<group>"; };
+		F20D2F8211A2EAB1006EA070 /* HomeTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeTableView.xib; sourceTree = "<group>"; };
+		F20D2F8911A2EEE6006EA070 /* HomeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableViewController.h; sourceTree = "<group>"; };
+		F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTableViewController.m; sourceTree = "<group>"; };
+		F20D2FB811A2FB3A006EA070 /* tesco_header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tesco_header.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,20 +59,23 @@
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
+				CE7173AE11A2C48600D71D08 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		080E96DDFE201D6D7F000001 /* Classes */ = {
+		080E96DDFE201D6D7F000001 /* SourceCode */ = {
 			isa = PBXGroup;
 			children = (
-				1D3623240D0F684500981E51 /* RecipeShopperAppDelegate.h */,
-				1D3623250D0F684500981E51 /* RecipeShopperAppDelegate.m */,
-				28D7ACF60DDB3853001CB0EB /* RecipeShopperViewController.h */,
-				28D7ACF70DDB3853001CB0EB /* RecipeShopperViewController.m */,
+				32CA4F630368D1EE00C91783 /* RecipeShopper_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+				CE71730A11A2C1C000D71D08 /* View */,
+				CE71730911A2C1AA00D71D08 /* Controller */,
+				CE71730811A2C19B00D71D08 /* Model */,
 			);
+			name = SourceCode;
 			path = Classes;
 			sourceTree = "<group>";
 		};
@@ -69,8 +90,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				080E96DDFE201D6D7F000001 /* Classes */,
-				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				080E96DDFE201D6D7F000001 /* SourceCode */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
@@ -78,20 +98,14 @@
 			name = CustomTemplate;
 			sourceTree = "<group>";
 		};
-		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
-			isa = PBXGroup;
-			children = (
-				32CA4F630368D1EE00C91783 /* RecipeShopper_Prefix.pch */,
-				29B97316FDCFA39411CA2CEA /* main.m */,
-			);
-			name = "Other Sources";
-			sourceTree = "<group>";
-		};
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				2899E5210DE3E06400AC0155 /* RecipeShopperViewController.xib */,
-				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
+				F20D2FB811A2FB3A006EA070 /* tesco_header.png */,
+				F20D2F7211A2E4C9006EA070 /* icon_license.txt */,
+				F20D2F6C11A2E32E006EA070 /* icon_cart.png */,
+				F20D2F7011A2E4B9006EA070 /* icon_home.png */,
+				F20D2F6E11A2E466006EA070 /* icon_book.png */,
 				8D1107310486CEB800E47090 /* RecipeShopper-Info.plist */,
 			);
 			name = Resources;
@@ -103,8 +117,64 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
+				CE7173AD11A2C48600D71D08 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE71730811A2C19B00D71D08 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		CE71730911A2C1AA00D71D08 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CE71732A11A2C30100D71D08 /* Common */,
+				CE71731811A2C27700D71D08 /* HomeView */,
+				CE71731711A2C26A00D71D08 /* AppDelegate */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		CE71730A11A2C1C000D71D08 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
+				F20D2F8211A2EAB1006EA070 /* HomeTableView.xib */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		CE71731711A2C26A00D71D08 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				1D3623240D0F684500981E51 /* RecipeShopperAppDelegate.h */,
+				1D3623250D0F684500981E51 /* RecipeShopperAppDelegate.m */,
+			);
+			name = AppDelegate;
+			sourceTree = "<group>";
+		};
+		CE71731811A2C27700D71D08 /* HomeView */ = {
+			isa = PBXGroup;
+			children = (
+				28D7ACF60DDB3853001CB0EB /* HomeViewNavController.h */,
+				28D7ACF70DDB3853001CB0EB /* HomeViewNavController.m */,
+				F20D2F8911A2EEE6006EA070 /* HomeTableViewController.h */,
+				F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */,
+			);
+			name = HomeView;
+			sourceTree = "<group>";
+		};
+		CE71732A11A2C30100D71D08 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				CE71733711A2C3B700D71D08 /* UIViewController-Extended.h */,
+				CE71733811A2C3B700D71D08 /* UIViewController-Extended.m */,
+			);
+			name = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,7 +220,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
-				2899E5220DE3E06400AC0155 /* RecipeShopperViewController.xib in Resources */,
+				F20D2F6D11A2E32E006EA070 /* icon_cart.png in Resources */,
+				F20D2F6F11A2E466006EA070 /* icon_book.png in Resources */,
+				F20D2F7111A2E4B9006EA070 /* icon_home.png in Resources */,
+				F20D2F7311A2E4C9006EA070 /* icon_license.txt in Resources */,
+				F20D2F8311A2EAB1006EA070 /* HomeTableView.xib in Resources */,
+				F20D2FB911A2FB3A006EA070 /* tesco_header.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,7 +238,9 @@
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* RecipeShopperAppDelegate.m in Sources */,
-				28D7ACF80DDB3853001CB0EB /* RecipeShopperViewController.m in Sources */,
+				28D7ACF80DDB3853001CB0EB /* HomeViewNavController.m in Sources */,
+				CE71733911A2C3B700D71D08 /* UIViewController-Extended.m in Sources */,
+				F20D2F8B11A2EEE6006EA070 /* HomeTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

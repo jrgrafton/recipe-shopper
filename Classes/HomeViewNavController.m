@@ -1,14 +1,14 @@
 //
-//  RecipeShopperViewController.m
+//  HomeViewNavController.m
 //  RecipeShopper
 //
-//  Created by User on 5/6/10.
-//  Copyright __MyCompanyName__ 2010. All rights reserved.
+//  Created by James Grafton on 5/6/10.
+//  Copyright Asset Enhancing Technologies 2010. All rights reserved.
 //
 
-#import "RecipeShopperViewController.h"
+#import "HomeViewNavController.h"
 
-@implementation RecipeShopperViewController
+@implementation HomeViewNavController
 
 
 
