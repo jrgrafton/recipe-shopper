@@ -2,16 +2,16 @@
 {
 	1D3623240D0F684500981E51 /* RecipeShopperAppDelegate.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {861, 412}}";
+			sepNavIntBoundsRect = "{{0, 0}, {985, 507}}";
 			sepNavSelRange = "{639, 0}";
 			sepNavVisRange = "{0, 648}";
 		};
 	};
 	1D3623250D0F684500981E51 /* RecipeShopperAppDelegate.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {861, 468}}";
-			sepNavSelRange = "{240, 0}";
-			sepNavVisRange = "{0, 712}";
+			sepNavIntBoundsRect = "{{0, 0}, {985, 507}}";
+			sepNavSelRange = "{315, 14}";
+			sepNavVisRange = "{0, 719}";
 		};
 	};
 	1D6058900D05DD3D006BFB54 /* RecipeShopper */ = {
@@ -22,17 +22,17 @@
 	};
 	28D7ACF60DDB3853001CB0EB /* HomeViewNavController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {495, 221}}";
-			sepNavSelRange = "{191, 0}";
-			sepNavVisRange = "{0, 260}";
+			sepNavIntBoundsRect = "{{0, 0}, {985, 507}}";
+			sepNavSelRange = "{260, 0}";
+			sepNavVisRange = "{0, 261}";
 			sepNavWindowFrame = "{{15, 91}, {750, 687}}";
 		};
 	};
 	28D7ACF70DDB3853001CB0EB /* HomeViewNavController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {861, 858}}";
+			sepNavIntBoundsRect = "{{0, 0}, {985, 845}}";
 			sepNavSelRange = "{238, 0}";
-			sepNavVisRange = "{0, 688}";
+			sepNavVisRange = "{0, 836}";
 		};
 	};
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
@@ -66,7 +66,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					683,
+					807,
 					20,
 					48,
 					43,
@@ -89,7 +89,7 @@
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
 					20,
-					663,
+					783,
 					20,
 					48,
 					43,
@@ -107,27 +107,57 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 295880812;
-			PBXWorkspaceStateSaveDate = 295880812;
+			PBXPerProjectTemplateStateSaveDate = 296058166;
+			PBXWorkspaceStateSaveDate = 296058166;
 		};
 		perUserProjectItems = {
-			F20D2F9A11A2F248006EA070 /* PBXBookmark */ = F20D2F9A11A2F248006EA070 /* PBXBookmark */;
-			F20D2F9B11A2F248006EA070 /* PBXBookmark */ = F20D2F9B11A2F248006EA070 /* PBXBookmark */;
-			F20D2F9C11A2F248006EA070 /* PBXTextBookmark */ = F20D2F9C11A2F248006EA070 /* PBXTextBookmark */;
-			F20D2F9E11A2F248006EA070 /* PBXTextBookmark */ = F20D2F9E11A2F248006EA070 /* PBXTextBookmark */;
-			F20D2FA011A2F248006EA070 /* PBXTextBookmark */ = F20D2FA011A2F248006EA070 /* PBXTextBookmark */;
-			F20D2FA211A2F248006EA070 /* PBXTextBookmark */ = F20D2FA211A2F248006EA070 /* PBXTextBookmark */;
-			F20D2FA311A2F248006EA070 /* PBXTextBookmark */ = F20D2FA311A2F248006EA070 /* PBXTextBookmark */;
-			F20D2FAA11A2F422006EA070 /* PBXTextBookmark */ = F20D2FAA11A2F422006EA070 /* PBXTextBookmark */;
-			F20D2FAB11A2F422006EA070 /* PBXTextBookmark */ = F20D2FAB11A2F422006EA070 /* PBXTextBookmark */;
-			F20D2FAC11A2F422006EA070 /* PBXTextBookmark */ = F20D2FAC11A2F422006EA070 /* PBXTextBookmark */;
-			F20D2FBF11A2FCC9006EA070 /* PBXBookmark */ = F20D2FBF11A2FCC9006EA070 /* PBXBookmark */;
-			F20D2FC011A2FCC9006EA070 /* PBXTextBookmark */ = F20D2FC011A2FCC9006EA070 /* PBXTextBookmark */;
-			F20D2FE711A302D6006EA070 /* PBXTextBookmark */ = F20D2FE711A302D6006EA070 /* PBXTextBookmark */;
-			F20D2FF011A30319006EA070 /* PBXTextBookmark */ = F20D2FF011A30319006EA070 /* PBXTextBookmark */;
+			F20D2F9A11A2F248006EA070 = F20D2F9A11A2F248006EA070 /* PBXBookmark */;
+			F20D2F9B11A2F248006EA070 = F20D2F9B11A2F248006EA070 /* PBXBookmark */;
+			F20D2F9C11A2F248006EA070 = F20D2F9C11A2F248006EA070 /* PBXTextBookmark */;
+			F20D2F9E11A2F248006EA070 = F20D2F9E11A2F248006EA070 /* PBXTextBookmark */;
+			F20D2FA011A2F248006EA070 = F20D2FA011A2F248006EA070 /* PBXTextBookmark */;
+			F20D2FA211A2F248006EA070 = F20D2FA211A2F248006EA070 /* PBXTextBookmark */;
+			F20D2FA311A2F248006EA070 = F20D2FA311A2F248006EA070 /* PBXTextBookmark */;
+			F20D2FAA11A2F422006EA070 = F20D2FAA11A2F422006EA070 /* PBXTextBookmark */;
+			F20D2FAB11A2F422006EA070 = F20D2FAB11A2F422006EA070 /* PBXTextBookmark */;
+			F20D2FAC11A2F422006EA070 = F20D2FAC11A2F422006EA070 /* PBXTextBookmark */;
+			F20D2FBF11A2FCC9006EA070 = F20D2FBF11A2FCC9006EA070 /* PBXBookmark */;
+			F20D2FC011A2FCC9006EA070 = F20D2FC011A2FCC9006EA070 /* PBXTextBookmark */;
+			F20D2FE711A302D6006EA070 = F20D2FE711A302D6006EA070 /* PBXTextBookmark */;
+			F20D2FF011A30319006EA070 = F20D2FF011A30319006EA070 /* PBXTextBookmark */;
+			F271A82D11A479D9008E280A = F271A82D11A479D9008E280A /* PBXTextBookmark */;
+			F271A84611A47BA1008E280A = F271A84611A47BA1008E280A /* PBXTextBookmark */;
+			F271A88411A47FFB008E280A = F271A88411A47FFB008E280A /* PBXTextBookmark */;
+			F271A88511A47FFB008E280A = F271A88511A47FFB008E280A /* PBXTextBookmark */;
+			F271A88611A47FFB008E280A = F271A88611A47FFB008E280A /* PBXTextBookmark */;
+			F271A88711A47FFB008E280A = F271A88711A47FFB008E280A /* PBXTextBookmark */;
+			F271A88811A47FFB008E280A = F271A88811A47FFB008E280A /* PBXTextBookmark */;
+			F271A88911A47FFB008E280A = F271A88911A47FFB008E280A /* PBXTextBookmark */;
+			F271A88A11A47FFB008E280A = F271A88A11A47FFB008E280A /* PBXTextBookmark */;
+			F271A88B11A47FFB008E280A = F271A88B11A47FFB008E280A /* PBXTextBookmark */;
+			F271A88D11A48000008E280A = F271A88D11A48000008E280A /* PBXTextBookmark */;
+			F271A88E11A48000008E280A = F271A88E11A48000008E280A /* PBXTextBookmark */;
+			F271A88F11A48004008E280A = F271A88F11A48004008E280A /* PBXTextBookmark */;
+			F271A89011A48004008E280A = F271A89011A48004008E280A /* PBXTextBookmark */;
+			F271A89611A48253008E280A = F271A89611A48253008E280A /* PBXTextBookmark */;
+			F271A89711A48253008E280A = F271A89711A48253008E280A /* PBXTextBookmark */;
+			F271A89811A48253008E280A = F271A89811A48253008E280A /* PBXTextBookmark */;
+			F271A8B311A483F7008E280A = F271A8B311A483F7008E280A /* PBXTextBookmark */;
+			F271A8B411A48436008E280A = F271A8B411A48436008E280A /* PBXTextBookmark */;
+			F271A8B511A48436008E280A = F271A8B511A48436008E280A /* PBXTextBookmark */;
+			F271A8BA11A4848F008E280A = F271A8BA11A4848F008E280A /* PBXTextBookmark */;
+			F271A8BB11A4848F008E280A = F271A8BB11A4848F008E280A /* PBXTextBookmark */;
+			F278EAC211A57D3A00E688C5 /* PBXTextBookmark */ = F278EAC211A57D3A00E688C5 /* PBXTextBookmark */;
 		};
 		sourceControlManager = F20D2F6711A2C86F006EA070 /* Source Control */;
 		userBuildSettings = {
+		};
+	};
+	29B97316FDCFA39411CA2CEA /* main.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {985, 507}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 358}";
 		};
 	};
 	32CA4F630368D1EE00C91783 /* RecipeShopper_Prefix.pch */ = {
@@ -188,16 +218,16 @@
 	};
 	F20D2F8911A2EEE6006EA070 /* HomeTableViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {861, 412}}";
-			sepNavSelRange = "{339, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {985, 507}}";
+			sepNavSelRange = "{323, 13}";
 			sepNavVisRange = "{0, 346}";
 		};
 	};
 	F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1069, 2106}}";
-			sepNavSelRange = "{836, 0}";
-			sepNavVisRange = "{3, 1011}";
+			sepNavIntBoundsRect = "{{0, 0}, {1048, 2483}}";
+			sepNavSelRange = "{3310, 0}";
+			sepNavVisRange = "{2655, 1375}";
 		};
 	};
 	F20D2F9A11A2F248006EA070 /* PBXBookmark */ = {
@@ -247,6 +277,7 @@
 	};
 	F20D2FA111A2F248006EA070 /* jamgraft.pbxuser */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = text;
 		name = jamgraft.pbxuser;
 		path = /Users/jamgraft/Documents/RecipeShopper/RecipeShopper.xcodeproj/jamgraft.pbxuser;
 		sourceTree = "<absolute>";
@@ -320,7 +351,7 @@
 		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
 		name = "HomeTableViewController.m: 29";
 		rLen = 0;
-		rLoc = 836;
+		rLoc = 865;
 		rType = 0;
 		vrLen = 965;
 		vrLoc = 3;
@@ -330,9 +361,231 @@
 		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
 		name = "HomeTableViewController.m: 29";
 		rLen = 0;
-		rLoc = 836;
+		rLoc = 865;
 		rType = 0;
 		vrLen = 1011;
 		vrLoc = 3;
+	};
+	F271A82D11A479D9008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		name = "HomeTableViewController.m: 20";
+		rLen = 0;
+		rLoc = 519;
+		rType = 0;
+		vrLen = 937;
+		vrLoc = 248;
+	};
+	F271A84611A47BA1008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		name = "HomeTableViewController.m: 86";
+		rLen = 0;
+		rLoc = 2403;
+		rType = 0;
+		vrLen = 998;
+		vrLoc = 1744;
+	};
+	F271A88411A47FFB008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 29B97316FDCFA39411CA2CEA /* main.m */;
+		name = "main.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 358;
+		vrLoc = 0;
+	};
+	F271A88511A47FFB008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28D7ACF70DDB3853001CB0EB /* HomeViewNavController.m */;
+		name = "HomeViewNavController.m: 11";
+		rLen = 0;
+		rLoc = 238;
+		rType = 0;
+		vrLen = 836;
+		vrLoc = 0;
+	};
+	F271A88611A47FFB008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28D7ACF60DDB3853001CB0EB /* HomeViewNavController.h */;
+		name = "HomeViewNavController.h: 16";
+		rLen = 0;
+		rLoc = 260;
+		rType = 0;
+		vrLen = 261;
+		vrLoc = 0;
+	};
+	F271A88711A47FFB008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8911A2EEE6006EA070 /* HomeTableViewController.h */;
+		name = "HomeTableViewController.h: 14";
+		rLen = 0;
+		rLoc = 339;
+		rType = 0;
+		vrLen = 346;
+		vrLoc = 0;
+	};
+	F271A88811A47FFB008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1D3623250D0F684500981E51 /* RecipeShopperAppDelegate.m */;
+		name = "RecipeShopperAppDelegate.m: 15";
+		rLen = 14;
+		rLoc = 315;
+		rType = 0;
+		vrLen = 719;
+		vrLoc = 0;
+	};
+	F271A88911A47FFB008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1D3623240D0F684500981E51 /* RecipeShopperAppDelegate.h */;
+		name = "RecipeShopperAppDelegate.h: 21";
+		rLen = 0;
+		rLoc = 639;
+		rType = 0;
+		vrLen = 648;
+		vrLoc = 0;
+	};
+	F271A88A11A47FFB008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		name = "HomeTableViewController.m: 99";
+		rLen = 0;
+		rLoc = 2686;
+		rType = 0;
+		vrLen = 1099;
+		vrLoc = 0;
+	};
+	F271A88B11A47FFB008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		name = "HomeTableViewController.m: 119";
+		rLen = 0;
+		rLoc = 3346;
+		rType = 0;
+		vrLen = 1024;
+		vrLoc = 2254;
+	};
+	F271A88D11A48000008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'setText:' is deprecated (declared at /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.3.sdk/System/Library/Frameworks/UIKit.framework/Headers/UITableViewCell.h:200)";
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		rLen = 1;
+		rLoc = 121;
+		rType = 1;
+	};
+	F271A88E11A48000008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		name = "HomeTableViewController.m: 116";
+		rLen = 0;
+		rLoc = 3226;
+		rType = 0;
+		vrLen = 416;
+		vrLoc = 2669;
+	};
+	F271A88F11A48004008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'setText:' is deprecated (declared at /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.3.sdk/System/Library/Frameworks/UIKit.framework/Headers/UITableViewCell.h:200)";
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		rLen = 1;
+		rLoc = 121;
+		rType = 1;
+	};
+	F271A89011A48004008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		name = "HomeTableViewController.m: 116";
+		rLen = 0;
+		rLoc = 3226;
+		rType = 0;
+		vrLen = 1024;
+		vrLoc = 2254;
+	};
+	F271A89611A48253008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8911A2EEE6006EA070 /* HomeTableViewController.h */;
+		name = "HomeTableViewController.h: 13";
+		rLen = 13;
+		rLoc = 323;
+		rType = 0;
+		vrLen = 346;
+		vrLoc = 0;
+	};
+	F271A89711A48253008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		name = "HomeTableViewController.m: 35";
+		rLen = 0;
+		rLoc = 1100;
+		rType = 0;
+		vrLen = 1161;
+		vrLoc = 248;
+	};
+	F271A89811A48253008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		name = "HomeTableViewController.m: 35";
+		rLen = 0;
+		rLoc = 1102;
+		rType = 0;
+		vrLen = 1172;
+		vrLoc = 248;
+	};
+	F271A8B311A483F7008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		name = "HomeTableViewController.m: 122";
+		rLen = 0;
+		rLoc = 3269;
+		rType = 0;
+		vrLen = 1326;
+		vrLoc = 2661;
+	};
+	F271A8B411A48436008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'setText:' is deprecated (declared at /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.3.sdk/System/Library/Frameworks/UIKit.framework/Headers/UITableViewCell.h:200)";
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		rLen = 1;
+		rLoc = 124;
+		rType = 1;
+	};
+	F271A8B511A48436008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		name = "HomeTableViewController.m: 125";
+		rLen = 0;
+		rLoc = 3304;
+		rType = 0;
+		vrLen = 329;
+		vrLoc = 3017;
+	};
+	F271A8BA11A4848F008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'setText:' is deprecated (declared at /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.3.sdk/System/Library/Frameworks/UIKit.framework/Headers/UITableViewCell.h:200)";
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		rLen = 1;
+		rLoc = 124;
+		rType = 1;
+	};
+	F271A8BB11A4848F008E280A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		name = "HomeTableViewController.m: 125";
+		rLen = 0;
+		rLoc = 3310;
+		rType = 0;
+		vrLen = 1353;
+		vrLoc = 2661;
+	};
+	F278EAC211A57D3A00E688C5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */;
+		name = "HomeTableViewController.m: 125";
+		rLen = 0;
+		rLoc = 3310;
+		rType = 0;
+		vrLen = 1375;
+		vrLoc = 2655;
 	};
 }

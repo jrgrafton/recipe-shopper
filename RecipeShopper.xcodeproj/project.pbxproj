@@ -23,6 +23,8 @@
 		F20D2F8311A2EAB1006EA070 /* HomeTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F8211A2EAB1006EA070 /* HomeTableView.xib */; };
 		F20D2F8B11A2EEE6006EA070 /* HomeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */; };
 		F20D2FB911A2FB3A006EA070 /* tesco_header.png in Resources */ = {isa = PBXBuildFile; fileRef = F20D2FB811A2FB3A006EA070 /* tesco_header.png */; };
+		F278EAD211A57E5300E688C5 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F278EAD111A57E5300E688C5 /* libsqlite3.0.dylib */; };
+		F278EAD411A57E7300E688C5 /* jamesgrafton_rs.db in Resources */ = {isa = PBXBuildFile; fileRef = F278EAD311A57E7300E688C5 /* jamesgrafton_rs.db */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +51,8 @@
 		F20D2F8911A2EEE6006EA070 /* HomeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableViewController.h; sourceTree = "<group>"; };
 		F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTableViewController.m; sourceTree = "<group>"; };
 		F20D2FB811A2FB3A006EA070 /* tesco_header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tesco_header.png; sourceTree = "<group>"; };
+		F278EAD111A57E5300E688C5 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		F278EAD311A57E7300E688C5 /* jamesgrafton_rs.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = jamesgrafton_rs.db; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
 				CE7173AE11A2C48600D71D08 /* QuartzCore.framework in Frameworks */,
+				F278EAD211A57E5300E688C5 /* libsqlite3.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +106,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F278EAD311A57E7300E688C5 /* jamesgrafton_rs.db */,
 				F20D2FB811A2FB3A006EA070 /* tesco_header.png */,
 				F20D2F7211A2E4C9006EA070 /* icon_license.txt */,
 				F20D2F6C11A2E32E006EA070 /* icon_cart.png */,
@@ -118,6 +124,7 @@
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
 				CE7173AD11A2C48600D71D08 /* QuartzCore.framework */,
+				F278EAD111A57E5300E688C5 /* libsqlite3.0.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -226,6 +233,7 @@
 				F20D2F7311A2E4C9006EA070 /* icon_license.txt in Resources */,
 				F20D2F8311A2EAB1006EA070 /* HomeTableView.xib in Resources */,
 				F20D2FB911A2FB3A006EA070 /* tesco_header.png in Resources */,
+				F278EAD411A57E7300E688C5 /* jamesgrafton_rs.db in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

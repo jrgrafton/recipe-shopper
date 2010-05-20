@@ -26,10 +26,16 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	
+	//Add Tesco logo to nav bar
 	UIImage *image = [UIImage imageNamed: @"tesco_header.png"];
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
-	
 	self.navigationItem.titleView = imageView;
+	
+	//Set background colour
+	[homeTableView setBackgroundColor: [UIColor colorWithRed:0.8745098039215686 
+													green:0.9137254901960784 
+													 blue:0.9568627450980392
+													alpha:1.0]];
 	
 }
 
@@ -84,7 +90,19 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 0;
+    if (section == 0) {
+		return 1;
+	}else {
+		return 5;
+	}
+
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+	if(section == 0)
+		return @"My Home Store";
+	else
+		return @"Recent Recipes";
 }
 
 
@@ -98,7 +116,13 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    // Set up the cell...
+	// Set up the cell...
+	if(indexPath.section == 0)
+		//Store locator
+		[[cell textLabel] setText: @"Blah store"];
+	else
+		//List of recent recipes
+		[[cell textLabel] setText: @"Recipe here"];
 	
     return cell;
 }
