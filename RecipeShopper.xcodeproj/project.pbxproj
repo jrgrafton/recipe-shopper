@@ -25,6 +25,12 @@
 		F20D2FB911A2FB3A006EA070 /* tesco_header.png in Resources */ = {isa = PBXBuildFile; fileRef = F20D2FB811A2FB3A006EA070 /* tesco_header.png */; };
 		F278EAD211A57E5300E688C5 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F278EAD111A57E5300E688C5 /* libsqlite3.0.dylib */; };
 		F278EAD411A57E7300E688C5 /* jamesgrafton_rs.db in Resources */ = {isa = PBXBuildFile; fileRef = F278EAD311A57E7300E688C5 /* jamesgrafton_rs.db */; };
+		F278EADC11A59F1C00E688C5 /* DBUserPreference.m in Sources */ = {isa = PBXBuildFile; fileRef = F278EADB11A59F1C00E688C5 /* DBUserPreference.m */; };
+		F278EADF11A59F2900E688C5 /* DBRecipeHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = F278EADE11A59F2900E688C5 /* DBRecipeHistory.m */; };
+		F278EAE211A59F3100E688C5 /* DBRecipe.m in Sources */ = {isa = PBXBuildFile; fileRef = F278EAE111A59F3100E688C5 /* DBRecipe.m */; };
+		F293DC2711A5EA61008AA947 /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F293DC2611A5EA61008AA947 /* DatabaseManager.m */; };
+		F293DC2B11A5EA8B008AA947 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F293DC2A11A5EA8B008AA947 /* DataManager.m */; };
+		F293DC2F11A5EB20008AA947 /* APIRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F293DC2E11A5EB20008AA947 /* APIRequestManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +59,18 @@
 		F20D2FB811A2FB3A006EA070 /* tesco_header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tesco_header.png; sourceTree = "<group>"; };
 		F278EAD111A57E5300E688C5 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		F278EAD311A57E7300E688C5 /* jamesgrafton_rs.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = jamesgrafton_rs.db; sourceTree = "<group>"; };
+		F278EADA11A59F1C00E688C5 /* DBUserPreference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBUserPreference.h; sourceTree = "<group>"; };
+		F278EADB11A59F1C00E688C5 /* DBUserPreference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBUserPreference.m; sourceTree = "<group>"; };
+		F278EADD11A59F2900E688C5 /* DBRecipeHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBRecipeHistory.h; sourceTree = "<group>"; };
+		F278EADE11A59F2900E688C5 /* DBRecipeHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBRecipeHistory.m; sourceTree = "<group>"; };
+		F278EAE011A59F3100E688C5 /* DBRecipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBRecipe.h; sourceTree = "<group>"; };
+		F278EAE111A59F3100E688C5 /* DBRecipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBRecipe.m; sourceTree = "<group>"; };
+		F293DC2511A5EA61008AA947 /* DatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseManager.h; sourceTree = "<group>"; };
+		F293DC2611A5EA61008AA947 /* DatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseManager.m; sourceTree = "<group>"; };
+		F293DC2911A5EA8B008AA947 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
+		F293DC2A11A5EA8B008AA947 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
+		F293DC2D11A5EB20008AA947 /* APIRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIRequestManager.h; sourceTree = "<group>"; };
+		F293DC2E11A5EB20008AA947 /* APIRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIRequestManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +150,9 @@
 		CE71730811A2C19B00D71D08 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F293DC2C11A5EAFF008AA947 /* TescoApi */,
+				F293DC2811A5EA67008AA947 /* DataManager */,
+				F278EAD911A59EEB00E688C5 /* Database */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -182,6 +203,39 @@
 				CE71733811A2C3B700D71D08 /* UIViewController-Extended.m */,
 			);
 			name = Common;
+			sourceTree = "<group>";
+		};
+		F278EAD911A59EEB00E688C5 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				F278EADA11A59F1C00E688C5 /* DBUserPreference.h */,
+				F278EADB11A59F1C00E688C5 /* DBUserPreference.m */,
+				F278EADD11A59F2900E688C5 /* DBRecipeHistory.h */,
+				F278EADE11A59F2900E688C5 /* DBRecipeHistory.m */,
+				F278EAE011A59F3100E688C5 /* DBRecipe.h */,
+				F278EAE111A59F3100E688C5 /* DBRecipe.m */,
+				F293DC2511A5EA61008AA947 /* DatabaseManager.h */,
+				F293DC2611A5EA61008AA947 /* DatabaseManager.m */,
+			);
+			name = Database;
+			sourceTree = "<group>";
+		};
+		F293DC2811A5EA67008AA947 /* DataManager */ = {
+			isa = PBXGroup;
+			children = (
+				F293DC2911A5EA8B008AA947 /* DataManager.h */,
+				F293DC2A11A5EA8B008AA947 /* DataManager.m */,
+			);
+			name = DataManager;
+			sourceTree = "<group>";
+		};
+		F293DC2C11A5EAFF008AA947 /* TescoApi */ = {
+			isa = PBXGroup;
+			children = (
+				F293DC2D11A5EB20008AA947 /* APIRequestManager.h */,
+				F293DC2E11A5EB20008AA947 /* APIRequestManager.m */,
+			);
+			name = TescoApi;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -249,6 +303,12 @@
 				28D7ACF80DDB3853001CB0EB /* HomeViewNavController.m in Sources */,
 				CE71733911A2C3B700D71D08 /* UIViewController-Extended.m in Sources */,
 				F20D2F8B11A2EEE6006EA070 /* HomeTableViewController.m in Sources */,
+				F278EADC11A59F1C00E688C5 /* DBUserPreference.m in Sources */,
+				F278EADF11A59F2900E688C5 /* DBRecipeHistory.m in Sources */,
+				F278EAE211A59F3100E688C5 /* DBRecipe.m in Sources */,
+				F293DC2711A5EA61008AA947 /* DatabaseManager.m in Sources */,
+				F293DC2B11A5EA8B008AA947 /* DataManager.m in Sources */,
+				F293DC2F11A5EB20008AA947 /* APIRequestManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
