@@ -6,8 +6,12 @@
 //  Copyright 2010 Asset Enhancing Technologies. All rights reserved.
 //
 
-#import "UserPreference.h"
+#import "DBUserPreference.h"
 
+@interface DBUserPreference ()
+	@property (readwrite, copy) NSString *key;
+	@property (readwrite, copy) NSString *value;
+@end
 
 @implementation DBUserPreference
 
@@ -15,13 +19,13 @@
 
 - (id)initWithKey: (NSString*)inKey andValue: (NSString*)inValue {
 	if (self = [super init]) {
-		key = inKey;
-		value = inValue;
+		[self setKey:inKey];
+		[self setValue:inValue];
 	}
 	return self;
 }
 
-- (void) dealloc {
+- (void)dealloc {
 	[key release];
 	[value release];
 	[super dealloc];

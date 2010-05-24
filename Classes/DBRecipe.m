@@ -6,9 +6,79 @@
 //  Copyright 2010 Asset Enhancing Technologies. All rights reserved.
 //
 
-#import "Recipe.h"
+#import "DBRecipe.h"
 
+@interface DBRecipe ()
+	@property (readwrite,assign) NSInteger recipeID;
+	@property (readwrite,copy) NSString *recipeName;
+	@property (readwrite,copy) NSString *categoryName;
+	@property (readwrite,copy) NSString *description;
+	@property (readwrite,copy) NSArray *instructions;
+	@property (readwrite,copy) NSNumber *rating;
+	@property (readwrite,assign) NSInteger ratingCount;
+	@property (readwrite,copy) NSString *contributor;
+	@property (readwrite,copy) NSString *cookingTime;
+	@property (readwrite,copy) NSString *preparationTime;
+	@property (readwrite,copy) NSString *serves;
+	@property (readwrite,copy) NSArray *textIngredients;
+	@property (readwrite,copy) NSArray *idIngredients;
+	@property (readwrite,copy) NSArray *nutritionalInfo;
+	@property (readwrite,copy) UIImage *iconSmall;
+	@property (readwrite,copy) NSString *iconLargeRaw;
+@end
 
 @implementation DBRecipe
+
+@synthesize recipeID,recipeName,categoryName,description,instructions,
+rating,ratingCount,contributor,cookingTime,preparationTime,serves,
+textIngredients,idIngredients,nutritionalInfo,iconSmall,iconLargeRaw;
+
+- (id)initWithRecipeID: (NSInteger)inRecipeID andRecipeName:(NSString*)inRecipeName 
+		andCategoryName:(NSString*)inCategoryName andDescription:(NSString*)inDescription 
+		andInstructions:(NSArray*)inInstructions andRating:(NSNumber*)inRating 
+	    andRatingCount:(NSInteger)inRatingCount andContributor:(NSString*)inContributor 
+	    andCookingTime:(NSString*)inCookingTime andPreparationTime:(NSString*)inPreparationTime 
+		andServes:(NSString*)inServes andTextIngredients:(NSArray*)inTextIngredients 
+		andIDIngredients:(NSArray*)inIDIngredients andNutritionalInfo:(NSArray*)inNutritionalInfo 
+		andIconSmall:(UIImage*)inIconSmall andIconLargeRaw:(NSString*)inIconLargeRaw {
+	
+	if (self = [super init]) {
+		[self setRecipeID:inRecipeID];
+		[self setRecipeName:inRecipeName];
+		[self setCategoryName:inCategoryName];
+		[self setDescription:inDescription];
+		[self setInstructions:inInstructions];
+		[self setRating:inRating];
+		[self setRatingCount:inRatingCount];
+		[self setContributor:inContributor];
+		[self setCookingTime:inCookingTime];
+		[self setPreparationTime:inPreparationTime];
+		[self setServes:inServes];
+		[self setTextIngredients:inTextIngredients];
+		[self setIdIngredients:inIDIngredients];
+		[self setNutritionalInfo:inNutritionalInfo];
+		[self setIconSmall:inIconSmall];
+		[self setIconLargeRaw:inIconLargeRaw];
+	}
+	return self;
+}
+
+- (void)dealloc {
+	[recipeName release];
+	[categoryName release];
+	[description release];
+	[instructions release];
+	[rating release];
+	[contributor release];
+	[cookingTime release];
+	[preparationTime release];
+	[serves release];
+	[textIngredients release];
+	[idIngredients release];
+	[nutritionalInfo release];
+	[iconSmall release];
+	[iconLargeRaw release];
+	[super dealloc];
+}
 
 @end

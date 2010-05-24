@@ -8,6 +8,8 @@
 
 #import "RecipeShopperAppDelegate.h"
 #import "HomeViewNavController.h"
+#import "DataManager.h"
+#import "LogManager.h"
 
 @implementation RecipeShopperAppDelegate
 
@@ -16,11 +18,18 @@
 @synthesize homeViewNavController;
 
 
-- (void)applicationDidFinishLaunching:(UIApplication *)application {    
-    
+- (void)applicationDidFinishLaunching:(UIApplication *)application {
+	//Initialise the DataManager request managers
+	[DataManager initRequestManagers];
+	
     // Override point for customization after app launch    
     [window addSubview:rootController.view];
     [window makeKeyAndVisible];
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application {
+	//DeInitialise the DataManager request managers
+	[DataManager deInitRequestManagers];
 }
 
 

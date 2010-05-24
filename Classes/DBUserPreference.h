@@ -14,8 +14,8 @@
 	NSString *value;
 }
 
-@property (nonatomic, readonly) NSString *key;
-@property (nonatomic, readonly) NSString *value;
+@property (readonly, copy) NSString *key;
+@property (readonly, copy) NSString *value;
 
--(id)initWithKey: (NSString*)inKey andValue:(NSString*)inValue;
+- (id)initWithKey: (NSString*)inKey andValue:(NSString*)inValue;
 @end

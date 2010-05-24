@@ -7,10 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "DBRecipe.h"
 
 @interface DataManager : NSObject {
-
+	
 }
+
+//Publicly available data aquisition ‰
++ (NSArray*)fetchLastPurchasedRecipes: (NSInteger) count;
+
+//Initialisation and deinitialisation procedures
++ (void)initRequestManagers;
++ (void)deInitRequestManagers;
 
 @end

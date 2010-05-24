@@ -19,9 +19,9 @@ NSDate *date = [formatter dateFromString:score.datetime];*/
 	NSDate *dateTime;
 }
 
-@property (nonatomic, readonly) NSString *recipeID;
-@property (nonatomic, readonly) NSDate *dateTime;
+@property (readonly,copy) NSString *recipeID;
+@property (readonly,copy) NSDate *dateTime;
 
--(id)initWithRecipeID: (NSString*)inRecipeID andDateTime:(NSDate*)inDateTime;
+- (id)initWithRecipeID: (NSString*)inRecipeID andDateTime:(NSDate*)inDateTime;
 
 @end

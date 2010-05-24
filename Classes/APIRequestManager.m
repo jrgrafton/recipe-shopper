@@ -6,7 +6,7 @@
 //  Copyright 2010 Asset Enhancing Technologies. All rights reserved.
 //
 
-#import "RequestManager.h"
+#import "APIRequestManager.h"
 
 
 @implementation APIRequestManager

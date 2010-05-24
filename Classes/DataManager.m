@@ -7,8 +7,39 @@
 //
 
 #import "DataManager.h"
+#import "DatabaseRequestManager.h"
+#import "APIRequestManager.h"
+#import "LogManager.h"
 
+static DatabaseRequestManager *databaseRequestManager;
+static APIRequestManager *apiRequestManager;
 
 @implementation DataManager
+
++ (void)initRequestManagers {
+	#ifdef DEBUG
+		[LogManager log:@"Initialising request managers" withLevel:LOG_INFO fromClass:@"DataManager"];
+	#endif
+	#ifdef DEBUG
+		[LogManager log:@"Initialising database request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
+	#endif
+	databaseRequestManager = [[DatabaseRequestManager alloc] init];
+	#ifdef DEBUG
+		[LogManager log:@"Initialising api request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
+	#endif
+	apiRequestManager = [[APIRequestManager alloc] init];
+}
+
++ (void)deInitRequestManagers {
+	#ifdef DEBUG
+		[LogManager log:@"DeInitialising request managers" withLevel:LOG_INFO fromClass:@"DataManager"];
+	#endif
+	[databaseRequestManager release];
+	[apiRequestManager release];
+}
+
++ (NSArray*)fetchLastPurchasedRecipes: (NSInteger)count {
+	return [databaseRequestManager fetchLastPurchasedRecipes:count];
+}
 
 @end

@@ -7,10 +7,50 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "UIImage-Extended.h"
 
 @interface DBRecipe : NSObject {
-
+	NSInteger recipeID;
+	NSString *recipeName;
+	NSString *categoryName;
+	NSString *description;
+	NSArray *instructions;
+	NSNumber *rating;
+	NSInteger ratingCount;
+	NSString *contributor;
+	NSString *cookingTime;
+	NSString *preparationTime;
+	NSString *serves;
+	NSArray *textIngredients;
+	NSArray *idIngredients;
+	NSArray *nutritionalInfo;
+	UIImage *iconSmall;	
+	NSString *iconLargeRaw;	//Base64 encoded image
 }
 
+@property (readonly,assign) NSInteger recipeID;
+@property (readonly,copy) NSString *recipeName;
+@property (readonly,copy) NSString *categoryName;
+@property (readonly,copy) NSString *description;
+@property (readonly,copy) NSArray *instructions;
+@property (readonly,copy) NSNumber *rating;
+@property (readonly,assign) NSInteger ratingCount;
+@property (readonly,copy) NSString *contributor;
+@property (readonly,copy) NSString *cookingTime;
+@property (readonly,copy) NSString *preparationTime;
+@property (readonly,copy) NSString *serves;
+@property (readonly,copy) NSArray *textIngredients;
+@property (readonly,copy) NSArray *idIngredients;
+@property (readonly,copy) NSArray *nutritionalInfo;
+@property (readonly,copy) UIImage *iconSmall;
+@property (readonly,copy) NSString *iconLargeRaw;
+
+- (id)initWithRecipeID: (NSInteger)inRecipeID andRecipeName:(NSString*)inRecipeName 
+	  andCategoryName:(NSString*)inCategoryName andDescription:(NSString*)inDescription 
+	  andInstructions:(NSArray*)inInstructions andRating:(NSNumber*)inRating 
+	  andRatingCount:(NSInteger)inRatingCount andContributor:(NSString*)inContributor 
+	  andCookingTime:(NSString*)inCookingTime andPreparationTime:(NSString*)inPreparationTime 
+	  andServes:(NSString*)inServes andTextIngredients:(NSArray*)inTextIngredients 
+	  andIDIngredients:(NSArray*)inIDIngredients andNutritionalInfo:(NSArray*)inNutritionalInfo 
+      andIconSmall:(UIImage*)inIconSmall andIconLargeRaw:(NSString*)inIconLargeRaw;
 @end

@@ -23,12 +23,15 @@
 		F20D2F8311A2EAB1006EA070 /* HomeTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F8211A2EAB1006EA070 /* HomeTableView.xib */; };
 		F20D2F8B11A2EEE6006EA070 /* HomeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */; };
 		F20D2FB911A2FB3A006EA070 /* tesco_header.png in Resources */ = {isa = PBXBuildFile; fileRef = F20D2FB811A2FB3A006EA070 /* tesco_header.png */; };
+		F22254D811A6A1B20006658B /* LogManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F22254D711A6A1B20006658B /* LogManager.m */; };
 		F278EAD211A57E5300E688C5 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F278EAD111A57E5300E688C5 /* libsqlite3.0.dylib */; };
-		F278EAD411A57E7300E688C5 /* jamesgrafton_rs.db in Resources */ = {isa = PBXBuildFile; fileRef = F278EAD311A57E7300E688C5 /* jamesgrafton_rs.db */; };
+		F278EAD411A57E7300E688C5 /* jamesgrafton_rs.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = F278EAD311A57E7300E688C5 /* jamesgrafton_rs.sqlite */; };
 		F278EADC11A59F1C00E688C5 /* DBUserPreference.m in Sources */ = {isa = PBXBuildFile; fileRef = F278EADB11A59F1C00E688C5 /* DBUserPreference.m */; };
 		F278EADF11A59F2900E688C5 /* DBRecipeHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = F278EADE11A59F2900E688C5 /* DBRecipeHistory.m */; };
 		F278EAE211A59F3100E688C5 /* DBRecipe.m in Sources */ = {isa = PBXBuildFile; fileRef = F278EAE111A59F3100E688C5 /* DBRecipe.m */; };
-		F293DC2711A5EA61008AA947 /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F293DC2611A5EA61008AA947 /* DatabaseManager.m */; };
+		F27CCC3D11A9D876000673CD /* NSData-Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = F27CCC3C11A9D876000673CD /* NSData-Extended.m */; };
+		F27CCD7E11A9F26B000673CD /* UIImage-Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = F27CCD7D11A9F26B000673CD /* UIImage-Extended.m */; };
+		F293DC2711A5EA61008AA947 /* DatabaseRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F293DC2611A5EA61008AA947 /* DatabaseRequestManager.m */; };
 		F293DC2B11A5EA8B008AA947 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F293DC2A11A5EA8B008AA947 /* DataManager.m */; };
 		F293DC2F11A5EB20008AA947 /* APIRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F293DC2E11A5EB20008AA947 /* APIRequestManager.m */; };
 /* End PBXBuildFile section */
@@ -57,16 +60,22 @@
 		F20D2F8911A2EEE6006EA070 /* HomeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableViewController.h; sourceTree = "<group>"; };
 		F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTableViewController.m; sourceTree = "<group>"; };
 		F20D2FB811A2FB3A006EA070 /* tesco_header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tesco_header.png; sourceTree = "<group>"; };
+		F22254D611A6A1B20006658B /* LogManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogManager.h; sourceTree = "<group>"; };
+		F22254D711A6A1B20006658B /* LogManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogManager.m; sourceTree = "<group>"; };
 		F278EAD111A57E5300E688C5 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
-		F278EAD311A57E7300E688C5 /* jamesgrafton_rs.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = jamesgrafton_rs.db; sourceTree = "<group>"; };
+		F278EAD311A57E7300E688C5 /* jamesgrafton_rs.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = jamesgrafton_rs.sqlite; sourceTree = "<group>"; };
 		F278EADA11A59F1C00E688C5 /* DBUserPreference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBUserPreference.h; sourceTree = "<group>"; };
 		F278EADB11A59F1C00E688C5 /* DBUserPreference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBUserPreference.m; sourceTree = "<group>"; };
 		F278EADD11A59F2900E688C5 /* DBRecipeHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBRecipeHistory.h; sourceTree = "<group>"; };
 		F278EADE11A59F2900E688C5 /* DBRecipeHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBRecipeHistory.m; sourceTree = "<group>"; };
 		F278EAE011A59F3100E688C5 /* DBRecipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBRecipe.h; sourceTree = "<group>"; };
 		F278EAE111A59F3100E688C5 /* DBRecipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBRecipe.m; sourceTree = "<group>"; };
-		F293DC2511A5EA61008AA947 /* DatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseManager.h; sourceTree = "<group>"; };
-		F293DC2611A5EA61008AA947 /* DatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseManager.m; sourceTree = "<group>"; };
+		F27CCC3B11A9D876000673CD /* NSData-Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData-Extended.h"; sourceTree = "<group>"; };
+		F27CCC3C11A9D876000673CD /* NSData-Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData-Extended.m"; sourceTree = "<group>"; };
+		F27CCD7C11A9F26B000673CD /* UIImage-Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage-Extended.h"; sourceTree = "<group>"; };
+		F27CCD7D11A9F26B000673CD /* UIImage-Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage-Extended.m"; sourceTree = "<group>"; };
+		F293DC2511A5EA61008AA947 /* DatabaseRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseRequestManager.h; sourceTree = "<group>"; };
+		F293DC2611A5EA61008AA947 /* DatabaseRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseRequestManager.m; sourceTree = "<group>"; };
 		F293DC2911A5EA8B008AA947 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		F293DC2A11A5EA8B008AA947 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		F293DC2D11A5EB20008AA947 /* APIRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIRequestManager.h; sourceTree = "<group>"; };
@@ -124,7 +133,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F278EAD311A57E7300E688C5 /* jamesgrafton_rs.db */,
+				F278EAD311A57E7300E688C5 /* jamesgrafton_rs.sqlite */,
 				F20D2FB811A2FB3A006EA070 /* tesco_header.png */,
 				F20D2F7211A2E4C9006EA070 /* icon_license.txt */,
 				F20D2F6C11A2E32E006EA070 /* icon_cart.png */,
@@ -150,6 +159,8 @@
 		CE71730811A2C19B00D71D08 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F27CCC3A11A9D851000673CD /* Common */,
+				F22254D511A6A1530006658B /* LogManager */,
 				F293DC2C11A5EAFF008AA947 /* TescoApi */,
 				F293DC2811A5EA67008AA947 /* DataManager */,
 				F278EAD911A59EEB00E688C5 /* Database */,
@@ -205,6 +216,15 @@
 			name = Common;
 			sourceTree = "<group>";
 		};
+		F22254D511A6A1530006658B /* LogManager */ = {
+			isa = PBXGroup;
+			children = (
+				F22254D611A6A1B20006658B /* LogManager.h */,
+				F22254D711A6A1B20006658B /* LogManager.m */,
+			);
+			name = LogManager;
+			sourceTree = "<group>";
+		};
 		F278EAD911A59EEB00E688C5 /* Database */ = {
 			isa = PBXGroup;
 			children = (
@@ -214,10 +234,21 @@
 				F278EADE11A59F2900E688C5 /* DBRecipeHistory.m */,
 				F278EAE011A59F3100E688C5 /* DBRecipe.h */,
 				F278EAE111A59F3100E688C5 /* DBRecipe.m */,
-				F293DC2511A5EA61008AA947 /* DatabaseManager.h */,
-				F293DC2611A5EA61008AA947 /* DatabaseManager.m */,
+				F293DC2511A5EA61008AA947 /* DatabaseRequestManager.h */,
+				F293DC2611A5EA61008AA947 /* DatabaseRequestManager.m */,
 			);
 			name = Database;
+			sourceTree = "<group>";
+		};
+		F27CCC3A11A9D851000673CD /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				F27CCC3B11A9D876000673CD /* NSData-Extended.h */,
+				F27CCC3C11A9D876000673CD /* NSData-Extended.m */,
+				F27CCD7C11A9F26B000673CD /* UIImage-Extended.h */,
+				F27CCD7D11A9F26B000673CD /* UIImage-Extended.m */,
+			);
+			name = Common;
 			sourceTree = "<group>";
 		};
 		F293DC2811A5EA67008AA947 /* DataManager */ = {
@@ -287,7 +318,7 @@
 				F20D2F7311A2E4C9006EA070 /* icon_license.txt in Resources */,
 				F20D2F8311A2EAB1006EA070 /* HomeTableView.xib in Resources */,
 				F20D2FB911A2FB3A006EA070 /* tesco_header.png in Resources */,
-				F278EAD411A57E7300E688C5 /* jamesgrafton_rs.db in Resources */,
+				F278EAD411A57E7300E688C5 /* jamesgrafton_rs.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,9 +337,12 @@
 				F278EADC11A59F1C00E688C5 /* DBUserPreference.m in Sources */,
 				F278EADF11A59F2900E688C5 /* DBRecipeHistory.m in Sources */,
 				F278EAE211A59F3100E688C5 /* DBRecipe.m in Sources */,
-				F293DC2711A5EA61008AA947 /* DatabaseManager.m in Sources */,
+				F293DC2711A5EA61008AA947 /* DatabaseRequestManager.m in Sources */,
 				F293DC2B11A5EA8B008AA947 /* DataManager.m in Sources */,
 				F293DC2F11A5EB20008AA947 /* APIRequestManager.m in Sources */,
+				F22254D811A6A1B20006658B /* LogManager.m in Sources */,
+				F27CCC3D11A9D876000673CD /* NSData-Extended.m in Sources */,
+				F27CCD7E11A9F26B000673CD /* UIImage-Extended.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
