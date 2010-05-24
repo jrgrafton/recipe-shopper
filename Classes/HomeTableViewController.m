@@ -7,6 +7,8 @@
 //
 
 #import "HomeTableViewController.h"
+#import "DBRecipe.h"
+#import "DataManager.h"
 
 
 @implementation HomeTableViewController
@@ -36,6 +38,8 @@
 													green:0.9137254901960784 
 													 blue:0.9568627450980392
 													alpha:1.0]];
+	//Fetch the latest 10 recipes
+	NSArray* recipeHistory = [DataManager fetchLastPurchasedRecipes:2];
 	
 }
 
