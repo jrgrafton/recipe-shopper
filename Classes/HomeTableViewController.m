@@ -135,6 +135,7 @@
 			homeStore = @"None";
 		}
 		[[cell textLabel] setText: homeStore];
+		[[cell imageView] setImage: nil];
 	}else {
 		//List of recent recipes
 		DBRecipe *recipeObject = [recipeHistory objectAtIndex:[indexPath row]];

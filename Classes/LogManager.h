@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define DEBUGOFF
+#define DEBUG
 
 typedef enum LogLevel
 {

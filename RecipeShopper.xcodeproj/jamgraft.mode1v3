@@ -268,20 +268,19 @@
 								<string>29B97314FDCFA39411CA2CEA</string>
 								<string>080E96DDFE201D6D7F000001</string>
 								<string>CE71730911A2C1AA00D71D08</string>
-								<string>CE71732A11A2C30100D71D08</string>
-								<string>CE71730811A2C19B00D71D08</string>
-								<string>F22254D511A6A1530006658B</string>
+								<string>CE71731811A2C27700D71D08</string>
 								<string>1C37FABC05509CD000000102</string>
 								<string>E2644B35053B69B200211256</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>26</integer>
+									<integer>28</integer>
+									<integer>23</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 445}, {301, 573}}</string>
+							<string>{{0, 0}, {301, 573}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -316,7 +315,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>CommonSpecificRecipeViewController.h</string>
+								<string>LogManager.h</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -324,34 +323,35 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>CommonSpecificRecipeViewController.h</string>
+										<string>LogManager.h</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>F26E46E111B02156000CA8B1</string>
+										<string>F26E471711B028F0000CA8B1</string>
 										<key>history</key>
 										<array>
 											<string>F27375D211AD942700CE634D</string>
 											<string>F27375D311AD942700CE634D</string>
-											<string>F27375D711AD942700CE634D</string>
 											<string>F27E930211AEDA8C0031CA7E</string>
-											<string>F27E930411AEDA8C0031CA7E</string>
 											<string>F27E934511AEE0850031CA7E</string>
-											<string>F27E938C11AEEC480031CA7E</string>
 											<string>F27E938D11AEEC480031CA7E</string>
-											<string>F26E45C711AFDE03000CA8B1</string>
-											<string>F26E45C811AFDE03000CA8B1</string>
 											<string>F26E468B11B00F29000CA8B1</string>
-											<string>F26E46B511B012C8000CA8B1</string>
 											<string>F26E46B611B012C8000CA8B1</string>
-											<string>F26E46B711B012C8000CA8B1</string>
 											<string>F26E46BD11B01357000CA8B1</string>
-											<string>F26E46BF11B01357000CA8B1</string>
 											<string>F26E46C011B01357000CA8B1</string>
 											<string>F26E46C911B013EA000CA8B1</string>
-											<string>F26E46DF11B02156000CA8B1</string>
-											<string>F26E46E011B02156000CA8B1</string>
-											<string>F26E46BE11B01357000CA8B1</string>
+											<string>F26E46E611B022C0000CA8B1</string>
+											<string>F26E46E711B022C0000CA8B1</string>
+											<string>F26E470E11B028F0000CA8B1</string>
+											<string>F26E470F11B028F0000CA8B1</string>
+											<string>F26E471011B028F0000CA8B1</string>
+											<string>F26E471111B028F0000CA8B1</string>
+											<string>F26E471211B028F0000CA8B1</string>
+											<string>F26E471311B028F0000CA8B1</string>
+											<string>F26E471411B028F0000CA8B1</string>
+											<string>F26E471511B028F0000CA8B1</string>
+											<string>F26E471611B028F0000CA8B1</string>
+											<string>F26E46ED11B02334000CA8B1</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -991,7 +991,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1C78EAB2065D492600B07095</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>bottom-fade.png</string>
+								<string>UIViewController-Extended.h</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -1013,7 +1013,7 @@
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXCVSModuleFilterTypeKey</key>
-								<integer>1030</integer>
+								<integer>1031</integer>
 								<key>PBXCVSModuleTreeModuleColumnData</key>
 								<dict>
 									<key>PBXCVSModuleTreeModuleColumnWidthsKey</key>

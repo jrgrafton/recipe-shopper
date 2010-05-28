@@ -276,10 +276,16 @@
 	// Release any cached data, images, etc that aren't in use.
 }
 
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
+- (void)viewWillDisappear:(BOOL)animated {
+	//Load blank page on exiting
+	[webView loadHTMLString:@"" baseURL:nil];
+	[LogManager log:@"VIEW UNLOADING" withLevel:LOG_INFO fromClass:@"CommonSpecificRecipeViewController"];
 }
+
+/*
+- (void)viewDidUnload {
+
+}*/
 
 
 - (void)dealloc {
