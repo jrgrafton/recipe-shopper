@@ -42,4 +42,23 @@ static APIRequestManager *apiRequestManager;
 	return [databaseRequestManager fetchLastPurchasedRecipes:count];
 }
 
++ (NSString*)fetchUserPreference: (NSString*) key {
+	return [databaseRequestManager fetchUserPreference:key];
+}
+
++ (NSString*)fetchUserDocumentsPath {
+	//Search for standard documents using NSSearchPathForDirectoriesInDomains
+	//First Param = Searching the documents directory
+	//Second Param = Searching the Users directory and not the System
+	//Expand any tildes and identify home directories.
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory , NSUserDomainMask, YES);
+	return [paths objectAtIndex:0];
+}
+
++ (BOOL)fileExistsInUserDocuments: (NSString*) fileName {
+	NSString *processedPath = [[DataManager fetchUserDocumentsPath] stringByAppendingPathComponent:fileName];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	return [fileManager fileExistsAtPath:processedPath];
+}
+
 @end

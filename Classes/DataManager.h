@@ -13,8 +13,11 @@
 	
 }
 
-//Publicly available data aquisition ‰
+//Publicly available data aquisition
 + (NSArray*)fetchLastPurchasedRecipes: (NSInteger) count;
++ (NSString*)fetchUserPreference: (NSString*) key;
++ (NSString*)fetchUserDocumentsPath;
++ (BOOL)fileExistsInUserDocuments: (NSString*) fileName;
 
 //Initialisation and deinitialisation procedures
 + (void)initRequestManagers;

@@ -21,8 +21,10 @@
 	@property (readwrite,copy) NSString *preparationTime;
 	@property (readwrite,copy) NSString *serves;
 	@property (readwrite,copy) NSArray *textIngredients;
-	@property (readwrite,copy) NSArray *idIngredients;
+	@property (readwrite,copy) NSArray *idProducts;
+	@property (readwrite,copy) NSArray *idProductsQuantity;
 	@property (readwrite,copy) NSArray *nutritionalInfo;
+	@property (readwrite,copy) NSArray *nutritionalInfoPercent;
 	@property (readwrite,copy) UIImage *iconSmall;
 	@property (readwrite,copy) NSString *iconLargeRaw;
 @end
@@ -31,7 +33,7 @@
 
 @synthesize recipeID,recipeName,categoryName,description,instructions,
 rating,ratingCount,contributor,cookingTime,preparationTime,serves,
-textIngredients,idIngredients,nutritionalInfo,iconSmall,iconLargeRaw;
+textIngredients,idProducts,idProductsQuantity,nutritionalInfo,nutritionalInfoPercent,iconSmall,iconLargeRaw;
 
 - (id)initWithRecipeID: (NSInteger)inRecipeID andRecipeName:(NSString*)inRecipeName 
 		andCategoryName:(NSString*)inCategoryName andDescription:(NSString*)inDescription 
@@ -39,7 +41,8 @@ textIngredients,idIngredients,nutritionalInfo,iconSmall,iconLargeRaw;
 	    andRatingCount:(NSInteger)inRatingCount andContributor:(NSString*)inContributor 
 	    andCookingTime:(NSString*)inCookingTime andPreparationTime:(NSString*)inPreparationTime 
 		andServes:(NSString*)inServes andTextIngredients:(NSArray*)inTextIngredients 
-		andIDIngredients:(NSArray*)inIDIngredients andNutritionalInfo:(NSArray*)inNutritionalInfo 
+		andIDProducts:(NSArray*)inIDProducts andIDProductsQuantity:(NSArray*)inIDProductsQuantity
+		andNutritionalInfo:(NSArray*)inNutritionalInfo andNutritionalInfoPercent:(NSArray*)inNutritionalInfoPercent 
 		andIconSmall:(UIImage*)inIconSmall andIconLargeRaw:(NSString*)inIconLargeRaw {
 	
 	if (self = [super init]) {
@@ -55,8 +58,10 @@ textIngredients,idIngredients,nutritionalInfo,iconSmall,iconLargeRaw;
 		[self setPreparationTime:inPreparationTime];
 		[self setServes:inServes];
 		[self setTextIngredients:inTextIngredients];
-		[self setIdIngredients:inIDIngredients];
+		[self setIdProducts:inIDProducts];
+		[self setIdProductsQuantity:inIDProductsQuantity];
 		[self setNutritionalInfo:inNutritionalInfo];
+		[self setNutritionalInfoPercent:inNutritionalInfoPercent];
 		[self setIconSmall:inIconSmall];
 		[self setIconLargeRaw:inIconLargeRaw];
 	}
@@ -74,8 +79,10 @@ textIngredients,idIngredients,nutritionalInfo,iconSmall,iconLargeRaw;
 	[preparationTime release];
 	[serves release];
 	[textIngredients release];
-	[idIngredients release];
+	[idProducts release];
+	[idProductsQuantity release];
 	[nutritionalInfo release];
+	[nutritionalInfoPercent release];
 	[iconSmall release];
 	[iconLargeRaw release];
 	[super dealloc];

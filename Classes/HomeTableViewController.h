@@ -7,10 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class HomeStoreTableViewController;
+@class CommonSpecificRecipeViewController;
 
 @interface HomeTableViewController : UITableViewController <UITableViewDelegate,UITableViewDataSource> {
 	IBOutlet UITableView *homeTableView;
+	HomeStoreTableViewController *homeStoreTableViewController;
+	CommonSpecificRecipeViewController *commonSpecificRecipeViewController;
+	
+	NSArray *recipeHistory;
 }
+
+@property (readwrite,copy) NSArray *recipeHistory;
+@property (nonatomic,retain) HomeStoreTableViewController *homeStoreTableViewController;
+@property (nonatomic,retain) CommonSpecificRecipeViewController *commonSpecificRecipeViewController;
 
 @end

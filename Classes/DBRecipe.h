@@ -22,8 +22,10 @@
 	NSString *preparationTime;
 	NSString *serves;
 	NSArray *textIngredients;
-	NSArray *idIngredients;
+	NSArray *idProducts;
+	NSArray *idProductsQuantity;
 	NSArray *nutritionalInfo;
+	NSArray *nutritionalInfoPercent;
 	UIImage *iconSmall;	
 	NSString *iconLargeRaw;	//Base64 encoded image
 }
@@ -40,8 +42,10 @@
 @property (readonly,copy) NSString *preparationTime;
 @property (readonly,copy) NSString *serves;
 @property (readonly,copy) NSArray *textIngredients;
-@property (readonly,copy) NSArray *idIngredients;
+@property (readonly,copy) NSArray *idProducts;
+@property (readonly,copy) NSArray *idProductsQuantity;
 @property (readonly,copy) NSArray *nutritionalInfo;
+@property (readonly,copy) NSArray *nutritionalInfoPercent;
 @property (readonly,copy) UIImage *iconSmall;
 @property (readonly,copy) NSString *iconLargeRaw;
 
@@ -51,6 +55,7 @@
 	  andRatingCount:(NSInteger)inRatingCount andContributor:(NSString*)inContributor 
 	  andCookingTime:(NSString*)inCookingTime andPreparationTime:(NSString*)inPreparationTime 
 	  andServes:(NSString*)inServes andTextIngredients:(NSArray*)inTextIngredients 
-	  andIDIngredients:(NSArray*)inIDIngredients andNutritionalInfo:(NSArray*)inNutritionalInfo 
-      andIconSmall:(UIImage*)inIconSmall andIconLargeRaw:(NSString*)inIconLargeRaw;
+	  andIDProducts:(NSArray*)inIDProducts andIDProductsQuantity:(NSArray*)inIDProductsQuantity
+	  andNutritionalInfo:(NSArray*)inNutritionalInfo andNutritionalInfoPercent:(NSArray*)inNutritionalInfoPercent 
+	  andIconSmall:(UIImage*)inIconSmall andIconLargeRaw:(NSString*)inIconLargeRaw;
 @end

@@ -8,6 +8,7 @@
 
 #import <sqlite3.h>
 #import "DatabaseRequestManager.h"
+#import "DataManager.h"
 #import "NSData-Extended.h"
 #import "DBRecipe.h"
 #import "LogManager.h"
@@ -46,9 +47,21 @@ static sqlite3 *database = nil;
 	NSString *dbPath = [self getDBPath];
 	BOOL success = [fileManager fileExistsAtPath:dbPath];
 	
+	#ifdef DEBUG
+		//Always copy database when in debug mode
+		if (success) {
+			success = [fileManager removeItemAtPath:dbPath error:&error];
+			if (!success){
+				NSString *msg = [NSString stringWithFormat:@"error removing old database: '%@'.",[error localizedDescription]];
+				[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DataManager"];
+			}
+			success = FALSE;
+		}
+	#endif
+	
 	if(!success) {
 		#ifdef DEBUG
-			NSString *msg = [NSString stringWithFormat:@"Database %@ not found. Initiating copy...",databaseName];
+			NSString *msg = [NSString stringWithFormat:@"Database %@ not found. Initiating copy to %@",databaseName,dbPath];
 			[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
 		#endif
 		NSString *defaultDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:databaseName];
@@ -70,13 +83,34 @@ static sqlite3 *database = nil;
 }
 
 - (NSString*)getDBPath {
-	//Search for standard documents using NSSearchPathForDirectoriesInDomains
-	//First Param = Searching the documents directory
-	//Second Param = Searching the Users directory and not the System
-	//Expand any tildes and identify home directories.
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory , NSUserDomainMask, YES);
-	NSString *documentsDir = [paths objectAtIndex:0];
-	return [documentsDir stringByAppendingPathComponent:databaseName];
+	return [[DataManager fetchUserDocumentsPath] stringByAppendingPathComponent:databaseName];
+}
+
+- (NSString*) fetchUserPreference: (NSString*) key {
+	//First get recipe ID's from 'recipeHistory' table
+	const char *userPreferencesQuery = [[NSString stringWithFormat:@"select value from userPreferences where key = '%@';",key] UTF8String];
+
+	#ifdef DEBUG
+		NSString *msg = [NSString stringWithFormat:@"Executing user preference query %s",userPreferencesQuery];
+		[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
+	#endif
+	
+	sqlite3_stmt *selectstmt;
+	NSString *result = NULL;
+	if(sqlite3_prepare_v2(database, userPreferencesQuery, -1, &selectstmt, NULL) == SQLITE_OK) {
+		if(sqlite3_step(selectstmt) == SQLITE_ROW) {
+			result = [NSString stringWithUTF8String: (const char *)sqlite3_column_text(selectstmt, 0)];	
+		}
+	}else{
+		NSString *msg = [NSString stringWithFormat:@"Error executing statement %@",userPreferencesQuery];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
+	}
+	if (result == NULL) {
+		NSString *msg = [NSString stringWithFormat:@"No userPreference values found to match key %@",key];
+		[LogManager log:msg withLevel:LOG_WARNING fromClass:@"DatabaseRequestManager"];
+	}
+	
+	return result;
 }
 
 - (NSArray*)fetchLastPurchasedRecipes: (NSInteger)count {
@@ -84,7 +118,7 @@ static sqlite3 *database = nil;
 	NSMutableArray *recipeIDs = [[NSMutableArray alloc] init];
 	
 	//First get recipe ID's from 'recipeHistory' table
-	const char *recipeHistoryQuery = [[NSString stringWithFormat:@"select recipeID from recipeHistory ORDER BY dateTime DESC LIMIT %d",count] UTF8String];
+	const char *recipeHistoryQuery = [[NSString stringWithFormat:@"select recipeID from recipeHistory ORDER BY dateTime DESC LIMIT %d",count] UTF8String];
 	sqlite3_stmt *selectstmt;
 	if(sqlite3_prepare_v2(database, recipeHistoryQuery, -1, &selectstmt, NULL) == SQLITE_OK) {
 		while(sqlite3_step(selectstmt) == SQLITE_ROW) {
@@ -100,6 +134,7 @@ static sqlite3 *database = nil;
 		#endif
 		return recipes;
 	}
+	sqlite3_reset(selectstmt);
 	
 	//Now fetch recipe items from 'recipes' table
 	#ifdef DEBUG
@@ -130,6 +165,8 @@ static sqlite3 *database = nil;
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
 	}
 	
+	//Release original recipeIDs array since we explicitly alloc'd
+	[recipeIDs release];
 	return [NSArray arrayWithArray:recipes];
 }
 
@@ -137,17 +174,19 @@ static sqlite3 *database = nil;
 	NSInteger recipeID;
 	NSString *recipeName;
 	NSString *categoryName;
-	NSString *description = NULL;		//Possibility of NULL
-	NSArray *instructions;
+	NSString *description = nil;		//Possibility of NULL
+	NSMutableArray *instructions = [NSMutableArray array];
 	NSNumber *rating;
 	NSInteger ratingCount;
-	NSString *contributor = NULL;		//Possibility of NULL
-	NSString *cookingTime = NULL;		//Possibility of NULL
-	NSString *preparationTime = NULL;	//Possibility of NULL
-	NSString *serves = NULL;			//Possibility of NULL
-	NSArray *textIngredients;
-	NSArray *idIngredients;
-	NSArray *nutritionalInfo = NULL;	//Possibility of NULL
+	NSString *contributor = nil;		//Possibility of NULL
+	NSString *cookingTime = nil;		//Possibility of NULL
+	NSString *preparationTime = nil;	//Possibility of NULL
+	NSString *serves = nil;			//Possibility of NULL
+	NSMutableArray *textIngredients = [NSMutableArray array];
+	NSMutableArray *idProducts = [NSMutableArray array];
+	NSMutableArray *idProductsQuantity = [NSMutableArray array];
+	NSMutableArray *nutritionalInfo = [NSMutableArray array];			//Possibility of Empty
+	NSMutableArray *nutritionalInfoPercent = [NSMutableArray array];	//Possibility of Empty
 	UIImage *iconSmall;				
 	NSString *iconLargeRaw;				//Base64 enc jpg
 	
@@ -164,49 +203,90 @@ static sqlite3 *database = nil;
 		description = [NSString stringWithUTF8String: descriptionText];
 	}
 	
-	NSString* instructionsCombined = [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt, 4)];
-	instructions = [instructionsCombined componentsSeparatedByString:@"|||"];
+	rating = [NSNumber numberWithFloat: sqlite3_column_double(selectstmt, 4)];
+	ratingCount = sqlite3_column_int(selectstmt, 5);
 	
-	rating = [NSNumber numberWithFloat: sqlite3_column_double(selectstmt, 5)];
-	ratingCount = sqlite3_column_int(selectstmt, 6);
-	
-	const char *contributorText = (const char *)sqlite3_column_text(selectstmt, 7);
+	const char *contributorText = (const char *)sqlite3_column_text(selectstmt, 6);
 	if (contributorText != NULL) {
 		contributor = [NSString stringWithUTF8String: contributorText];
 	}
 	
-	const char *cookingTimeText = (const char *)sqlite3_column_text(selectstmt, 8);
+	const char *cookingTimeText = (const char *)sqlite3_column_text(selectstmt, 7);
 	if (cookingTimeText != NULL) {
 		cookingTime = [NSString stringWithUTF8String: cookingTimeText];
 	}
 	
-	const char *preparationTimeText = (const char *)sqlite3_column_text(selectstmt, 9);
+	const char *preparationTimeText = (const char *)sqlite3_column_text(selectstmt, 8);
 	if (preparationTimeText != NULL) {
 		preparationTime = [NSString stringWithUTF8String: preparationTimeText];
 	}
 	
-	const char *servesText = (const char *)sqlite3_column_text(selectstmt, 10);
+	const char *servesText = (const char *)sqlite3_column_text(selectstmt, 9);
 	if (servesText != NULL) {
 		serves = [NSString stringWithUTF8String: servesText];
 	}
 	
-	NSString* textIngredientsCombined = [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt, 11)];
-	textIngredients = [textIngredientsCombined componentsSeparatedByString:@"|||"];
-	
-	NSString* idIngredientsCombined = [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt, 12)];
-	idIngredients = [idIngredientsCombined componentsSeparatedByString:@","];
-	
-	const char *nutritionalInfoCombinedText = (const char *)sqlite3_column_text(selectstmt, 13);
-	if (nutritionalInfoCombinedText != NULL) {
-		NSString* nutritionalInfoCombined = [NSString stringWithUTF8String: nutritionalInfoCombinedText];
-		nutritionalInfo = [nutritionalInfoCombined componentsSeparatedByString:@"|||"];
-	}
-	
-	NSString* iconSmallString = [NSString stringWithUTF8String: (const char *) sqlite3_column_blob(selectstmt, 14)];
+	NSString* iconSmallString = [NSString stringWithUTF8String: (const char *) sqlite3_column_blob(selectstmt, 10)];
 	
 	//Small icon is more useful as UIImage
 	iconSmall = [UIImage imageWithData: [NSData dataWithBase64EncodedString: iconSmallString]];
-	iconLargeRaw = [NSString stringWithUTF8String: (const char *) sqlite3_column_blob(selectstmt, 15)];
+	iconLargeRaw = [NSString stringWithUTF8String: (const char *) sqlite3_column_blob(selectstmt, 11)];
+	
+	//Get multi part data from rest of tables...starting with ingredient text
+	sqlite3_stmt *selectstmt2;
+	const char *ingredientTextQuery = [[NSString stringWithFormat:@"Select ingredientText from recipeIngredients where recipeID = %d",recipeID] UTF8String];
+	if(sqlite3_prepare_v2(database, ingredientTextQuery, -1, &selectstmt2, NULL) == SQLITE_OK) {
+		while(sqlite3_step(selectstmt2) == SQLITE_ROW) {
+			[textIngredients addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 0)]];
+		}
+	}else{
+		NSString *msg = [NSString stringWithFormat:@"Error executing statement %s",ingredientTextQuery];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
+	}	
+	sqlite3_reset(selectstmt2);
+	//Recipe products query
+	const char *idProductsQuery = [[NSString stringWithFormat:@"Select productID,productQuantity from recipeProducts where recipeID = %d",recipeID] UTF8String];
+	if(sqlite3_prepare_v2(database, idProductsQuery, -1, &selectstmt2, NULL) == SQLITE_OK) {
+		while(sqlite3_step(selectstmt2) == SQLITE_ROW) {
+			[idProducts addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 0)]];
+			[idProductsQuantity addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 1)]];
+		}
+	}else{
+		NSString *msg = [NSString stringWithFormat:@"Error executing statement %s",idProductsQuery];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
+	}
+	sqlite3_reset(selectstmt2);	
+	//Recipe instructions query
+	const char *recipeInstructionsQuery = [[NSString stringWithFormat:@"Select instruction,instructionNumber from recipeInstructions where recipeID = %d ORDER BY instructionNumber ASC",recipeID] UTF8String];
+	if(sqlite3_prepare_v2(database, recipeInstructionsQuery, -1, &selectstmt2, NULL) == SQLITE_OK) {
+		while(sqlite3_step(selectstmt2) == SQLITE_ROW) {
+			[instructions addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 0)]];
+		}
+	}else{
+		NSString *msg = [NSString stringWithFormat:@"Error executing statement %s",recipeInstructionsQuery];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
+	}
+	sqlite3_reset(selectstmt2);
+	//Recipe nutritional info query
+	const char *recipeNutritionQuery = [[NSString stringWithFormat:@"Select * from recipeNutrition where recipeID = %d",recipeID] UTF8String];
+	if(sqlite3_prepare_v2(database, recipeNutritionQuery, -1, &selectstmt2, NULL) == SQLITE_OK) {
+		while(sqlite3_step(selectstmt2) == SQLITE_ROW) {
+			[nutritionalInfo addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 1)]];
+			[nutritionalInfo addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 2)]];
+			[nutritionalInfo addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 3)]];
+			[nutritionalInfo addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 4)]];
+			[nutritionalInfo addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 5)]];
+			
+			[nutritionalInfoPercent addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 6)]];
+			[nutritionalInfoPercent addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 7)]];
+			[nutritionalInfoPercent addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 8)]];
+			[nutritionalInfoPercent addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 9)]];
+			[nutritionalInfoPercent addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 10)]];
+		}
+	}else{
+		NSString *msg = [NSString stringWithFormat:@"Error executing statement %s",recipeNutritionQuery];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
+	}
 				 
     return [[DBRecipe alloc] initWithRecipeID:recipeID andRecipeName:recipeName
 							  andCategoryName:categoryName andDescription:description
@@ -214,7 +294,8 @@ static sqlite3 *database = nil;
 							  andRatingCount:ratingCount andContributor:contributor
 							  andCookingTime:cookingTime andPreparationTime:preparationTime
 							  andServes:serves andTextIngredients:textIngredients 
-							  andIDIngredients:idIngredients andNutritionalInfo:nutritionalInfo
+							  andIDProducts:idProducts andIDProductsQuantity:idProductsQuantity
+							  andNutritionalInfo:nutritionalInfo andNutritionalInfoPercent:nutritionalInfoPercent 
 							  andIconSmall:iconSmall andIconLargeRaw:iconLargeRaw];
 }
 
