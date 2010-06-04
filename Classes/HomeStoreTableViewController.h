@@ -7,10 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LoadingView.h"
 
 
 @interface HomeStoreTableViewController : UITableViewController {
 	IBOutlet UITableView *homeStoreTableView;
+	
+	@private
+	BOOL busyFetchingClosestStores;
+	LoadingView *loadingView;
 }
 
 @end

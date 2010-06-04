@@ -7,20 +7,29 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 #import "DBRecipe.h"
 
-@interface DataManager : NSObject {
-	
+@interface DataManager : NSObject <CLLocationManagerDelegate>{
+
 }
 
 //Publicly available data aquisition
+//DB data
 + (NSArray*)fetchLastPurchasedRecipes: (NSInteger) count;
 + (NSString*)fetchUserPreference: (NSString*) key;
 + (NSString*)fetchUserDocumentsPath;
+
+//iPhone SDK data
 + (BOOL)fileExistsInUserDocuments: (NSString*) fileName;
++ (BOOL)phoneIsOnline;
++ (NSArray*)getCurrentLatitudeLongitude;
+
+//HTTP data
++ (NSArray*)fetchClosestStores: (NSArray*)latitudeLongitude andReturnUpToThisMany:(NSInteger) count;
 
 //Initialisation and deinitialisation procedures
-+ (void)initRequestManagers;
-+ (void)deInitRequestManagers;
++ (void)initialiseAll;
++ (void)deinitialiseAll;
 
 @end

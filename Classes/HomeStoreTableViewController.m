@@ -6,10 +6,19 @@
 //  Copyright 2010 Asset Enhancing Technologies. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 #import "HomeStoreTableViewController.h"
 #import "RecipeShopperAppDelegate.h"
 #import "HomeViewNavController.h"
+#import "DataManager.h"
+#import "LoadingView.h"
+#import "HTTPStore.h"
 
+@interface HomeStoreTableViewController ()
+//Private class functions
+-(void)getClosestStoresToCurrentLocation;
+@end
 
 @implementation HomeStoreTableViewController
 
@@ -25,6 +34,88 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	
+	//Add UISegmentedControl for nearest and search
+	UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Nearest",@"Search",nil]];
+	segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
+	segmentedControl.frame = CGRectMake(0, 0, 200, 30);
+	segmentedControl.selectedSegmentIndex = 0;
+	
+	[segmentedControl addTarget:self
+	                    action:@selector(segmentButtonPressed:)
+	           forControlEvents:UIControlEventValueChanged];
+	
+	self.navigationItem.titleView = segmentedControl;
+	
+	[segmentedControl release];
+	
+	//Set up initial view
+	busyFetchingClosestStores = TRUE;
+	
+	//Fetch closest stores to populate view
+	loadingView = [LoadingView loadingViewInView:(UIView *)[self tableView] withText:@"Finding Stores..." 
+							   andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
+							   andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
+																					  green:1.0 
+																					   blue:1.0
+																					  alpha:1.0]
+								andDrawStroke:FALSE];
+	self.tableView.scrollEnabled = FALSE;
+	[NSThread detachNewThreadSelector: @selector(getClosestStoresToCurrentLocation) toTarget:self withObject:nil];
+}
+
+- (void) segmentButtonPressed:(id)sender{
+	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+	
+	if ([segmentedControl selectedSegmentIndex] == 0) {
+		//Nearest selected
+		[segmentedControl setSelectedSegmentIndex:0];
+		
+		if (!busyFetchingClosestStores){
+			loadingView = [LoadingView loadingViewInView:(UIView *)[self tableView] withText:@"Finding Stores..." 
+												 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
+												 andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
+																							  green:1.0 
+																							   blue:1.0
+																							  alpha:1.0]
+												 andDrawStroke:FALSE];
+			
+			[NSThread detachNewThreadSelector: @selector(getClosestStoresToCurrentLocation) toTarget:self withObject:nil];
+			self.tableView.scrollEnabled = FALSE;
+		}
+		
+	}else{
+		//Search selected
+		[segmentedControl setSelectedSegmentIndex:1];
+	}
+}
+
+-(void)getClosestStoresToCurrentLocation {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	@try {
+		NSArray *coords = [DataManager getCurrentLatitudeLongitude];
+		NSArray *stores = [DataManager fetchClosestStores:coords andReturnUpToThisMany:15];
+		[self performSelectorOnMainThread:@selector(updateTableViewWithStores:) withObject:stores waitUntilDone:TRUE];
+		busyFetchingClosestStores = FALSE;
+	}
+	@catch (id exception) {
+		NSLog(@"%@", exception);
+	}
+	@finally {
+		[pool release];
+	}
+}
+
+-(void)updateTableViewWithStores:(NSArray*)stores {
+	//Build rows from result
+	
+
+	self.tableView.scrollEnabled = TRUE;
+	if(loadingView != nil){
+		[loadingView removeView];
+		loadingView = nil;
+	}
 }
 
 /*

@@ -20,7 +20,7 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	//Initialise the DataManager request managers
-	[DataManager initRequestManagers];
+	[DataManager initialiseAll];
 	
     // Override point for customization after app launch    
     [window addSubview:rootController.view];
@@ -29,7 +29,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
 	//DeInitialise the DataManager request managers
-	[DataManager deInitRequestManagers];
+	[DataManager deinitialiseAll];
 }
 
 

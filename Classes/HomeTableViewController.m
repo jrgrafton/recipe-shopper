@@ -12,7 +12,6 @@
 #import "RecipeShopperAppDelegate.h"
 #import "LogManager.h"
 #import "DBRecipe.h"
-#import "Reachability.h"
 #import "DataManager.h"
 
 @implementation HomeTableViewController
@@ -163,9 +162,7 @@
 			[homeStoresView release];
 		}
 		//Check for network connectivity
-		Reachability *r = [Reachability reachabilityWithHostName:@"techfortesco.com"];
-		NetworkStatus internetStatus = [r currentReachabilityStatus];
-		if ((internetStatus != ReachableViaWiFi) && (internetStatus != ReachableViaWWAN)) {
+		if (![DataManager phoneIsOnline]) {
 			[LogManager log:@"Internet connection could not be detected" withLevel:LOG_WARNING fromClass:@"HomeTableViewController"];
 			UIAlertView *networkError = [[UIAlertView alloc] initWithTitle: @"Network error" message: @"Feature unavailable without internet connectivity" delegate: self cancelButtonTitle: @"Ok" otherButtonTitles: nil];
 			[networkError show];

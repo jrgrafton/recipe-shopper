@@ -6,17 +6,38 @@
 //  Copyright 2010 Asset Enhancing Technologies. All rights reserved.
 //
 
+#import <CoreLocation/CoreLocation.h>
+
 #import "DataManager.h"
 #import "DatabaseRequestManager.h"
 #import "APIRequestManager.h"
 #import "LogManager.h"
+#import "Reachability.h"
+#import "LocationController.h"
+#import "HTTPRequestManager.h"
 
 static DatabaseRequestManager *databaseRequestManager;
 static APIRequestManager *apiRequestManager;
+static HTTPRequestManager *httpRequestManager;
+
+static LocationController *locationController;
+static BOOL phoneIsOnline;
 
 @implementation DataManager
 
-+ (void)initRequestManagers {
++ (void)initialiseAll {
+	//Network availability
+	Reachability *r = [Reachability reachabilityWithHostName:@"techfortesco.com"];
+	NetworkStatus internetStatus = [r currentReachabilityStatus];
+	phoneIsOnline = ((internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN));
+	
+	//Location services
+	#ifdef DEBUG
+		[LogManager log:@"Initialising location controller" withLevel:LOG_INFO fromClass:@"DataManager"];
+	#endif
+	locationController = [[LocationController alloc] init];
+	
+	//Data managers
 	#ifdef DEBUG
 		[LogManager log:@"Initialising request managers" withLevel:LOG_INFO fromClass:@"DataManager"];
 	#endif
@@ -28,14 +49,19 @@ static APIRequestManager *apiRequestManager;
 		[LogManager log:@"Initialising api request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
 	#endif
 	apiRequestManager = [[APIRequestManager alloc] init];
+	#ifdef DEBUG
+		[LogManager log:@"Initialising HTTP request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
+	#endif
+	httpRequestManager = [[HTTPRequestManager alloc] init];
 }
 
-+ (void)deInitRequestManagers {
++ (void)deinitialiseAll {
 	#ifdef DEBUG
-		[LogManager log:@"DeInitialising request managers" withLevel:LOG_INFO fromClass:@"DataManager"];
+		[LogManager log:@"Deinitialising request managers" withLevel:LOG_INFO fromClass:@"DataManager"];
 	#endif
 	[databaseRequestManager release];
 	[apiRequestManager release];
+	[httpRequestManager release];
 }
 
 + (NSArray*)fetchLastPurchasedRecipes: (NSInteger)count {
@@ -59,6 +85,31 @@ static APIRequestManager *apiRequestManager;
 	NSString *processedPath = [[DataManager fetchUserDocumentsPath] stringByAppendingPathComponent:fileName];
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	return [fileManager fileExistsAtPath:processedPath];
+}
+
++ (BOOL)phoneIsOnline {	
+	return phoneIsOnline;
+}
+
++ (NSArray*)getCurrentLatitudeLongitude{
+	while (![locationController locationKnown]) {
+		[NSThread sleepForTimeInterval:1.0f];
+	}	
+#ifndef DEBUG
+	CLLocation *location = [locationController currentLocation];
+	CLLocationCoordinate2D myLocation = [location coordinate];
+	NSNumber *latitude = [NSNumber numberWithDouble: myLocation.latitude];
+	NSNumber *longitude = [NSNumber numberWithDouble: myLocation.longitude];
+#else
+	//BRIXTON HOUSE :D
+	NSNumber *latitude = [NSNumber numberWithDouble:51.448494657351866];
+	NSNumber *longitude = [NSNumber numberWithDouble:-0.118095651268958];
+#endif
+	return [NSArray arrayWithObjects:latitude,longitude,nil];
+}
+
++ (NSArray*)fetchClosestStores: (NSArray*)latitudeLongitude andReturnUpToThisMany:(NSInteger) count{
+	return [httpRequestManager fetchClosestStores:latitudeLongitude andReturnUpToThisMany:count];
 }
 
 @end
