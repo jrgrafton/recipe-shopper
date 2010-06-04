@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
 
 #import "HomeStoreTableViewController.h"
 #import "RecipeShopperAppDelegate.h"
@@ -14,10 +15,13 @@
 #import "DataManager.h"
 #import "LoadingView.h"
 #import "HTTPStore.h"
+#import "LogManager.h"
 
 @interface HomeStoreTableViewController ()
 //Private class functions
 -(void)getClosestStoresToCurrentLocation;
+-(void)showLoadingOverlay;
+-(void)hideLoadingOverlay;
 @end
 
 @implementation HomeStoreTableViewController
@@ -48,20 +52,23 @@
 	self.navigationItem.titleView = segmentedControl;
 	
 	[segmentedControl release];
-	
-	//Set up initial view
-	busyFetchingClosestStores = TRUE;
-	
-	//Fetch closest stores to populate view
+}
+
+-(void)showLoadingOverlay{
 	loadingView = [LoadingView loadingViewInView:(UIView *)[self tableView] withText:@"Finding Stores..." 
-							   andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
-							   andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
+								 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
+								 andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
 																					  green:1.0 
 																					   blue:1.0
 																					  alpha:1.0]
-								andDrawStroke:FALSE];
-	self.tableView.scrollEnabled = FALSE;
-	[NSThread detachNewThreadSelector: @selector(getClosestStoresToCurrentLocation) toTarget:self withObject:nil];
+								 andDrawStroke:FALSE];
+}
+
+-(void)hideLoadingOverlay{
+	if(loadingView != nil){
+		[loadingView removeView];
+		loadingView = nil;
+	}
 }
 
 - (void) segmentButtonPressed:(id)sender{
@@ -72,16 +79,11 @@
 		[segmentedControl setSelectedSegmentIndex:0];
 		
 		if (!busyFetchingClosestStores){
-			loadingView = [LoadingView loadingViewInView:(UIView *)[self tableView] withText:@"Finding Stores..." 
-												 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
-												 andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
-																							  green:1.0 
-																							   blue:1.0
-																							  alpha:1.0]
-												 andDrawStroke:FALSE];
+			busyFetchingClosestStores = TRUE;
+			[self showLoadingOverlay];
 			
 			[NSThread detachNewThreadSelector: @selector(getClosestStoresToCurrentLocation) toTarget:self withObject:nil];
-			self.tableView.scrollEnabled = FALSE;
+			[self.tableView setScrollEnabled:FALSE];
 		}
 		
 	}else{
@@ -95,12 +97,24 @@
 	
 	@try {
 		NSArray *coords = [DataManager getCurrentLatitudeLongitude];
+		if (coords == nil) {
+			UIAlertView *gpsError = [[UIAlertView alloc] initWithTitle: @"GPS error" message: @"Unable to determine current position" delegate: self cancelButtonTitle: @"Ok" otherButtonTitles: nil];
+			[gpsError show];
+			[gpsError release];
+			
+			//Remember to dismiss loading screen...
+			[self performSelectorOnMainThread:@selector(hideLoadingOverlay) withObject:nil waitUntilDone:TRUE];
+			return;
+		}
+		
 		NSArray *stores = [DataManager fetchClosestStores:coords andReturnUpToThisMany:15];
 		[self performSelectorOnMainThread:@selector(updateTableViewWithStores:) withObject:stores waitUntilDone:TRUE];
 		busyFetchingClosestStores = FALSE;
 	}
 	@catch (id exception) {
 		NSLog(@"%@", exception);
+		NSString *msg = [NSString stringWithFormat:@"Exception: '%@'.",exception];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"HomeStoreTableViewController"];
 	}
 	@finally {
 		[pool release];
@@ -108,36 +122,44 @@
 }
 
 -(void)updateTableViewWithStores:(NSArray*)stores {
-	//Build rows from result
+	//Retain cause its part of another threads memory pool!!
+	closestStores = [[NSArray arrayWithArray:stores] retain];
 	
-
-	self.tableView.scrollEnabled = TRUE;
-	if(loadingView != nil){
-		[loadingView removeView];
-		loadingView = nil;
-	}
+	[self.tableView reloadData];
+	[self.tableView setScrollEnabled:TRUE];
+	[self hideLoadingOverlay];
 }
 
-/*
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+	//Set up initial view
+	busyFetchingClosestStores = TRUE;
+	
+	//Fetch closest stores to populate view
+	[self showLoadingOverlay];
+	[self.tableView setScrollEnabled:FALSE];
+	[NSThread detachNewThreadSelector: @selector(getClosestStoresToCurrentLocation) toTarget:self withObject:nil];
 }
-*/
+
 /*
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 }
 */
-/*
-- (void)viewWillDisappear:(BOOL)animated {
+
+/*- (void)viewWillDisappear:(BOOL)animated {	
 	[super viewWillDisappear:animated];
-}
-*/
-/*
+}*/
+
+
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
+	
+	//Blank out closest stores array
+	[closestStores release];
+	closestStores = [NSArray array];
+	[self.tableView reloadData];
 }
-*/
 
 /*
 // Override to allow orientations other than the default portrait orientation.
@@ -169,7 +191,7 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 0;
+    return [closestStores count];
 }
 
 
@@ -182,8 +204,22 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
-    
+	
     // Set up the cell...
+	
+	//List of recent recipes
+	HTTPStore *storeObject = [closestStores objectAtIndex:[indexPath row]];
+	
+	[[cell textLabel] setText: [storeObject storeName]];
+	[[cell textLabel] setFont: [UIFont systemFontOfSize:13]];
+	
+	[[cell imageView] setImage: nil];
+	UILabel *distLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,70,40)];
+	[distLabel setText:[NSString stringWithFormat:@"%@ miles", [storeObject storeDistanceFromCurrentLocation]]];
+	[distLabel setFont:[UIFont boldSystemFontOfSize:11]];
+	
+	[cell setAccessoryView:distLabel];
+	[distLabel release];
 	
     return cell;
 }
