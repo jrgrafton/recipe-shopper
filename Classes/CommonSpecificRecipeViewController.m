@@ -202,7 +202,7 @@
 	while ( i-- ) {
 		ingredientsList = [ingredientsList stringByAppendingFormat:@"<li>%@</li>",[ingredients objectAtIndex:j - i]]; 
 	}
-	templateHtml = [templateHtml stringByReplacingOccurrencesOfString:@"{ingredients}" withString:instructionsList];
+	templateHtml = [templateHtml stringByReplacingOccurrencesOfString:@"{ingredients}" withString:ingredientsList];
 	
 	//Do image last to keep string small as possible for each replace!
 	templateHtml = [templateHtml stringByReplacingOccurrencesOfString:@"{image}" withString:[recipe iconLargeRaw]];
@@ -279,7 +279,9 @@
 - (void)viewWillDisappear:(BOOL)animated {
 	//Load blank page on exiting
 	[webView loadHTMLString:@"" baseURL:nil];
+#ifdef DEBUG
 	[LogManager log:@"VIEW UNLOADING" withLevel:LOG_INFO fromClass:@"CommonSpecificRecipeViewController"];
+#endif
 }
 
 /*

@@ -72,6 +72,10 @@ static BOOL phoneIsOnline;
 	return [databaseRequestManager fetchUserPreference:key];
 }
 
++ (void)putUserPreference: (NSString*)key andValue:(NSString*) value {
+	[databaseRequestManager putUserPreference: key andValue:value];
+}
+
 + (NSString*)fetchUserDocumentsPath {
 	//Search for standard documents using NSSearchPathForDirectoriesInDomains
 	//First Param = Searching the documents directory
@@ -92,9 +96,16 @@ static BOOL phoneIsOnline;
 }
 
 + (NSArray*)getCurrentLatitudeLongitude{
+	int MAX_LOCATION_WAITS = 10;
+	int locationWaits = 0;
 	while (![locationController locationKnown]) {
 		[NSThread sleepForTimeInterval:1.0f];
-	}	
+		locationWaits+=1;
+		if (locationWaits > MAX_LOCATION_WAITS) {
+			return nil;
+		}
+	}
+	
 #ifndef DEBUG
 	CLLocation *location = [locationController currentLocation];
 	CLLocationCoordinate2D myLocation = [location coordinate];
@@ -108,8 +119,12 @@ static BOOL phoneIsOnline;
 	return [NSArray arrayWithObjects:latitude,longitude,nil];
 }
 
-+ (NSArray*)fetchClosestStores: (NSArray*)latitudeLongitude andReturnUpToThisMany:(NSInteger) count{
-	return [httpRequestManager fetchClosestStores:latitudeLongitude andReturnUpToThisMany:count];
++ (NSArray*)fetchClosestStoresToGeolocation: (NSArray*)latitudeLongitude andReturnUpToThisMany:(NSInteger) count{
+	return [httpRequestManager fetchClosestStoresToGeolocation:latitudeLongitude andReturnUpToThisMany:count];
+}
+
++ (NSArray*)fetchGeolocationFromAddress: (NSString*)address{
+	return [httpRequestManager fetchGeolocationFromAddress: (NSString*)address];
 }
 
 @end

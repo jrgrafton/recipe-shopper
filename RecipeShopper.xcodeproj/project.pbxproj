@@ -54,6 +54,8 @@
 		F293DC2711A5EA61008AA947 /* DatabaseRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F293DC2611A5EA61008AA947 /* DatabaseRequestManager.m */; };
 		F293DC2B11A5EA8B008AA947 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F293DC2A11A5EA8B008AA947 /* DataManager.m */; };
 		F293DC2F11A5EB20008AA947 /* APIRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F293DC2E11A5EB20008AA947 /* APIRequestManager.m */; };
+		F2FFC0AB11BD5D6B009EBB6F /* imgs in Resources */ = {isa = PBXBuildFile; fileRef = F2FFC09311BD5D6B009EBB6F /* imgs */; };
+		F2FFC0C011BD5E7E009EBB6F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = F2FFC0BF11BD5E7E009EBB6F /* Default.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -134,6 +136,8 @@
 		F293DC2A11A5EA8B008AA947 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		F293DC2D11A5EB20008AA947 /* APIRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIRequestManager.h; sourceTree = "<group>"; };
 		F293DC2E11A5EB20008AA947 /* APIRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIRequestManager.m; sourceTree = "<group>"; };
+		F2FFC09311BD5D6B009EBB6F /* imgs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = imgs; sourceTree = "<group>"; };
+		F2FFC0BF11BD5E7E009EBB6F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +196,7 @@
 				F26DFCBE11AC2484006645A9 /* HTML */,
 				F26DFCBD11AC246C006645A9 /* Icons */,
 				F27E92DE11AECE9B0031CA7E /* jamesgrafton_rs.sqlite */,
+				F2FFC0BF11BD5E7E009EBB6F /* Default.png */,
 				8D1107310486CEB800E47090 /* RecipeShopper-Info.plist */,
 			);
 			name = Resources;
@@ -301,6 +306,7 @@
 		F26DFCBE11AC2484006645A9 /* HTML */ = {
 			isa = PBXGroup;
 			children = (
+				F2FFC09311BD5D6B009EBB6F /* imgs */,
 				F26E467D11B00CF1000CA8B1 /* bottom-fade.png */,
 				F27D6B1C11AAEF2900BAC6E6 /* recipe_base.html */,
 				F27D6B1E11AAEF3800BAC6E6 /* recipe_base.css */,
@@ -454,6 +460,8 @@
 				F27D6B1F11AAEF3800BAC6E6 /* recipe_base.css in Resources */,
 				F27E92DF11AECE9B0031CA7E /* jamesgrafton_rs.sqlite in Resources */,
 				F26E467E11B00CF1000CA8B1 /* bottom-fade.png in Resources */,
+				F2FFC0AB11BD5D6B009EBB6F /* imgs in Resources */,
+				F2FFC0C011BD5E7E009EBB6F /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

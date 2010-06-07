@@ -13,7 +13,8 @@
 
 }
 
-- (NSArray*)fetchClosestStores: (NSArray*)latitudeLongitude andReturnUpToThisMany:(NSInteger) count;
+- (NSArray*)fetchClosestStoresToGeolocation: (NSArray*)latitudeLongitude andReturnUpToThisMany:(NSInteger) maxNumber;
+- (NSArray*)fetchGeolocationFromAddress: (NSString*)address;
 - (id)init;
 
 @end

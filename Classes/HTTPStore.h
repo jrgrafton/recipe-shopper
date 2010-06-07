@@ -30,4 +30,6 @@
 	   andStoreType:(NSString*)inStoreType andStoreDistanceFromCurrentLocation:(NSNumber*)inStoreDistanceFromCurrentLocation 
 	   andStoreLatitude:(NSNumber*)inStoreLatitude andStoreLongitude:(NSNumber*)inStoreLongitude;
 
+- (NSComparisonResult) compareByDistanceFromMyLocation:(HTTPStore *)obj;
+
 @end

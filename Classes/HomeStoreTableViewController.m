@@ -20,6 +20,7 @@
 @interface HomeStoreTableViewController ()
 //Private class functions
 -(void)getClosestStoresToCurrentLocation;
+-(void)getClosestStoresToSearchLocation:(NSString*) location;
 -(void)showLoadingOverlay;
 -(void)hideLoadingOverlay;
 @end
@@ -75,20 +76,72 @@
 	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
 	
 	if ([segmentedControl selectedSegmentIndex] == 0) {
+		//If we are already searching ensure that tab selection stays where it was
+		if (busyFetchingClosestStores){
+			[segmentedControl setSelectedSegmentIndex:1];
+			return;
+		}
+		//Ensure we remove search bar
+		[searchBar resignFirstResponder];
+		self.tableView.tableHeaderView = nil;
+		
 		//Nearest selected
 		[segmentedControl setSelectedSegmentIndex:0];
+		busyFetchingClosestStores = TRUE;
+		[self showLoadingOverlay];
 		
-		if (!busyFetchingClosestStores){
-			busyFetchingClosestStores = TRUE;
-			[self showLoadingOverlay];
-			
-			[NSThread detachNewThreadSelector: @selector(getClosestStoresToCurrentLocation) toTarget:self withObject:nil];
-			[self.tableView setScrollEnabled:FALSE];
-		}
+		[NSThread detachNewThreadSelector: @selector(getClosestStoresToCurrentLocation) toTarget:self withObject:nil];
+		[self.tableView setScrollEnabled:FALSE];
 		
 	}else{
+		//If we are already searching ensure that tab selection stays where it was
+		if (busyFetchingClosestStores){
+			[segmentedControl setSelectedSegmentIndex:0];
+			return;
+		}
 		//Search selected
 		[segmentedControl setSelectedSegmentIndex:1];
+		
+		//Add the search bar
+		[searchBar setPlaceholder:@"Enter Town/City or Postcode"];
+		self.tableView.tableHeaderView = searchBar;
+		searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+	}
+}
+
+- (void) searchBarSearchButtonClicked:(UISearchBar *)theSearchBar {
+	//Ensure we remove keyboard
+	[searchBar resignFirstResponder];
+	
+	//self.tableView.tableHeaderView = nil;
+	
+	//Perform search
+	[self.tableView setScrollEnabled:FALSE];
+	[self showLoadingOverlay];
+	[NSThread detachNewThreadSelector: @selector(getClosestStoresToSearchLocation:) toTarget:self withObject:[searchBar text]];
+	
+}
+
+-(void)getClosestStoresToSearchLocation:(NSString*) address{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	@try {
+		NSArray *coords = [DataManager fetchGeolocationFromAddress:address];
+		if (coords == nil || [coords count] == 0) {
+			//Update table view with blank stores array
+			[self performSelectorOnMainThread:@selector(updateTableViewWithStores:) withObject:[NSArray array] waitUntilDone:TRUE];
+		}else{
+			NSArray *stores = [DataManager fetchClosestStoresToGeolocation:coords andReturnUpToThisMany:15];
+			[self performSelectorOnMainThread:@selector(updateTableViewWithStores:) withObject:stores waitUntilDone:TRUE];
+		}
+		busyFetchingClosestStores = FALSE;
+	}
+	@catch (id exception) {
+		NSString *msg = [NSString stringWithFormat:@"Exception: '%@'.",exception];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"HomeStoreTableViewController"];
+	}
+	@finally {
+		[pool release];
 	}
 }
 
@@ -98,21 +151,19 @@
 	@try {
 		NSArray *coords = [DataManager getCurrentLatitudeLongitude];
 		if (coords == nil) {
-			UIAlertView *gpsError = [[UIAlertView alloc] initWithTitle: @"GPS error" message: @"Unable to determine current position" delegate: self cancelButtonTitle: @"Ok" otherButtonTitles: nil];
+			UIAlertView *gpsError = [[UIAlertView alloc] initWithTitle: @"GPS error" message: @"Unable to determine current position" delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
 			[gpsError show];
 			[gpsError release];
 			
-			//Remember to dismiss loading screen...
-			[self performSelectorOnMainThread:@selector(hideLoadingOverlay) withObject:nil waitUntilDone:TRUE];
-			return;
+			//Update table view with blank array
+			[self performSelectorOnMainThread:@selector(updateTableViewWithStores:) withObject:[NSArray array] waitUntilDone:TRUE];
+		}else{
+			NSArray *stores = [DataManager fetchClosestStoresToGeolocation:coords andReturnUpToThisMany:15];
+			[self performSelectorOnMainThread:@selector(updateTableViewWithStores:) withObject:stores waitUntilDone:TRUE];
 		}
-		
-		NSArray *stores = [DataManager fetchClosestStores:coords andReturnUpToThisMany:15];
-		[self performSelectorOnMainThread:@selector(updateTableViewWithStores:) withObject:stores waitUntilDone:TRUE];
 		busyFetchingClosestStores = FALSE;
 	}
 	@catch (id exception) {
-		NSLog(@"%@", exception);
 		NSString *msg = [NSString stringWithFormat:@"Exception: '%@'.",exception];
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"HomeStoreTableViewController"];
 	}
@@ -123,9 +174,15 @@
 
 -(void)updateTableViewWithStores:(NSArray*)stores {
 	//Retain cause its part of another threads memory pool!!
-	closestStores = [[NSArray arrayWithArray:stores] retain];
+	if ([stores count] == 0) {
+		UIAlertView *locateError = [[UIAlertView alloc] initWithTitle: @"Sorry" message: @"I can't find any stores near this location. Please try searching again" delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
+		[locateError show];
+		[locateError release];
+	}else{
+		closestStores = [[NSArray arrayWithArray:stores] retain];
+		[self.tableView reloadData];	
+	}
 	
-	[self.tableView reloadData];
 	[self.tableView setScrollEnabled:TRUE];
 	[self hideLoadingOverlay];
 }
@@ -154,11 +211,17 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
+	[searchBar resignFirstResponder];
+	UISegmentedControl *segmentedControl = (UISegmentedControl*) self.navigationItem.titleView;
+	segmentedControl.selectedSegmentIndex = 0;
 	
 	//Blank out closest stores array
 	[closestStores release];
 	closestStores = [NSArray array];
 	[self.tableView reloadData];
+	
+	//Ensure loading overlay is removed
+	[self hideLoadingOverlay];
 }
 
 /*
@@ -226,10 +289,14 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-	// AnotherViewController *anotherViewController = [[AnotherViewController alloc] initWithNibName:@"AnotherView" bundle:nil];
-	// [self.navigationController pushViewController:anotherViewController];
-	// [anotherViewController release];
+	//Insert new user preference for store
+	HTTPStore *storeObject = [closestStores objectAtIndex:[indexPath row]];
+	[DataManager putUserPreference:@"home.store" andValue:[storeObject storeName]];
+	[DataManager putUserPreference:@"home.id"  andValue: [NSString stringWithFormat:@"%d", [storeObject storeID]]];
+	
+	//Get rid of this view
+	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	[[appDelegate homeViewNavController] popViewControllerAnimated:TRUE];
 }
 
 
@@ -271,7 +338,6 @@
     return YES;
 }
 */
-
 
 - (void)dealloc {
     [super dealloc];

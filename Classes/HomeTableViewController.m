@@ -47,11 +47,13 @@
 	[self setRecipeHistory:[DataManager fetchLastPurchasedRecipes:10]];
 }
 
-/*
+
 - (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+	//Just in case a new home store has been selected
+	[self.tableView reloadData];	
+	[super viewWillAppear:animated];
 }
-*/
+
 /*
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -124,7 +126,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-	cell.accessoryType =  UITableViewCellAccessoryDisclosureIndicator;
+	
 
 	// Set up the cell...
 	if(indexPath.section == 0) {
@@ -134,12 +136,16 @@
 			homeStore = @"None";
 		}
 		[[cell textLabel] setText: homeStore];
+		[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:18]];
 		[[cell imageView] setImage: nil];
+		cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	}else {
 		//List of recent recipes
 		DBRecipe *recipeObject = [recipeHistory objectAtIndex:[indexPath row]];
 		[[cell textLabel] setText: [recipeObject recipeName]];
+		[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14]];
 		[[cell imageView] setImage: [recipeObject iconSmall]];
+		cell.accessoryType =  UITableViewCellAccessoryDisclosureIndicator;
 	}
 	
     return cell;

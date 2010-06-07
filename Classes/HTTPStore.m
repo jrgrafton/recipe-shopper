@@ -40,6 +40,21 @@
 	return [NSString stringWithFormat:@"Store: ID=%d Name=%@ Type=%@ DistanceFromUs=%@M Lat=%@ Lon=%@",storeID,storeName,storeType,storeDistanceFromCurrentLocation,storeLatitude,storeLongitude];
 }
 
+// Class instance method to compare self with object "obj"
+- (NSComparisonResult) compareByDistanceFromMyLocation:(HTTPStore *)obj
+{
+    NSComparisonResult retVal = NSOrderedSame;
+	
+    if ([[self storeDistanceFromCurrentLocation] floatValue] < [[obj storeDistanceFromCurrentLocation] floatValue]){ // by whatever rules make sense for your class of course
+		retVal = NSOrderedAscending;
+	}
+    else if ([[self storeDistanceFromCurrentLocation] floatValue] > [[obj storeDistanceFromCurrentLocation] floatValue]){
+		retVal = NSOrderedDescending;
+	}
+	
+    return retVal;
+}
+
 
 - (void)dealloc {
 	[storeName release];

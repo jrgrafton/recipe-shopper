@@ -12,10 +12,12 @@
 
 @interface HomeStoreTableViewController : UITableViewController {
 	IBOutlet UITableView *homeStoreTableView;
-	
+	IBOutlet UISearchBar *searchBar;
+
 	@private
 	BOOL busyFetchingClosestStores;
 	LoadingView *loadingView;
+	NSArray *closestStores;
 }
 
 @end

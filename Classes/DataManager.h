@@ -18,6 +18,7 @@
 //DB data
 + (NSArray*)fetchLastPurchasedRecipes: (NSInteger) count;
 + (NSString*)fetchUserPreference: (NSString*) key;
++ (void)putUserPreference: (NSString*)key andValue:(NSString*) value;
 + (NSString*)fetchUserDocumentsPath;
 
 //iPhone SDK data
@@ -26,7 +27,8 @@
 + (NSArray*)getCurrentLatitudeLongitude;
 
 //HTTP data
-+ (NSArray*)fetchClosestStores: (NSArray*)latitudeLongitude andReturnUpToThisMany:(NSInteger) count;
++ (NSArray*)fetchGeolocationFromAddress: (NSString*)address;
++ (NSArray*)fetchClosestStoresToGeolocation: (NSArray*)latitudeLongitude andReturnUpToThisMany:(NSInteger) count;
 
 //Initialisation and deinitialisation procedures
 + (void)initialiseAll;

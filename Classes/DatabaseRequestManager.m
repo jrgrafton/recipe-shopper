@@ -102,7 +102,7 @@ static sqlite3 *database = nil;
 			result = [NSString stringWithUTF8String: (const char *)sqlite3_column_text(selectstmt, 0)];	
 		}
 	}else{
-		NSString *msg = [NSString stringWithFormat:@"Error executing statement %@",userPreferencesQuery];
+		NSString *msg = [NSString stringWithFormat:@"Error executing statement %s",userPreferencesQuery];
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
 	}
 	if (result == NULL) {
@@ -111,6 +111,42 @@ static sqlite3 *database = nil;
 	}
 	
 	return result;
+}
+
+- (void)putUserPreference: (NSString*)key andValue:(NSString*)value {
+	const char *userPreferencesQuery = [[NSString stringWithFormat:@"SELECT * FROM userPreferences WHERE key = '%@'",key] UTF8String];
+	#ifdef DEBUG
+		NSString *msg = [NSString stringWithFormat:@"Executing user preference query %s",userPreferencesQuery];
+		[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
+	#endif
+	
+	sqlite3_stmt *updatestmt;
+	if(sqlite3_prepare_v2(database, userPreferencesQuery, -1, &updatestmt, NULL) == SQLITE_OK) {
+		if(sqlite3_step(updatestmt) == SQLITE_ROW) {
+			userPreferencesQuery = [[NSString stringWithFormat:@"UPDATE userPreferences SET value = '%@' WHERE key = '%@'",value,key] UTF8String];
+		}else {
+			userPreferencesQuery = [[NSString stringWithFormat:@"INSERT INTO userPreferences VALUES ('%@','%@')",key,value] UTF8String];
+		}
+	}else {
+		NSString *msg = [NSString stringWithFormat:@"Error executing statement %s",userPreferencesQuery];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
+	}
+
+	if(sqlite3_prepare_v2(database, userPreferencesQuery, -1, &updatestmt, NULL) == SQLITE_OK) {
+		if(SQLITE_DONE == sqlite3_step(updatestmt)){
+		#ifdef DEBUG
+			NSString *msg = [NSString stringWithFormat:@"Successfully inserted user preference using query %s",userPreferencesQuery];
+			[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
+		#endif
+		}
+	
+	}else {
+		NSString *msg = [NSString stringWithFormat:@"Error executing statement %s",userPreferencesQuery];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
+	}
+	
+	sqlite3_reset(updatestmt);
+
 }
 
 - (NSArray*)fetchLastPurchasedRecipes: (NSInteger)count {
