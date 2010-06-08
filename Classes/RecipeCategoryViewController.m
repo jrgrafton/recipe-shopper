@@ -9,6 +9,7 @@
 #import "RecipeCategoryViewController.h"
 #import "RecipeShopperAppDelegate.h"
 
+#define SCROLL_VIEW_MAX_HEIGHT 1145.0f
 
 @implementation RecipeCategoryViewController
 
@@ -43,7 +44,7 @@
 						@"Sauces", [NSNumber numberWithInt: SAUCES],
 						@"Snacks & side dishes", [NSNumber numberWithInt: SNACKS_SIDE_DISHES],
 						@"Soups", [NSNumber numberWithInt: SOUPS],
-						@"Starters", [NSNumber numberWithInt: STARTER],
+						@"Starter", [NSNumber numberWithInt: STARTER],
 						nil] retain];
 	
 	self.title = NSLocalizedString(@"Recipe Book", @"Complete Tesco recipe list");
@@ -56,7 +57,7 @@
 	self.navigationItem.titleView = imageView;
 	
 	//Ensure scroll view is right size
-	scrollView.contentSize = CGSizeMake(320.0f, 860.0f);
+	scrollView.contentSize = CGSizeMake(320.0f, SCROLL_VIEW_MAX_HEIGHT);
 }
 
 /*
@@ -79,6 +80,9 @@
 	
 	//Always set new category name
 	[recipeSpecificCategoryViewController loadRecipesForCategory:categoryName];
+	
+	//Ensure its scrolled to the top
+	[recipeSpecificCategoryViewController.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
 	
 	//Transition to new view
 	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];

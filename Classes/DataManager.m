@@ -11,6 +11,7 @@
 #import "DataManager.h"
 #import "DatabaseRequestManager.h"
 #import "APIRequestManager.h"
+#import "ApplicationRequestManager.h"
 #import "LogManager.h"
 #import "Reachability.h"
 #import "LocationController.h"
@@ -19,6 +20,7 @@
 static DatabaseRequestManager *databaseRequestManager;
 static APIRequestManager *apiRequestManager;
 static HTTPRequestManager *httpRequestManager;
+static ApplicationRequestManager *applicationRequestManager;
 
 static LocationController *locationController;
 static BOOL phoneIsOnline;
@@ -46,13 +48,17 @@ static BOOL phoneIsOnline;
 	#endif
 	databaseRequestManager = [[DatabaseRequestManager alloc] init];
 	#ifdef DEBUG
-		[LogManager log:@"Initialising api request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
+		[LogManager log:@"Initialising API request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
 	#endif
 	apiRequestManager = [[APIRequestManager alloc] init];
 	#ifdef DEBUG
 		[LogManager log:@"Initialising HTTP request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
 	#endif
 	httpRequestManager = [[HTTPRequestManager alloc] init];
+	#ifdef DEBUG
+		[LogManager log:@"Initialising Application request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
+	#endif
+	applicationRequestManager = [[ApplicationRequestManager alloc] init];
 }
 
 + (void)deinitialiseAll {
@@ -62,6 +68,7 @@ static BOOL phoneIsOnline;
 	[databaseRequestManager release];
 	[apiRequestManager release];
 	[httpRequestManager release];
+	[applicationRequestManager release];
 }
 
 + (NSArray*)fetchLastPurchasedRecipes: (NSInteger)count {
@@ -77,6 +84,10 @@ static BOOL phoneIsOnline;
 
 + (void)putUserPreference: (NSString*)key andValue:(NSString*) value {
 	[databaseRequestManager putUserPreference: key andValue:value];
+}
+
++ (void)putRecipeHistory: (NSInteger)recipeID {
+	[databaseRequestManager putRecipeHistory: recipeID];
 }
 
 + (NSString*)fetchUserDocumentsPath {
@@ -128,6 +139,14 @@ static BOOL phoneIsOnline;
 
 + (NSArray*)fetchGeolocationFromAddress: (NSString*)address{
 	return [httpRequestManager fetchGeolocationFromAddress: (NSString*)address];
+}
+
++ (void)addRecipeToBasket: (DBRecipe*)recipe {
+	[applicationRequestManager addRecipeToBasket:recipe];
+}
+
++ (NSInteger)getBasketSize {
+	return [applicationRequestManager getBasketSize];
 }
 
 @end

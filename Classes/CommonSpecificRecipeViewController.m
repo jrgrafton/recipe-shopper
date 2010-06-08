@@ -9,6 +9,7 @@
 #import "CommonSpecificRecipeViewController.h"
 #import "LogManager.h"
 #import "DataManager.h"
+#import "RecipeShopperAppDelegate.h"
 
 #define RDA_CALORIES 2000.0f
 #define RDA_SUGAR 90.0f
@@ -24,7 +25,7 @@
 
 @implementation CommonSpecificRecipeViewController
 
-@synthesize recipeHtmlPage,initialised;
+@synthesize recipeHtmlPage,initialised,currentRecipe;
 
 
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -77,6 +78,9 @@
 }
 
 - (void)processViewForRecipe: (DBRecipe*)recipe {
+	//Set current recipe
+	[self setCurrentRecipe:recipe];
+	
 	//Get template path
 	NSString *templatePath = [self replaceTokensInPage: @"recipe_base" forRecipe:recipe];
 	
@@ -153,7 +157,7 @@
 		templateHtml = [templateHtml stringByReplacingOccurrencesOfString:@"{saturatedfat%}" withString:saturatedFatPercent];
 		templateHtml = [templateHtml stringByReplacingOccurrencesOfString:@"{salt%}" withString:saltPercent];
 	}else{
-		templateCss = [templateCss stringByAppendingString:@"\n#nutrition{display:none;}"];
+		templateCss = [templateCss stringByAppendingString:@"\ndiv.nutrition{display:none;}"];
 	}
 	
 	//Serves
@@ -258,6 +262,29 @@
 		NSString *msg = [NSString stringWithFormat:@"Intercepting link ::: %@",urlString];
 		[LogManager log:msg withLevel:LOG_INFO fromClass:@"CommonSpecificRecipeViewController"];
 	#endif
+	//We wanna add something to the basket :D
+	if ([urlString rangeOfString:@"_addtocart_"].location != NSNotFound){
+		//No shopping basket offline
+		if (![DataManager phoneIsOnline]) {
+			UIAlertView *networkError = [[UIAlertView alloc] initWithTitle: @"Network error" message: @"Feature unavailable offline" delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
+			[networkError show];
+			[networkError release];
+		}else{
+			//Add to basket and to history
+			[DataManager addRecipeToBasket:[self currentRecipe]];
+			[DataManager putRecipeHistory:[currentRecipe recipeID]];
+			
+			//Increment badge number
+			RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+			UITabBarController *rootController = [appDelegate rootController];
+			[[rootController.tabBar.items objectAtIndex:2] setBadgeValue: [NSString stringWithFormat:@"%d",[DataManager getBasketSize]]];
+			
+			UIAlertView *recipeAlert = [[UIAlertView alloc] initWithTitle: @"Add recipe" message: @"Recipe successfully added to cart" delegate: self cancelButtonTitle: @"OK" otherButtonTitles: nil];
+			[recipeAlert show];
+			[recipeAlert release];
+		}
+	}
+	
 	return YES;
 }
 
@@ -276,7 +303,7 @@
 	// Release any cached data, images, etc that aren't in use.
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewDidDisappear:(BOOL)animated {
 	//Load blank page on exiting
 	[webView loadHTMLString:@"" baseURL:nil];
 #ifdef DEBUG
@@ -298,6 +325,7 @@
 
 - (void)dealloc {
     [super dealloc];
+	[currentRecipe release];
 }
 
 

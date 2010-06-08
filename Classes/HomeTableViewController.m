@@ -168,7 +168,7 @@
 		//Check for network connectivity
 		if (![DataManager phoneIsOnline]) {
 			[LogManager log:@"Internet connection could not be detected" withLevel:LOG_WARNING fromClass:@"HomeTableViewController"];
-			UIAlertView *networkError = [[UIAlertView alloc] initWithTitle: @"Network error" message: @"Feature unavailable without internet connectivity" delegate: self cancelButtonTitle: @"Ok" otherButtonTitles: nil];
+			UIAlertView *networkError = [[UIAlertView alloc] initWithTitle: @"Network error" message: @"Feature unavailable offline" delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
 			[networkError show];
 			[networkError release];
 			[homeTableView  deselectRowAtIndexPath:indexPath  animated:YES]; 
@@ -187,8 +187,9 @@
 			[specificRecipeView release];
 		}
 		[homeTableView  deselectRowAtIndexPath:indexPath  animated:YES];
-		RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 		[commonSpecificRecipeViewController processViewForRecipe:[[self recipeHistory] objectAtIndex:[indexPath row]]];
+		
+		RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 		[[appDelegate homeViewNavController] pushViewController:[self commonSpecificRecipeViewController] animated:YES];
 	}
 }

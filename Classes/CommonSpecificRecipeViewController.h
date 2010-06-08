@@ -14,6 +14,7 @@
 @interface CommonSpecificRecipeViewController : UIViewController <UIWebViewDelegate> {
 	IBOutlet UIWebView *webView;
 	IBOutlet UIImageView *imageFadeView;
+	DBRecipe *currentRecipe;
 	
 	@private
 	NSURLRequest *recipeHtmlPage;
@@ -22,6 +23,7 @@
 
 
 @property (nonatomic,retain) NSURLRequest *recipeHtmlPage;
+@property (nonatomic,retain) DBRecipe *currentRecipe;
 @property (nonatomic,assign) BOOL initialised;
 
 - (void)processViewForRecipe: (DBRecipe*)recipe;

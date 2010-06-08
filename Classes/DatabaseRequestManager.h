@@ -17,6 +17,7 @@
 - (NSArray*)fetchAllRecipesInCategory: (NSString*) category;
 - (NSString*) fetchUserPreference: (NSString*) key;
 - (void)putUserPreference: (NSString*)key andValue:(NSString*) value;
+- (void)putRecipeHistory: (NSInteger)recipeID;
 - (id)init;
 
 @end

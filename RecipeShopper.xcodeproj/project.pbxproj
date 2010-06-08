@@ -27,6 +27,21 @@
 		F222E32D11BE611200C12EBB /* RecipeSpecificCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F222E32B11BE611200C12EBB /* RecipeSpecificCategoryViewController.m */; };
 		F222E32E11BE611200C12EBB /* RecipeSpecificCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F222E32C11BE611200C12EBB /* RecipeSpecificCategoryView.xib */; };
 		F26E467E11B00CF1000CA8B1 /* bottom-fade.png in Resources */ = {isa = PBXBuildFile; fileRef = F26E467D11B00CF1000CA8B1 /* bottom-fade.png */; };
+		F272FE1511BEEF9600E61BB3 /* breakfasts.png in Resources */ = {isa = PBXBuildFile; fileRef = F272FE0811BEEF9600E61BB3 /* breakfasts.png */; };
+		F272FE1611BEEF9600E61BB3 /* cakesBiscuits.png in Resources */ = {isa = PBXBuildFile; fileRef = F272FE0911BEEF9600E61BB3 /* cakesBiscuits.png */; };
+		F272FE1711BEEF9600E61BB3 /* desserts.png in Resources */ = {isa = PBXBuildFile; fileRef = F272FE0A11BEEF9600E61BB3 /* desserts.png */; };
+		F272FE1811BEEF9600E61BB3 /* dinners.png in Resources */ = {isa = PBXBuildFile; fileRef = F272FE0B11BEEF9600E61BB3 /* dinners.png */; };
+		F272FE1911BEEF9600E61BB3 /* drinks.png in Resources */ = {isa = PBXBuildFile; fileRef = F272FE0C11BEEF9600E61BB3 /* drinks.png */; };
+		F272FE1A11BEEF9600E61BB3 /* lunches.png in Resources */ = {isa = PBXBuildFile; fileRef = F272FE0D11BEEF9600E61BB3 /* lunches.png */; };
+		F272FE1B11BEEF9600E61BB3 /* mains.png in Resources */ = {isa = PBXBuildFile; fileRef = F272FE0E11BEEF9600E61BB3 /* mains.png */; };
+		F272FE1C11BEEF9600E61BB3 /* partyFood.png in Resources */ = {isa = PBXBuildFile; fileRef = F272FE0F11BEEF9600E61BB3 /* partyFood.png */; };
+		F272FE1D11BEEF9600E61BB3 /* salads.png in Resources */ = {isa = PBXBuildFile; fileRef = F272FE1011BEEF9600E61BB3 /* salads.png */; };
+		F272FE1E11BEEF9600E61BB3 /* sauces.png in Resources */ = {isa = PBXBuildFile; fileRef = F272FE1111BEEF9600E61BB3 /* sauces.png */; };
+		F272FE1F11BEEF9600E61BB3 /* snacksSides.png in Resources */ = {isa = PBXBuildFile; fileRef = F272FE1211BEEF9600E61BB3 /* snacksSides.png */; };
+		F272FE2011BEEF9600E61BB3 /* soups.png in Resources */ = {isa = PBXBuildFile; fileRef = F272FE1311BEEF9600E61BB3 /* soups.png */; };
+		F272FE2111BEEF9600E61BB3 /* starters.png in Resources */ = {isa = PBXBuildFile; fileRef = F272FE1411BEEF9600E61BB3 /* starters.png */; };
+		F272FE2D11BEEFB600E61BB3 /* categoryTemplate.psd in Resources */ = {isa = PBXBuildFile; fileRef = F272FE2C11BEEFB600E61BB3 /* categoryTemplate.psd */; };
+		F272FE8111BEFB9700E61BB3 /* ApplicationRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F272FE8011BEFB9700E61BB3 /* ApplicationRequestManager.m */; };
 		F277504511B6741000841C6D /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = F277503A11B6741000841C6D /* NSObject+SBJSON.m */; };
 		F277504611B6741000841C6D /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = F277503C11B6741000841C6D /* NSString+SBJSON.m */; };
 		F277504711B6741000841C6D /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = F277503E11B6741000841C6D /* SBJSON.m */; };
@@ -92,6 +107,22 @@
 		F222E32B11BE611200C12EBB /* RecipeSpecificCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecipeSpecificCategoryViewController.m; sourceTree = "<group>"; };
 		F222E32C11BE611200C12EBB /* RecipeSpecificCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeSpecificCategoryView.xib; sourceTree = "<group>"; };
 		F26E467D11B00CF1000CA8B1 /* bottom-fade.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bottom-fade.png"; sourceTree = "<group>"; };
+		F272FE0811BEEF9600E61BB3 /* breakfasts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = breakfasts.png; sourceTree = "<group>"; };
+		F272FE0911BEEF9600E61BB3 /* cakesBiscuits.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cakesBiscuits.png; sourceTree = "<group>"; };
+		F272FE0A11BEEF9600E61BB3 /* desserts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = desserts.png; sourceTree = "<group>"; };
+		F272FE0B11BEEF9600E61BB3 /* dinners.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dinners.png; sourceTree = "<group>"; };
+		F272FE0C11BEEF9600E61BB3 /* drinks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drinks.png; sourceTree = "<group>"; };
+		F272FE0D11BEEF9600E61BB3 /* lunches.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lunches.png; sourceTree = "<group>"; };
+		F272FE0E11BEEF9600E61BB3 /* mains.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mains.png; sourceTree = "<group>"; };
+		F272FE0F11BEEF9600E61BB3 /* partyFood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = partyFood.png; sourceTree = "<group>"; };
+		F272FE1011BEEF9600E61BB3 /* salads.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = salads.png; sourceTree = "<group>"; };
+		F272FE1111BEEF9600E61BB3 /* sauces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sauces.png; sourceTree = "<group>"; };
+		F272FE1211BEEF9600E61BB3 /* snacksSides.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snacksSides.png; sourceTree = "<group>"; };
+		F272FE1311BEEF9600E61BB3 /* soups.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = soups.png; sourceTree = "<group>"; };
+		F272FE1411BEEF9600E61BB3 /* starters.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = starters.png; sourceTree = "<group>"; };
+		F272FE2C11BEEFB600E61BB3 /* categoryTemplate.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = categoryTemplate.psd; sourceTree = "<group>"; };
+		F272FE7F11BEFB9700E61BB3 /* ApplicationRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationRequestManager.h; sourceTree = "<group>"; };
+		F272FE8011BEFB9700E61BB3 /* ApplicationRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationRequestManager.m; sourceTree = "<group>"; };
 		F277503811B6741000841C6D /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		F277503911B6741000841C6D /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
 		F277503A11B6741000841C6D /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
@@ -203,6 +234,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F272FE2311BEEF9B00E61BB3 /* RecipeCategories */,
 				F26DFCBE11AC2484006645A9 /* HTML */,
 				F26DFCBD11AC246C006645A9 /* Icons */,
 				F27E92DE11AECE9B0031CA7E /* jamesgrafton_rs.sqlite */,
@@ -231,7 +263,7 @@
 			children = (
 				F27CCC3A11A9D851000673CD /* Common */,
 				F22254D511A6A1530006658B /* LogManager */,
-				F293DC2811A5EA67008AA947 /* DataManager */,
+				F293DC2811A5EA67008AA947 /* DataManagers */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -324,6 +356,36 @@
 			name = HTML;
 			sourceTree = "<group>";
 		};
+		F272FE2311BEEF9B00E61BB3 /* RecipeCategories */ = {
+			isa = PBXGroup;
+			children = (
+				F272FE0811BEEF9600E61BB3 /* breakfasts.png */,
+				F272FE0911BEEF9600E61BB3 /* cakesBiscuits.png */,
+				F272FE2C11BEEFB600E61BB3 /* categoryTemplate.psd */,
+				F272FE0A11BEEF9600E61BB3 /* desserts.png */,
+				F272FE0B11BEEF9600E61BB3 /* dinners.png */,
+				F272FE0C11BEEF9600E61BB3 /* drinks.png */,
+				F272FE0D11BEEF9600E61BB3 /* lunches.png */,
+				F272FE0E11BEEF9600E61BB3 /* mains.png */,
+				F272FE0F11BEEF9600E61BB3 /* partyFood.png */,
+				F272FE1011BEEF9600E61BB3 /* salads.png */,
+				F272FE1111BEEF9600E61BB3 /* sauces.png */,
+				F272FE1211BEEF9600E61BB3 /* snacksSides.png */,
+				F272FE1311BEEF9600E61BB3 /* soups.png */,
+				F272FE1411BEEF9600E61BB3 /* starters.png */,
+			);
+			name = RecipeCategories;
+			sourceTree = "<group>";
+		};
+		F272FE7E11BEFB5C00E61BB3 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				F272FE7F11BEFB9700E61BB3 /* ApplicationRequestManager.h */,
+				F272FE8011BEFB9700E61BB3 /* ApplicationRequestManager.m */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
 		F277503711B6741000841C6D /* JSON */ = {
 			isa = PBXGroup;
 			children = (
@@ -393,9 +455,10 @@
 			name = Common;
 			sourceTree = "<group>";
 		};
-		F293DC2811A5EA67008AA947 /* DataManager */ = {
+		F293DC2811A5EA67008AA947 /* DataManagers */ = {
 			isa = PBXGroup;
 			children = (
+				F272FE7E11BEFB5C00E61BB3 /* Application */,
 				F2794DD211B5703C00303B0A /* SDK */,
 				F2794DCE11B56F3900303B0A /* HTTP */,
 				F278EAD911A59EEB00E688C5 /* Database */,
@@ -403,7 +466,7 @@
 				F293DC2911A5EA8B008AA947 /* DataManager.h */,
 				F293DC2A11A5EA8B008AA947 /* DataManager.m */,
 			);
-			name = DataManager;
+			name = DataManagers;
 			sourceTree = "<group>";
 		};
 		F293DC2C11A5EAFF008AA947 /* TescoApi */ = {
@@ -512,6 +575,20 @@
 				F2FFC0C011BD5E7E009EBB6F /* Default.png in Resources */,
 				F2FFC0CE11BD619C009EBB6F /* RecipeCategoryView.xib in Resources */,
 				F222E32E11BE611200C12EBB /* RecipeSpecificCategoryView.xib in Resources */,
+				F272FE1511BEEF9600E61BB3 /* breakfasts.png in Resources */,
+				F272FE1611BEEF9600E61BB3 /* cakesBiscuits.png in Resources */,
+				F272FE1711BEEF9600E61BB3 /* desserts.png in Resources */,
+				F272FE1811BEEF9600E61BB3 /* dinners.png in Resources */,
+				F272FE1911BEEF9600E61BB3 /* drinks.png in Resources */,
+				F272FE1A11BEEF9600E61BB3 /* lunches.png in Resources */,
+				F272FE1B11BEEF9600E61BB3 /* mains.png in Resources */,
+				F272FE1C11BEEF9600E61BB3 /* partyFood.png in Resources */,
+				F272FE1D11BEEF9600E61BB3 /* salads.png in Resources */,
+				F272FE1E11BEEF9600E61BB3 /* sauces.png in Resources */,
+				F272FE1F11BEEF9600E61BB3 /* snacksSides.png in Resources */,
+				F272FE2011BEEF9600E61BB3 /* soups.png in Resources */,
+				F272FE2111BEEF9600E61BB3 /* starters.png in Resources */,
+				F272FE2D11BEEFB600E61BB3 /* categoryTemplate.psd in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -551,6 +628,7 @@
 				F277504A11B6741000841C6D /* SBJsonWriter.m in Sources */,
 				F2FFC0CD11BD619C009EBB6F /* RecipeCategoryViewController.m in Sources */,
 				F222E32D11BE611200C12EBB /* RecipeSpecificCategoryViewController.m in Sources */,
+				F272FE8111BEFB9700E61BB3 /* ApplicationRequestManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

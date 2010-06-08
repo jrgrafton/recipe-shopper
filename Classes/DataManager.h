@@ -20,6 +20,7 @@
 + (NSArray*)fetchAllRecipesInCategory: (NSString*) category;
 + (NSString*)fetchUserPreference: (NSString*) key;
 + (void)putUserPreference: (NSString*)key andValue:(NSString*) value;
++ (void)putRecipeHistory: (NSInteger)recipeID;
 
 //iPhone SDK data
 + (BOOL)fileExistsInUserDocuments: (NSString*) fileName;
@@ -30,6 +31,10 @@
 //HTTP data
 + (NSArray*)fetchGeolocationFromAddress: (NSString*)address;
 + (NSArray*)fetchClosestStoresToGeolocation: (NSArray*)latitudeLongitude andReturnUpToThisMany:(NSInteger) count;
+
+//Application data
++ (void)addRecipeToBasket: (DBRecipe*)recipe;
++ (NSInteger)getBasketSize;
 
 //Initialisation and deinitialisation procedures
 + (void)initialiseAll;

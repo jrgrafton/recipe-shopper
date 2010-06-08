@@ -146,7 +146,28 @@ static sqlite3 *database = nil;
 	}
 	
 	sqlite3_reset(updatestmt);
+}
 
+- (void)putRecipeHistory: (NSInteger)recipeID {
+	const char *recipeHistoryQuery = [[NSString stringWithFormat:@"INSERT INTO recipeHistory (recipeID) VALUES (%d)",recipeID] UTF8String];
+
+	sqlite3_stmt *updatestmt;
+	if(sqlite3_prepare_v2(database, recipeHistoryQuery, -1, &updatestmt, NULL) == SQLITE_OK) {
+		if(SQLITE_DONE == sqlite3_step(updatestmt)){
+		#ifdef DEBUG
+			NSString *msg = [NSString stringWithFormat:@"Successfully inserted recipe history using query %s",recipeHistoryQuery];
+			[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
+		#endif
+		}else {
+			NSString *msg = [NSString stringWithFormat:@"Error executing statement %s",recipeHistoryQuery];
+			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
+		}
+	}else {
+		NSString *msg = [NSString stringWithFormat:@"Error executing statement %s",recipeHistoryQuery];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
+	}
+
+	sqlite3_reset(updatestmt);
 }
 
 - (NSArray*)fetchLastPurchasedRecipes: (NSInteger)count {
