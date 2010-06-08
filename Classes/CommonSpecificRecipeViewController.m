@@ -153,7 +153,7 @@
 		templateHtml = [templateHtml stringByReplacingOccurrencesOfString:@"{saturatedfat%}" withString:saturatedFatPercent];
 		templateHtml = [templateHtml stringByReplacingOccurrencesOfString:@"{salt%}" withString:saltPercent];
 	}else{
-		templateCss = [templateCss stringByAppendingString:@"\ndiv #nutrition{display:none;}"];
+		templateCss = [templateCss stringByAppendingString:@"\n#nutrition{display:none;}"];
 	}
 	
 	//Serves

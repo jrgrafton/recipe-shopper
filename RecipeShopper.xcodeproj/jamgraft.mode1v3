@@ -229,8 +229,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -279,14 +277,14 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>23</integer>
+									<integer>9</integer>
 									<integer>5</integer>
 									<integer>1</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 644}, {332, 573}}</string>
+							<string>{{0, 277}, {332, 573}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -316,12 +314,14 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>RecipeSpecificCategoryViewController.m</string>
+								<string>CommonSpecificRecipeViewController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -329,11 +329,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>RecipeSpecificCategoryViewController.m</string>
+										<string>CommonSpecificRecipeViewController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>F222E4F611BEBCA900C12EBB</string>
+										<string>F222E52E11BEBCDD00C12EBB</string>
 										<key>history</key>
 										<array>
 											<string>F27E934511AEE0850031CA7E</string>
@@ -365,9 +365,7 @@
 											<string>F222E37911BE82F500C12EBB</string>
 											<string>F222E37D11BE82F500C12EBB</string>
 											<string>F222E37E11BE82F500C12EBB</string>
-											<string>F222E37F11BE82F500C12EBB</string>
 											<string>F222E38111BE82F500C12EBB</string>
-											<string>F222E38211BE82F500C12EBB</string>
 											<string>F222E39911BE8C8A00C12EBB</string>
 											<string>F222E3C011BE901600C12EBB</string>
 											<string>F222E49911BEB69D00C12EBB</string>
@@ -380,7 +378,9 @@
 											<string>F222E4EA11BEBB4C00C12EBB</string>
 											<string>F222E4EB11BEBB4C00C12EBB</string>
 											<string>F222E4EC11BEBB4C00C12EBB</string>
-											<string>F222E4ED11BEBB4C00C12EBB</string>
+											<string>F222E52C11BEBCDD00C12EBB</string>
+											<string>F222E52D11BEBCDD00C12EBB</string>
+											<string>F222E38211BE82F500C12EBB</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
