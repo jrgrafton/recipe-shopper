@@ -67,6 +67,9 @@ static BOOL phoneIsOnline;
 + (NSArray*)fetchLastPurchasedRecipes: (NSInteger)count {
 	return [databaseRequestManager fetchLastPurchasedRecipes:count];
 }
++ (NSArray*)fetchAllRecipesInCategory: (NSString*) category {
+	return [databaseRequestManager fetchAllRecipesInCategory:category];
+}
 
 + (NSString*)fetchUserPreference: (NSString*) key {
 	return [databaseRequestManager fetchUserPreference:key];

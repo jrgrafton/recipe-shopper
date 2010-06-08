@@ -11,7 +11,7 @@
 
 #import "HomeStoreTableViewController.h"
 #import "RecipeShopperAppDelegate.h"
-#import "HomeViewNavController.h"
+#import "AllViewsNavController.h"
 #import "DataManager.h"
 #import "LoadingView.h"
 #import "HTTPStore.h"

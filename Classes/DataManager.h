@@ -17,14 +17,15 @@
 //Publicly available data aquisition
 //DB data
 + (NSArray*)fetchLastPurchasedRecipes: (NSInteger) count;
++ (NSArray*)fetchAllRecipesInCategory: (NSString*) category;
 + (NSString*)fetchUserPreference: (NSString*) key;
 + (void)putUserPreference: (NSString*)key andValue:(NSString*) value;
-+ (NSString*)fetchUserDocumentsPath;
 
 //iPhone SDK data
 + (BOOL)fileExistsInUserDocuments: (NSString*) fileName;
 + (BOOL)phoneIsOnline;
 + (NSArray*)getCurrentLatitudeLongitude;
++ (NSString*)fetchUserDocumentsPath;
 
 //HTTP data
 + (NSArray*)fetchGeolocationFromAddress: (NSString*)address;

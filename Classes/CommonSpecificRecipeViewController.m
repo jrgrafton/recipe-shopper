@@ -284,6 +284,12 @@
 #endif
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	 [super viewWillAppear:animated];
+	 [webView loadRequest:[self recipeHtmlPage]];
+}
+
+
 /*
 - (void)viewDidUnload {
 

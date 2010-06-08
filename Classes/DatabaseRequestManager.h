@@ -14,6 +14,7 @@
 }
 
 - (NSArray*) fetchLastPurchasedRecipes: (NSInteger)count;
+- (NSArray*)fetchAllRecipesInCategory: (NSString*) category;
 - (NSString*) fetchUserPreference: (NSString*) key;
 - (void)putUserPreference: (NSString*)key andValue:(NSString*) value;
 - (id)init;

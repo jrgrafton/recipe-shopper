@@ -1,23 +1,19 @@
 //
-//  HomeTableViewController.m
+//  RecipeSpecificCategoryViewController.m
 //  RecipeShopper
 //
-//  Created by James Grafton on 5/18/10.
+//  Created by James Grafton on 6/8/10.
 //  Copyright 2010 Asset Enhancing Technologies. All rights reserved.
 //
 
-#import "HomeTableViewController.h"
-#import "HomeStoreTableViewController.h"
-#import "CommonSpecificRecipeViewController.h"
-#import "RecipeShopperAppDelegate.h"
-#import "LogManager.h"
-#import "DBRecipe.h"
+#import "RecipeSpecificCategoryViewController.h"
 #import "DataManager.h"
+#import "RecipeShopperAppDelegate.h"
 
-@implementation HomeTableViewController
 
-@synthesize recipeHistory,homeStoreTableViewController,commonSpecificRecipeViewController;
+@implementation RecipeSpecificCategoryViewController
 
+@synthesize commonSpecificRecipeViewController;
 /*
 - (id)initWithStyle:(UITableViewStyle)style {
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -27,9 +23,10 @@
 }
 */
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = NSLocalizedString(@"Home", @"Local store and recent recipe list");
+
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	
@@ -39,21 +36,23 @@
 	self.navigationItem.titleView = imageView;
 	
 	//Set background colour
-	[homeTableView setBackgroundColor: [UIColor colorWithRed:0.8745098039215686 
-													green:0.9137254901960784 
-													 blue:0.9568627450980392
-													alpha:1.0]];
-	//Fetch the latest 10 recipes
-	[self setRecipeHistory:[DataManager fetchLastPurchasedRecipes:10]];
+	[categoryTableView setBackgroundColor: [UIColor colorWithRed:0.8745098039215686 
+													   green:0.9137254901960784 
+														blue:0.9568627450980392
+													   alpha:1.0]];
 }
 
+-(void) loadRecipesForCategory:(NSString*) categoryString {
+	categoryName = [categoryString retain];
+	recipes = [[DataManager fetchAllRecipesInCategory: categoryString] retain];
+	[self.tableView reloadData];
+}
 
+/*
 - (void)viewWillAppear:(BOOL)animated {
-	//Just in case a new home store has been selected
-	[self.tableView reloadData];	
-	[super viewWillAppear:animated];
+    [super viewWillAppear:animated];
 }
-
+*/
 /*
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -94,27 +93,23 @@
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 1;
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0) {
-		return 1;
-	}else {
-		return [recipeHistory count];
-	}
-
+    return [recipes count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-	if(section == 0)
-		return @"My Home Store";
-	else
-		return @"Recent Recipes";
+	return categoryName;
 }
 
+- (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath
+{
+    return 60;
+}
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -125,72 +120,30 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
-	
-	// Set up the cell...
-	if(indexPath.section == 0) {
-		//Store locator
-		NSString *homeStore = [DataManager fetchUserPreference:@"home.store"];
-		if (homeStore == NULL) {
-			homeStore = @"None";
-		}
-		[[cell textLabel] setText: homeStore];
-		[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:18]];
-		[[cell imageView] setImage: nil];
-		cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-	}else {
-		//List of recent recipes
-		DBRecipe *recipeObject = [recipeHistory objectAtIndex:[indexPath row]];
-		[[cell textLabel] setText: [recipeObject recipeName]];
-		[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14]];
-		[[cell imageView] setImage: [recipeObject iconSmall]];
-		cell.accessoryType =  UITableViewCellAccessoryDisclosureIndicator;
-	}
+    
+    // Set up the cell...
+	DBRecipe *recipeObject = [recipes objectAtIndex:[indexPath row]];
+	[[cell textLabel] setText: [recipeObject recipeName]];
+	[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14]];
+	[[cell imageView] setImage: [recipeObject iconSmall]];
+	cell.accessoryType =  UITableViewCellAccessoryDisclosureIndicator;
 	
     return cell;
 }
 
-- (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath
-{
-	if (indexPath.section == 0) {
-		return 50;
-	}
-    return 60;
-}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	//Choose home store screen
-	if (indexPath.section == 0) {
-		if ([self homeStoreTableViewController] == nil) {
-			HomeStoreTableViewController *homeStoresView = [[HomeStoreTableViewController alloc] initWithNibName:@"HomeStoreTableView" bundle:nil];
-			self.homeStoreTableViewController = homeStoresView;
-			[homeStoresView release];
-		}
-		//Check for network connectivity
-		if (![DataManager phoneIsOnline]) {
-			[LogManager log:@"Internet connection could not be detected" withLevel:LOG_WARNING fromClass:@"HomeTableViewController"];
-			UIAlertView *networkError = [[UIAlertView alloc] initWithTitle: @"Network error" message: @"Feature unavailable without internet connectivity" delegate: self cancelButtonTitle: @"Ok" otherButtonTitles: nil];
-			[networkError show];
-			[networkError release];
-			[homeTableView  deselectRowAtIndexPath:indexPath  animated:YES]; 
-			return;
-		}else {
-			[LogManager log:@"Internet connection successfully detected" withLevel:LOG_INFO fromClass:@"HomeTableViewController"];
-		}
-										
-		RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-		[[appDelegate homeViewNavController] pushViewController:[self homeStoreTableViewController] animated:YES];
-	}else{
-		//Open specific recipe view
-		if ([self commonSpecificRecipeViewController] == nil) {
-			CommonSpecificRecipeViewController *specificRecipeView = [[CommonSpecificRecipeViewController alloc] initWithNibName:@"CommonSpecificRecipeView" bundle:nil];
-			self.commonSpecificRecipeViewController = specificRecipeView;
-			[specificRecipeView release];
-		}
-		[homeTableView  deselectRowAtIndexPath:indexPath  animated:YES];
-		RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-		[commonSpecificRecipeViewController processViewForRecipe:[[self recipeHistory] objectAtIndex:[indexPath row]]];
-		[[appDelegate homeViewNavController] pushViewController:[self commonSpecificRecipeViewController] animated:YES];
+	//Open specific recipe view
+	if (commonSpecificRecipeViewController == nil) {
+		CommonSpecificRecipeViewController *specificRecipeView = [[CommonSpecificRecipeViewController alloc] initWithNibName:@"CommonSpecificRecipeView" bundle:nil];
+		[self setCommonSpecificRecipeViewController: specificRecipeView];
+		[specificRecipeView release];
 	}
+	[categoryTableView  deselectRowAtIndexPath:indexPath  animated:YES];
+	[commonSpecificRecipeViewController processViewForRecipe:[recipes objectAtIndex:[indexPath row]]];
+	
+	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	[[appDelegate recipeCategoryViewNavController] pushViewController:commonSpecificRecipeViewController animated:YES];
 }
 
 
@@ -235,9 +188,9 @@
 
 
 - (void)dealloc {
-	[recipeHistory release];
-	[homeStoreTableViewController release];
     [super dealloc];
+	[recipes release];
+	[categoryName release];
 }
 
 

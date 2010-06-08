@@ -7,7 +7,7 @@
 //
 
 #import "RecipeShopperAppDelegate.h"
-#import "HomeViewNavController.h"
+#import "AllViewsNavController.h"
 #import "DataManager.h"
 #import "LogManager.h"
 
@@ -16,6 +16,7 @@
 @synthesize window;
 @synthesize rootController;
 @synthesize homeViewNavController;
+@synthesize recipeCategoryViewNavController;
 
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
@@ -35,6 +36,7 @@
 
 - (void)dealloc {
 	[homeViewNavController release];
+	[recipeCategoryViewNavController release];
 	[rootController release];
     [window release];
     [super dealloc];

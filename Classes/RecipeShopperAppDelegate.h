@@ -8,16 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@class HomeViewNavController;
+@class AllViewsNavController;
 
 @interface RecipeShopperAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
 	IBOutlet UITabBarController *rootController;
-	IBOutlet HomeViewNavController *homeViewNavController;
+	IBOutlet AllViewsNavController *homeViewNavController;
+	IBOutlet AllViewsNavController * recipeCategoryViewNavController;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UITabBarController *rootController;
-@property (nonatomic, retain) IBOutlet HomeViewNavController *homeViewNavController;
+@property (nonatomic, retain) IBOutlet AllViewsNavController *homeViewNavController;
+@property (nonatomic, retain) IBOutlet AllViewsNavController *recipeCategoryViewNavController;
 
 @end

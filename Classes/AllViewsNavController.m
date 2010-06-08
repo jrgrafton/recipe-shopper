@@ -6,9 +6,9 @@
 //  Copyright Asset Enhancing Technologies 2010. All rights reserved.
 //
 
-#import "HomeViewNavController.h"
+#import "AllViewsNavController.h"
 
-@implementation HomeViewNavController
+@implementation AllViewsNavController
 
 
 

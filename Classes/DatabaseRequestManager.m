@@ -150,7 +150,7 @@ static sqlite3 *database = nil;
 }
 
 - (NSArray*)fetchLastPurchasedRecipes: (NSInteger)count {
-	NSMutableArray *recipes = [[NSMutableArray alloc] init];
+	NSMutableArray *recipes = [NSMutableArray array];
 	NSMutableArray *recipeIDs = [[NSMutableArray alloc] init];
 	
 	//First get recipe ID's from 'recipeHistory' table
@@ -203,6 +203,24 @@ static sqlite3 *database = nil;
 	
 	//Release original recipeIDs array since we explicitly alloc'd
 	[recipeIDs release];
+	return [NSArray arrayWithArray:recipes];
+}
+
+- (NSArray*)fetchAllRecipesInCategory: (NSString*) category {
+	NSMutableArray *recipes = [NSMutableArray array];
+   //First get recipe ID's from 'recipeHistory' table
+   const char *recipeQuery = [[NSString stringWithFormat:@"select * from recipes WHERE categoryName = '%@'",category] UTF8String];
+ 
+   sqlite3_stmt *selectstmt;
+   if(sqlite3_prepare_v2(database, recipeQuery, -1, &selectstmt, NULL) == SQLITE_OK) {
+	   while(sqlite3_step(selectstmt) == SQLITE_ROW) {
+		   [recipes addObject: [self buildRecipeDBObjectFromRow: selectstmt]];
+	   }
+   }else{
+	   NSString *msg = [NSString stringWithFormat:@"Error executing statement %@",recipeQuery];
+	   [LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
+   }
+							   
 	return [NSArray arrayWithArray:recipes];
 }
 
