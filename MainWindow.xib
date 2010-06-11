@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="36"/>
+			<integer value="15"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -53,18 +53,18 @@
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics">
 					<int key="IBUIStatusBarStyle">2</int>
 				</object>
-				<object class="IBUINavigationController" key="IBUISelectedViewController" id="407212820">
-					<object class="IBUITabBarItem" key="IBUITabBarItem" id="139416822">
-						<string key="IBUITitle">Recipe Book</string>
+				<object class="IBUINavigationController" key="IBUISelectedViewController" id="497918780">
+					<object class="IBUITabBarItem" key="IBUITabBarItem" id="901674713">
+						<string key="IBUITitle">Home</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">icon_book.png</string>
+							<string key="NSResourceName">icon_home.png</string>
 						</object>
 						<reference key="IBUITabBar"/>
 					</object>
 					<reference key="IBUIToolbarItems" ref="0"/>
 					<reference key="IBUIParentViewController" ref="914463233"/>
-					<object class="IBUINavigationBar" key="IBUINavigationBar" id="51143430">
+					<object class="IBUINavigationBar" key="IBUINavigationBar" id="400829776">
 						<nil key="NSNextResponder"/>
 						<int key="NSvFlags">256</int>
 						<string key="NSFrameSize">{320, 44}</string>
@@ -78,31 +78,31 @@
 					</object>
 					<object class="NSMutableArray" key="IBUIViewControllers">
 						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="IBUIViewController" id="959514417">
+						<object class="IBUIViewController" id="448952910">
 							<reference key="IBUIToolbarItems" ref="0"/>
-							<object class="IBUINavigationItem" key="IBUINavigationItem" id="548876785">
+							<object class="IBUINavigationItem" key="IBUINavigationItem" id="338670234">
 								<reference key="IBUINavigationBar"/>
-								<string key="IBUITitle"/>
 							</object>
-							<reference key="IBUIParentViewController" ref="407212820"/>
-							<string key="IBUINibName">RecipeCategoryView</string>
+							<reference key="IBUIParentViewController" ref="497918780"/>
+							<string key="IBUINibName">HomeTableView</string>
 						</object>
 					</object>
 				</object>
 				<object class="NSMutableArray" key="IBUIViewControllers">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="IBUINavigationController" id="497918780">
-						<object class="IBUITabBarItem" key="IBUITabBarItem" id="901674713">
-							<string key="IBUITitle">Home</string>
+					<reference ref="497918780"/>
+					<object class="IBUINavigationController" id="407212820">
+						<object class="IBUITabBarItem" key="IBUITabBarItem" id="139416822">
+							<string key="IBUITitle">Recipe Book</string>
 							<object class="NSCustomResource" key="IBUIImage">
 								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">icon_home.png</string>
+								<string key="NSResourceName">icon_book.png</string>
 							</object>
 							<reference key="IBUITabBar"/>
 						</object>
 						<reference key="IBUIToolbarItems" ref="0"/>
 						<reference key="IBUIParentViewController" ref="914463233"/>
-						<object class="IBUINavigationBar" key="IBUINavigationBar" id="400829776">
+						<object class="IBUINavigationBar" key="IBUINavigationBar" id="51143430">
 							<nil key="NSNextResponder"/>
 							<int key="NSvFlags">256</int>
 							<string key="NSFrameSize">{320, 44}</string>
@@ -116,15 +116,16 @@
 						</object>
 						<object class="NSMutableArray" key="IBUIViewControllers">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIViewController" id="448952910">
+							<object class="IBUIViewController" id="959514417">
 								<reference key="IBUIToolbarItems" ref="0"/>
-								<object class="IBUINavigationItem" key="IBUINavigationItem" id="338670234"/>
-								<reference key="IBUIParentViewController" ref="497918780"/>
-								<string key="IBUINibName">HomeTableView</string>
+								<object class="IBUINavigationItem" key="IBUINavigationItem" id="548876785">
+									<string key="IBUITitle"/>
+								</object>
+								<reference key="IBUIParentViewController" ref="407212820"/>
+								<string key="IBUINibName">RecipeCategoryView</string>
 							</object>
 						</object>
 					</object>
-					<reference ref="407212820"/>
 					<object class="IBUINavigationController" id="39349214">
 						<object class="IBUITabBarItem" key="IBUITabBarItem" id="723024652">
 							<string key="IBUITitle">Checkout</string>
@@ -156,6 +157,7 @@
 									<string key="IBUITitle"/>
 								</object>
 								<reference key="IBUIParentViewController" ref="39349214"/>
+								<string key="IBUINibName">CheckoutRecipeBasketView</string>
 							</object>
 						</object>
 					</object>
@@ -214,6 +216,14 @@
 						<reference key="destination" ref="497918780"/>
 					</object>
 					<int key="connectionID">47</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">checkoutViewNavController</string>
+						<reference key="source" ref="664661524"/>
+						<reference key="destination" ref="39349214"/>
+					</object>
+					<int key="connectionID">49</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -389,6 +399,7 @@
 					<string>36.CustomClassName</string>
 					<string>38.CustomClassName</string>
 					<string>41.CustomClassName</string>
+					<string>43.CustomClassName</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -396,7 +407,7 @@
 					<string>UIResponder</string>
 					<string>{{375, 223}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{385, 250}, {320, 480}}</string>
+					<string>{{385, 249}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>AllViewsNavController</string>
@@ -406,6 +417,7 @@
 					<string>AllViewsNavController</string>
 					<string>RecipeCategoryViewController</string>
 					<string>AllViewsNavController</string>
+					<string>CheckoutRecipeBasketViewController</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -424,7 +436,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">47</int>
+			<int key="maxID">49</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -435,6 +447,18 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/AllViewsNavController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">CheckoutRecipeBasketViewController</string>
+					<string key="superclassName">UITableViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">recipeBasketTableView</string>
+						<string key="NS.object.0">UITableView</string>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/CheckoutRecipeBasketViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -486,6 +510,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>checkoutViewNavController</string>
 							<string>homeViewNavController</string>
 							<string>recipeCategoryViewNavController</string>
 							<string>rootController</string>
@@ -493,6 +518,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>AllViewsNavController</string>
 							<string>AllViewsNavController</string>
 							<string>AllViewsNavController</string>
 							<string>UITabBarController</string>

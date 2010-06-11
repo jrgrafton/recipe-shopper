@@ -43,15 +43,15 @@
 													green:0.9137254901960784 
 													 blue:0.9568627450980392
 													alpha:1.0]];
-	//Fetch the latest 10 recipes
-	[self setRecipeHistory:[DataManager fetchLastPurchasedRecipes:10]];
 }
 
 
 - (void)viewWillAppear:(BOOL)animated {
-	//Just in case a new home store has been selected
-	[self.tableView reloadData];	
 	[super viewWillAppear:animated];
+	
+	//Fetch the latest 10 recipes and refresh the table
+	[self setRecipeHistory:[DataManager fetchLastPurchasedRecipes:10]];
+	[self.tableView reloadData];
 }
 
 /*
@@ -59,11 +59,13 @@
     [super viewDidAppear:animated];
 }
 */
+
 /*
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 }
 */
+
 /*
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
@@ -149,8 +151,7 @@
     return cell;
 }
 
-- (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath
-{
+- (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath{
 	if (indexPath.section == 0) {
 		return 50;
 	}

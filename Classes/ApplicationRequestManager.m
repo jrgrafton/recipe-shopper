@@ -11,20 +11,21 @@
 
 @implementation ApplicationRequestManager
 
-@synthesize shoppingBasket;
+@synthesize recipeBasket,productBasket;
 
 - (id)init{
 	if (self = [super init]) {
-		[self setShoppingBasket:[NSMutableArray array]];
+		[self setRecipeBasket:[NSMutableArray array]];
+		[self setProductBasket:[NSMutableArray array]];
 	}
 	return self;
 }
 
 - (void)addRecipeToBasket: (DBRecipe*)recipe{
-	[shoppingBasket addObject:recipe];
+	[recipeBasket addObject:recipe];
 }
 
-- (NSInteger)getBasketSize{
-	return [shoppingBasket count];
+- (NSInteger)getRecipeBasketSize{
+	return [recipeBasket count];
 }
 @end

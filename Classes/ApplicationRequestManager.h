@@ -11,13 +11,15 @@
 
 
 @interface ApplicationRequestManager : NSObject {
-	NSMutableArray *shoppingBasket;
+	NSMutableArray *recipeBasket;
+	NSMutableArray *productBasket;
 }
 
-@property (nonatomic,retain) NSMutableArray *shoppingBasket;
+@property (nonatomic,retain) NSMutableArray *recipeBasket;
+@property (nonatomic,retain) NSMutableArray *productBasket;
 
 - (id)init;
 - (void)addRecipeToBasket: (DBRecipe*)recipe;
-- (NSInteger)getBasketSize;
+- (NSInteger)getRecipeBasketSize;
 
 @end

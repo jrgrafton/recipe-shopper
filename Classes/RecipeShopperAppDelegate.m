@@ -17,7 +17,7 @@
 @synthesize rootController;
 @synthesize homeViewNavController;
 @synthesize recipeCategoryViewNavController;
-
+@synthesize checkoutViewNavController;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	//Initialise the DataManager request managers
@@ -37,6 +37,7 @@
 - (void)dealloc {
 	[homeViewNavController release];
 	[recipeCategoryViewNavController release];
+	[checkoutViewNavController release];
 	[rootController release];
     [window release];
     [super dealloc];

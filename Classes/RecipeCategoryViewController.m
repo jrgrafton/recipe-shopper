@@ -48,8 +48,6 @@
 						nil] retain];
 	
 	self.title = NSLocalizedString(@"Recipe Book", @"Complete Tesco recipe list");
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	
 	//Add Tesco logo to nav bar
 	UIImage *image = [UIImage imageNamed: @"tesco_header.png"];

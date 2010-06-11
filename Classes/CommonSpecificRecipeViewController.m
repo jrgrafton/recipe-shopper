@@ -264,25 +264,18 @@
 	#endif
 	//We wanna add something to the basket :D
 	if ([urlString rangeOfString:@"_addtocart_"].location != NSNotFound){
-		//No shopping basket offline
-		if (![DataManager phoneIsOnline]) {
-			UIAlertView *networkError = [[UIAlertView alloc] initWithTitle: @"Network error" message: @"Feature unavailable offline" delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
-			[networkError show];
-			[networkError release];
-		}else{
-			//Add to basket and to history
-			[DataManager addRecipeToBasket:[self currentRecipe]];
-			[DataManager putRecipeHistory:[currentRecipe recipeID]];
-			
-			//Increment badge number
-			RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-			UITabBarController *rootController = [appDelegate rootController];
-			[[rootController.tabBar.items objectAtIndex:2] setBadgeValue: [NSString stringWithFormat:@"%d",[DataManager getBasketSize]]];
-			
-			UIAlertView *recipeAlert = [[UIAlertView alloc] initWithTitle: @"Add recipe" message: @"Recipe successfully added to cart" delegate: self cancelButtonTitle: @"OK" otherButtonTitles: nil];
-			[recipeAlert show];
-			[recipeAlert release];
-		}
+		//Add to basket and to history
+		[DataManager addRecipeToBasket:[self currentRecipe]];
+		[DataManager putRecipeHistory:[currentRecipe recipeID]];
+		
+		//Increment badge number
+		RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+		UITabBarController *rootController = [appDelegate rootController];
+		[[rootController.tabBar.items objectAtIndex:2] setBadgeValue: [NSString stringWithFormat:@"%d",[DataManager getRecipeBasketSize]]];
+		
+		UIAlertView *recipeAlert = [[UIAlertView alloc] initWithTitle: @"Add recipe" message: @"Recipe successfully added to cart" delegate: self cancelButtonTitle: @"OK" otherButtonTitles: nil];
+		[recipeAlert show];
+		[recipeAlert release];
 	}
 	
 	return YES;

@@ -14,12 +14,14 @@
     UIWindow *window;
 	IBOutlet UITabBarController *rootController;
 	IBOutlet AllViewsNavController *homeViewNavController;
-	IBOutlet AllViewsNavController * recipeCategoryViewNavController;
+	IBOutlet AllViewsNavController *recipeCategoryViewNavController;
+	IBOutlet AllViewsNavController *checkoutViewNavController;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UITabBarController *rootController;
 @property (nonatomic, retain) IBOutlet AllViewsNavController *homeViewNavController;
 @property (nonatomic, retain) IBOutlet AllViewsNavController *recipeCategoryViewNavController;
+@property (nonatomic, retain) IBOutlet AllViewsNavController *checkoutViewNavController;
 
 @end

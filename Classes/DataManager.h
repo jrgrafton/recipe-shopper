@@ -34,7 +34,8 @@
 
 //Application data
 + (void)addRecipeToBasket: (DBRecipe*)recipe;
-+ (NSInteger)getBasketSize;
++ (NSMutableArray*)getRecipeBasket;
++ (NSInteger)getRecipeBasketSize;
 
 //Initialisation and deinitialisation procedures
 + (void)initialiseAll;

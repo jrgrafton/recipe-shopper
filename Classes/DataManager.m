@@ -145,8 +145,12 @@ static BOOL phoneIsOnline;
 	[applicationRequestManager addRecipeToBasket:recipe];
 }
 
-+ (NSInteger)getBasketSize {
-	return [applicationRequestManager getBasketSize];
++ (NSInteger)getRecipeBasketSize {
+	return [applicationRequestManager getRecipeBasketSize];
+}
+
++ (NSMutableArray*)getRecipeBasket {
+	return [applicationRequestManager recipeBasket];
 }
 
 @end
