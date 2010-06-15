@@ -8,13 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "CommonSpecificRecipeViewController.h"
+#import "CheckoutProductBasketViewController.h"
 
 
 @interface CheckoutRecipeBasketViewController : UITableViewController {
 	IBOutlet UITableView *recipeBasketTableView;
 	CommonSpecificRecipeViewController *commonSpecificRecipeViewController;
+	CheckoutProductBasketViewController *checkoutProductBasketViewController;
+	
+	UIView *footerView;
 }
 
 @property (nonatomic,retain) CommonSpecificRecipeViewController *commonSpecificRecipeViewController;
+@property (nonatomic,retain) CheckoutProductBasketViewController *checkoutProductBasketViewController;
 
 @end

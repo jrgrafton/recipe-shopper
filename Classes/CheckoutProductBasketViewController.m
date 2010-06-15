@@ -1,24 +1,21 @@
 //
-//  CheckoutRecipeBasketViewController.m
+//  CheckoutProductBasketViewController.m
 //  RecipeShopper
 //
-//  Created by James Grafton on 6/11/10.
+//  Created by James Grafton on 6/15/10.
 //  Copyright 2010 Asset Enhancing Technologies. All rights reserved.
 //
 
-#import "CheckoutRecipeBasketViewController.h"
+#import "CheckoutProductBasketViewController.h"
+#import "DBProduct.h"
 #import "DataManager.h"
-#import "RecipeShopperAppDelegate.h"
 
-
-@interface CheckoutRecipeBasketViewController ()
+@interface CheckoutProductBasketViewController ()
 //Private class functions
-- (void) createProductList:(id)sender;
+- (void) bookDeliverySlot:(id)sender;
 @end
 
-@implementation CheckoutRecipeBasketViewController
-
-@synthesize commonSpecificRecipeViewController,checkoutProductBasketViewController;
+@implementation CheckoutProductBasketViewController
 
 /*
 - (id)initWithStyle:(UITableViewStyle)style {
@@ -32,21 +29,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
+
 	//Add Tesco logo to nav bar
 	UIImage *image = [UIImage imageNamed: @"tesco_header.png"];
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
 	self.navigationItem.titleView = imageView;
 	
 	//Set background colour
-	[recipeBasketTableView setBackgroundColor: [UIColor colorWithRed:0.8745098039215686 
-														   green:0.9137254901960784 
-															blue:0.9568627450980392
-														   alpha:1.0]];
+	[productBasketTableView setBackgroundColor: [UIColor colorWithRed:0.8745098039215686 
+															   green:0.9137254901960784 
+																blue:0.9568627450980392
+															   alpha:1.0]];
 	
-	self.title = NSLocalizedString(@"Recipe Basket", @"Current recipe basket");
+	self.title = NSLocalizedString(@"Product Basket", @"Current product basket");
 }
-
 
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -93,14 +89,10 @@
 
 #pragma mark Table view methods
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [DataManager getRecipeBasketSize];
+    return [DataManager getUniqueProductBasketCount];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
@@ -110,6 +102,11 @@
 - (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath{
     return 60;
 }
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
 
 // specify the height of your footer section
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
@@ -128,7 +125,7 @@
 		
 		UIImage *image = [[UIImage imageNamed:@"button_green.png"]
 						  stretchableImageWithLeftCapWidth:8 topCapHeight:8];
-			
+		
 		//create the button
 		UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 		[button setBackgroundImage:image forState:UIControlStateNormal];
@@ -137,12 +134,12 @@
 		[button setFrame:CGRectMake(10, 3, 300, 44)];
 		
 		//set title, font size and font color
-		[button setTitle:@"Create Product List" forState:UIControlStateNormal];
+		[button setTitle:@"Book delivery date" forState:UIControlStateNormal];
 		[button.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
 		[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 		
 		//set action of the button
-		[button addTarget:self action:@selector(createProductList:)
+		[button addTarget:self action:@selector(bookDeliverySlot:)
 		 forControlEvents:UIControlEventTouchUpInside];
 		
 		//add the button to the view
@@ -154,6 +151,7 @@
     return footerView;
 }
 
+
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -164,67 +162,56 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    // Set up the cell...
-	NSMutableArray *recipeBasket = [DataManager getRecipeBasket];
+	// Set up the cell...
+	NSDictionary *productBasket = [DataManager getProductBasket];
+	NSArray *flatList = [productBasket allKeys];
 	
-	DBRecipe *recipeObject = [recipeBasket objectAtIndex:[indexPath row]];
-	[[cell textLabel] setText: [recipeObject recipeName]];
+	DBProduct *productObject = [flatList objectAtIndex:[indexPath row]];
+	[[cell textLabel] setText: [productObject productName]];
 	[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14]];
-	[[cell imageView] setImage: [recipeObject iconSmall]];
-	cell.accessoryType =  UITableViewCellAccessoryDisclosureIndicator;
+	[[cell imageView] setImage: [productObject productIcon]];
+	
+	UILabel *distLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,70,40)];
+	[distLabel setText:[NSString stringWithFormat:@"£%@", [productObject productPrice]]];
+	[distLabel setFont:[UIFont boldSystemFontOfSize:11]];
+	
+	[cell setAccessoryView:distLabel];
+	[distLabel release];
 	
 	
     return cell;
 }
 
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	//Open specific recipe view
-	if (commonSpecificRecipeViewController == nil) {
-		CommonSpecificRecipeViewController *specificRecipeView = [[CommonSpecificRecipeViewController alloc] initWithNibName:@"CommonSpecificRecipeView" bundle:nil];
-		[self setCommonSpecificRecipeViewController: specificRecipeView];
-		[specificRecipeView release];
-	}
-	[recipeBasketTableView  deselectRowAtIndexPath:indexPath  animated:YES];
-	[commonSpecificRecipeViewController processViewForRecipe:[[DataManager getRecipeBasket] objectAtIndex:[indexPath row]]];
-	
-	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-	[[appDelegate checkoutViewNavController] pushViewController:commonSpecificRecipeViewController animated:YES];
+    // Navigation logic may go here. Create and push another view controller.
+	// AnotherViewController *anotherViewController = [[AnotherViewController alloc] initWithNibName:@"AnotherView" bundle:nil];
+	// [self.navigationController pushViewController:anotherViewController];
+	// [anotherViewController release];
 }
 
 
-
+/*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
+*/
 
 
+/*
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-		[[DataManager getRecipeBasket] removeObjectAtIndex:[indexPath row]];
-		
-		//Decrement badge number
-		RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-		UITabBarController *rootController = [appDelegate rootController];
-		[[rootController.tabBar.items objectAtIndex:2] setBadgeValue: [NSString stringWithFormat:@"%d",[DataManager getRecipeBasketSize]]];
-		
-		if ([DataManager getRecipeBasketSize] == 0) {
-			[[rootController.tabBar.items objectAtIndex:2] setBadgeValue: NULL];
-		}
-		
-		
-		// Delete row from table view
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
+*/
 
 
 /*
@@ -242,54 +229,12 @@
 }
 */
 
-- (void) createProductList:(id)sender {
-	NSMutableDictionary *productIDToCountMap = [NSMutableDictionary dictionary];
-	NSArray *recipeBasket = [DataManager getRecipeBasket];
+- (void) bookDeliverySlot:(id)sender {
 	
-	//First figure out total for all products we need and fetch them from the DB
-	for (DBRecipe *recipe in recipeBasket) {
-		NSArray *productIDs = [recipe idProducts];
-		
-		NSUInteger productIndex = 0;
-		for (NSNumber *productID in productIDs){
-			NSNumber *productCount = [[recipe idProductsQuantity] objectAtIndex:productIndex];
-			for (int i=0; i<[productCount intValue]; i++) {
-				NSNumber *productTotalCount = [productIDToCountMap objectForKey:productID];
-				if (productTotalCount == nil) {
-					[productIDToCountMap setObject:[NSNumber numberWithInt:1] forKey:productID];
-				}else{
-					productTotalCount = [NSNumber numberWithInt:[productTotalCount intValue] + 1];
-					[productIDToCountMap setObject:productTotalCount forKey:productID];
-				}
-			}
-			productIndex++;
-		}
-	}
-	
-	//Now add all the DBProduct objects to the product basket
-	NSArray *individualProducts = [DataManager fetchProductsFromIDs:[productIDToCountMap allKeys]];
-	
-	for (DBProduct *product in individualProducts) {
-		NSNumber *productCount = [productIDToCountMap objectForKey:[NSString stringWithFormat:@"%d",[product productBaseID]]];
-		
-	    for (int i=0; i<[productCount intValue]; i++) {
-			[DataManager addProductToBasket:product];
-		}
-	}
-	
-	//Open product basket view
-	if (checkoutProductBasketViewController == nil) {
-		CheckoutProductBasketViewController *productBasketView = [[CheckoutProductBasketViewController alloc] initWithNibName:@"CheckoutProductBasketView" bundle:nil];
-		[self setCheckoutProductBasketViewController: productBasketView];
-		[productBasketView release];
-	}
-	
-	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-	[[appDelegate checkoutViewNavController] pushViewController:checkoutProductBasketViewController animated:YES];
 }
 
 - (void)dealloc {
-	[commonSpecificRecipeViewController release];
+	[productBasketTableView release];
 	[footerView release];
     [super dealloc];
 }

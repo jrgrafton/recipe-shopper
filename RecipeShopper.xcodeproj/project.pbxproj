@@ -26,6 +26,11 @@
 		F22254D811A6A1B20006658B /* LogManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F22254D711A6A1B20006658B /* LogManager.m */; };
 		F222E32D11BE611200C12EBB /* RecipeSpecificCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F222E32B11BE611200C12EBB /* RecipeSpecificCategoryViewController.m */; };
 		F222E32E11BE611200C12EBB /* RecipeSpecificCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F222E32C11BE611200C12EBB /* RecipeSpecificCategoryView.xib */; };
+		F22826A511C69AF40023ECAF /* button_green.png in Resources */ = {isa = PBXBuildFile; fileRef = F22826A411C69AF40023ECAF /* button_green.png */; };
+		F22826AE11C69C1E0023ECAF /* button_license.txt in Resources */ = {isa = PBXBuildFile; fileRef = F22826AD11C69C1E0023ECAF /* button_license.txt */; };
+		F2301E2A11C7E0CC00CEA616 /* CheckoutProductBasketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2301E2811C7E0CC00CEA616 /* CheckoutProductBasketViewController.m */; };
+		F2301E2B11C7E0CC00CEA616 /* CheckoutProductBasketView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2301E2911C7E0CC00CEA616 /* CheckoutProductBasketView.xib */; };
+		F26DBDAE11C7CDC300D6D6CA /* DBProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = F26DBDAD11C7CDC300D6D6CA /* DBProduct.m */; };
 		F26E467E11B00CF1000CA8B1 /* bottom-fade.png in Resources */ = {isa = PBXBuildFile; fileRef = F26E467D11B00CF1000CA8B1 /* bottom-fade.png */; };
 		F272FE1511BEEF9600E61BB3 /* breakfasts.png in Resources */ = {isa = PBXBuildFile; fileRef = F272FE0811BEEF9600E61BB3 /* breakfasts.png */; };
 		F272FE1611BEEF9600E61BB3 /* cakesBiscuits.png in Resources */ = {isa = PBXBuildFile; fileRef = F272FE0911BEEF9600E61BB3 /* cakesBiscuits.png */; };
@@ -108,6 +113,13 @@
 		F222E32A11BE611200C12EBB /* RecipeSpecificCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecipeSpecificCategoryViewController.h; sourceTree = "<group>"; };
 		F222E32B11BE611200C12EBB /* RecipeSpecificCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecipeSpecificCategoryViewController.m; sourceTree = "<group>"; };
 		F222E32C11BE611200C12EBB /* RecipeSpecificCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeSpecificCategoryView.xib; sourceTree = "<group>"; };
+		F22826A411C69AF40023ECAF /* button_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_green.png; sourceTree = "<group>"; };
+		F22826AD11C69C1E0023ECAF /* button_license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = button_license.txt; sourceTree = "<group>"; };
+		F2301E2711C7E0CC00CEA616 /* CheckoutProductBasketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckoutProductBasketViewController.h; sourceTree = "<group>"; };
+		F2301E2811C7E0CC00CEA616 /* CheckoutProductBasketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckoutProductBasketViewController.m; sourceTree = "<group>"; };
+		F2301E2911C7E0CC00CEA616 /* CheckoutProductBasketView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckoutProductBasketView.xib; sourceTree = "<group>"; };
+		F26DBDAC11C7CDC300D6D6CA /* DBProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBProduct.h; sourceTree = "<group>"; };
+		F26DBDAD11C7CDC300D6D6CA /* DBProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBProduct.m; sourceTree = "<group>"; };
 		F26E467D11B00CF1000CA8B1 /* bottom-fade.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bottom-fade.png"; sourceTree = "<group>"; };
 		F272FE0811BEEF9600E61BB3 /* breakfasts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = breakfasts.png; sourceTree = "<group>"; };
 		F272FE0911BEEF9600E61BB3 /* cakesBiscuits.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cakesBiscuits.png; sourceTree = "<group>"; };
@@ -343,11 +355,13 @@
 		F26DFCBD11AC246C006645A9 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				F22826A411C69AF40023ECAF /* button_green.png */,
 				F20D2FB811A2FB3A006EA070 /* tesco_header.png */,
 				F20D2F7211A2E4C9006EA070 /* icon_license.txt */,
 				F20D2F6C11A2E32E006EA070 /* icon_cart.png */,
 				F20D2F7011A2E4B9006EA070 /* icon_home.png */,
 				F20D2F6E11A2E466006EA070 /* icon_book.png */,
+				F22826AD11C69C1E0023ECAF /* button_license.txt */,
 			);
 			name = Icons;
 			sourceTree = "<group>";
@@ -422,6 +436,8 @@
 				F278EADE11A59F2900E688C5 /* DBRecipeHistory.m */,
 				F278EAE011A59F3100E688C5 /* DBRecipe.h */,
 				F278EAE111A59F3100E688C5 /* DBRecipe.m */,
+				F26DBDAC11C7CDC300D6D6CA /* DBProduct.h */,
+				F26DBDAD11C7CDC300D6D6CA /* DBProduct.m */,
 				F293DC2511A5EA61008AA947 /* DatabaseRequestManager.h */,
 				F293DC2611A5EA61008AA947 /* DatabaseRequestManager.m */,
 			);
@@ -460,6 +476,8 @@
 			children = (
 				F27BE0E211C2821000C6883B /* CheckoutRecipeBasketViewController.h */,
 				F27BE0E311C2821000C6883B /* CheckoutRecipeBasketViewController.m */,
+				F2301E2711C7E0CC00CEA616 /* CheckoutProductBasketViewController.h */,
+				F2301E2811C7E0CC00CEA616 /* CheckoutProductBasketViewController.m */,
 			);
 			name = CheckoutTab;
 			sourceTree = "<group>";
@@ -467,6 +485,7 @@
 		F27BE0E111C2818F00C6883B /* CheckoutTab */ = {
 			isa = PBXGroup;
 			children = (
+				F2301E2911C7E0CC00CEA616 /* CheckoutProductBasketView.xib */,
 				F27BE0E411C2821000C6883B /* CheckoutRecipeBasketView.xib */,
 			);
 			name = CheckoutTab;
@@ -484,9 +503,9 @@
 			children = (
 				F272FE7E11BEFB5C00E61BB3 /* Application */,
 				F2794DD211B5703C00303B0A /* SDK */,
+				F293DC2C11A5EAFF008AA947 /* TescoApi */,
 				F2794DCE11B56F3900303B0A /* HTTP */,
 				F278EAD911A59EEB00E688C5 /* Database */,
-				F293DC2C11A5EAFF008AA947 /* TescoApi */,
 				F293DC2911A5EA8B008AA947 /* DataManager.h */,
 				F293DC2A11A5EA8B008AA947 /* DataManager.m */,
 			);
@@ -614,6 +633,9 @@
 				F272FE2111BEEF9600E61BB3 /* starters.png in Resources */,
 				F272FE2D11BEEFB600E61BB3 /* categoryTemplate.psd in Resources */,
 				F27BE0E611C2821000C6883B /* CheckoutRecipeBasketView.xib in Resources */,
+				F22826A511C69AF40023ECAF /* button_green.png in Resources */,
+				F22826AE11C69C1E0023ECAF /* button_license.txt in Resources */,
+				F2301E2B11C7E0CC00CEA616 /* CheckoutProductBasketView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,6 +677,8 @@
 				F222E32D11BE611200C12EBB /* RecipeSpecificCategoryViewController.m in Sources */,
 				F272FE8111BEFB9700E61BB3 /* ApplicationRequestManager.m in Sources */,
 				F27BE0E511C2821000C6883B /* CheckoutRecipeBasketViewController.m in Sources */,
+				F26DBDAE11C7CDC300D6D6CA /* DBProduct.m in Sources */,
+				F2301E2A11C7E0CC00CEA616 /* CheckoutProductBasketViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

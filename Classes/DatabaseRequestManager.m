@@ -11,6 +11,7 @@
 #import "DataManager.h"
 #import "NSData-Extended.h"
 #import "DBRecipe.h"
+#import "DBProduct.h"
 #import "LogManager.h"
 
 static NSString *databaseName = @"jamesgrafton_rs.sqlite";
@@ -21,6 +22,7 @@ static sqlite3 *database = nil;
 	-(void)copyDatabaseIfNeeded;
 	-(NSString *)getDBPath;
 	-(DBRecipe *)buildRecipeDBObjectFromRow: (sqlite3_stmt *)selectstmt;
+	-(DBProduct *)buildProductDBObjectFromRow: (sqlite3_stmt *)selectstmt;
 @end
 
 @implementation DatabaseRequestManager
@@ -243,6 +245,57 @@ static sqlite3 *database = nil;
    }
 							   
 	return [NSArray arrayWithArray:recipes];
+}
+
+- (NSArray*)fetchProductsFromIDs: (NSArray*) productIDs{
+	NSMutableArray *products = [NSMutableArray array];	
+	
+	int i = [productIDs count];
+	int j = i - 1;
+	NSString *productQuery = @"select * from products WHERE ";
+	while ( i-- ) {
+		productQuery = [NSString stringWithFormat:@"%@ productBaseID = %@", productQuery,[productIDs objectAtIndex:j - i]]; 
+		if (i > 0) {
+			productQuery = [NSString stringWithFormat:@"%@%@", productQuery, @" or "];
+		}
+	}
+	productQuery = [NSString stringWithFormat:@"%@%@", productQuery, @";"];
+	
+	#ifdef DEBUG
+	NSString *msg = [NSString stringWithFormat:@"Executing product query %@",productQuery];
+	[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
+	#endif
+	
+	sqlite3_stmt *selectstmt;
+	if(sqlite3_prepare_v2(database, [productQuery UTF8String], -1, &selectstmt, NULL) == SQLITE_OK) {
+		while(sqlite3_step(selectstmt) == SQLITE_ROW) {
+			[products addObject: [self buildProductDBObjectFromRow: selectstmt]];
+		}
+	}else{
+		NSString *msg = [NSString stringWithFormat:@"Error executing statement %@",productQuery];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
+	}
+	
+	return products;
+}
+
+-(DBProduct *)buildProductDBObjectFromRow: (sqlite3_stmt *)selectstmt {
+	NSInteger productBaseID;
+	NSString *productName;
+	NSString *productPrice;
+	UIImage *productIcon;
+	NSDate *lastUpdated;
+	
+	productBaseID = sqlite3_column_int(selectstmt, 0);
+	productName = [NSString stringWithUTF8String: (const char *)sqlite3_column_text(selectstmt, 1)];
+	productPrice = [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt, 2)];
+	NSString* productIconString = [NSString stringWithUTF8String: (const char *) sqlite3_column_blob(selectstmt, 3)];
+	productIcon = [UIImage imageWithData: [NSData dataWithBase64EncodedString: productIconString]];
+	lastUpdated =[NSDate dateWithTimeIntervalSinceNow: sqlite3_column_double(selectstmt, 4)];
+	
+	return [[DBProduct alloc] initWithProductID:productBaseID andProductName:productName
+							  andProductPrice:productPrice andProductIcon:productIcon
+							  andLastUpdated:lastUpdated];
 }
 
 - (DBRecipe *)buildRecipeDBObjectFromRow: (sqlite3_stmt *)selectstmt {

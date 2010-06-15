@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 #import "DBRecipe.h"
+#import "DBProduct.h"
 
 @interface DataManager : NSObject <CLLocationManagerDelegate>{
 
@@ -19,6 +20,7 @@
 + (NSArray*)fetchLastPurchasedRecipes: (NSInteger) count;
 + (NSArray*)fetchAllRecipesInCategory: (NSString*) category;
 + (NSString*)fetchUserPreference: (NSString*) key;
++ (NSArray*)fetchProductsFromIDs: (NSArray*) productIDs;
 + (void)putUserPreference: (NSString*)key andValue:(NSString*) value;
 + (void)putRecipeHistory: (NSInteger)recipeID;
 
@@ -34,8 +36,11 @@
 
 //Application data
 + (void)addRecipeToBasket: (DBRecipe*)recipe;
++ (void)addProductToBasket: (DBProduct*)product;
 + (NSMutableArray*)getRecipeBasket;
++ (NSMutableDictionary*)getProductBasket;
 + (NSInteger)getRecipeBasketSize;
++ (NSInteger)getUniqueProductBasketCount;
 
 //Initialisation and deinitialisation procedures
 + (void)initialiseAll;

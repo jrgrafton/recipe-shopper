@@ -8,18 +8,20 @@
 
 #import <Foundation/Foundation.h>
 #import "DBRecipe.h"
+#import "DBProduct.h"
 
 
 @interface ApplicationRequestManager : NSObject {
 	NSMutableArray *recipeBasket;
-	NSMutableArray *productBasket;
+	NSMutableDictionary *productBasket;
 }
 
 @property (nonatomic,retain) NSMutableArray *recipeBasket;
-@property (nonatomic,retain) NSMutableArray *productBasket;
+@property (nonatomic,retain) NSMutableDictionary *productBasket;
 
 - (id)init;
 - (void)addRecipeToBasket: (DBRecipe*)recipe;
+- (void)addProductToBasket: (DBProduct*)product;
 - (NSInteger)getRecipeBasketSize;
 
 @end

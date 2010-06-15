@@ -82,6 +82,10 @@ static BOOL phoneIsOnline;
 	return [databaseRequestManager fetchUserPreference:key];
 }
 
++ (NSArray*)fetchProductsFromIDs: (NSArray*) productIDs {
+	return [databaseRequestManager fetchProductsFromIDs:productIDs];
+}
+
 + (void)putUserPreference: (NSString*)key andValue:(NSString*) value {
 	[databaseRequestManager putUserPreference: key andValue:value];
 }
@@ -151,6 +155,17 @@ static BOOL phoneIsOnline;
 
 + (NSMutableArray*)getRecipeBasket {
 	return [applicationRequestManager recipeBasket];
+}
++ (NSMutableDictionary*)getProductBasket {
+	return [applicationRequestManager productBasket];
+}
+
++ (NSInteger)getUniqueProductBasketCount {
+	return [[[applicationRequestManager productBasket] allKeys] count];
+}
+
++ (void)addProductToBasket: (DBProduct*)product {
+	[applicationRequestManager addProductToBasket:product];
 }
 
 @end
