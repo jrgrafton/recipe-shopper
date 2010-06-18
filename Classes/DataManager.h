@@ -22,7 +22,7 @@
 + (NSString*)fetchUserPreference: (NSString*) key;
 + (NSArray*)fetchProductsFromIDs: (NSArray*) productIDs;
 + (void)putUserPreference: (NSString*)key andValue:(NSString*) value;
-+ (void)putRecipeHistory: (NSInteger)recipeID;
++ (void)putRecipeHistory: (NSNumber*)recipeID;
 
 //iPhone SDK data
 + (BOOL)fileExistsInUserDocuments: (NSString*) fileName;
@@ -37,10 +37,17 @@
 //Application data
 + (void)addRecipeToBasket: (DBRecipe*)recipe;
 + (void)addProductToBasket: (DBProduct*)product;
++ (void)removeProductFromBasket: (DBProduct*)product;
 + (NSMutableArray*)getRecipeBasket;
-+ (NSMutableDictionary*)getProductBasket;
-+ (NSInteger)getRecipeBasketSize;
-+ (NSInteger)getUniqueProductBasketCount;
++ (NSArray*)getProductBasket;
++ (void)decreaseCountForProduct: (DBProduct*)product;
++ (void)increaseCountForProduct: (DBProduct*)product;
++ (NSUInteger)getCountForProduct: (DBProduct*)product;
++ (NSUInteger)getTotalProductCount;
++ (NSString*)getTotalProductBasketCost;
+
+
++ (void)createProductListFromRecipeBasket;
 
 //Initialisation and deinitialisation procedures
 + (void)initialiseAll;

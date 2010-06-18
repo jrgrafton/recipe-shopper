@@ -150,8 +150,8 @@ static sqlite3 *database = nil;
 	sqlite3_reset(updatestmt);
 }
 
-- (void)putRecipeHistory: (NSInteger)recipeID {
-	const char *recipeHistoryQuery = [[NSString stringWithFormat:@"INSERT INTO recipeHistory (recipeID) VALUES (%d)",recipeID] UTF8String];
+- (void)putRecipeHistory: (NSNumber*)recipeID {
+	const char *recipeHistoryQuery = [[NSString stringWithFormat:@"INSERT INTO recipeHistory (recipeID) VALUES (%@)",recipeID] UTF8String];
 
 	sqlite3_stmt *updatestmt;
 	if(sqlite3_prepare_v2(database, recipeHistoryQuery, -1, &updatestmt, NULL) == SQLITE_OK) {
@@ -237,7 +237,9 @@ static sqlite3 *database = nil;
    sqlite3_stmt *selectstmt;
    if(sqlite3_prepare_v2(database, recipeQuery, -1, &selectstmt, NULL) == SQLITE_OK) {
 	   while(sqlite3_step(selectstmt) == SQLITE_ROW) {
-		   [recipes addObject: [self buildRecipeDBObjectFromRow: selectstmt]];
+		   DBRecipe *recipe = [self buildRecipeDBObjectFromRow: selectstmt];
+		   [recipes addObject: recipe];
+		   [recipe release];
 	   }
    }else{
 	   NSString *msg = [NSString stringWithFormat:@"Error executing statement %@",recipeQuery];
@@ -269,7 +271,9 @@ static sqlite3 *database = nil;
 	sqlite3_stmt *selectstmt;
 	if(sqlite3_prepare_v2(database, [productQuery UTF8String], -1, &selectstmt, NULL) == SQLITE_OK) {
 		while(sqlite3_step(selectstmt) == SQLITE_ROW) {
-			[products addObject: [self buildProductDBObjectFromRow: selectstmt]];
+			DBProduct *product = [self buildProductDBObjectFromRow: selectstmt];
+			[products addObject: product];
+			[product release];
 		}
 	}else{
 		NSString *msg = [NSString stringWithFormat:@"Error executing statement %@",productQuery];
@@ -280,13 +284,13 @@ static sqlite3 *database = nil;
 }
 
 -(DBProduct *)buildProductDBObjectFromRow: (sqlite3_stmt *)selectstmt {
-	NSInteger productBaseID;
+	NSNumber *productBaseID;
 	NSString *productName;
 	NSString *productPrice;
 	UIImage *productIcon;
 	NSDate *lastUpdated;
 	
-	productBaseID = sqlite3_column_int(selectstmt, 0);
+	productBaseID = [NSNumber numberWithInt: sqlite3_column_int(selectstmt, 0)];
 	productName = [NSString stringWithUTF8String: (const char *)sqlite3_column_text(selectstmt, 1)];
 	productPrice = [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt, 2)];
 	NSString* productIconString = [NSString stringWithUTF8String: (const char *) sqlite3_column_blob(selectstmt, 3)];
@@ -295,11 +299,11 @@ static sqlite3 *database = nil;
 	
 	return [[DBProduct alloc] initWithProductID:productBaseID andProductName:productName
 							  andProductPrice:productPrice andProductIcon:productIcon
-							  andLastUpdated:lastUpdated];
+							  andLastUpdated:lastUpdated andUserAdded:NO];
 }
 
 - (DBRecipe *)buildRecipeDBObjectFromRow: (sqlite3_stmt *)selectstmt {
-	NSInteger recipeID;
+	NSNumber *recipeID;
 	NSString *recipeName;
 	NSString *categoryName;
 	NSString *description = nil;		//Possibility of NULL
@@ -322,7 +326,7 @@ static sqlite3 *database = nil;
 		[LogManager log:@"Preparing recipe from row" withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
 	#endif
 
-	recipeID = sqlite3_column_int(selectstmt, 0);
+	recipeID = [NSNumber numberWithInt: sqlite3_column_int(selectstmt, 0)];
 	recipeName = [NSString stringWithUTF8String: (const char *)sqlite3_column_text(selectstmt, 1)];
 	categoryName = [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt, 2)];
 	
@@ -362,7 +366,7 @@ static sqlite3 *database = nil;
 	
 	//Get multi part data from rest of tables...starting with ingredient text
 	sqlite3_stmt *selectstmt2;
-	const char *ingredientTextQuery = [[NSString stringWithFormat:@"Select ingredientText from recipeIngredients where recipeID = %d",recipeID] UTF8String];
+	const char *ingredientTextQuery = [[NSString stringWithFormat:@"Select ingredientText from recipeIngredients where recipeID = %@",recipeID] UTF8String];
 	if(sqlite3_prepare_v2(database, ingredientTextQuery, -1, &selectstmt2, NULL) == SQLITE_OK) {
 		while(sqlite3_step(selectstmt2) == SQLITE_ROW) {
 			[textIngredients addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 0)]];
@@ -373,7 +377,7 @@ static sqlite3 *database = nil;
 	}	
 	sqlite3_reset(selectstmt2);
 	//Recipe products query
-	const char *idProductsQuery = [[NSString stringWithFormat:@"Select productID,productQuantity from recipeProducts where recipeID = %d",recipeID] UTF8String];
+	const char *idProductsQuery = [[NSString stringWithFormat:@"Select productID,productQuantity from recipeProducts where recipeID = %@",recipeID] UTF8String];
 	if(sqlite3_prepare_v2(database, idProductsQuery, -1, &selectstmt2, NULL) == SQLITE_OK) {
 		while(sqlite3_step(selectstmt2) == SQLITE_ROW) {
 			[idProducts addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 0)]];
@@ -385,7 +389,7 @@ static sqlite3 *database = nil;
 	}
 	sqlite3_reset(selectstmt2);	
 	//Recipe instructions query
-	const char *recipeInstructionsQuery = [[NSString stringWithFormat:@"Select instruction,instructionNumber from recipeInstructions where recipeID = %d ORDER BY instructionNumber ASC",recipeID] UTF8String];
+	const char *recipeInstructionsQuery = [[NSString stringWithFormat:@"Select instruction,instructionNumber from recipeInstructions where recipeID = %@ ORDER BY instructionNumber ASC",recipeID] UTF8String];
 	if(sqlite3_prepare_v2(database, recipeInstructionsQuery, -1, &selectstmt2, NULL) == SQLITE_OK) {
 		while(sqlite3_step(selectstmt2) == SQLITE_ROW) {
 			[instructions addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 0)]];
@@ -396,7 +400,7 @@ static sqlite3 *database = nil;
 	}
 	sqlite3_reset(selectstmt2);
 	//Recipe nutritional info query
-	const char *recipeNutritionQuery = [[NSString stringWithFormat:@"Select * from recipeNutrition where recipeID = %d",recipeID] UTF8String];
+	const char *recipeNutritionQuery = [[NSString stringWithFormat:@"Select * from recipeNutrition where recipeID = %@",recipeID] UTF8String];
 	if(sqlite3_prepare_v2(database, recipeNutritionQuery, -1, &selectstmt2, NULL) == SQLITE_OK) {
 		while(sqlite3_step(selectstmt2) == SQLITE_ROW) {
 			[nutritionalInfo addObject: [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt2, 1)]];

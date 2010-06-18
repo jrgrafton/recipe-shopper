@@ -71,6 +71,7 @@ static BOOL phoneIsOnline;
 	[applicationRequestManager release];
 }
 
+#pragma mark Database Functions
 + (NSArray*)fetchLastPurchasedRecipes: (NSInteger)count {
 	return [databaseRequestManager fetchLastPurchasedRecipes:count];
 }
@@ -90,10 +91,11 @@ static BOOL phoneIsOnline;
 	[databaseRequestManager putUserPreference: key andValue:value];
 }
 
-+ (void)putRecipeHistory: (NSInteger)recipeID {
++ (void)putRecipeHistory: (NSNumber*)recipeID {
 	[databaseRequestManager putRecipeHistory: recipeID];
 }
 
+#pragma mark SDK Functions
 + (NSString*)fetchUserDocumentsPath {
 	//Search for standard documents using NSSearchPathForDirectoriesInDomains
 	//First Param = Searching the documents directory
@@ -145,27 +147,51 @@ static BOOL phoneIsOnline;
 	return [httpRequestManager fetchGeolocationFromAddress: (NSString*)address];
 }
 
+
+
+#pragma mark Application Functions
 + (void)addRecipeToBasket: (DBRecipe*)recipe {
 	[applicationRequestManager addRecipeToBasket:recipe];
 }
 
-+ (NSInteger)getRecipeBasketSize {
-	return [applicationRequestManager getRecipeBasketSize];
++ (void)addProductToBasket: (DBProduct*)product {
+	[applicationRequestManager addProductToBasket:product];
+}
+
++ (void)removeProductFromBasket: (DBProduct*)product{
+	[applicationRequestManager removeProductFromBasket:product];	
 }
 
 + (NSMutableArray*)getRecipeBasket {
 	return [applicationRequestManager recipeBasket];
 }
-+ (NSMutableDictionary*)getProductBasket {
-	return [applicationRequestManager productBasket];
+
++ (NSArray*)getProductBasket {
+	return [applicationRequestManager getProductBasket];
 }
 
-+ (NSInteger)getUniqueProductBasketCount {
-	return [[[applicationRequestManager productBasket] allKeys] count];
++ (NSUInteger)getCountForProduct: (DBProduct*)product {
+	return [applicationRequestManager getCountForProduct:product];
 }
 
-+ (void)addProductToBasket: (DBProduct*)product {
-	[applicationRequestManager addProductToBasket:product];
++ (void)decreaseCountForProduct: (DBProduct*)product {
+	[applicationRequestManager decreaseCountForProduct:product];
+}
+
++ (void)increaseCountForProduct: (DBProduct*)product {
+	[applicationRequestManager increaseCountForProduct:product];
+}
+
++ (NSUInteger)getTotalProductCount {
+	return [applicationRequestManager getTotalProductCount];
+}
+
++ (NSString*)getTotalProductBasketCost {
+	return [applicationRequestManager getTotalProductBasketCost];
+}
+
++ (void)createProductListFromRecipeBasket {
+	[applicationRequestManager createProductListFromRecipeBasket];
 }
 
 @end

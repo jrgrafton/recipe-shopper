@@ -9,7 +9,7 @@
 #import "DBRecipe.h"
 
 @interface DBRecipe ()
-	@property (readwrite,assign) NSInteger recipeID;
+	@property (readwrite,copy) NSNumber *recipeID;
 	@property (readwrite,copy) NSString *recipeName;
 	@property (readwrite,copy) NSString *categoryName;
 	@property (readwrite,copy) NSString *description;
@@ -35,7 +35,7 @@
 rating,ratingCount,contributor,cookingTime,preparationTime,serves,
 textIngredients,idProducts,idProductsQuantity,nutritionalInfo,nutritionalInfoPercent,iconSmall,iconLargeRaw;
 
-- (id)initWithRecipeID: (NSInteger)inRecipeID andRecipeName:(NSString*)inRecipeName 
+- (id)initWithRecipeID: (NSNumber*)inRecipeID andRecipeName:(NSString*)inRecipeName 
 		andCategoryName:(NSString*)inCategoryName andDescription:(NSString*)inDescription 
 		andInstructions:(NSArray*)inInstructions andRating:(NSNumber*)inRating 
 	    andRatingCount:(NSInteger)inRatingCount andContributor:(NSString*)inContributor 
@@ -69,6 +69,7 @@ textIngredients,idProducts,idProductsQuantity,nutritionalInfo,nutritionalInfoPer
 }
 
 - (void)dealloc {
+	[recipeID release];
 	[recipeName release];
 	[categoryName release];
 	[description release];

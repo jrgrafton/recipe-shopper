@@ -7,16 +7,17 @@
 //
 
 #import "ApplicationRequestManager.h"
+#import "DataManager.h"
 
 
 @implementation ApplicationRequestManager
 
-@synthesize recipeBasket,productBasket;
+@synthesize recipeBasket;
 
 - (id)init{
 	if (self = [super init]) {
 		[self setRecipeBasket:[NSMutableArray array]];
-		[self setProductBasket:[NSMutableDictionary dictionary]];
+		productBasket = [[NSMutableDictionary alloc]init];
 	}
 	return self;
 }
@@ -28,15 +29,126 @@
 - (void)addProductToBasket: (DBProduct*)product{
 	NSNumber* count = [productBasket objectForKey:product];
 	
-	if(count == nil){
-		[productBasket setObject:[NSNumber numberWithInt:1] forKey:product];
+	if (count == nil) {
+		count = [NSNumber numberWithInt:1];
 	}else{
 		count = [NSNumber numberWithInt:[count intValue] + 1];
-		[productBasket setObject:count forKey:product];
 	}
+	[productBasket setObject:count forKey:product];
 }
 
-- (NSInteger)getRecipeBasketSize{
-	return [recipeBasket count];
+- (void)removeProductFromBasket: (DBProduct*)product{
+	[productBasket removeObjectForKey:product];
+}
+
+//Override getter for productBasket to return keyset
+- (NSArray*)getProductBasket {
+	return [productBasket allKeys];
+}
+- (NSUInteger)getCountForProduct: (DBProduct*)product{
+	//Always assumes that product exists
+	return [[productBasket objectForKey:product] intValue];
+}
+
+- (void)decreaseCountForProduct: (DBProduct*)product{
+	NSNumber* count = [productBasket objectForKey:product];
+	if ([count intValue] > 0) {
+		count = [NSNumber numberWithInt:[count intValue] - 1];
+	}
+	[productBasket setObject:count forKey:product];
+}
+
+- (void)increaseCountForProduct: (DBProduct*)product{
+	NSNumber* count = [productBasket objectForKey:product];
+	if ([count intValue] < 99) {
+		count = [NSNumber numberWithInt:[count intValue] + 1];
+	}
+	[productBasket setObject:count forKey:product];
+}
+
+- (NSUInteger)getTotalProductCount {
+	NSArray *valueSet = [productBasket allValues];
+	NSUInteger totalCount = 0;
+	
+	for (NSNumber* value in valueSet) {
+		totalCount += [value intValue];
+	}
+	
+	return totalCount;
+}
+
+- (NSString*)getTotalProductBasketCost {
+	NSArray *keySet = [productBasket allKeys];
+	CGFloat totalPrice = 0;
+	
+	for (DBProduct* product in keySet) {
+		totalPrice += [[product productPrice] floatValue];
+	}
+	
+	NSNumberFormatter *numberFormatter = [[[NSNumberFormatter alloc] init] autorelease];
+	[numberFormatter setMaximumFractionDigits:2];
+	NSString *formattedTotal = [NSString stringWithFormat: @"%@",
+								[numberFormatter stringFromNumber:[NSNumber numberWithFloat: totalPrice]]];
+	
+	[numberFormatter release];
+	return formattedTotal;
+	
+}
+
+
+- (void)createProductListFromRecipeBasket {
+	
+	#ifdef DEBUG
+		[LogManager log:@"Creating product list from recipe basket" withLevel:LOG_INFO fromClass:@"ApplicationRequestManager"];
+	#endif
+	
+	//Ensure we first remove all non user added products from basket
+	if ([productBasket count] > 0){
+		NSMutableArray *toRemove = [NSMutableArray array];
+		NSArray *productKeys = [productBasket allKeys];
+		for (DBProduct* product in productKeys) {
+			if (![product userAdded]) {
+				[toRemove addObject:product];
+			}
+		}
+		[productBasket removeObjectsForKeys:toRemove];
+	}
+	
+	NSMutableDictionary *productIDToCountMap = [NSMutableDictionary dictionary];
+	//First figure out total for all products we need and fetch them from the DB
+	for (DBRecipe *recipe in recipeBasket) {
+		NSArray *productIDs = [recipe idProducts];
+		
+		NSUInteger productIndex = 0;
+		for (NSNumber *productID in productIDs){
+			NSNumber *productCount = [[recipe idProductsQuantity] objectAtIndex:productIndex];
+			for (int i=0; i<[productCount intValue]; i++) {
+				NSNumber *productTotalCount = [productIDToCountMap objectForKey:productID];
+				if (productTotalCount == nil) {
+					[productIDToCountMap setObject:[NSNumber numberWithInt:1] forKey:productID];
+				}else{
+					productTotalCount = [NSNumber numberWithInt:[productTotalCount intValue] + 1];
+					[productIDToCountMap setObject:productTotalCount forKey:productID];
+				}
+			}
+			productIndex++;
+		}
+	}
+	
+	//Now add all the DBProduct objects to the product basket
+	NSArray *individualProducts = [DataManager fetchProductsFromIDs:[productIDToCountMap allKeys]];
+	
+	for (DBProduct *product in individualProducts) {
+		//Keys always seem to be converted to NSString objects
+		NSNumber *productCount = [productIDToCountMap objectForKey:[NSString stringWithFormat:@"%@",[product productBaseID]]];
+		
+	    for (int i=0; i<[productCount intValue]; i++) {
+			[self addProductToBasket:product];
+		}
+	}
+	
+	#ifdef DEBUG
+		[LogManager log:@"Successfully created list from recipe basket" withLevel:LOG_INFO fromClass:@"ApplicationRequestManager"];
+	#endif
 }
 @end

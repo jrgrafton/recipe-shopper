@@ -9,10 +9,13 @@
 #import "CheckoutProductBasketViewController.h"
 #import "DBProduct.h"
 #import "DataManager.h"
+#import "RecipeShopperAppDelegate.h"
 
 @interface CheckoutProductBasketViewController ()
 //Private class functions
 - (void) bookDeliverySlot:(id)sender;
+- (void) decreaseCountForProduct:(id)sender;
+- (void) increaseCountForProduct:(id)sender;
 @end
 
 @implementation CheckoutProductBasketViewController
@@ -40,13 +43,17 @@
 															   green:0.9137254901960784 
 																blue:0.9568627450980392
 															   alpha:1.0]];
+	//Ensure rows are not selectable
+	[productBasketTableView setAllowsSelection:NO];
 	
+	//Set title
 	self.title = NSLocalizedString(@"Product Basket", @"Current product basket");
 }
 
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+	[DataManager createProductListFromRecipeBasket];
 	[self.tableView reloadData];
 }
 
@@ -90,21 +97,34 @@
 #pragma mark Table view methods
 
 
+
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [DataManager getUniqueProductBasketCount];
+	if (section == 0) {
+		return 2;
+	}else {
+		return [[DataManager getProductBasket] count];
+	}
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-	return @"Recipe List";
+	if (section == 0) {
+		return @"Summary";
+	}else {
+		return @"Product List";
+	}
 }
 
 - (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath{
-    return 60;
+	if (indexPath.section == 0) {
+		return 50;
+	}else{
+		return 60;
+	}
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
 
@@ -117,7 +137,11 @@
 
 // custom view for footer. will be adjusted to default or specified footer height
 // Notice: this will work only for one section within the table view
+/*
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+	if (section != 1){
+		return nil;
+	}
 	
     if(footerView == nil) {
         //allocate the view if it doesn't exist yet
@@ -149,7 +173,7 @@
 	
     //return the view for the footer
     return footerView;
-}
+}*/
 
 
 // Customize the appearance of table view cells.
@@ -162,33 +186,128 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-	// Set up the cell...
-	NSDictionary *productBasket = [DataManager getProductBasket];
-	NSArray *flatList = [productBasket allKeys];
 	
-	DBProduct *productObject = [flatList objectAtIndex:[indexPath row]];
-	[[cell textLabel] setText: [productObject productName]];
-	[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14]];
-	[[cell imageView] setImage: [productObject productIcon]];
-	
-	UILabel *distLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,70,40)];
-	[distLabel setText:[NSString stringWithFormat:@"£%@", [productObject productPrice]]];
-	[distLabel setFont:[UIFont boldSystemFontOfSize:11]];
-	
-	[cell setAccessoryView:distLabel];
-	[distLabel release];
-	
+	if(indexPath.section == 0) {
+		if ([indexPath row] == 0) {
+			//Total number of items
+			[[cell textLabel] setText: @"Total Items Needed:"];
+			//Ensure we dont show an image
+			[[cell imageView] setImage: nil];
+			
+			//Create accessory view
+			UILabel *accLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,10,10)];
+			[accLabel setText:[NSString stringWithFormat:@"%d", [DataManager getTotalProductCount]]];
+			
+			[cell setAccessoryView:accLabel];
+			//[accLabel release];
+		}else {
+			//Total cost
+			[[cell textLabel] setText: @"Total Cost:"];
+			//Ensure we dont show an image
+			[[cell imageView] setImage: nil];
+			
+			//Create accessory view
+			UILabel *accLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,70,40)];
+			//[accLabel setText:[NSString stringWithFormat:@"£%@", [DataManager getTotalProductBasketCost]]];
+			
+			[cell setAccessoryView:accLabel];
+			[accLabel release];
+		}
+	}/*else if (indexPath.section == 1) {
+		// Set up the cell...
+		NSArray *productBasket = [DataManager getProductBasket];
+		DBProduct *product = [productBasket objectAtIndex:[indexPath row]];
+		[[cell textLabel] setNumberOfLines:2];
+		[[cell textLabel] setText: [product productName]];
+		[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:10]];
+		[[cell imageView] setImage: [product productIcon]];
+		
+		
+		//Create the accessoryView for everything to be inserted into
+		UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0,0,120,54)];
+		
+		//Minus button
+		UIButton *minusButton  = [[UIButton alloc] initWithFrame:CGRectMake(0,6,44,44)];
+		[minusButton setTag:[[product productBaseID] intValue]];
+		[minusButton addTarget:self action:@selector(decreaseCountForProduct:) forControlEvents:UIControlEventTouchUpInside];
+		UIImage *minusImage = [UIImage imageNamed:@"button_minus.png"];
+		[minusButton setImage:minusImage forState:UIControlStateNormal];
+		
+		//Count label
+		UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(37,0,9,54)];
+		[countLabel setText:[NSString stringWithFormat:@"%d", [DataManager getCountForProduct:product]]];
+		[countLabel setFont:[UIFont boldSystemFontOfSize:11]];
+		
+		//Plus button
+		UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(37,6,44,44)];
+		[plusButton setTag:[[product productBaseID] intValue]];
+		[plusButton addTarget:self action:@selector(increaseCountForProduct:) forControlEvents:UIControlEventTouchUpInside];
+		UIImage *plusImage = [UIImage imageNamed:@"button_plus.png"];
+		[plusButton setBackgroundImage:plusImage forState:UIControlStateNormal];
+		
+		//Price label
+		UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(80,0,30,54)];
+		[priceLabel setText:[NSString stringWithFormat:@"£%@", [product productPrice]]];
+		[priceLabel setFont:[UIFont boldSystemFontOfSize:11]];
+		
+		//Add everything to accessory view
+		[accessoryView addSubview:minusButton];
+		[accessoryView addSubview:countLabel];
+		[accessoryView addSubview:plusButton];
+		[accessoryView addSubview:priceLabel];
+		
+		//Finally add accessory view itself
+		[cell setAccessoryView:accessoryView];
+		//[accessoryView release];
+	}*/
 	
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-	// AnotherViewController *anotherViewController = [[AnotherViewController alloc] initWithNibName:@"AnotherView" bundle:nil];
-	// [self.navigationController pushViewController:anotherViewController];
-	// [anotherViewController release];
+- (void) decreaseCountForProduct:(id)sender {
+	NSInteger productBaseID = [sender tag];
+	
+	NSArray *productBasket = [DataManager getProductBasket];
+	for (DBProduct *product in productBasket) {
+		if ([[product productBaseID] intValue] == productBaseID) {
+			[DataManager decreaseCountForProduct:product];
+		}
+	}
 }
 
+- (void) increaseCountForProduct:(id)sender {
+	NSInteger productBaseID = [sender tag];
+	
+	NSArray *productBasket = [DataManager getProductBasket];
+	for (DBProduct *product in productBasket) {
+		if ([[product productBaseID] intValue] == productBaseID) {
+			[DataManager increaseCountForProduct:product];
+		}
+	}
+}
+
+/*
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+}*/
+
+
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
+
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+		DBProduct *product = [[DataManager getProductBasket] objectAtIndex:[indexPath row]];
+		[DataManager removeProductFromBasket:product];		
+		
+		// Delete row from table view
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+    }
+}
 
 /*
 // Override to support conditional editing of the table view.

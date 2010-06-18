@@ -18,7 +18,7 @@
 - (NSArray*)fetchProductsFromIDs: (NSArray*) productIDs;
 - (NSString*) fetchUserPreference: (NSString*) key;
 - (void)putUserPreference: (NSString*)key andValue:(NSString*) value;
-- (void)putRecipeHistory: (NSInteger)recipeID;
+- (void)putRecipeHistory: (NSNumber*)recipeID;
 - (id)init;
 
 @end

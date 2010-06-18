@@ -13,15 +13,23 @@
 
 @interface ApplicationRequestManager : NSObject {
 	NSMutableArray *recipeBasket;
+	
+	//Handled as DBProduct => Count for UI ease
 	NSMutableDictionary *productBasket;
 }
 
 @property (nonatomic,retain) NSMutableArray *recipeBasket;
-@property (nonatomic,retain) NSMutableDictionary *productBasket;
 
 - (id)init;
 - (void)addRecipeToBasket: (DBRecipe*)recipe;
 - (void)addProductToBasket: (DBProduct*)product;
-- (NSInteger)getRecipeBasketSize;
+- (void)removeProductFromBasket: (DBProduct*)product;
+- (NSArray*)getProductBasket;
+- (NSUInteger)getCountForProduct: (DBProduct*)product;
+- (void)decreaseCountForProduct: (DBProduct*)product;
+- (void)increaseCountForProduct: (DBProduct*)product;
+- (NSUInteger)getTotalProductCount;
+- (NSString*)getTotalProductBasketCost;
+- (void)createProductListFromRecipeBasket;
 
 @end

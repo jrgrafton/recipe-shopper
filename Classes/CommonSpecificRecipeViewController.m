@@ -78,6 +78,12 @@
 }
 
 - (void)processViewForRecipe: (DBRecipe*)recipe {
+	//Release previous recipe
+	if ([self currentRecipe] != nil) {
+		[currentRecipe release];
+		currentRecipe = nil;
+	}
+	
 	//Set current recipe
 	[self setCurrentRecipe:recipe];
 	
@@ -101,8 +107,8 @@
 }
 
 - (NSString*) replaceTokensInPage:(NSString*)templatePrefix forRecipe:(DBRecipe*)recipe {
-	NSString *recipeHtmlName = [NSString stringWithFormat:@"%d.html",[recipe recipeID]];
-	NSString *recipeCssName = [NSString stringWithFormat:@"%d.css",[recipe recipeID]];
+	NSString *recipeHtmlName = [NSString stringWithFormat:@"%@.html",[recipe recipeID]];
+	NSString *recipeCssName = [NSString stringWithFormat:@"%@.css",[recipe recipeID]];
 	
 	#ifndef DEBUG
 	if ([DataManager fileExistsInUserDocuments:recipeHtmlName] && [DataManager fileExistsInUserDocuments:recipeCssName]){
@@ -271,7 +277,7 @@
 		//Increment badge number
 		RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 		UITabBarController *rootController = [appDelegate rootController];
-		[[rootController.tabBar.items objectAtIndex:2] setBadgeValue: [NSString stringWithFormat:@"%d",[DataManager getRecipeBasketSize]]];
+		[[rootController.tabBar.items objectAtIndex:2] setBadgeValue: [NSString stringWithFormat:@"%d",[[DataManager getRecipeBasket] count]]];
 		
 		UIAlertView *recipeAlert = [[UIAlertView alloc] initWithTitle: @"Add recipe" message: @"Recipe successfully added to cart" delegate: self cancelButtonTitle: @"OK" otherButtonTitles: nil];
 		[recipeAlert show];

@@ -100,7 +100,7 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [DataManager getRecipeBasketSize];
+    return [[DataManager getRecipeBasket]count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
@@ -203,7 +203,6 @@
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
 		[[DataManager getRecipeBasket] removeObjectAtIndex:[indexPath row]];
@@ -211,19 +210,16 @@
 		//Decrement badge number
 		RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 		UITabBarController *rootController = [appDelegate rootController];
-		[[rootController.tabBar.items objectAtIndex:2] setBadgeValue: [NSString stringWithFormat:@"%d",[DataManager getRecipeBasketSize]]];
+		[[rootController.tabBar.items objectAtIndex:2] setBadgeValue: [NSString stringWithFormat:@"%d",[[DataManager getRecipeBasket]count]]];
 		
-		if ([DataManager getRecipeBasketSize] == 0) {
+		if ([[DataManager getRecipeBasket] count] == 0) {
 			[[rootController.tabBar.items objectAtIndex:2] setBadgeValue: NULL];
 		}
 		
 		
 		// Delete row from table view
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+    }
 }
 
 
@@ -243,38 +239,9 @@
 */
 
 - (void) createProductList:(id)sender {
-	NSMutableDictionary *productIDToCountMap = [NSMutableDictionary dictionary];
-	NSArray *recipeBasket = [DataManager getRecipeBasket];
-	
-	//First figure out total for all products we need and fetch them from the DB
-	for (DBRecipe *recipe in recipeBasket) {
-		NSArray *productIDs = [recipe idProducts];
-		
-		NSUInteger productIndex = 0;
-		for (NSNumber *productID in productIDs){
-			NSNumber *productCount = [[recipe idProductsQuantity] objectAtIndex:productIndex];
-			for (int i=0; i<[productCount intValue]; i++) {
-				NSNumber *productTotalCount = [productIDToCountMap objectForKey:productID];
-				if (productTotalCount == nil) {
-					[productIDToCountMap setObject:[NSNumber numberWithInt:1] forKey:productID];
-				}else{
-					productTotalCount = [NSNumber numberWithInt:[productTotalCount intValue] + 1];
-					[productIDToCountMap setObject:productTotalCount forKey:productID];
-				}
-			}
-			productIndex++;
-		}
-	}
-	
-	//Now add all the DBProduct objects to the product basket
-	NSArray *individualProducts = [DataManager fetchProductsFromIDs:[productIDToCountMap allKeys]];
-	
-	for (DBProduct *product in individualProducts) {
-		NSNumber *productCount = [productIDToCountMap objectForKey:[NSString stringWithFormat:@"%d",[product productBaseID]]];
-		
-	    for (int i=0; i<[productCount intValue]; i++) {
-			[DataManager addProductToBasket:product];
-		}
+	//Need something in basket first!!
+	if ([[DataManager getRecipeBasket] count] == 0) {
+		return;
 	}
 	
 	//Open product basket view

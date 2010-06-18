@@ -10,7 +10,7 @@
 #import "UIImage-Extended.h"
 
 @interface DBRecipe : NSObject {
-	NSInteger recipeID;
+	NSNumber *recipeID;
 	NSString *recipeName;
 	NSString *categoryName;
 	NSString *description;
@@ -30,7 +30,7 @@
 	NSString *iconLargeRaw;	//Base64 encoded image
 }
 
-@property (readonly,assign) NSInteger recipeID;
+@property (readonly,copy) NSNumber *recipeID;
 @property (readonly,copy) NSString *recipeName;
 @property (readonly,copy) NSString *categoryName;
 @property (readonly,copy) NSString *description;
@@ -49,7 +49,7 @@
 @property (readonly,copy) UIImage *iconSmall;
 @property (readonly,copy) NSString *iconLargeRaw;
 
-- (id)initWithRecipeID: (NSInteger)inRecipeID andRecipeName:(NSString*)inRecipeName 
+- (id)initWithRecipeID: (NSNumber*)inRecipeID andRecipeName:(NSString*)inRecipeName 
 	  andCategoryName:(NSString*)inCategoryName andDescription:(NSString*)inDescription 
 	  andInstructions:(NSArray*)inInstructions andRating:(NSNumber*)inRating 
 	  andRatingCount:(NSInteger)inRatingCount andContributor:(NSString*)inContributor 
