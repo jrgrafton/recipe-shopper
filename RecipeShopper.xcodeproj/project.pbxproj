@@ -295,7 +295,6 @@
 				CE71731711A2C26A00D71D08 /* AppDelegate */,
 				CE71732A11A2C30100D71D08 /* Common */,
 				CE71731811A2C27700D71D08 /* HomeTab */,
-				F2FFC0C911BD6159009EBB6F /* RecipeTab */,
 				F27BE0DB11C2812100C6883B /* CheckoutTab */,
 			);
 			name = Controller;
@@ -328,6 +327,7 @@
 				F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */,
 				F27D69D311AAB0B100BAC6E6 /* HomeStoreTableViewController.h */,
 				F27D69D411AAB0B100BAC6E6 /* HomeStoreTableViewController.m */,
+				F2FFC0C911BD6159009EBB6F /* RecipeTab */,
 			);
 			name = HomeTab;
 			sourceTree = "<group>";

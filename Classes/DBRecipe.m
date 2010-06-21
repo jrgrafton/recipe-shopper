@@ -12,7 +12,7 @@
 	@property (readwrite,copy) NSNumber *recipeID;
 	@property (readwrite,copy) NSString *recipeName;
 	@property (readwrite,copy) NSString *categoryName;
-	@property (readwrite,copy) NSString *description;
+	@property (readwrite,copy) NSString *recipeDescription;
 	@property (readwrite,copy) NSArray *instructions;
 	@property (readwrite,copy) NSNumber *rating;
 	@property (readwrite,assign) NSInteger ratingCount;
@@ -31,12 +31,12 @@
 
 @implementation DBRecipe
 
-@synthesize recipeID,recipeName,categoryName,description,instructions,
+@synthesize recipeID,recipeName,categoryName,recipeDescription,instructions,
 rating,ratingCount,contributor,cookingTime,preparationTime,serves,
 textIngredients,idProducts,idProductsQuantity,nutritionalInfo,nutritionalInfoPercent,iconSmall,iconLargeRaw;
 
 - (id)initWithRecipeID: (NSNumber*)inRecipeID andRecipeName:(NSString*)inRecipeName 
-		andCategoryName:(NSString*)inCategoryName andDescription:(NSString*)inDescription 
+		andCategoryName:(NSString*)inCategoryName andRecipeDescription:(NSString*)inRecipeDescription 
 		andInstructions:(NSArray*)inInstructions andRating:(NSNumber*)inRating 
 	    andRatingCount:(NSInteger)inRatingCount andContributor:(NSString*)inContributor 
 	    andCookingTime:(NSString*)inCookingTime andPreparationTime:(NSString*)inPreparationTime 
@@ -49,7 +49,7 @@ textIngredients,idProducts,idProductsQuantity,nutritionalInfo,nutritionalInfoPer
 		[self setRecipeID:inRecipeID];
 		[self setRecipeName:inRecipeName];
 		[self setCategoryName:inCategoryName];
-		[self setDescription:inDescription];
+		[self setRecipeDescription:inRecipeDescription];
 		[self setInstructions:inInstructions];
 		[self setRating:inRating];
 		[self setRatingCount:inRatingCount];
@@ -68,11 +68,21 @@ textIngredients,idProducts,idProductsQuantity,nutritionalInfo,nutritionalInfoPer
 	return self;
 }
 
+- (NSString *)description {
+	return [NSString stringWithFormat:@"Recipe: ID=%@\nName=%@\nCategory=%@\nDescription=%@\nInstructions=%@\n"
+									"Rating=%@\nRatingCount=%@\nContributor=%@\nCookingTime=%@\nPreparationTime=%@\n"
+									"Serves=%@\nTextIngredients=%@\nIdProducts=%@\nIdProductsQuantity=%@\n"
+									"NutritionalInfo=%@\nNutritionalInfoPercent=%@\n",
+									recipeID,recipeName,categoryName,recipeDescription,instructions,rating,ratingCount,
+									contributor,cookingTime,preparationTime,serves,textIngredients,idProducts,
+									idProductsQuantity,nutritionalInfo,nutritionalInfoPercent];
+}
+
 - (void)dealloc {
 	[recipeID release];
 	[recipeName release];
 	[categoryName release];
-	[description release];
+	[recipeDescription release];
 	[instructions release];
 	[rating release];
 	[contributor release];

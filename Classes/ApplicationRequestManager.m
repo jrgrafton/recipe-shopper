@@ -45,7 +45,7 @@
 - (NSArray*)getProductBasket {
 	return [productBasket allKeys];
 }
-- (NSUInteger)getCountForProduct: (DBProduct*)product{
+- (NSInteger)getCountForProduct: (DBProduct*)product{
 	//Always assumes that product exists
 	return [[productBasket objectForKey:product] intValue];
 }
@@ -66,9 +66,9 @@
 	[productBasket setObject:count forKey:product];
 }
 
-- (NSUInteger)getTotalProductCount {
+- (NSInteger)getTotalProductCount {
 	NSArray *valueSet = [productBasket allValues];
-	NSUInteger totalCount = 0;
+	NSInteger totalCount = 0;
 	
 	for (NSNumber* value in valueSet) {
 		totalCount += [value intValue];
@@ -77,22 +77,15 @@
 	return totalCount;
 }
 
-- (NSString*)getTotalProductBasketCost {
+- (CGFloat)getTotalProductBasketCost {
 	NSArray *keySet = [productBasket allKeys];
 	CGFloat totalPrice = 0;
 	
 	for (DBProduct* product in keySet) {
-		totalPrice += [[product productPrice] floatValue];
+		totalPrice += ([[product productPrice] floatValue] * [[productBasket objectForKey:product] floatValue]);
 	}
 	
-	NSNumberFormatter *numberFormatter = [[[NSNumberFormatter alloc] init] autorelease];
-	[numberFormatter setMaximumFractionDigits:2];
-	NSString *formattedTotal = [NSString stringWithFormat: @"%@",
-								[numberFormatter stringFromNumber:[NSNumber numberWithFloat: totalPrice]]];
-	
-	[numberFormatter release];
-	return formattedTotal;
-	
+	return totalPrice;
 }
 
 

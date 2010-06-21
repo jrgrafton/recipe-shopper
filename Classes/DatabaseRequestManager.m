@@ -306,7 +306,7 @@ static sqlite3 *database = nil;
 	NSNumber *recipeID;
 	NSString *recipeName;
 	NSString *categoryName;
-	NSString *description = nil;		//Possibility of NULL
+	NSString *recipeDescription = nil;		//Possibility of NULL
 	NSMutableArray *instructions = [NSMutableArray array];
 	NSNumber *rating;
 	NSInteger ratingCount;
@@ -332,7 +332,7 @@ static sqlite3 *database = nil;
 	
 	const char *descriptionText = (const char *)sqlite3_column_text(selectstmt, 3);
 	if (descriptionText != NULL) {
-		description = [NSString stringWithUTF8String: descriptionText];
+		recipeDescription = [NSString stringWithUTF8String: descriptionText];
 	}
 	
 	rating = [NSNumber numberWithFloat: sqlite3_column_double(selectstmt, 4)];
@@ -421,7 +421,7 @@ static sqlite3 *database = nil;
 	}
 				 
     return [[DBRecipe alloc] initWithRecipeID:recipeID andRecipeName:recipeName
-							  andCategoryName:categoryName andDescription:description
+							  andCategoryName:categoryName andRecipeDescription:recipeDescription
 							  andInstructions:instructions andRating:rating 
 							  andRatingCount:ratingCount andContributor:contributor
 							  andCookingTime:cookingTime andPreparationTime:preparationTime

@@ -39,6 +39,10 @@
 	return productCopy;	
 }
 
+- (NSString *)description {
+	return [NSString stringWithFormat:@"Product: ID=%@\nName=%@\nPrice=%@\nLastUpdated=%@\nUserAdded=%d\n",productBaseID,productName,productPrice,lastUpdated,userAdded];
+}
+
 - (id)initWithProductID: (NSNumber*)inProductBaseID andProductName:(NSString*)inProductName 
 		andProductPrice:(NSString*)inProductPrice andProductIcon:(UIImage*)inProductIcon 
 		 andLastUpdated:(NSDate*)inLastUpdated andUserAdded:(BOOL)inUserAdded{

@@ -130,8 +130,8 @@
 	templateHtml = [templateHtml stringByReplacingOccurrencesOfString:@"{title}" withString:[recipe recipeName]];
 	
 	//Description
-	if ([recipe description] != nil) {
-		templateHtml = [templateHtml stringByReplacingOccurrencesOfString:@"{description}" withString:[recipe description]];
+	if ([recipe recipeDescription] != nil) {
+		templateHtml = [templateHtml stringByReplacingOccurrencesOfString:@"{description}" withString:[recipe recipeDescription]];
 	}else{
 		templateCss = [templateCss stringByAppendingString:@"\n#description{display:none;}"];
 	}

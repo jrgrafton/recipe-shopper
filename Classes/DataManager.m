@@ -170,7 +170,7 @@ static BOOL phoneIsOnline;
 	return [applicationRequestManager getProductBasket];
 }
 
-+ (NSUInteger)getCountForProduct: (DBProduct*)product {
++ (NSInteger)getCountForProduct: (DBProduct*)product {
 	return [applicationRequestManager getCountForProduct:product];
 }
 
@@ -182,11 +182,11 @@ static BOOL phoneIsOnline;
 	[applicationRequestManager increaseCountForProduct:product];
 }
 
-+ (NSUInteger)getTotalProductCount {
++ (NSInteger)getTotalProductCount {
 	return [applicationRequestManager getTotalProductCount];
 }
 
-+ (NSString*)getTotalProductBasketCost {
++ (CGFloat)getTotalProductBasketCost {
 	return [applicationRequestManager getTotalProductBasketCost];
 }
 

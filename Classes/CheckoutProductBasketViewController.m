@@ -130,16 +130,17 @@
 
 // specify the height of your footer section
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    //differ between your sections or if you
-    //have only on section return a static value
-    return 50;
+	if (section == 0){
+		return 0;
+	}else{
+		return 76;
+	}
 }
 
 // custom view for footer. will be adjusted to default or specified footer height
 // Notice: this will work only for one section within the table view
-/*
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-	if (section != 1){
+	if (section == 0){
 		return nil;
 	}
 	
@@ -155,7 +156,7 @@
 		[button setBackgroundImage:image forState:UIControlStateNormal];
 		
 		//the button should be as big as a table view cell
-		[button setFrame:CGRectMake(10, 3, 300, 44)];
+		[button setFrame:CGRectMake(10, 16, 300, 44)];
 		
 		//set title, font size and font color
 		[button setTitle:@"Book delivery date" forState:UIControlStateNormal];
@@ -173,7 +174,7 @@
 	
     //return the view for the footer
     return footerView;
-}*/
+}
 
 
 // Customize the appearance of table view cells.
@@ -189,31 +190,45 @@
 	
 	if(indexPath.section == 0) {
 		if ([indexPath row] == 0) {
+			//Ensure we dont show an image
+			[[cell imageView] setImage: nil];
+			
 			//Total number of items
 			[[cell textLabel] setText: @"Total Items Needed:"];
-			//Ensure we dont show an image
-			[[cell imageView] setImage: nil];
+			[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14]];
+			
+			//Create the accessoryView so we can pad uilabel
+			UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0,0,70,40)];
 			
 			//Create accessory view
-			UILabel *accLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,10,10)];
+			UILabel *accLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,60,40)];
 			[accLabel setText:[NSString stringWithFormat:@"%d", [DataManager getTotalProductCount]]];
+			[accLabel setTextAlignment: UITextAlignmentRight];
 			
-			[cell setAccessoryView:accLabel];
-			//[accLabel release];
+			[accessoryView addSubview:accLabel];
+			[cell setAccessoryView:accessoryView];
+			[accessoryView release];
 		}else {
-			//Total cost
-			[[cell textLabel] setText: @"Total Cost:"];
 			//Ensure we dont show an image
 			[[cell imageView] setImage: nil];
+			
+			//Total cost
+			[[cell textLabel] setText: @"Total Cost:"];
+			[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14]];
+			
+			//Create the accessoryView so we can pad uilabel
+			UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0,0,80,40)];
 			
 			//Create accessory view
 			UILabel *accLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,70,40)];
-			//[accLabel setText:[NSString stringWithFormat:@"£%@", [DataManager getTotalProductBasketCost]]];
+			[accLabel setText:[NSString stringWithFormat:@"£%.2f", [DataManager getTotalProductBasketCost]]];
+			[accLabel setTextAlignment: UITextAlignmentRight];
 			
-			[cell setAccessoryView:accLabel];
-			[accLabel release];
+			[accessoryView addSubview:accLabel];
+			[cell setAccessoryView:accessoryView];
+			[accessoryView release];
 		}
-	}/*else if (indexPath.section == 1) {
+	}else if (indexPath.section == 1) {
 		// Set up the cell...
 		NSArray *productBasket = [DataManager getProductBasket];
 		DBProduct *product = [productBasket objectAtIndex:[indexPath row]];
@@ -224,7 +239,7 @@
 		
 		
 		//Create the accessoryView for everything to be inserted into
-		UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0,0,120,54)];
+		UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0,0,126,54)];
 		
 		//Minus button
 		UIButton *minusButton  = [[UIButton alloc] initWithFrame:CGRectMake(0,6,44,44)];
@@ -234,32 +249,38 @@
 		[minusButton setImage:minusImage forState:UIControlStateNormal];
 		
 		//Count label
-		UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(37,0,9,54)];
-		[countLabel setText:[NSString stringWithFormat:@"%d", [DataManager getCountForProduct:product]]];
+		UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(37,0,13,54)];
+		NSInteger productQuantity = [DataManager getCountForProduct:product];
+		[countLabel setText:[NSString stringWithFormat:@"%d", productQuantity]];
 		[countLabel setFont:[UIFont boldSystemFontOfSize:11]];
+		[countLabel setTextAlignment: UITextAlignmentCenter];
 		
 		//Plus button
-		UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(37,6,44,44)];
+		UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(43,6,44,44)];
 		[plusButton setTag:[[product productBaseID] intValue]];
 		[plusButton addTarget:self action:@selector(increaseCountForProduct:) forControlEvents:UIControlEventTouchUpInside];
 		UIImage *plusImage = [UIImage imageNamed:@"button_plus.png"];
 		[plusButton setBackgroundImage:plusImage forState:UIControlStateNormal];
 		
 		//Price label
-		UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(80,0,30,54)];
-		[priceLabel setText:[NSString stringWithFormat:@"£%@", [product productPrice]]];
+		UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(80,0,42,54)];
+		[priceLabel setText:[NSString stringWithFormat:@"£%.2f", ([[product productPrice] floatValue] * productQuantity)]];
 		[priceLabel setFont:[UIFont boldSystemFontOfSize:11]];
+		[priceLabel setTextAlignment: UITextAlignmentRight];
 		
 		//Add everything to accessory view
 		[accessoryView addSubview:minusButton];
-		[accessoryView addSubview:countLabel];
 		[accessoryView addSubview:plusButton];
+		[accessoryView addSubview:countLabel];
 		[accessoryView addSubview:priceLabel];
+		
+		//Ensure count label is in front of button
+		[accessoryView bringSubviewToFront:countLabel];
 		
 		//Finally add accessory view itself
 		[cell setAccessoryView:accessoryView];
-		//[accessoryView release];
-	}*/
+		[accessoryView release];
+	}
 	
     return cell;
 }
@@ -273,6 +294,8 @@
 			[DataManager decreaseCountForProduct:product];
 		}
 	}
+	
+	[self.tableView reloadData];
 }
 
 - (void) increaseCountForProduct:(id)sender {
@@ -284,6 +307,8 @@
 			[DataManager increaseCountForProduct:product];
 		}
 	}
+	
+	[self.tableView reloadData];
 }
 
 /*
@@ -306,6 +331,9 @@
 		
 		// Delete row from table view
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+		
+		//Will need to update totals
+		[self.tableView reloadData];
     }
 }
 

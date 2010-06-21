@@ -25,11 +25,11 @@
 - (void)addProductToBasket: (DBProduct*)product;
 - (void)removeProductFromBasket: (DBProduct*)product;
 - (NSArray*)getProductBasket;
-- (NSUInteger)getCountForProduct: (DBProduct*)product;
+- (NSInteger)getCountForProduct: (DBProduct*)product;
 - (void)decreaseCountForProduct: (DBProduct*)product;
 - (void)increaseCountForProduct: (DBProduct*)product;
-- (NSUInteger)getTotalProductCount;
-- (NSString*)getTotalProductBasketCost;
+- (NSInteger)getTotalProductCount;
+- (CGFloat)getTotalProductBasketCost;
 - (void)createProductListFromRecipeBasket;
 
 @end

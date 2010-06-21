@@ -115,7 +115,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     //differ between your sections or if you
     //have only on section return a static value
-    return 50;
+    return 76;
 }
 
 // custom view for footer. will be adjusted to default or specified footer height
@@ -134,7 +134,7 @@
 		[button setBackgroundImage:image forState:UIControlStateNormal];
 		
 		//the button should be as big as a table view cell
-		[button setFrame:CGRectMake(10, 3, 300, 44)];
+		[button setFrame:CGRectMake(10, 16, 300, 44)];
 		
 		//set title, font size and font color
 		[button setTitle:@"Create Product List" forState:UIControlStateNormal];

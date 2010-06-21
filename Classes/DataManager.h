@@ -42,9 +42,9 @@
 + (NSArray*)getProductBasket;
 + (void)decreaseCountForProduct: (DBProduct*)product;
 + (void)increaseCountForProduct: (DBProduct*)product;
-+ (NSUInteger)getCountForProduct: (DBProduct*)product;
-+ (NSUInteger)getTotalProductCount;
-+ (NSString*)getTotalProductBasketCost;
++ (NSInteger)getCountForProduct: (DBProduct*)product;
++ (NSInteger)getTotalProductCount;
++ (CGFloat)getTotalProductBasketCost;
 
 
 + (void)createProductListFromRecipeBasket;

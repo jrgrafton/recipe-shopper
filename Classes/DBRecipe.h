@@ -13,7 +13,7 @@
 	NSNumber *recipeID;
 	NSString *recipeName;
 	NSString *categoryName;
-	NSString *description;
+	NSString *recipeDescription;
 	NSArray *instructions;
 	NSNumber *rating;
 	NSInteger ratingCount;
@@ -33,7 +33,7 @@
 @property (readonly,copy) NSNumber *recipeID;
 @property (readonly,copy) NSString *recipeName;
 @property (readonly,copy) NSString *categoryName;
-@property (readonly,copy) NSString *description;
+@property (readonly,copy) NSString *recipeDescription;
 @property (readonly,copy) NSArray *instructions;
 @property (readonly,copy) NSNumber *rating;
 @property (readonly,assign) NSInteger ratingCount;
@@ -50,7 +50,7 @@
 @property (readonly,copy) NSString *iconLargeRaw;
 
 - (id)initWithRecipeID: (NSNumber*)inRecipeID andRecipeName:(NSString*)inRecipeName 
-	  andCategoryName:(NSString*)inCategoryName andDescription:(NSString*)inDescription 
+	  andCategoryName:(NSString*)inCategoryName andRecipeDescription:(NSString*)inRecipeDescription 
 	  andInstructions:(NSArray*)inInstructions andRating:(NSNumber*)inRating 
 	  andRatingCount:(NSInteger)inRatingCount andContributor:(NSString*)inContributor 
 	  andCookingTime:(NSString*)inCookingTime andPreparationTime:(NSString*)inPreparationTime 
