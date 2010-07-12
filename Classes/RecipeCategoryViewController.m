@@ -53,6 +53,7 @@
 	UIImage *image = [UIImage imageNamed: @"tesco_header.png"];
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
 	self.navigationItem.titleView = imageView;
+	[imageView release];
 	
 	//Ensure scroll view is right size
 	scrollView.contentSize = CGSizeMake(320.0f, SCROLL_VIEW_MAX_HEIGHT);

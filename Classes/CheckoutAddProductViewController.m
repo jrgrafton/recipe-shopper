@@ -8,7 +8,19 @@
 
 #import "CheckoutAddProductViewController.h"
 #import "LogManager.h"
+#import "DataManager.h"
+#import "DBProduct.h"
 
+@interface CheckoutAddProductViewController ()
+//Private class functions
+-(void)getProductsMatchingSearchTerm:(NSString*) searchTerm;
+-(void)showLoadingOverlay;
+-(void)hideLoadingOverlay;
+-(void) decreaseCountForProduct:(id)sender;
+-(void) increaseCountForProduct:(id)sender;
+-(NSInteger) getDesiredProductQuantity:(DBProduct*) product
+-(void)updateTableViewWithProducts:(NSArray*)products 
+@end
 
 @implementation CheckoutAddProductViewController
 
@@ -34,16 +46,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	//UIImage *image = [UIImage imageNamed: @"tesco_header.png"];
-	//UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
-	//self.navigationItem.titleView = imageView;
-	[navigationBar setHidden:NO];
+	UIImage *image = [UIImage imageNamed: @"tesco_header.png"];
+	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+	[[navigationBar topItem] setTitleView: imageView];
+	[imageView release];
 	
-	//Set background colour
-	[productSearchTableView setBackgroundColor: [UIColor colorWithRed:0.8745098039215686 
-														   green:0.9137254901960784 
-															blue:0.9568627450980392
-														   alpha:1.0]];
+	//Ensure we are the delegate and datasource for the table view
+	[productSearchTableView setDelegate:self];
+	[productSearchTableView setDataSource:self];
+	
+	//Add the search bar
+	[searchBar setPlaceholder:@"Enter Search Term"];
+	[searchBar setDelegate: self];
+	[productSearchTableView setTableHeaderView:searchBar];
+	[searchBar setAutocorrectionType:UITextAutocorrectionTypeNo];
+	
+	//Initialise found products array
+	foundProducts = [NSArray array];
 }
 
 /*
@@ -61,11 +80,22 @@
     [super viewWillDisappear:animated];
 }
 */
-/*
+
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+	
+	//Hide keyboard
+	[searchBar resignFirstResponder];
+	
+	//Blank out found products array
+	[foundProducts release];
+	foundProducts = [NSArray array];
+	[self.tableView reloadData];
+	
+	//Ensure loading overlay is removed
+	[self hideLoadingOverlay];
 }
-*/
+
 /*
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -73,6 +103,26 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 */
+
+#pragma mark -
+#pragma mark General View Functionality
+
+-(void)showLoadingOverlay{
+	loadingView = [LoadingView loadingViewInView:(UIView *)productSearchTableView withText:@"Finding Products..." 
+										 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
+								 andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
+																					  green:1.0 
+																					   blue:1.0
+																					  alpha:1.0]
+								   andDrawStroke:FALSE];
+}
+
+-(void)hideLoadingOverlay{
+	if(loadingView != nil){
+		[loadingView removeView];
+		loadingView = nil;
+	}
+}
 
 
 #pragma mark -
@@ -100,7 +150,58 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    // Configure the cell...
+    // Set up the cell...
+	NSArray *productBasket = [DataManager getProductBasket];
+	DBProduct *product = [productBasket objectAtIndex:[indexPath row]];
+	[[cell textLabel] setNumberOfLines:2];
+	[[cell textLabel] setText: [product productName]];
+	[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:10]];
+	[[cell imageView] setImage: [product productIcon]];
+	
+	
+	//Create the accessoryView for everything to be inserted into
+	UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0,0,126,54)];
+	
+	//Minus button
+	UIButton *minusButton  = [[UIButton alloc] initWithFrame:CGRectMake(0,6,44,44)];
+	[minusButton setTag:[[product productBaseID] intValue]];
+	[minusButton addTarget:self action:@selector(decreaseCountForProduct:) forControlEvents:UIControlEventTouchUpInside];
+	UIImage *minusImage = [UIImage imageNamed:@"button_minus.png"];
+	[minusButton setImage:minusImage forState:UIControlStateNormal];
+	
+	//Count label
+	UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(37,0,13,54)];
+	NSInteger productQuantity = [self getDesiredProductQuantity:product];
+	
+	[countLabel setText:[NSString stringWithFormat:@"%d", productQuantity]];
+	[countLabel setFont:[UIFont boldSystemFontOfSize:11]];
+	[countLabel setTextAlignment: UITextAlignmentCenter];
+	
+	//Plus button
+	UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(43,6,44,44)];
+	[plusButton setTag:[[product productBaseID] intValue]];
+	[plusButton addTarget:self action:@selector(increaseCountForProduct:) forControlEvents:UIControlEventTouchUpInside];
+	UIImage *plusImage = [UIImage imageNamed:@"button_plus.png"];
+	[plusButton setBackgroundImage:plusImage forState:UIControlStateNormal];
+	
+	//Price label
+	UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(80,0,42,54)];
+	[priceLabel setText:[NSString stringWithFormat:@"£%.2f", ([[product productPrice] floatValue] * productQuantity)]];
+	[priceLabel setFont:[UIFont boldSystemFontOfSize:11]];
+	[priceLabel setTextAlignment: UITextAlignmentRight];
+	
+	//Add everything to accessory view
+	[accessoryView addSubview:minusButton];
+	[accessoryView addSubview:plusButton];
+	[accessoryView addSubview:countLabel];
+	[accessoryView addSubview:priceLabel];
+	
+	//Ensure count label is in front of button
+	[accessoryView bringSubviewToFront:countLabel];
+	
+	//Finally add accessory view itself
+	[cell setAccessoryView:accessoryView];
+	[accessoryView release];
     
     return cell;
 }
@@ -188,6 +289,89 @@
 	[self.delegate currentViewControllerDidFinish:self];	
 }
 
+-(NSInteger) getDesiredProductQuantity:(DBProduct*) product {
+	NSString *productKey = [NSString stringWithFormat:@"%@",[product productBaseID]];
+	
+	NSNumber *count = [desiredProductQuantities objectForKey:productKey];
+	if (count == nil) {
+		count = [NSNumber numberWithInt:1];
+		[desiredProductQuantities setValue:count forKey:productKey];
+	}
+	
+	return count;
+}
+
+- (void) decreaseCountForProduct:(id)sender {
+	NSInteger productBaseID = [sender tag];
+	NSString *productKey = [NSString stringWithFormat:@"%d",productBaseID];
+	
+	NSNumber *count = [desiredProductQuantities objectForKey:productKey];
+	if ([count intValue] > 1) {
+		count = [NSNumber numberWithInt:[[count intValue] - 1]];
+	}
+	
+	[desiredProductQuantities setValue:count forKey:productKey];
+	
+	[self.tableView reloadData];
+}
+
+- (void) increaseCountForProduct:(id)sender {
+	NSInteger productBaseID = [sender tag];
+	NSString *productKey = [NSString stringWithFormat:@"%d",productBaseID];
+	
+	NSNumber *count = [desiredProductQuantities objectForKey:productKey];
+	if ([count intValue] < 99) {
+		count = [NSNumber numberWithInt:[[count intValue] + 1]];
+	}
+	
+	[desiredProductQuantities setValue:count forKey:productKey];
+	
+	[self.tableView reloadData];
+}
+
+- (void) searchBarSearchButtonClicked:(UISearchBar *)theSearchBar {
+	//Ensure we remove keyboard
+	[searchBar resignFirstResponder];
+	
+	//Perform search
+	[productSearchTableView setScrollEnabled:FALSE];
+	[self showLoadingOverlay];
+	[NSThread detachNewThreadSelector: @selector(getProductsMatchingSearchTerm:) toTarget:self withObject:[searchBar text]];
+	
+}
+
+-(void)getProductsMatchingSearchTerm:(NSString*) searchTerm{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	@try {
+		NSInteger pageCountHolder = 0;
+		NSArray products = [DataManager fetchProductsMatchingSearchTerm:searchTerm onThisPage:1 andGiveMePageCount:&pageCountHolder];
+		
+		if ([products count] == 0) {
+			UIAlertView *emptyResults = [[UIAlertView alloc] initWithTitle: @"No Results" message: [NSString stringWithFormat:@"Unable to find any products matching %@",searchTerm] delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
+			[emptyResults show];
+			[emptyResults release];
+			closestStores = [NSArray array];
+		}
+		
+		[self performSelectorOnMainThread:@selector(updateTableViewWithProducts:) withObject:stores waitUntilDone:TRUE];
+	}
+	@catch (id exception) {
+		NSString *msg = [NSString stringWithFormat:@"Exception: '%@'.",exception];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"CheckoutAddProductViewController"];
+	}
+	@finally {
+		[pool release];
+	}
+}
+
+-(void)updateTableViewWithProducts:(NSArray*)products {
+	//Retain cause its part of another threads memory pool!!
+	closestStores = [[NSArray arrayWithArray:stores] retain];
+	[self.tableView reloadData];	
+	[self.tableView setScrollEnabled:TRUE];
+	[self hideLoadingOverlay];
+}
 
 @end
 

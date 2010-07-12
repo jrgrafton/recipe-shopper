@@ -13,4 +13,7 @@
 
 }
 
+- (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder;
+- (id)init;
+
 @end

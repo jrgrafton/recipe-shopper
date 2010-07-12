@@ -16,6 +16,7 @@
 }
 
 //Publicly available data aquisition
+
 //DB data
 + (NSArray*)fetchLastPurchasedRecipes: (NSInteger) count;
 + (NSArray*)fetchAllRecipesInCategory: (NSString*) category;
@@ -34,6 +35,9 @@
 + (NSArray*)fetchGeolocationFromAddress: (NSString*)address;
 + (NSArray*)fetchClosestStoresToGeolocation: (NSArray*)latitudeLongitude andReturnUpToThisMany:(NSInteger) count;
 
+//Tesco API data
++ (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder;
+
 //Application data
 + (void)addRecipeToBasket: (DBRecipe*)recipe;
 + (void)addProductToBasket: (DBProduct*)product;
@@ -45,8 +49,6 @@
 + (NSInteger)getCountForProduct: (DBProduct*)product;
 + (NSInteger)getTotalProductCount;
 + (CGFloat)getTotalProductBasketCost;
-
-
 + (void)createProductListFromRecipeBasket;
 
 //Initialisation and deinitialisation procedures

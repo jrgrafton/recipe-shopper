@@ -87,7 +87,7 @@
 	NSString *requestString = [NSString stringWithFormat: @"http://maps.google.com/maps/geo?q=%@&output=csv&oe=utf8&sensor=true_or_false&key=%@",address,GOOGLE_API_KEY];
 	
 	NSData *data = [self httpGetRequest:requestString];	
-	NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *result = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
 
 	if ([result length] != 0){
 		NSArray *parts = [result componentsSeparatedByString: @","];

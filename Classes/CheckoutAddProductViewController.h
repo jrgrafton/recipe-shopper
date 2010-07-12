@@ -10,16 +10,16 @@
 #import "CheckoutProductBasketViewController.h"
 #import "LoadingView.h"
 
-@interface CheckoutAddProductViewController : UITableViewController {
+@interface CheckoutAddProductViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate> {
 	IBOutlet UITableView *productSearchTableView;
 	IBOutlet UISearchBar *searchBar;
 	IBOutlet UINavigationBar *navigationBar;
 	id <PreviousViewControllerDelegate> delegate;
 	
 	@private
-	BOOL busyFindingProducts;
 	LoadingView *loadingView;
 	NSArray *foundProducts;
+	NSDictionary *desiredProductQuantities;
 }
 
 @property (nonatomic, assign) id <PreviousViewControllerDelegate> delegate;

@@ -37,6 +37,7 @@
 	UIImage *image = [UIImage imageNamed: @"tesco_header.png"];
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
 	self.navigationItem.titleView = imageView;
+	[imageView release];
 	
 	//Set background colour
 	[recipeBasketTableView setBackgroundColor: [UIColor colorWithRed:0.8745098039215686 

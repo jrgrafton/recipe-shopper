@@ -40,6 +40,7 @@
 	UIImage *image = [UIImage imageNamed: @"tesco_header.png"];
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
 	self.navigationItem.titleView = imageView;
+	[imageView release];
 	
 	//Set background colour
 	[productBasketTableView setBackgroundColor: [UIColor colorWithRed:0.8745098039215686 
@@ -327,8 +328,11 @@
 
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+	if ([indexPath section] == 0){
+		return NO;
+	}else{
+		return YES;
+	}
 }
 
 // Override to support editing the table view.

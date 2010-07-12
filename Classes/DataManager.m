@@ -194,4 +194,9 @@ static BOOL phoneIsOnline;
 	[applicationRequestManager createProductListFromRecipeBasket];
 }
 
+#pragma mark API functions
++ (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder {
+	return [apiRequestManager fetchProductsMatchingSearchTerm: searchTerm onThisPage: pageNumber andGiveMePageCount: pageCountHolder];
+}
+
 @end
