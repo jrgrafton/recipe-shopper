@@ -8,10 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol PreviousViewControllerDelegate;
 
-@interface CheckoutProductBasketViewController : UITableViewController {
-	IBOutlet UITableView *productBasketTableView;
-	
+@protocol PreviousViewControllerDelegate
+- (void)currentViewControllerDidFinish:(UIViewController *)controller;
+@end
+
+@interface CheckoutProductBasketViewController : UITableViewController <PreviousViewControllerDelegate> {
+	IBOutlet UITableView *productBasketTableView;	
 	UIView *footerView;
 }
 

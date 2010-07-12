@@ -16,12 +16,14 @@
 		28D7ACF80DDB3853001CB0EB /* AllViewsNavController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* AllViewsNavController.m */; };
 		CE71733911A2C3B700D71D08 /* UIViewController-Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = CE71733811A2C3B700D71D08 /* UIViewController-Extended.m */; };
 		CE7173AE11A2C48600D71D08 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7173AD11A2C48600D71D08 /* QuartzCore.framework */; };
+		CE79F48011EA143900468A6C /* CheckoutAddProductView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */; };
+		CE79F4BF11EA1B7500468A6C /* CheckoutAddProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE79F4BE11EA1B7500468A6C /* CheckoutAddProductViewController.m */; };
 		F20D2F6D11A2E32E006EA070 /* icon_cart.png in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F6C11A2E32E006EA070 /* icon_cart.png */; };
 		F20D2F6F11A2E466006EA070 /* icon_book.png in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F6E11A2E466006EA070 /* icon_book.png */; };
 		F20D2F7111A2E4B9006EA070 /* icon_home.png in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F7011A2E4B9006EA070 /* icon_home.png */; };
 		F20D2F7311A2E4C9006EA070 /* icon_license.txt in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F7211A2E4C9006EA070 /* icon_license.txt */; };
-		F20D2F8311A2EAB1006EA070 /* HomeTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F8211A2EAB1006EA070 /* HomeTableView.xib */; };
-		F20D2F8B11A2EEE6006EA070 /* HomeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */; };
+		F20D2F8311A2EAB1006EA070 /* HomeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F8211A2EAB1006EA070 /* HomeView.xib */; };
+		F20D2F8B11A2EEE6006EA070 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F20D2F8A11A2EEE6006EA070 /* HomeViewController.m */; };
 		F20D2FB911A2FB3A006EA070 /* tesco_header.png in Resources */ = {isa = PBXBuildFile; fileRef = F20D2FB811A2FB3A006EA070 /* tesco_header.png */; };
 		F22254D811A6A1B20006658B /* LogManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F22254D711A6A1B20006658B /* LogManager.m */; };
 		F222E32D11BE611200C12EBB /* RecipeSpecificCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F222E32B11BE611200C12EBB /* RecipeSpecificCategoryViewController.m */; };
@@ -68,8 +70,8 @@
 		F27C38E411CB8A2C003BB50F /* button_plus.png in Resources */ = {isa = PBXBuildFile; fileRef = F27C38E211CB8A2C003BB50F /* button_plus.png */; };
 		F27CCC3D11A9D876000673CD /* NSData-Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = F27CCC3C11A9D876000673CD /* NSData-Extended.m */; };
 		F27CCD7E11A9F26B000673CD /* UIImage-Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = F27CCD7D11A9F26B000673CD /* UIImage-Extended.m */; };
-		F27D69D611AAB0B100BAC6E6 /* HomeStoreTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F27D69D411AAB0B100BAC6E6 /* HomeStoreTableViewController.m */; };
-		F27D69D711AAB0B100BAC6E6 /* HomeStoreTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F27D69D511AAB0B100BAC6E6 /* HomeStoreTableView.xib */; };
+		F27D69D611AAB0B100BAC6E6 /* HomeStoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F27D69D411AAB0B100BAC6E6 /* HomeStoreViewController.m */; };
+		F27D69D711AAB0B100BAC6E6 /* HomeStoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F27D69D511AAB0B100BAC6E6 /* HomeStoreView.xib */; };
 		F27D6A8011AAC21500BAC6E6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F27D6A7F11AAC21500BAC6E6 /* SystemConfiguration.framework */; };
 		F27D6A9411AAC27600BAC6E6 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F27D6A9311AAC27600BAC6E6 /* Reachability.m */; };
 		F27D6AB911AACA6800BAC6E6 /* CommonSpecificRecipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F27D6AB711AACA6800BAC6E6 /* CommonSpecificRecipeViewController.m */; };
@@ -102,13 +104,16 @@
 		CE71733711A2C3B700D71D08 /* UIViewController-Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController-Extended.h"; sourceTree = "<group>"; };
 		CE71733811A2C3B700D71D08 /* UIViewController-Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController-Extended.m"; sourceTree = "<group>"; };
 		CE7173AD11A2C48600D71D08 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckoutAddProductView.xib; sourceTree = "<group>"; };
+		CE79F4BD11EA1B7500468A6C /* CheckoutAddProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckoutAddProductViewController.h; sourceTree = "<group>"; };
+		CE79F4BE11EA1B7500468A6C /* CheckoutAddProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckoutAddProductViewController.m; sourceTree = "<group>"; };
 		F20D2F6C11A2E32E006EA070 /* icon_cart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_cart.png; sourceTree = "<group>"; };
 		F20D2F6E11A2E466006EA070 /* icon_book.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_book.png; sourceTree = "<group>"; };
 		F20D2F7011A2E4B9006EA070 /* icon_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_home.png; sourceTree = "<group>"; };
 		F20D2F7211A2E4C9006EA070 /* icon_license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = icon_license.txt; sourceTree = "<group>"; };
-		F20D2F8211A2EAB1006EA070 /* HomeTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeTableView.xib; sourceTree = "<group>"; };
-		F20D2F8911A2EEE6006EA070 /* HomeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableViewController.h; sourceTree = "<group>"; };
-		F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTableViewController.m; sourceTree = "<group>"; };
+		F20D2F8211A2EAB1006EA070 /* HomeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeView.xib; sourceTree = "<group>"; };
+		F20D2F8911A2EEE6006EA070 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		F20D2F8A11A2EEE6006EA070 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		F20D2FB811A2FB3A006EA070 /* tesco_header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tesco_header.png; sourceTree = "<group>"; };
 		F22254D611A6A1B20006658B /* LogManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogManager.h; sourceTree = "<group>"; };
 		F22254D711A6A1B20006658B /* LogManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogManager.m; sourceTree = "<group>"; };
@@ -177,9 +182,9 @@
 		F27CCC3C11A9D876000673CD /* NSData-Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData-Extended.m"; sourceTree = "<group>"; };
 		F27CCD7C11A9F26B000673CD /* UIImage-Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage-Extended.h"; sourceTree = "<group>"; };
 		F27CCD7D11A9F26B000673CD /* UIImage-Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage-Extended.m"; sourceTree = "<group>"; };
-		F27D69D311AAB0B100BAC6E6 /* HomeStoreTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeStoreTableViewController.h; sourceTree = "<group>"; };
-		F27D69D411AAB0B100BAC6E6 /* HomeStoreTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeStoreTableViewController.m; sourceTree = "<group>"; };
-		F27D69D511AAB0B100BAC6E6 /* HomeStoreTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeStoreTableView.xib; sourceTree = "<group>"; };
+		F27D69D311AAB0B100BAC6E6 /* HomeStoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeStoreViewController.h; sourceTree = "<group>"; };
+		F27D69D411AAB0B100BAC6E6 /* HomeStoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeStoreViewController.m; sourceTree = "<group>"; };
+		F27D69D511AAB0B100BAC6E6 /* HomeStoreView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeStoreView.xib; sourceTree = "<group>"; };
 		F27D6A7F11AAC21500BAC6E6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
 		F27D6A9211AAC27600BAC6E6 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		F27D6A9311AAC27600BAC6E6 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
@@ -295,6 +300,7 @@
 				CE71731711A2C26A00D71D08 /* AppDelegate */,
 				CE71732A11A2C30100D71D08 /* Common */,
 				CE71731811A2C27700D71D08 /* HomeTab */,
+				F2FFC0C911BD6159009EBB6F /* RecipeTab */,
 				F27BE0DB11C2812100C6883B /* CheckoutTab */,
 			);
 			name = Controller;
@@ -304,8 +310,8 @@
 			isa = PBXGroup;
 			children = (
 				F2FFC0D011BD61CF009EBB6F /* Common */,
-				F2FFC0D211BD61F4009EBB6F /* RecipeTab */,
 				F2FFC0D111BD61E1009EBB6F /* HomeTab */,
+				F2FFC0D211BD61F4009EBB6F /* RecipeTab */,
 				F27BE0E111C2818F00C6883B /* CheckoutTab */,
 			);
 			name = View;
@@ -323,11 +329,10 @@
 		CE71731811A2C27700D71D08 /* HomeTab */ = {
 			isa = PBXGroup;
 			children = (
-				F20D2F8911A2EEE6006EA070 /* HomeTableViewController.h */,
-				F20D2F8A11A2EEE6006EA070 /* HomeTableViewController.m */,
-				F27D69D311AAB0B100BAC6E6 /* HomeStoreTableViewController.h */,
-				F27D69D411AAB0B100BAC6E6 /* HomeStoreTableViewController.m */,
-				F2FFC0C911BD6159009EBB6F /* RecipeTab */,
+				F20D2F8911A2EEE6006EA070 /* HomeViewController.h */,
+				F20D2F8A11A2EEE6006EA070 /* HomeViewController.m */,
+				F27D69D311AAB0B100BAC6E6 /* HomeStoreViewController.h */,
+				F27D69D411AAB0B100BAC6E6 /* HomeStoreViewController.m */,
 			);
 			name = HomeTab;
 			sourceTree = "<group>";
@@ -339,8 +344,8 @@
 				28D7ACF70DDB3853001CB0EB /* AllViewsNavController.m */,
 				CE71733711A2C3B700D71D08 /* UIViewController-Extended.h */,
 				CE71733811A2C3B700D71D08 /* UIViewController-Extended.m */,
-				F2794D6311B5587A00303B0A /* LoadingView.m */,
 				F2794D6411B5587A00303B0A /* LoadingView.h */,
+				F2794D6311B5587A00303B0A /* LoadingView.m */,
 				F27D6AB611AACA6800BAC6E6 /* CommonSpecificRecipeViewController.h */,
 				F27D6AB711AACA6800BAC6E6 /* CommonSpecificRecipeViewController.m */,
 			);
@@ -485,6 +490,8 @@
 				F27BE0E311C2821000C6883B /* CheckoutRecipeBasketViewController.m */,
 				F2301E2711C7E0CC00CEA616 /* CheckoutProductBasketViewController.h */,
 				F2301E2811C7E0CC00CEA616 /* CheckoutProductBasketViewController.m */,
+				CE79F4BD11EA1B7500468A6C /* CheckoutAddProductViewController.h */,
+				CE79F4BE11EA1B7500468A6C /* CheckoutAddProductViewController.m */,
 			);
 			name = CheckoutTab;
 			sourceTree = "<group>";
@@ -492,8 +499,9 @@
 		F27BE0E111C2818F00C6883B /* CheckoutTab */ = {
 			isa = PBXGroup;
 			children = (
-				F2301E2911C7E0CC00CEA616 /* CheckoutProductBasketView.xib */,
 				F27BE0E411C2821000C6883B /* CheckoutRecipeBasketView.xib */,
+				F2301E2911C7E0CC00CEA616 /* CheckoutProductBasketView.xib */,
+				CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */,
 			);
 			name = CheckoutTab;
 			sourceTree = "<group>";
@@ -550,8 +558,8 @@
 		F2FFC0D111BD61E1009EBB6F /* HomeTab */ = {
 			isa = PBXGroup;
 			children = (
-				F27D69D511AAB0B100BAC6E6 /* HomeStoreTableView.xib */,
-				F20D2F8211A2EAB1006EA070 /* HomeTableView.xib */,
+				F20D2F8211A2EAB1006EA070 /* HomeView.xib */,
+				F27D69D511AAB0B100BAC6E6 /* HomeStoreView.xib */,
 			);
 			name = HomeTab;
 			sourceTree = "<group>";
@@ -559,8 +567,8 @@
 		F2FFC0D211BD61F4009EBB6F /* RecipeTab */ = {
 			isa = PBXGroup;
 			children = (
-				F222E32C11BE611200C12EBB /* RecipeSpecificCategoryView.xib */,
 				F2FFC0CC11BD619C009EBB6F /* RecipeCategoryView.xib */,
+				F222E32C11BE611200C12EBB /* RecipeSpecificCategoryView.xib */,
 			);
 			name = RecipeTab;
 			sourceTree = "<group>";
@@ -612,9 +620,9 @@
 				F20D2F6F11A2E466006EA070 /* icon_book.png in Resources */,
 				F20D2F7111A2E4B9006EA070 /* icon_home.png in Resources */,
 				F20D2F7311A2E4C9006EA070 /* icon_license.txt in Resources */,
-				F20D2F8311A2EAB1006EA070 /* HomeTableView.xib in Resources */,
+				F20D2F8311A2EAB1006EA070 /* HomeView.xib in Resources */,
 				F20D2FB911A2FB3A006EA070 /* tesco_header.png in Resources */,
-				F27D69D711AAB0B100BAC6E6 /* HomeStoreTableView.xib in Resources */,
+				F27D69D711AAB0B100BAC6E6 /* HomeStoreView.xib in Resources */,
 				F27D6ABA11AACA6800BAC6E6 /* CommonSpecificRecipeView.xib in Resources */,
 				F27D6B1D11AAEF2900BAC6E6 /* recipe_base.html in Resources */,
 				F27D6B1F11AAEF3800BAC6E6 /* recipe_base.css in Resources */,
@@ -644,6 +652,7 @@
 				F2301E2B11C7E0CC00CEA616 /* CheckoutProductBasketView.xib in Resources */,
 				F27C38E311CB8A2C003BB50F /* button_minus.png in Resources */,
 				F27C38E411CB8A2C003BB50F /* button_plus.png in Resources */,
+				CE79F48011EA143900468A6C /* CheckoutAddProductView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -658,7 +667,7 @@
 				1D3623260D0F684500981E51 /* RecipeShopperAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* AllViewsNavController.m in Sources */,
 				CE71733911A2C3B700D71D08 /* UIViewController-Extended.m in Sources */,
-				F20D2F8B11A2EEE6006EA070 /* HomeTableViewController.m in Sources */,
+				F20D2F8B11A2EEE6006EA070 /* HomeViewController.m in Sources */,
 				F278EADC11A59F1C00E688C5 /* DBUserPreference.m in Sources */,
 				F278EADF11A59F2900E688C5 /* DBRecipeHistory.m in Sources */,
 				F278EAE211A59F3100E688C5 /* DBRecipe.m in Sources */,
@@ -668,7 +677,7 @@
 				F22254D811A6A1B20006658B /* LogManager.m in Sources */,
 				F27CCC3D11A9D876000673CD /* NSData-Extended.m in Sources */,
 				F27CCD7E11A9F26B000673CD /* UIImage-Extended.m in Sources */,
-				F27D69D611AAB0B100BAC6E6 /* HomeStoreTableViewController.m in Sources */,
+				F27D69D611AAB0B100BAC6E6 /* HomeStoreViewController.m in Sources */,
 				F27D6A9411AAC27600BAC6E6 /* Reachability.m in Sources */,
 				F27D6AB911AACA6800BAC6E6 /* CommonSpecificRecipeViewController.m in Sources */,
 				F2794D3A11B5517600303B0A /* LocationController.m in Sources */,
@@ -687,6 +696,7 @@
 				F27BE0E511C2821000C6883B /* CheckoutRecipeBasketViewController.m in Sources */,
 				F26DBDAE11C7CDC300D6D6CA /* DBProduct.m in Sources */,
 				F2301E2A11C7E0CC00CEA616 /* CheckoutProductBasketViewController.m in Sources */,
+				CE79F4BF11EA1B7500468A6C /* CheckoutAddProductViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

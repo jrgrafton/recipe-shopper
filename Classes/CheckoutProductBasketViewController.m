@@ -7,8 +7,10 @@
 //
 
 #import "CheckoutProductBasketViewController.h"
+#import "CheckoutAddProductViewController.h"
 #import "DBProduct.h"
 #import "DataManager.h"
+#import "LogManager.h"
 #import "RecipeShopperAppDelegate.h"
 
 @interface CheckoutProductBasketViewController ()
@@ -16,6 +18,7 @@
 - (void) bookDeliverySlot:(id)sender;
 - (void) decreaseCountForProduct:(id)sender;
 - (void) increaseCountForProduct:(id)sender;
+- (void) addProduct:(id)sender;
 @end
 
 @implementation CheckoutProductBasketViewController
@@ -45,6 +48,12 @@
 															   alpha:1.0]];
 	//Ensure rows are not selectable
 	[productBasketTableView setAllowsSelection:NO];
+	
+	//Add product add button to top right corner
+	UIBarButtonItem *addButton = [[UIBarButtonItem alloc]
+                                  initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addProduct:)];
+	
+	self.navigationItem.rightBarButtonItem = addButton;
 	
 	//Set title
 	self.title = NSLocalizedString(@"Product Basket", @"Current product basket");
@@ -380,12 +389,39 @@
 	
 }
 
+- (void) addProduct:(id)sender {
+	//Check for network connectivity
+	if (![DataManager phoneIsOnline]) {
+		[LogManager log:@"Internet connection could not be detected" withLevel:LOG_WARNING fromClass:@"CheckoutProductBasketViewController"];
+		UIAlertView *networkError = [[UIAlertView alloc] initWithTitle: @"Network error" message: @"Feature unavailable offline" delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
+		[networkError show];
+		[networkError release]; 
+		return;
+	}else {
+		[LogManager log:@"Internet connection successfully detected" withLevel:LOG_INFO fromClass:@"CheckoutProductBasketViewController"];
+	}
+	
+	//Want to present modal view controller here
+	CheckoutAddProductViewController *controller = [[CheckoutAddProductViewController alloc] initWithNibName:@"CheckoutAddProductView" bundle:nil];
+	controller.title = @"Add Product";
+	controller.delegate = self;
+	
+	controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	[self presentModalViewController:controller animated:YES];
+	
+	[controller release];
+}
+
 - (void)dealloc {
 	[productBasketTableView release];
 	[footerView release];
     [super dealloc];
 }
 
+
+- (void)currentViewControllerDidFinish:(UIViewController *)controller {
+	[self dismissModalViewControllerAnimated:YES];
+}
 
 @end
 
