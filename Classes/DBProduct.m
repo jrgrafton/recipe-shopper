@@ -40,7 +40,7 @@
 }
 
 - (NSString *)description {
-	return [NSString stringWithFormat:@"Product: ID=%@\nName=%@\nPrice=%@\nLastUpdated=%@\nUserAdded=%d\n",productBaseID,productName,productPrice,lastUpdated,userAdded];
+	return [NSString stringWithFormat:@"Product:\nID=%@\nName=%@\nPrice=%@\nLastUpdated=%@\nUserAdded=%d\n",productBaseID,productName,productPrice,lastUpdated,userAdded];
 }
 
 - (id)initWithProductID: (NSNumber*)inProductBaseID andProductName:(NSString*)inProductName 

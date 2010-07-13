@@ -18,8 +18,8 @@
 -(void)hideLoadingOverlay;
 -(void) decreaseCountForProduct:(id)sender;
 -(void) increaseCountForProduct:(id)sender;
--(NSInteger) getDesiredProductQuantity:(DBProduct*) product
--(void)updateTableViewWithProducts:(NSArray*)products 
+-(NSInteger) getDesiredProductQuantity:(DBProduct*) product;
+-(void)updateTableViewWithProducts:(NSArray*)products;
 @end
 
 @implementation CheckoutAddProductViewController
@@ -55,14 +55,21 @@
 	[productSearchTableView setDelegate:self];
 	[productSearchTableView setDataSource:self];
 	
+	//Set background colour
+	[productSearchTableView setBackgroundColor: [UIColor colorWithRed:0.8745098039215686 
+																green:0.9137254901960784 
+																 blue:0.9568627450980392
+																alpha:1.0]];
+	
 	//Add the search bar
 	[searchBar setPlaceholder:@"Enter Search Term"];
 	[searchBar setDelegate: self];
 	[productSearchTableView setTableHeaderView:searchBar];
 	[searchBar setAutocorrectionType:UITextAutocorrectionTypeNo];
 	
-	//Initialise found products array
-	foundProducts = [NSArray array];
+	//Current and max page set to 1
+	currentPage = 1;
+	maxPage = 1;	
 }
 
 /*
@@ -90,10 +97,14 @@
 	//Blank out found products array
 	[foundProducts release];
 	foundProducts = [NSArray array];
-	[self.tableView reloadData];
+	[productSearchTableView reloadData];
 	
 	//Ensure loading overlay is removed
 	[self hideLoadingOverlay];
+	
+	//Current and max page set to 1
+	currentPage = 1;
+	maxPage = 1;
 }
 
 /*
@@ -130,15 +141,26 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 0;
+    return [foundProducts count];
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+	if ([foundProducts count] == 0) {
+		return @"";
+	}else {
+		return [NSString stringWithFormat: @"Search Results (Page %d of %d)",currentPage,maxPage];
+	}
+}
+
+- (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath{
+	return 60;
+}
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -151,13 +173,12 @@
     }
     
     // Set up the cell...
-	NSArray *productBasket = [DataManager getProductBasket];
-	DBProduct *product = [productBasket objectAtIndex:[indexPath row]];
+	DBProduct *product = [foundProducts objectAtIndex:[indexPath row]];
 	[[cell textLabel] setNumberOfLines:2];
 	[[cell textLabel] setText: [product productName]];
 	[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:10]];
-	[[cell imageView] setImage: [product productIcon]];
-	
+	//[[cell imageView] setImage: [product productIcon]];
+	[[cell imageView] setImage: [UIImage imageNamed:@"icon_product_default.jpg"]];
 	
 	//Create the accessoryView for everything to be inserted into
 	UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0,0,126,54)];
@@ -298,7 +319,7 @@
 		[desiredProductQuantities setValue:count forKey:productKey];
 	}
 	
-	return count;
+	return [count intValue];
 }
 
 - (void) decreaseCountForProduct:(id)sender {
@@ -307,12 +328,12 @@
 	
 	NSNumber *count = [desiredProductQuantities objectForKey:productKey];
 	if ([count intValue] > 1) {
-		count = [NSNumber numberWithInt:[[count intValue] - 1]];
+		count = [NSNumber numberWithInt:[count intValue] - 1];
 	}
 	
 	[desiredProductQuantities setValue:count forKey:productKey];
 	
-	[self.tableView reloadData];
+	[productSearchTableView reloadData];
 }
 
 - (void) increaseCountForProduct:(id)sender {
@@ -321,12 +342,12 @@
 	
 	NSNumber *count = [desiredProductQuantities objectForKey:productKey];
 	if ([count intValue] < 99) {
-		count = [NSNumber numberWithInt:[[count intValue] + 1]];
+		count = [NSNumber numberWithInt:[count intValue] + 1];
 	}
 	
 	[desiredProductQuantities setValue:count forKey:productKey];
 	
-	[self.tableView reloadData];
+	[productSearchTableView reloadData];
 }
 
 - (void) searchBarSearchButtonClicked:(UISearchBar *)theSearchBar {
@@ -345,16 +366,17 @@
 	
 	@try {
 		NSInteger pageCountHolder = 0;
-		NSArray products = [DataManager fetchProductsMatchingSearchTerm:searchTerm onThisPage:1 andGiveMePageCount:&pageCountHolder];
+		NSArray *products = [DataManager fetchProductsMatchingSearchTerm:searchTerm onThisPage:1 andGiveMePageCount:&pageCountHolder];
+		maxPage = pageCountHolder;
 		
 		if ([products count] == 0) {
 			UIAlertView *emptyResults = [[UIAlertView alloc] initWithTitle: @"No Results" message: [NSString stringWithFormat:@"Unable to find any products matching %@",searchTerm] delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
 			[emptyResults show];
 			[emptyResults release];
-			closestStores = [NSArray array];
+			foundProducts = [NSArray array];
 		}
 		
-		[self performSelectorOnMainThread:@selector(updateTableViewWithProducts:) withObject:stores waitUntilDone:TRUE];
+		[self performSelectorOnMainThread:@selector(updateTableViewWithProducts:) withObject:products waitUntilDone:TRUE];
 	}
 	@catch (id exception) {
 		NSString *msg = [NSString stringWithFormat:@"Exception: '%@'.",exception];
@@ -367,9 +389,9 @@
 
 -(void)updateTableViewWithProducts:(NSArray*)products {
 	//Retain cause its part of another threads memory pool!!
-	closestStores = [[NSArray arrayWithArray:stores] retain];
-	[self.tableView reloadData];	
-	[self.tableView setScrollEnabled:TRUE];
+	foundProducts = [[NSArray arrayWithArray:products] retain];
+	[productSearchTableView reloadData];	
+	[productSearchTableView setScrollEnabled:TRUE];
 	[self hideLoadingOverlay];
 }
 

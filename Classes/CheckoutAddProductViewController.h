@@ -20,6 +20,8 @@
 	LoadingView *loadingView;
 	NSArray *foundProducts;
 	NSDictionary *desiredProductQuantities;
+	NSInteger currentPage;
+	NSInteger maxPage;
 }
 
 @property (nonatomic, assign) id <PreviousViewControllerDelegate> delegate;

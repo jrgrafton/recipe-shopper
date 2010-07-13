@@ -14,6 +14,8 @@
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* AllViewsNavController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* AllViewsNavController.m */; };
+		CE4826C511ECCF2300937DEF /* icon_product_default.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE4826C411ECCF2300937DEF /* icon_product_default.jpg */; };
+		CE4826C811ECD19A00937DEF /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4826C711ECD19A00937DEF /* UIImage+Resize.m */; };
 		CE71733911A2C3B700D71D08 /* UIViewController-Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = CE71733811A2C3B700D71D08 /* UIViewController-Extended.m */; };
 		CE7173AE11A2C48600D71D08 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7173AD11A2C48600D71D08 /* QuartzCore.framework */; };
 		CE79F48011EA143900468A6C /* CheckoutAddProductView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */; };
@@ -101,6 +103,9 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ../main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* RecipeShopper_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecipeShopper_Prefix.pch; path = ../RecipeShopper_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* RecipeShopper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RecipeShopper-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		CE4826C411ECCF2300937DEF /* icon_product_default.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = icon_product_default.jpg; sourceTree = "<group>"; };
+		CE4826C611ECD19A00937DEF /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
+		CE4826C711ECD19A00937DEF /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
 		CE71733711A2C3B700D71D08 /* UIViewController-Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController-Extended.h"; sourceTree = "<group>"; };
 		CE71733811A2C3B700D71D08 /* UIViewController-Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController-Extended.m"; sourceTree = "<group>"; };
 		CE7173AD11A2C48600D71D08 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -344,6 +349,8 @@
 				28D7ACF70DDB3853001CB0EB /* AllViewsNavController.m */,
 				CE71733711A2C3B700D71D08 /* UIViewController-Extended.h */,
 				CE71733811A2C3B700D71D08 /* UIViewController-Extended.m */,
+				CE4826C611ECD19A00937DEF /* UIImage+Resize.h */,
+				CE4826C711ECD19A00937DEF /* UIImage+Resize.m */,
 				F2794D6411B5587A00303B0A /* LoadingView.h */,
 				F2794D6311B5587A00303B0A /* LoadingView.m */,
 				F27D6AB611AACA6800BAC6E6 /* CommonSpecificRecipeViewController.h */,
@@ -364,6 +371,7 @@
 		F26DFCBD11AC246C006645A9 /* Icons & Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				CE4826C411ECCF2300937DEF /* icon_product_default.jpg */,
 				F27C38E111CB8A2C003BB50F /* button_minus.png */,
 				F27C38E211CB8A2C003BB50F /* button_plus.png */,
 				F22826A411C69AF40023ECAF /* button_green.png */,
@@ -653,6 +661,7 @@
 				F27C38E311CB8A2C003BB50F /* button_minus.png in Resources */,
 				F27C38E411CB8A2C003BB50F /* button_plus.png in Resources */,
 				CE79F48011EA143900468A6C /* CheckoutAddProductView.xib in Resources */,
+				CE4826C511ECCF2300937DEF /* icon_product_default.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -697,6 +706,7 @@
 				F26DBDAE11C7CDC300D6D6CA /* DBProduct.m in Sources */,
 				F2301E2A11C7E0CC00CEA616 /* CheckoutProductBasketViewController.m in Sources */,
 				CE79F4BF11EA1B7500468A6C /* CheckoutAddProductViewController.m in Sources */,
+				CE4826C811ECD19A00937DEF /* UIImage+Resize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

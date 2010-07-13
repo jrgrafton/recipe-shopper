@@ -9,18 +9,22 @@
 #import "APIRequestManager.h"
 #import "JSON.h"
 #import "LogManager.h"
+#import "DBProduct.h"
+#import "UIImage+Resize.h"
 
-#define DEVELOPER_KEY xIvRaeGkY6OavPL1XtX9
-#define APPLICATION_KEY CA1A9E0437CBE399E890
+#define DEVELOPER_KEY @"xIvRaeGkY6OavPL1XtX9"
+#define APPLICATION_KEY @"CA1A9E0437CBE399E890"
+#define REST_SERVICE_URL @"https://secure.techfortesco.com/groceryapi_b1/restservice.aspx"
 
-#define ANONYMOUS_LOGIN_REQUEST_STRING(developerKey,applicationKey) @"https://secure.techfortesco.com/groceryapi_b1/restservice.aspx?command=LOGIN&email=&password=&developerkey=" #developerKey "&applicationkey=" #applicationKey ""
 #define PRODUCT_SEARCH_REQUEST_STRING(searchTerm,sessionKey,pageNumber) @"http://www.techfortesco.com/groceryapi_b1/restservice.aspx?command=PRODUCTSEARCH&searchtext=" #searchTerm "&page=" #pageNumber "&sessionkey=" #sessionKey ""
 
 @interface APIRequestManager ()
 //Private class functions
 -(NSData *)httpGetRequest:(NSString*)requestUrl;
 -(NSString *)urlEncodeValue:(NSString *)string;
--(NSArray *)getJSONForRequest:(NSString*)requestString;
+-(id)getJSONForRequest:(NSString*)requestString;
+-(DBProduct*)buildProductFromInfo:(NSDictionary*)productInfo;
+-(UIImage*)getImageForProduct:(NSString*)iconUrl;
 @end
 
 @implementation APIRequestManager
@@ -35,26 +39,62 @@
 - (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder{
 	NSMutableArray *products = [NSMutableArray array];
 	
+	NSString *loginRequestString = [NSString stringWithFormat:@"%@?command=LOGIN&email=&password=&developerkey=%@&applicationkey=%@",REST_SERVICE_URL,DEVELOPER_KEY,APPLICATION_KEY];
+	
 	//Perform anonymous login
-	NSData *data = [self httpGetRequest:ANONYMOUS_LOGIN_REQUEST_STRING(APPLICATION_KEY,DEVELOPER_KEY)];
-	NSString *result = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-	NSArray *details = [self getJSONForRequest:result];
+	NSDictionary *loginDetails = [self getJSONForRequest:loginRequestString];
 	NSString *sessionKey = @"";
 	
 	//Get Session key
-	for (NSDictionary *detail in details){
-		sessionKey = [detail objectForKey:@"SessionKey"];
+	if (loginDetails != nil) {
+		sessionKey = [loginDetails objectForKey:@"SessionKey"];
 	}
+	
 	if ([sessionKey length] == 0){
 		[LogManager log:@"Anonymous login failed while searching for products" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
 		return products;
 	}
 	
 	//Now we have session key try doing search...
-	data = [self httpGetRequest:PRODUCT_SEARCH_REQUEST_STRING(searchTerm,sessionKey,pageNumber)];	
-	result = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+	NSString *productSearchRequestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&page=%d&sessionkey=%@",REST_SERVICE_URL,searchTerm,pageNumber,sessionKey];
+	NSDictionary *productSearchResult = [self getJSONForRequest:productSearchRequestString];
+	*pageCountHolder = [[productSearchResult objectForKey:@"TotalPageCount"] intValue];
+	
+	NSArray *JSONProducts = [productSearchResult objectForKey:@"Products"];
+	
+	for (NSDictionary *JSONProduct in JSONProducts) {
+		[products addObject:[self buildProductFromInfo:JSONProduct]];
+	}
 	
 	return products;
+}
+
+-(DBProduct*)buildProductFromInfo:(NSDictionary*)productInfo{
+	NSString * msg = [NSString stringWithFormat:@"Building product from %@",productInfo];
+	[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
+	
+	NSNumber *productBaseID = [NSNumber numberWithInt:[[productInfo objectForKey:@"BaseProductId"] intValue]];
+	NSString *productName = [productInfo objectForKey:@"Name"];
+	NSString *productPrice = [productInfo objectForKey:@"Price"];
+	UIImage *productIcon = [self getImageForProduct:[productInfo objectForKey:@"ImagePath"]];
+	NSDate *lastUpdated = [NSDate date];
+	
+	return [[DBProduct alloc] initWithProductID:productBaseID andProductName:productName
+								andProductPrice:productPrice andProductIcon:productIcon
+								 andLastUpdated:lastUpdated andUserAdded:YES];
+}
+							   
+-(UIImage*) getImageForProduct:(NSString*)iconUrl{
+	UIImage *image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
+	UIImage *defaultImage = [UIImage imageNamed:@"icon_product_default.jpg"];
+	
+	if (image == nil){
+		return defaultImage;
+	}else {
+	    [image resizedImage:CGSizeMake(41,41) interpolationQuality:kCGInterpolationHigh];
+	}
+	
+	return nil;
 }
 
 -(NSString *) urlEncodeValue:(NSString*)requestString{
@@ -80,7 +120,7 @@
 	return [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
 }
 
--(NSArray *)getJSONForRequest:(NSString*)requestString{
+-(id)getJSONForRequest:(NSString*)requestString{
 	NSData *data = [self httpGetRequest:requestString];	
 	NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	
@@ -93,7 +133,7 @@
 	
 	SBJSON *parser = [[SBJSON alloc] init];
 	NSError *error = nil;
-	NSArray *results = [parser objectWithString:jsonString allowScalar:TRUE error:&error];
+	id results = [parser objectWithString:jsonString allowScalar:TRUE error:&error];
 	
 	if(error != nil){
 		NSString *msg = [NSString stringWithFormat:@"error parsing JSON: '%@'.",[error localizedDescription]];
