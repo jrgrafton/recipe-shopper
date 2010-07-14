@@ -25,6 +25,7 @@
 -(id)getJSONForRequest:(NSString*)requestString;
 -(DBProduct*)buildProductFromInfo:(NSDictionary*)productInfo;
 -(UIImage*)getImageForProduct:(NSString*)iconUrl;
+-(id)getSessionKeyForEmail:(NSString*)email usingPassword:(NSString*)password;
 @end
 
 @implementation APIRequestManager
@@ -36,38 +37,8 @@
 	return self;
 }
 
-- (NSArray*)filterAvailableProducts:(NSArray*)productIdList {
-	
-}
-
-- (BOOL)loginToStore:(NSString*) email withPassword:(NSString*) password {
-	if ([email length] == 0 || [password length] == 0) {
-		return FALSE;
-	}
-	
+-(id)getSessionKeyForEmail:(NSString*)email usingPassword:(NSString*)password {
 	NSString *loginRequestString = [NSString stringWithFormat:@"%@?command=LOGIN&email=%@&password=%@&developerkey=%@&applicationkey=%@",REST_SERVICE_URL,email,password,DEVELOPER_KEY,APPLICATION_KEY];
-	
-	//Perform anonymous login
-	NSDictionary *loginDetails = [self getJSONForRequest:loginRequestString];
-	NSString *sessionKey = @"";
-	
-	//Get Session key
-	if (loginDetails != nil && [loginDetails isKindOfClass:[NSDictionary class]]) {
-		sessionKey = [loginDetails objectForKey:@"SessionKey"];
-	}
-	
-	if ([sessionKey length] == 0){
-		[LogManager log:@"User login failed" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-		return FALSE;
-	}
-	
-	return TRUE;
-}
-
-- (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder{
-	NSMutableArray *products = [NSMutableArray array];
-	
-	NSString *loginRequestString = [NSString stringWithFormat:@"%@?command=LOGIN&email=&password=&developerkey=%@&applicationkey=%@",REST_SERVICE_URL,DEVELOPER_KEY,APPLICATION_KEY];
 	
 	//Perform anonymous login
 	NSDictionary *loginDetails = [self getJSONForRequest:loginRequestString];
@@ -79,7 +50,46 @@
 	}
 	
 	if ([sessionKey length] == 0){
-		[LogManager log:@"Anonymous login failed while searching for products" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+	#ifdef DEBUG
+		NSString* msg = [NSString stringWithFormat:@"Login failed for [%@]/[%@]",email,password];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+	#endif
+		return nil;
+	}
+	
+	return sessionKey;
+}
+
+- (NSArray*)filterAvailableProducts:(NSArray*)productIdList {
+	NSString* sessionKey = [self getSessionKeyForEmail:@"" usingPassword:@""];
+	
+	//If API is down just return original list
+	if (sessionKey == nil) {
+		return productIdList;
+	}
+	
+	//Now we have session key try doing search...
+	//NSString *productSearchRequestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&page=%d&sessionkey=%@",REST_SERVICE_URL,searchTerm,pageNumber,sessionKey];
+	//NSDictionary *productSearchResult = [self getJSONForRequest:productSearchRequestString];
+	//NSArray *JSONProducts = [productSearchResult objectForKey:@"Products"];
+	
+	return productIdList;
+}
+
+- (BOOL)loginToStore:(NSString*) email withPassword:(NSString*) password {
+	if ([email length] == 0 || [password length] == 0) {
+		return FALSE;
+	}
+	
+	return [self getSessionKeyForEmail:email usingPassword:password] != nil;
+}
+
+- (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder{
+	NSMutableArray *products = [NSMutableArray array];
+	
+	NSString* sessionKey = [self getSessionKeyForEmail:@"" usingPassword:@""];
+	
+	if (sessionKey == nil) {
 		return products;
 	}
 	
@@ -162,7 +172,9 @@
 	
 	if(error != nil){
 		NSString *msg = [NSString stringWithFormat:@"error parsing JSON: '%@'.",[error localizedDescription]];
+	#ifdef DEBUG
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+	#endif
 		results = [NSArray array];
 	}
 	
