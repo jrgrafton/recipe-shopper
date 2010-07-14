@@ -212,4 +212,8 @@ static BOOL phoneIsOnline;
 	return [apiRequestManager loginToStore:email withPassword:password];
 }
 
++ (BOOL)addProductBasketToStoreBasket{
+	return [apiRequestManager addProductBasketToStoreBasket];
+}
+
 @end

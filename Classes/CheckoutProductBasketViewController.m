@@ -21,6 +21,7 @@
 - (void) addProduct:(id)sender;
 - (void) loginToStore:(id)sender;
 - (void) showLoginError;
+- (void) transitionToDeliverySelection;
 @end
 
 @implementation CheckoutProductBasketViewController
@@ -391,7 +392,10 @@
 */
 
 - (void) bookDeliverySlot:(id)sender {
-	if ([DataManager getTotalProductCount] == 0) {
+	if ([DataManager getTotalProductCount] < 5) {
+		UIAlertView *networkError = [[UIAlertView alloc] initWithTitle: @"Checkout error" message: @"Unable checkout order containing less than 5 products" delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
+		[networkError show];
+		[networkError release]; 
 		return;
 	}
 	
@@ -402,7 +406,6 @@
 		[networkError release]; 
 		return;
 	}
-	
 	UIAlertView *loginPrompt = [[UIAlertView alloc] initWithTitle: @"Login" message: @"Please login to your account\n\n\n\n\n" delegate: self cancelButtonTitle: @"Cancel" otherButtonTitles: @"OK", nil];
 	
 	UITextField *emailField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 80.0, 260.0, 30.0)];
@@ -439,11 +442,18 @@
 -(void)alertView: (UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger) buttonIndex{
 	//Login Request
 	if ([[alertView title] isEqualToString:@"Login"] && [alertView cancelButtonIndex] != buttonIndex){
-		UITextField *emailField = [[alertView subviews] objectAtIndex:4];
-		UITextField *passwordField = [[alertView subviews] objectAtIndex:5];
+		NSString *emailText = [[[alertView subviews] objectAtIndex:4] text];
+		NSString *passwordText = [[[alertView subviews] objectAtIndex:5] text];
+		if (emailText == nil){
+			emailText = @"";
+		}
+		if (passwordText == nil) {
+			passwordText = @"";
+		}
+		
 		NSMutableArray *details = [NSMutableArray arrayWithCapacity:2];
-		[details addObject:[emailField text]];
-		[details addObject:[passwordField text]];
+		[details addObject:emailText];
+		[details addObject:passwordText];
 		
 		//Detach worker thread so that this function can exit and keyboard can disappear!!
 		[NSThread detachNewThreadSelector: @selector(loginToStore:) toTarget:self withObject:details];
@@ -460,6 +470,8 @@
 	BOOL loginSuccessful = [DataManager loginToStore:[details objectAtIndex:0] withPassword:[details objectAtIndex:1]];
 	if (!loginSuccessful) {
 		[self performSelectorOnMainThread:@selector(showLoginError) withObject:nil waitUntilDone:TRUE];
+	}else {
+		[self performSelectorOnMainThread:@selector(transitionToDeliverySelection) withObject:nil waitUntilDone:TRUE];
 	}
 	
 	[pool release];
@@ -469,6 +481,10 @@
 	UIAlertView *loginError = [[UIAlertView alloc] initWithTitle: @"" message: @"Your Tesco login details were incorrect. Please try again." delegate: self cancelButtonTitle: @"Cancel" otherButtonTitles: @"Retry", nil];
 	[loginError show];
 	[loginError release];
+}
+
+-(void) transitionToDeliverySelection {
+	[DataManager addProductBasketToStoreBasket];
 }
 
 - (void) addProduct:(id)sender {

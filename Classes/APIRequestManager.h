@@ -11,11 +11,15 @@
 
 @interface APIRequestManager : NSObject {
 
+	@private
+	NSString *authenticatedSessionKey;
+	NSDate *authenticatedTime;
 }
 
 - (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder;
 - (BOOL)loginToStore:(NSString*) email withPassword:(NSString*) password;
 - (NSArray*)filterAvailableProducts:(NSArray*)productIdList;
+- (BOOL)addProductBasketToStoreBasket;
 - (id)init;
 
 @end

@@ -282,6 +282,11 @@
 		UIAlertView *recipeAlert = [[UIAlertView alloc] initWithTitle: @"Add recipe" message: @"Recipe successfully added to cart" delegate: self cancelButtonTitle: @"OK" otherButtonTitles: nil];
 		[recipeAlert show];
 		[recipeAlert release];
+		
+		//Pop checkout navigation back to root (if we aren't adding item from that tab)
+		if ([[appDelegate rootController] selectedIndex] != 2) {
+			[[appDelegate checkoutViewNavController] popToRootViewControllerAnimated:FALSE];
+		}
 	}
 	
 	return YES;

@@ -9,11 +9,16 @@
 #import "CheckoutRecipeBasketViewController.h"
 #import "DataManager.h"
 #import "RecipeShopperAppDelegate.h"
+#import "LogManager.h"
 
 
 @interface CheckoutRecipeBasketViewController ()
 //Private class functions
 - (void) createProductList:(id)sender;
+- (void) verifyProductBasket;
+- (void) transitionToProductPage;
+- (void) showLoadingOverlay;
+- (void) hideLoadingOverlay;
 @end
 
 @implementation CheckoutRecipeBasketViewController
@@ -65,11 +70,14 @@
 	[super viewWillDisappear:animated];
 }
 */
-/*
+
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
+	
+	//Ensure loading overlay is removed
+	[self hideLoadingOverlay];
 }
-*/
+
 
 /*
 // Override to allow orientations other than the default portrait orientation.
@@ -245,13 +253,58 @@
 		[self setCheckoutProductBasketViewController: productBasketView];
 		[productBasketView release];
 	}
-	
-	if ([[DataManager getRecipeBasket] count] != 0) {
-		[DataManager createProductListFromRecipeBasket];
+		
+	if ([DataManager phoneIsOnline] && [[DataManager getRecipeBasket] count] > 0){
+		//Perform product verification
+		[recipeBasketTableView setScrollEnabled:FALSE];
+		[self showLoadingOverlay];
+		[NSThread detachNewThreadSelector: @selector(verifyProductBasket) toTarget:self withObject:nil];
+	}else if([[DataManager getRecipeBasket] count] > 0){
+		//Phone is offline but we have recipes in basket
+		[self verifyProductBasket];
+	}else{
+		//Phone is offline and we have empty basket (just transition to next view!!)
+		[self transitionToProductPage];
 	}
+}
+
+-(void)verifyProductBasket {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	@try {
+		[DataManager createProductListFromRecipeBasket];
+		[self performSelectorOnMainThread:@selector(transitionToProductPage) withObject:nil waitUntilDone:TRUE];
+	}@catch (id exception) {
+		NSString *msg = [NSString stringWithFormat:@"Exception: '%@'.",exception];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"CheckoutRecipeBasketViewController"];
+	}@finally {
+		[pool release];
+	}
+}
+
+-(void)transitionToProductPage {
+	[recipeBasketTableView setScrollEnabled:TRUE];
+	[self hideLoadingOverlay];
 	
 	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 	[[appDelegate checkoutViewNavController] pushViewController:checkoutProductBasketViewController animated:YES];
+}
+
+-(void)showLoadingOverlay {
+	loadingView = [LoadingView loadingViewInView:(UIView *)recipeBasketTableView withText:@"Verifying Products..." 
+										 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
+								 andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
+																					  green:1.0 
+																					   blue:1.0
+																					  alpha:1.0]
+								   andDrawStroke:FALSE];
+}
+
+-(void)hideLoadingOverlay{
+	if(loadingView != nil){
+		[loadingView removeView];
+		loadingView = nil;
+	}
 }
 
 - (void)dealloc {

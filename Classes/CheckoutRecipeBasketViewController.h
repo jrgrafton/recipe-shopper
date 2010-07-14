@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CommonSpecificRecipeViewController.h"
 #import "CheckoutProductBasketViewController.h"
+#import "LoadingView.h"
 
 
 @interface CheckoutRecipeBasketViewController : UITableViewController {
@@ -17,6 +18,9 @@
 	CheckoutProductBasketViewController *checkoutProductBasketViewController;
 	
 	UIView *footerView;
+	
+	@private
+	LoadingView *loadingView;
 }
 
 @property (nonatomic,retain) CommonSpecificRecipeViewController *commonSpecificRecipeViewController;

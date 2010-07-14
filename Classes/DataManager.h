@@ -38,6 +38,7 @@
 //Tesco API data
 + (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder;
 + (BOOL)loginToStore:(NSString*) username withPassword:(NSString*) password;
++ (BOOL)addProductBasketToStoreBasket;
 
 //Application data
 + (void)addRecipeToBasket: (DBRecipe*)recipe;

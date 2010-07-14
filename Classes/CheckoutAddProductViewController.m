@@ -13,9 +13,9 @@
 
 @interface CheckoutAddProductViewController ()
 //Private class functions
--(void)getProductsMatchingSearchTerm:(NSString*) searchTerm;
--(void)showLoadingOverlay;
--(void)hideLoadingOverlay;
+-(void) getProductsMatchingSearchTerm:(NSString*) searchTerm;
+-(void) showLoadingOverlay;
+-(void) hideLoadingOverlay;
 -(void) decreaseCountForProduct:(id)sender;
 -(void) increaseCountForProduct:(id)sender;
 -(NSInteger) getDesiredProductQuantity:(DBProduct*) product;

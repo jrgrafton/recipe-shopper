@@ -9,6 +9,7 @@
 #import "APIRequestManager.h"
 #import "JSON.h"
 #import "LogManager.h"
+#import "DataManager.h"
 #import "DBProduct.h"
 #import "UIImage-Extended.h"
 
@@ -36,6 +37,42 @@
 	}
 	return self;
 }
+
+- (BOOL)addProductBasketToStoreBasket {
+	
+	NSArray *productBasket = [DataManager getProductBasket];
+	
+	for (DBProduct *product in productBasket) {
+		NSInteger productCount = [DataManager getCountForProduct:product];
+		NSNumber *productBaseID = [product productBaseID];
+		NSString *addToBasketRequestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&PRODUCTID=%@&CHANGEQUANTITY=%d&SESSIONKEY=%@",REST_SERVICE_URL,productBaseID,productCount,authenticatedSessionKey];
+		NSDictionary *loginDetails = [self getJSONForRequest:addToBasketRequestString];
+		
+		if (loginDetails == nil){
+			#ifdef DEBUG
+			NSString* msg = [NSString stringWithFormat:@"Error adding product [%@] to online basket (NO JSON RETURNED)",productBaseID];
+			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+			#endif
+			return FALSE;
+		}else {
+			NSNumber *statusCode = [loginDetails objectForKey:@"StatusCode"];
+			if ([statusCode intValue] != 0) {
+				#ifdef DEBUG
+				NSString* msg = [NSString stringWithFormat:@"Error adding product [%@] to online basket (%@)",productBaseID,loginDetails];
+				[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+				#endif
+				return FALSE;
+			}else {
+				#ifdef DEBUG
+				NSString* msg = [NSString stringWithFormat:@"Successfully added product [%@](%d) to online basket",productBaseID,productCount];
+				[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
+				#endif
+			}
+		}
+	}
+	return TRUE;
+}
+
 
 -(id)getSessionKeyForEmail:(NSString*)email usingPassword:(NSString*)password {
 	NSString *loginRequestString = [NSString stringWithFormat:@"%@?command=LOGIN&email=%@&password=%@&developerkey=%@&applicationkey=%@",REST_SERVICE_URL,email,password,DEVELOPER_KEY,APPLICATION_KEY];
@@ -69,19 +106,32 @@
 	}
 	
 	//Now we have session key try doing search...
-	//NSString *productSearchRequestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&page=%d&sessionkey=%@",REST_SERVICE_URL,searchTerm,pageNumber,sessionKey];
-	//NSDictionary *productSearchResult = [self getJSONForRequest:productSearchRequestString];
-	//NSArray *JSONProducts = [productSearchResult objectForKey:@"Products"];
-	
-	return productIdList;
+	NSMutableArray *filteredProducts = [NSMutableArray array];
+	for (NSNumber *productBaseId in productIdList) {
+		NSString *productSearchRequestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&sessionkey=%@",REST_SERVICE_URL,productBaseId,sessionKey];
+		NSDictionary *productSearchResult = [self getJSONForRequest:productSearchRequestString];
+		NSArray *JSONProducts = [productSearchResult objectForKey:@"Products"];
+		if ([JSONProducts count] != 0) {
+			[filteredProducts addObject: productBaseId];
+		}
+		#ifdef DEBUG
+		else{
+			NSString *msg = [NSString stringWithFormat:@"Product with baseid %@ exists in database but not on website",productBaseId];
+			[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
+		}
+		#endif
+	}
+	return filteredProducts;
 }
 
 - (BOOL)loginToStore:(NSString*) email withPassword:(NSString*) password {
 	if ([email length] == 0 || [password length] == 0) {
 		return FALSE;
 	}
+	authenticatedSessionKey = [self getSessionKeyForEmail:email usingPassword:password];
+	authenticatedTime = [NSDate date];
 	
-	return [self getSessionKeyForEmail:email usingPassword:password] != nil;
+	return authenticatedSessionKey != nil;
 }
 
 - (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder{
