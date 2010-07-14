@@ -19,6 +19,8 @@
 - (void) decreaseCountForProduct:(id)sender;
 - (void) increaseCountForProduct:(id)sender;
 - (void) addProduct:(id)sender;
+- (void) loginToStore:(id)sender;
+- (void) showLoginError;
 @end
 
 @implementation CheckoutProductBasketViewController
@@ -389,9 +391,84 @@
 */
 
 - (void) bookDeliverySlot:(id)sender {
-	if ([[DataManager getRecipeBasket] count] == 0) {
+	if ([DataManager getTotalProductCount] == 0) {
 		return;
 	}
+	
+	if (![DataManager phoneIsOnline]) {
+		[LogManager log:@"Internet connection could not be detected" withLevel:LOG_WARNING fromClass:@"CheckoutProductBasketViewController"];
+		UIAlertView *networkError = [[UIAlertView alloc] initWithTitle: @"Network error" message: @"Feature unavailable offline" delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
+		[networkError show];
+		[networkError release]; 
+		return;
+	}
+	
+	UIAlertView *loginPrompt = [[UIAlertView alloc] initWithTitle: @"Login" message: @"Please login to your account\n\n\n\n\n" delegate: self cancelButtonTitle: @"Cancel" otherButtonTitles: @"OK", nil];
+	
+	UITextField *emailField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 80.0, 260.0, 30.0)];
+	[emailField setBackgroundColor:[UIColor whiteColor]];
+	[emailField setPlaceholder:@"john@example.com"];
+	[emailField setAutocorrectionType: UITextAutocorrectionTypeNo];
+	[emailField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+	[emailField setBorderStyle:UITextBorderStyleBezel];
+	[emailField setKeyboardType:UIKeyboardTypeEmailAddress];
+	[loginPrompt addSubview:emailField];
+	
+	UITextField *passwordField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 120.0, 260.0, 30.0)];
+	[passwordField setBackgroundColor:[UIColor whiteColor]];
+	[passwordField setPlaceholder:@"Password"];
+	[passwordField setSecureTextEntry:YES];
+	[passwordField setAutocorrectionType: UITextAutocorrectionTypeNo];
+	[passwordField setBorderStyle:UITextBorderStyleBezel];
+	[loginPrompt addSubview:passwordField];
+	
+	[loginPrompt setTransform:CGAffineTransformMakeTranslation(0.0, 110.0)];
+	[emailField becomeFirstResponder];
+	[loginPrompt show];
+    [loginPrompt release];
+
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if ([[alertView title] isEqualToString:@"Login"]){
+		UITextField *emailField = [[alertView subviews] objectAtIndex:4];
+		[emailField resignFirstResponder];
+	}
+}
+
+-(void)alertView: (UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger) buttonIndex{
+	//Login Request
+	if ([[alertView title] isEqualToString:@"Login"] && [alertView cancelButtonIndex] != buttonIndex){
+		UITextField *emailField = [[alertView subviews] objectAtIndex:4];
+		UITextField *passwordField = [[alertView subviews] objectAtIndex:5];
+		NSMutableArray *details = [NSMutableArray arrayWithCapacity:2];
+		[details addObject:[emailField text]];
+		[details addObject:[passwordField text]];
+		
+		//Detach worker thread so that this function can exit and keyboard can disappear!!
+		[NSThread detachNewThreadSelector: @selector(loginToStore:) toTarget:self withObject:details];
+	}
+	//Retry button after failed login
+	else if ([[alertView title] isEqualToString:@""] && [alertView cancelButtonIndex] != buttonIndex){
+		[self bookDeliverySlot:nil];
+	}
+}
+
+-(void) loginToStore:(NSArray*)details {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	BOOL loginSuccessful = [DataManager loginToStore:[details objectAtIndex:0] withPassword:[details objectAtIndex:1]];
+	if (!loginSuccessful) {
+		[self performSelectorOnMainThread:@selector(showLoginError) withObject:nil waitUntilDone:TRUE];
+	}
+	
+	[pool release];
+}
+
+-(void) showLoginError {
+	UIAlertView *loginError = [[UIAlertView alloc] initWithTitle: @"" message: @"Your Tesco login details were incorrect. Please try again." delegate: self cancelButtonTitle: @"Cancel" otherButtonTitles: @"Retry", nil];
+	[loginError show];
+	[loginError release];
 }
 
 - (void) addProduct:(id)sender {

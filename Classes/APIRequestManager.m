@@ -36,6 +36,34 @@
 	return self;
 }
 
+- (NSArray*)filterAvailableProducts:(NSArray*)productIdList {
+	
+}
+
+- (BOOL)loginToStore:(NSString*) email withPassword:(NSString*) password {
+	if ([email length] == 0 || [password length] == 0) {
+		return FALSE;
+	}
+	
+	NSString *loginRequestString = [NSString stringWithFormat:@"%@?command=LOGIN&email=%@&password=%@&developerkey=%@&applicationkey=%@",REST_SERVICE_URL,email,password,DEVELOPER_KEY,APPLICATION_KEY];
+	
+	//Perform anonymous login
+	NSDictionary *loginDetails = [self getJSONForRequest:loginRequestString];
+	NSString *sessionKey = @"";
+	
+	//Get Session key
+	if (loginDetails != nil && [loginDetails isKindOfClass:[NSDictionary class]]) {
+		sessionKey = [loginDetails objectForKey:@"SessionKey"];
+	}
+	
+	if ([sessionKey length] == 0){
+		[LogManager log:@"User login failed" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+		return FALSE;
+	}
+	
+	return TRUE;
+}
+
 - (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder{
 	NSMutableArray *products = [NSMutableArray array];
 	

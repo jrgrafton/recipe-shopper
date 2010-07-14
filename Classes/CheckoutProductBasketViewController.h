@@ -14,7 +14,7 @@
 - (void)currentViewControllerDidFinish:(UIViewController *)controller;
 @end
 
-@interface CheckoutProductBasketViewController : UITableViewController <PreviousViewControllerDelegate> {
+@interface CheckoutProductBasketViewController : UITableViewController <PreviousViewControllerDelegate,UIAlertViewDelegate> {
 	IBOutlet UITableView *productBasketTableView;	
 	UIView *footerView;
 }

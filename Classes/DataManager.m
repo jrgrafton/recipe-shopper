@@ -16,6 +16,7 @@
 #import "Reachability.h"
 #import "LocationController.h"
 #import "HTTPRequestManager.h"
+#import "DBProduct.h"
 
 static DatabaseRequestManager *databaseRequestManager;
 static APIRequestManager *apiRequestManager;
@@ -84,10 +85,14 @@ static BOOL phoneIsOnline;
 }
 
 + (NSArray*)fetchProductsFromIDs: (NSArray*) productIDs {
+	if ([DataManager phoneIsOnline]) {
+		//1. Verify that all these products are still available (Important!!)
+		productIDs = [apiRequestManager filterAvailableProducts:productIDs];
+		
+		//2. Check if products not found in DB can be found online (Not so important)
+		/*TODO*/
+	}
 	
-	//If we are online we need to:
-	//1. Verify that all these products are still available
-	//2. Check if products not found in DB can be found online
 	return [databaseRequestManager fetchProductsFromIDs:productIDs];
 }
 
@@ -201,6 +206,10 @@ static BOOL phoneIsOnline;
 #pragma mark API functions
 + (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder {
 	return [apiRequestManager fetchProductsMatchingSearchTerm: searchTerm onThisPage: pageNumber andGiveMePageCount: pageCountHolder];
+}
+
++ (BOOL)loginToStore:(NSString*) email withPassword:(NSString*) password{
+	return [apiRequestManager loginToStore:email withPassword:password];
 }
 
 @end

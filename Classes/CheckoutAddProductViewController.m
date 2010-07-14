@@ -74,11 +74,11 @@
 	desiredProductQuantities = [[NSMutableDictionary alloc] initWithCapacity:20];//20 Being the number of items per page
 }
 
-/*
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+	[searchBar becomeFirstResponder];
 }
-*/
+
 /*
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];

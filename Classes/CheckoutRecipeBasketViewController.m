@@ -246,7 +246,9 @@
 		[productBasketView release];
 	}
 	
-	[DataManager createProductListFromRecipeBasket];
+	if ([[DataManager getRecipeBasket] count] != 0) {
+		[DataManager createProductListFromRecipeBasket];
+	}
 	
 	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 	[[appDelegate checkoutViewNavController] pushViewController:checkoutProductBasketViewController animated:YES];
