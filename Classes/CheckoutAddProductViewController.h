@@ -12,6 +12,7 @@
 
 @interface CheckoutAddProductViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate> {
 	IBOutlet UITableView *productSearchTableView;
+	UIView *footerView;
 	IBOutlet UISearchBar *searchBar;
 	IBOutlet UINavigationBar *navigationBar;
 	id <PreviousViewControllerDelegate> delegate;
@@ -19,9 +20,10 @@
 	@private
 	LoadingView *loadingView;
 	NSArray *foundProducts;
-	NSDictionary *desiredProductQuantities;
+	NSMutableDictionary *desiredProductQuantities;
 	NSInteger currentPage;
 	NSInteger maxPage;
+	NSString *lastSearchTerm;
 }
 
 @property (nonatomic, assign) id <PreviousViewControllerDelegate> delegate;

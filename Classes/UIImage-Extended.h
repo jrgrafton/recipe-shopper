@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-
-@interface UIImage (UIImageWithCopy) 
+@interface UIImage (UIImageExtended) 
 
 // Extend UIImage so that we can copy it rather than assign
 - (id) copyWithZone: (NSZone *) zone;
+- (UIImage *)resizedImage:(CGSize)newSize interpolationQuality:(CGInterpolationQuality)quality;
++ (UIImage *)pasteImage:(UIImage *)im1 intoImage:(UIImage *)im2 atOffset:(CGPoint)offset;
 
 @end

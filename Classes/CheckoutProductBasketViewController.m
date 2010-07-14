@@ -63,7 +63,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-	[DataManager createProductListFromRecipeBasket];
 	[self.tableView reloadData];
 }
 
@@ -169,7 +168,7 @@
 		[button setFrame:CGRectMake(10, 16, 300, 44)];
 		
 		//set title, font size and font color
-		[button setTitle:@"Book delivery date" forState:UIControlStateNormal];
+		[button setTitle:@"Book Delivery Date" forState:UIControlStateNormal];
 		[button.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
 		[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 		
@@ -390,7 +389,9 @@
 */
 
 - (void) bookDeliverySlot:(id)sender {
-	
+	if ([[DataManager getRecipeBasket] count] == 0) {
+		return;
+	}
 }
 
 - (void) addProduct:(id)sender {

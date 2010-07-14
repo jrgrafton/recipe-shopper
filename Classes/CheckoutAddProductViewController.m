@@ -19,7 +19,8 @@
 -(void) decreaseCountForProduct:(id)sender;
 -(void) increaseCountForProduct:(id)sender;
 -(NSInteger) getDesiredProductQuantity:(DBProduct*) product;
--(void)updateTableViewWithProducts:(NSArray*)products;
+-(void) updateTableViewWithProducts:(NSArray*)products;
+-(void) fetchNextPage:(id)sender;
 @end
 
 @implementation CheckoutAddProductViewController
@@ -67,9 +68,10 @@
 	[productSearchTableView setTableHeaderView:searchBar];
 	[searchBar setAutocorrectionType:UITextAutocorrectionTypeNo];
 	
-	//Current and max page set to 1
+	//Initialisations
 	currentPage = 1;
-	maxPage = 1;	
+	maxPage = 1;
+	desiredProductQuantities = [[NSMutableDictionary alloc] initWithCapacity:20];//20 Being the number of items per page
 }
 
 /*
@@ -162,6 +164,50 @@
 	return 60;
 }
 
+// specify the height of your footer section
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	return 76;
+}
+
+// custom view for footer. will be adjusted to default or specified footer height
+// Notice: this will work only for one section within the table view
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+	if (currentPage == maxPage || [foundProducts count] == 0){
+		return nil;
+	}
+	
+    if(footerView == nil) {
+        //allocate the view if it doesn't exist yet
+        footerView  = [[UIView alloc] init];
+		
+		UIImage *image = [[UIImage imageNamed:@"button_green.png"]
+						  stretchableImageWithLeftCapWidth:8 topCapHeight:8];
+		
+		//create the button
+		UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+		[button setBackgroundImage:image forState:UIControlStateNormal];
+		
+		//the button should be as big as a table view cell
+		[button setFrame:CGRectMake(10, 16, 300, 44)];
+		
+		//set title, font size and font color
+		[button setTitle:@"Next Page" forState:UIControlStateNormal];
+		[button.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
+		[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+		
+		//set action of the button
+		[button addTarget:self action:@selector(fetchNextPage:)
+		 forControlEvents:UIControlEventTouchUpInside];
+		
+		//add the button to the view
+		[footerView addSubview:button];
+		
+    }
+	
+    //return the view for the footer
+    return footerView;
+}
+
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -177,8 +223,7 @@
 	[[cell textLabel] setNumberOfLines:2];
 	[[cell textLabel] setText: [product productName]];
 	[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:10]];
-	//[[cell imageView] setImage: [product productIcon]];
-	[[cell imageView] setImage: [UIImage imageNamed:@"icon_product_default.jpg"]];
+	[[cell imageView] setImage: [product productIcon]];
 	
 	//Create the accessoryView for everything to be inserted into
 	UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0,0,126,54)];
@@ -272,14 +317,17 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-	/*
-	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-	 [self.navigationController pushViewController:detailViewController animated:YES];
-	 [detailViewController release];
-	 */
+    DBProduct* product = [foundProducts objectAtIndex:[indexPath row]];
+	NSInteger count = [[desiredProductQuantities objectForKey:[NSString stringWithFormat:@"%@",[product productBaseID]]] intValue];
+	for (int i = 0; i < count; i++) {
+		[DataManager addProductToBasket:product];
+	}
+	
+	UIAlertView *productAdded = [[UIAlertView alloc] initWithTitle: @"Product Added" message: @"Product successfully added to basket" delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
+	[productAdded show];
+	[productAdded release]; 
+	
+	[productSearchTableView  deselectRowAtIndexPath:indexPath  animated:YES];
 }
 
 
@@ -301,6 +349,7 @@
 
 - (void)dealloc {
     [super dealloc];
+	[desiredProductQuantities dealloc];
 }
 
 #pragma mark -
@@ -311,11 +360,11 @@
 }
 
 -(NSInteger) getDesiredProductQuantity:(DBProduct*) product {
-	NSString *productKey = [NSString stringWithFormat:@"%@",[product productBaseID]];
+	NSString *productKey = [[NSString stringWithFormat:@"%@",[product productBaseID]] retain];
 	
 	NSNumber *count = [desiredProductQuantities objectForKey:productKey];
 	if (count == nil) {
-		count = [NSNumber numberWithInt:1];
+		count = [[NSNumber numberWithInt:1] retain];
 		[desiredProductQuantities setValue:count forKey:productKey];
 	}
 	
@@ -357,8 +406,8 @@
 	//Perform search
 	[productSearchTableView setScrollEnabled:FALSE];
 	[self showLoadingOverlay];
+	currentPage = 1;
 	[NSThread detachNewThreadSelector: @selector(getProductsMatchingSearchTerm:) toTarget:self withObject:[searchBar text]];
-	
 }
 
 -(void)getProductsMatchingSearchTerm:(NSString*) searchTerm{
@@ -366,8 +415,9 @@
 	
 	@try {
 		NSInteger pageCountHolder = 0;
-		NSArray *products = [DataManager fetchProductsMatchingSearchTerm:searchTerm onThisPage:1 andGiveMePageCount:&pageCountHolder];
+		NSArray *products = [DataManager fetchProductsMatchingSearchTerm:searchTerm onThisPage:currentPage andGiveMePageCount:&pageCountHolder];
 		maxPage = pageCountHolder;
+		lastSearchTerm = searchTerm;
 		
 		if ([products count] == 0) {
 			UIAlertView *emptyResults = [[UIAlertView alloc] initWithTitle: @"No Results" message: [NSString stringWithFormat:@"Unable to find any products matching %@",searchTerm] delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
@@ -387,12 +437,22 @@
 	}
 }
 
--(void)updateTableViewWithProducts:(NSArray*)products {
+-(void) updateTableViewWithProducts:(NSArray*)products {
 	//Retain cause its part of another threads memory pool!!
 	foundProducts = [[NSArray arrayWithArray:products] retain];
+	[productSearchTableView setContentOffset:CGPointMake(0, 0) animated:NO];
 	[productSearchTableView reloadData];	
 	[productSearchTableView setScrollEnabled:TRUE];
 	[self hideLoadingOverlay];
+}
+
+-(void) fetchNextPage:(id)sender {
+	if (currentPage < maxPage) {
+		[productSearchTableView setScrollEnabled:FALSE];
+		[self showLoadingOverlay];
+		currentPage++;
+		[NSThread detachNewThreadSelector: @selector(getProductsMatchingSearchTerm:) toTarget:self withObject:lastSearchTerm];
+	}
 }
 
 @end

@@ -10,7 +10,7 @@
 #import "JSON.h"
 #import "LogManager.h"
 #import "DBProduct.h"
-#import "UIImage+Resize.h"
+#import "UIImage-Extended.h"
 
 #define DEVELOPER_KEY @"xIvRaeGkY6OavPL1XtX9"
 #define APPLICATION_KEY @"CA1A9E0437CBE399E890"
@@ -70,9 +70,6 @@
 }
 
 -(DBProduct*)buildProductFromInfo:(NSDictionary*)productInfo{
-	NSString * msg = [NSString stringWithFormat:@"Building product from %@",productInfo];
-	[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
-	
 	NSNumber *productBaseID = [NSNumber numberWithInt:[[productInfo objectForKey:@"BaseProductId"] intValue]];
 	NSString *productName = [productInfo objectForKey:@"Name"];
 	NSString *productPrice = [productInfo objectForKey:@"Price"];
@@ -85,16 +82,16 @@
 }
 							   
 -(UIImage*) getImageForProduct:(NSString*)iconUrl{
-	UIImage *image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
+	UIImage *image = [[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]] autorelease];
 	UIImage *defaultImage = [UIImage imageNamed:@"icon_product_default.jpg"];
 	
 	if (image == nil){
 		return defaultImage;
-	}else {
-	    [image resizedImage:CGSizeMake(41,41) interpolationQuality:kCGInterpolationHigh];
 	}
 	
-	return nil;
+	image = [image resizedImage:CGSizeMake(41,41) interpolationQuality:kCGInterpolationHigh];
+	UIImage *finalImage = [UIImage pasteImage:image intoImage:defaultImage atOffset:CGPointMake(2, 2)];
+	return finalImage;					  
 }
 
 -(NSString *) urlEncodeValue:(NSString*)requestString{

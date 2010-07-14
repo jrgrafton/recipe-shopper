@@ -84,6 +84,10 @@ static BOOL phoneIsOnline;
 }
 
 + (NSArray*)fetchProductsFromIDs: (NSArray*) productIDs {
+	
+	//If we are online we need to:
+	//1. Verify that all these products are still available
+	//2. Check if products not found in DB can be found online
 	return [databaseRequestManager fetchProductsFromIDs:productIDs];
 }
 

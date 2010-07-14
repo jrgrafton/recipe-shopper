@@ -240,17 +240,13 @@
 */
 
 - (void) createProductList:(id)sender {
-	//Need something in basket first!!
-	if ([[DataManager getRecipeBasket] count] == 0) {
-		return;
-	}
-	
-	//Open product basket view
 	if (checkoutProductBasketViewController == nil) {
 		CheckoutProductBasketViewController *productBasketView = [[CheckoutProductBasketViewController alloc] initWithNibName:@"CheckoutProductBasketView" bundle:nil];
 		[self setCheckoutProductBasketViewController: productBasketView];
 		[productBasketView release];
 	}
+	
+	[DataManager createProductListFromRecipeBasket];
 	
 	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 	[[appDelegate checkoutViewNavController] pushViewController:checkoutProductBasketViewController animated:YES];
