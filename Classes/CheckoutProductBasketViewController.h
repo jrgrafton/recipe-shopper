@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LoadingView.h"
 
 @protocol PreviousViewControllerDelegate;
 
@@ -17,6 +18,9 @@
 @interface CheckoutProductBasketViewController : UITableViewController <PreviousViewControllerDelegate,UIAlertViewDelegate> {
 	IBOutlet UITableView *productBasketTableView;	
 	UIView *footerView;
+	
+	@private
+	LoadingView *loadingView;
 }
 
 @end

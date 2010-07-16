@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "LoadingView.h"
 
 @interface APIRequestManager : NSObject {
 

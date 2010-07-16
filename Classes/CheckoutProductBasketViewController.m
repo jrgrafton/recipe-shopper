@@ -15,13 +15,16 @@
 
 @interface CheckoutProductBasketViewController ()
 //Private class functions
-- (void) bookDeliverySlot:(id)sender;
+- (void) bookDeliverySlotAction:(id)sender;
 - (void) decreaseCountForProduct:(id)sender;
 - (void) increaseCountForProduct:(id)sender;
 - (void) addProduct:(id)sender;
 - (void) loginToStore:(id)sender;
 - (void) showLoginError;
+- (void) transmitBasket;
 - (void) transitionToDeliverySelection;
+- (void) showLoadingOverlay;
+- (void) hideLoadingOverlay;
 @end
 
 @implementation CheckoutProductBasketViewController
@@ -176,7 +179,7 @@
 		[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 		
 		//set action of the button
-		[button addTarget:self action:@selector(bookDeliverySlot:)
+		[button addTarget:self action:@selector(bookDeliverySlotAction:)
 		 forControlEvents:UIControlEventTouchUpInside];
 		
 		//add the button to the view
@@ -391,7 +394,7 @@
 }
 */
 
-- (void) bookDeliverySlot:(id)sender {
+- (void) bookDeliverySlotAction:(id)sender {
 	if ([DataManager getTotalProductCount] < 5) {
 		UIAlertView *networkError = [[UIAlertView alloc] initWithTitle: @"Checkout error" message: @"Unable checkout order containing less than 5 products" delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
 		[networkError show];
@@ -436,6 +439,7 @@
 	if ([[alertView title] isEqualToString:@"Login"]){
 		UITextField *emailField = [[alertView subviews] objectAtIndex:4];
 		[emailField resignFirstResponder];
+		[self showLoadingOverlay];
 	}
 }
 
@@ -460,7 +464,7 @@
 	}
 	//Retry button after failed login
 	else if ([[alertView title] isEqualToString:@""] && [alertView cancelButtonIndex] != buttonIndex){
-		[self bookDeliverySlot:nil];
+		[self bookDeliverySlotAction:nil];
 	}
 }
 
@@ -469,9 +473,11 @@
 	
 	BOOL loginSuccessful = [DataManager loginToStore:[details objectAtIndex:0] withPassword:[details objectAtIndex:1]];
 	if (!loginSuccessful) {
+		[self performSelectorOnMainThread:@selector(hideLoadingOverlay) withObject:nil waitUntilDone:TRUE];
 		[self performSelectorOnMainThread:@selector(showLoginError) withObject:nil waitUntilDone:TRUE];
 	}else {
-		[self performSelectorOnMainThread:@selector(transitionToDeliverySelection) withObject:nil waitUntilDone:TRUE];
+		//Dont want to perform this on main thread
+		[self transmitBasket];
 	}
 	
 	[pool release];
@@ -483,8 +489,16 @@
 	[loginError release];
 }
 
--(void) transitionToDeliverySelection {
+-(void) transmitBasket {
+	[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewLoadingText:) withObject:@"Adding products to basket" waitUntilDone:TRUE];
 	[DataManager addProductBasketToStoreBasket];
+	[self performSelectorOnMainThread:@selector(transitionToDeliverySelection) withObject:nil waitUntilDone:FALSE];
+}
+
+-(void) transitionToDeliverySelection {
+	[self hideLoadingOverlay];
+	
+	//Do view transition
 }
 
 - (void) addProduct:(id)sender {
@@ -510,15 +524,32 @@
 	[controller release];
 }
 
-- (void)dealloc {
-	[productBasketTableView release];
-	[footerView release];
-    [super dealloc];
+-(void)showLoadingOverlay {
+	loadingView = [LoadingView loadingViewInView:(UIView *)productBasketTableView withText:@"Logging in..." 
+										 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
+								 andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
+																					  green:1.0 
+																					   blue:1.0
+																					  alpha:1.0]
+								   andDrawStroke:FALSE];
+}
+
+-(void)hideLoadingOverlay{
+	if(loadingView != nil){
+		[loadingView removeView];
+		loadingView = nil;
+	}
 }
 
 
 - (void)currentViewControllerDidFinish:(UIViewController *)controller {
 	[self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)dealloc {
+	[productBasketTableView release];
+	[footerView release];
+    [super dealloc];
 }
 
 @end

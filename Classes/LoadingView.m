@@ -14,6 +14,8 @@
 #import "LoadingView.h"
 #import <QuartzCore/QuartzCore.h>
 
+static LoadingView *currentLoadingView = nil;
+
 //
 // NewPathWithRoundRect
 //
@@ -103,25 +105,28 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 	UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[inASuperview addSubview:loadingView];
 	
+	//Add loading text label
 	const CGFloat DEFAULT_LABEL_WIDTH = 280.0;
 	const CGFloat DEFAULT_LABEL_HEIGHT = 50.0;
-	CGRect labelFrame = CGRectMake(0, 0, DEFAULT_LABEL_WIDTH, DEFAULT_LABEL_HEIGHT);
+	CGRect loadingLabelFrame = CGRectMake(0, 0, DEFAULT_LABEL_WIDTH, DEFAULT_LABEL_HEIGHT);
+	
 	UILabel *loadingLabel =
 	[[[UILabel alloc]
-	  initWithFrame:labelFrame]
+	  initWithFrame:loadingLabelFrame]
 	 autorelease];
 	loadingLabel.text = NSLocalizedString(inText, nil);
 	loadingLabel.textColor = inFontColor;
 	loadingLabel.backgroundColor = [UIColor clearColor];
 	loadingLabel.textAlignment = UITextAlignmentCenter;
-	loadingLabel.font = inFont;//[UIFont boldSystemFontOfSize:[UIFont labelFontSize]];
+	loadingLabel.font = inFont;
 	loadingLabel.autoresizingMask =
 	UIViewAutoresizingFlexibleLeftMargin |
 	UIViewAutoresizingFlexibleRightMargin |
 	UIViewAutoresizingFlexibleTopMargin |
 	UIViewAutoresizingFlexibleBottomMargin;
-	
 	[loadingView addSubview:loadingLabel];
+	
+	//Add loading spinner animation
 	UIActivityIndicatorView *activityIndicatorView =
 	[[[UIActivityIndicatorView alloc]
 	  initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge]
@@ -134,13 +139,36 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 	UIViewAutoresizingFlexibleBottomMargin;
 	[activityIndicatorView startAnimating];
 	
+	//Add progress text label
+	CGRect progressLabelFrame = CGRectMake(0, 0, DEFAULT_LABEL_WIDTH, DEFAULT_LABEL_HEIGHT);
+	UILabel *progressLabel =
+	[[[UILabel alloc]
+	  initWithFrame:loadingLabelFrame]
+	 autorelease];
+	progressLabel.text = @"";
+	progressLabel.textColor = inFontColor;
+	progressLabel.backgroundColor = [UIColor clearColor];
+	progressLabel.textAlignment = UITextAlignmentCenter;
+	progressLabel.font = [UIFont fontWithName:[inFont fontName] size:[inFont pointSize]/1.5];
+	progressLabel.autoresizingMask =
+	UIViewAutoresizingFlexibleLeftMargin |
+	UIViewAutoresizingFlexibleRightMargin |
+	UIViewAutoresizingFlexibleTopMargin |
+	UIViewAutoresizingFlexibleBottomMargin;
+	[loadingView addSubview:progressLabel];
+	
+	//Total height of all components
 	CGFloat totalHeight =
 	loadingLabel.frame.size.height +
-	activityIndicatorView.frame.size.height;
-	labelFrame.origin.x = floor(0.5 * (loadingView.frame.size.width - DEFAULT_LABEL_WIDTH));
-	labelFrame.origin.y = floor(0.5 * (loadingView.frame.size.height - totalHeight));
-	loadingLabel.frame = labelFrame;
+	activityIndicatorView.frame.size.height +
+	progressLabel.frame.size.height;
 	
+	//Set layout for loading label
+	loadingLabelFrame.origin.x = floor(0.5 * (loadingView.frame.size.width - DEFAULT_LABEL_WIDTH));
+	loadingLabelFrame.origin.y = floor(0.5 * (loadingView.frame.size.height - totalHeight));
+	loadingLabel.frame = loadingLabelFrame;
+	
+	//Set layout for spin animation
 	CGRect activityIndicatorRect = activityIndicatorView.frame;
 	activityIndicatorRect.origin.x =
 	0.5 * (loadingView.frame.size.width - activityIndicatorRect.size.width);
@@ -148,12 +176,33 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 	loadingLabel.frame.origin.y + loadingLabel.frame.size.height;
 	activityIndicatorView.frame = activityIndicatorRect;
 	
+	//Set layout for progress label
+	progressLabelFrame.origin.x = floor(0.5 * (loadingView.frame.size.width - DEFAULT_LABEL_WIDTH));
+	progressLabelFrame.origin.y = floor(0.5 * (loadingView.frame.size.height + activityIndicatorRect.size.height));
+	progressLabel.frame = progressLabelFrame;
+	
 	// Set up the fade-in animation
 	CATransition *animation = [CATransition animation];
 	[animation setType:kCATransitionFade];
 	[[inASuperview layer] addAnimation:animation forKey:@"layerAnimation"];
 	
+	currentLoadingView = loadingView;
+	
 	return loadingView;
+}
+
++ (void)updateCurrentLoadingViewLoadingText:(NSString*)loadingText{
+	if (currentLoadingView != nil) {
+		UILabel * loadingLabel = [[currentLoadingView subviews] objectAtIndex:0];
+		[loadingLabel setText:loadingText];
+	}
+}
+
++ (void)updateCurrentLoadingViewProgressText:(NSString*)progressText{
+	if (currentLoadingView != nil) {
+		UILabel * progressLabel = [[currentLoadingView subviews] objectAtIndex:2];
+		[progressLabel setText:progressText];
+	}
 }
 
 //
@@ -214,6 +263,7 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 	
 	CGPathRelease(roundRectPath);
 }
+
 
 //
 // dealloc

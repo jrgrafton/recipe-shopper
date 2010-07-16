@@ -9,14 +9,16 @@
 #import <CoreLocation/CoreLocation.h>
 
 #import "DataManager.h"
+
 #import "DatabaseRequestManager.h"
 #import "APIRequestManager.h"
 #import "ApplicationRequestManager.h"
+#import "HTTPRequestManager.h"
 #import "LogManager.h"
 #import "Reachability.h"
 #import "LocationController.h"
-#import "HTTPRequestManager.h"
 #import "DBProduct.h"
+#import "LoadingView.h"
 
 static DatabaseRequestManager *databaseRequestManager;
 static APIRequestManager *apiRequestManager;
@@ -84,7 +86,7 @@ static BOOL phoneIsOnline;
 	return [databaseRequestManager fetchUserPreference:key];
 }
 
-+ (NSArray*)fetchProductsFromIDs: (NSArray*) productIDs {
++ (NSArray*)fetchProductsFromIDs: (NSArray*) productIDs{
 	if ([DataManager phoneIsOnline]) {
 		//1. Verify that all these products are still available (Important!!)
 		productIDs = [apiRequestManager filterAvailableProducts:productIDs];

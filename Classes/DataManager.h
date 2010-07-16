@@ -10,9 +10,10 @@
 #import <CoreLocation/CoreLocation.h>
 #import "DBRecipe.h"
 #import "DBProduct.h"
+#import "LoadingView.h"
 
 @interface DataManager : NSObject <CLLocationManagerDelegate>{
-
+	
 }
 
 //Publicly available data aquisition

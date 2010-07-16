@@ -42,7 +42,11 @@
 	
 	NSArray *productBasket = [DataManager getProductBasket];
 	
+	NSInteger index = 1;
+	NSInteger totalSize = [productBasket count];
+	
 	for (DBProduct *product in productBasket) {
+		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewProgressText:) withObject:[NSString stringWithFormat:@"Adding product %d of %d",index,totalSize] waitUntilDone:FALSE];
 		NSInteger productCount = [DataManager getCountForProduct:product];
 		NSNumber *productBaseID = [product productBaseID];
 		NSString *addToBasketRequestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&PRODUCTID=%@&CHANGEQUANTITY=%d&SESSIONKEY=%@",REST_SERVICE_URL,productBaseID,productCount,authenticatedSessionKey];
@@ -69,6 +73,7 @@
 				#endif
 			}
 		}
+		index++;
 	}
 	return TRUE;
 }
@@ -97,7 +102,7 @@
 	return sessionKey;
 }
 
-- (NSArray*)filterAvailableProducts:(NSArray*)productIdList {
+- (NSArray*)filterAvailableProducts:(NSArray*)productIdList{
 	NSString* sessionKey = [self getSessionKeyForEmail:@"" usingPassword:@""];
 	
 	//If API is down just return original list
@@ -107,7 +112,11 @@
 	
 	//Now we have session key try doing search...
 	NSMutableArray *filteredProducts = [NSMutableArray array];
+	NSInteger index = 1;
+	NSInteger totalSize = [productIdList count];
 	for (NSNumber *productBaseId in productIdList) {
+		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewProgressText:) withObject:[NSString stringWithFormat:@"Verifying product %d of %d",index,totalSize] waitUntilDone:FALSE];
+
 		NSString *productSearchRequestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&sessionkey=%@",REST_SERVICE_URL,productBaseId,sessionKey];
 		NSDictionary *productSearchResult = [self getJSONForRequest:productSearchRequestString];
 		NSArray *JSONProducts = [productSearchResult objectForKey:@"Products"];
@@ -120,6 +129,7 @@
 			[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
 		}
 		#endif
+		index++;
 	}
 	return filteredProducts;
 }
