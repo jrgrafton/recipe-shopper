@@ -1253,7 +1253,7 @@
 		fRef = F2301E2811C7E0CC00CEA616 /* CheckoutProductBasketViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 553;
+		rLoc = 554;
 		rType = 1;
 	};
 	CE7EFEEF11F0D0B30032F2D9 /* PBXTextBookmark */ = {
@@ -1261,7 +1261,7 @@
 		fRef = F2301E2811C7E0CC00CEA616 /* CheckoutProductBasketViewController.m */;
 		name = "CheckoutProductBasketViewController.m: 551";
 		rLen = 0;
-		rLoc = 19234;
+		rLoc = 19236;
 		rType = 0;
 		vrLen = 289;
 		vrLoc = 18774;
@@ -1460,7 +1460,7 @@
 		fRef = F2301E2811C7E0CC00CEA616 /* CheckoutProductBasketViewController.m */;
 		name = "CheckoutProductBasketViewController.m: 531";
 		rLen = 0;
-		rLoc = 18880;
+		rLoc = 18882;
 		rType = 0;
 		vrLen = 925;
 		vrLoc = 18168;
