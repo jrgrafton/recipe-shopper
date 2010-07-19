@@ -231,8 +231,8 @@
 	id results = [parser objectWithString:jsonString allowScalar:TRUE error:&error];
 	
 	if(error != nil){
-		NSString *msg = [NSString stringWithFormat:@"error parsing JSON: '%@'.",[error localizedDescription]];
 	#ifdef DEBUG
+		NSString *msg = [NSString stringWithFormat:@"error parsing JSON: '%@'.",[error localizedDescription]];		NSString *msg = [NSString stringWithFormat:@"error parsing JSON: '%@'.",[error localizedDescription]];
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
 	#endif
 		results = [NSArray array];

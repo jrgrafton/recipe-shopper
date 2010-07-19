@@ -19,6 +19,7 @@
 		CE7173AE11A2C48600D71D08 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7173AD11A2C48600D71D08 /* QuartzCore.framework */; };
 		CE79F48011EA143900468A6C /* CheckoutAddProductView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */; };
 		CE79F4BF11EA1B7500468A6C /* CheckoutAddProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE79F4BE11EA1B7500468A6C /* CheckoutAddProductViewController.m */; };
+		CE826FFB11F5124D00A72C57 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE826FFA11F5124D00A72C57 /* CoreLocation.framework */; };
 		F20D2F6D11A2E32E006EA070 /* icon_cart.png in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F6C11A2E32E006EA070 /* icon_cart.png */; };
 		F20D2F6F11A2E466006EA070 /* icon_book.png in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F6E11A2E466006EA070 /* icon_book.png */; };
 		F20D2F7111A2E4B9006EA070 /* icon_home.png in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F7011A2E4B9006EA070 /* icon_home.png */; };
@@ -60,7 +61,6 @@
 		F278EADC11A59F1C00E688C5 /* DBUserPreference.m in Sources */ = {isa = PBXBuildFile; fileRef = F278EADB11A59F1C00E688C5 /* DBUserPreference.m */; };
 		F278EADF11A59F2900E688C5 /* DBRecipeHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = F278EADE11A59F2900E688C5 /* DBRecipeHistory.m */; };
 		F278EAE211A59F3100E688C5 /* DBRecipe.m in Sources */ = {isa = PBXBuildFile; fileRef = F278EAE111A59F3100E688C5 /* DBRecipe.m */; };
-		F2794D3511B54E8000303B0A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2794D3411B54E8000303B0A /* CoreLocation.framework */; };
 		F2794D3A11B5517600303B0A /* LocationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2794D3911B5517600303B0A /* LocationController.m */; };
 		F2794D6511B5587A00303B0A /* LoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2794D6311B5587A00303B0A /* LoadingView.m */; };
 		F2794DD111B56F4D00303B0A /* HTTPRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2794DD011B56F4D00303B0A /* HTTPRequestManager.m */; };
@@ -109,6 +109,7 @@
 		CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckoutAddProductView.xib; sourceTree = "<group>"; };
 		CE79F4BD11EA1B7500468A6C /* CheckoutAddProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckoutAddProductViewController.h; sourceTree = "<group>"; };
 		CE79F4BE11EA1B7500468A6C /* CheckoutAddProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckoutAddProductViewController.m; sourceTree = "<group>"; };
+		CE826FFA11F5124D00A72C57 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		F20D2F6C11A2E32E006EA070 /* icon_cart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_cart.png; sourceTree = "<group>"; };
 		F20D2F6E11A2E466006EA070 /* icon_book.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_book.png; sourceTree = "<group>"; };
 		F20D2F7011A2E4B9006EA070 /* icon_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_home.png; sourceTree = "<group>"; };
@@ -166,7 +167,6 @@
 		F278EADE11A59F2900E688C5 /* DBRecipeHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBRecipeHistory.m; sourceTree = "<group>"; };
 		F278EAE011A59F3100E688C5 /* DBRecipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBRecipe.h; sourceTree = "<group>"; };
 		F278EAE111A59F3100E688C5 /* DBRecipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBRecipe.m; sourceTree = "<group>"; };
-		F2794D3411B54E8000303B0A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		F2794D3811B5517600303B0A /* LocationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationController.h; sourceTree = "<group>"; };
 		F2794D3911B5517600303B0A /* LocationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationController.m; sourceTree = "<group>"; };
 		F2794D6311B5587A00303B0A /* LoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingView.m; sourceTree = "<group>"; };
@@ -220,7 +220,7 @@
 				CE7173AE11A2C48600D71D08 /* QuartzCore.framework in Frameworks */,
 				F278EAD211A57E5300E688C5 /* libsqlite3.0.dylib in Frameworks */,
 				F27D6A8011AAC21500BAC6E6 /* SystemConfiguration.framework in Frameworks */,
-				F2794D3511B54E8000303B0A /* CoreLocation.framework in Frameworks */,
+				CE826FFB11F5124D00A72C57 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,7 +281,7 @@
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
 				CE7173AD11A2C48600D71D08 /* QuartzCore.framework */,
 				F278EAD111A57E5300E688C5 /* libsqlite3.0.dylib */,
-				F2794D3411B54E8000303B0A /* CoreLocation.framework */,
+				CE826FFA11F5124D00A72C57 /* CoreLocation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -718,6 +718,7 @@
 				GCC_PREFIX_HEADER = RecipeShopper_Prefix.pch;
 				INFOPLIST_FILE = "RecipeShopper-Info.plist";
 				PRODUCT_NAME = RecipeShopper;
+				SDKROOT = iphoneos4.0;
 			};
 			name = Debug;
 		};
@@ -730,6 +731,7 @@
 				GCC_PREFIX_HEADER = RecipeShopper_Prefix.pch;
 				INFOPLIST_FILE = "RecipeShopper-Info.plist";
 				PRODUCT_NAME = RecipeShopper;
+				SDKROOT = iphoneos4.0;
 			};
 			name = Release;
 		};
