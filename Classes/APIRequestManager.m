@@ -160,8 +160,12 @@
 	
 	NSArray *JSONProducts = [productSearchResult objectForKey:@"Products"];
 	
+	NSInteger index = 1;
+	NSInteger totalSize = [JSONProducts count];
 	for (NSDictionary *JSONProduct in JSONProducts) {
+		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewProgressText:) withObject:[NSString stringWithFormat:@"Fetching info for product %d of %d",index,totalSize] waitUntilDone:FALSE];
 		[products addObject:[self buildProductFromInfo:JSONProduct]];
+		index++;
 	}
 	
 	return products;

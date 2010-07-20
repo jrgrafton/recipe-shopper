@@ -76,29 +76,21 @@
 	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
 	
 	if ([segmentedControl selectedSegmentIndex] == 0) {
-		//If we are already searching ensure that tab selection stays where it was
-		if (busyFetchingClosestStores){
-			[segmentedControl setSelectedSegmentIndex:1];
-			return;
-		}
+		//Disable search by address segment
+		[segmentedControl setEnabled:FALSE forSegmentAtIndex:1];
+		
 		//Ensure we remove search bar
 		[searchBar resignFirstResponder];
 		self.tableView.tableHeaderView = nil;
 		
 		//Nearest selected
 		[segmentedControl setSelectedSegmentIndex:0];
-		busyFetchingClosestStores = TRUE;
 		[self showLoadingOverlay];
 		
 		[NSThread detachNewThreadSelector: @selector(getClosestStoresToCurrentLocation) toTarget:self withObject:nil];
 		[self.tableView setScrollEnabled:FALSE];
 		
 	}else{
-		//If we are already searching ensure that tab selection stays where it was
-		if (busyFetchingClosestStores){
-			[segmentedControl setSelectedSegmentIndex:0];
-			return;
-		}
 		//Search selected
 		[segmentedControl setSelectedSegmentIndex:1];
 		
@@ -110,10 +102,12 @@
 }
 
 - (void) searchBarSearchButtonClicked:(UISearchBar *)theSearchBar {
+	//Disable search nearest segment
+	UISegmentedControl *segmentedControl =  (UISegmentedControl*) self.navigationItem.titleView;
+	[segmentedControl setEnabled:FALSE forSegmentAtIndex:0];
+	
 	//Ensure we remove keyboard
 	[searchBar resignFirstResponder];
-	
-	//self.tableView.tableHeaderView = nil;
 	
 	//Perform search
 	[self.tableView setScrollEnabled:FALSE];
@@ -134,7 +128,6 @@
 			NSArray *stores = [DataManager fetchClosestStoresToGeolocation:coords andReturnUpToThisMany:15];
 			[self performSelectorOnMainThread:@selector(updateTableViewWithStores:) withObject:stores waitUntilDone:TRUE];
 		}
-		busyFetchingClosestStores = FALSE;
 	}
 	@catch (id exception) {
 		NSString *msg = [NSString stringWithFormat:@"Exception: '%@'.",exception];
@@ -142,6 +135,9 @@
 	}
 	@finally {
 		[pool release];
+		//Re-enable search closest segment
+		UISegmentedControl *segmentedControl = (UISegmentedControl*) self.navigationItem.titleView;
+		[segmentedControl setEnabled:TRUE forSegmentAtIndex:0];
 	}
 }
 
@@ -161,7 +157,6 @@
 			NSArray *stores = [DataManager fetchClosestStoresToGeolocation:coords andReturnUpToThisMany:15];
 			[self performSelectorOnMainThread:@selector(updateTableViewWithStores:) withObject:stores waitUntilDone:TRUE];
 		}
-		busyFetchingClosestStores = FALSE;
 	}
 	@catch (id exception) {
 		NSString *msg = [NSString stringWithFormat:@"Exception: '%@'.",exception];
@@ -169,6 +164,9 @@
 	}
 	@finally {
 		[pool release];
+		//Re-enable search address segment
+		UISegmentedControl *segmentedControl =  (UISegmentedControl*) self.navigationItem.titleView;
+		[segmentedControl setEnabled:TRUE forSegmentAtIndex:1];
 	}
 }
 
@@ -189,8 +187,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-	//Set up initial view
-	busyFetchingClosestStores = TRUE;
+	//Ensure that first segment is disabled and second is enabled
+	UISegmentedControl *segmentedControl =  (UISegmentedControl*) self.navigationItem.titleView;
+	[segmentedControl setEnabled:TRUE forSegmentAtIndex:0];
+	[segmentedControl setEnabled:FALSE forSegmentAtIndex:1];
 	
 	//Fetch closest stores to populate view
 	[self showLoadingOverlay];

@@ -127,6 +127,7 @@ static BOOL phoneIsOnline;
 }
 
 + (NSArray*)getCurrentLatitudeLongitude{
+	//Try 10 times to get current location
 	int MAX_LOCATION_WAITS = 10;
 	int locationWaits = 0;
 	while (![locationController locationKnown]) {

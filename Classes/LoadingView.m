@@ -12,6 +12,7 @@
 //  appreciated but not required.
 //
 #import "LoadingView.h"
+#import "RecipeShopperAppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 
 static LoadingView *currentLoadingView = nil;
@@ -89,7 +90,7 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 		   andBackgroundColor:(UIColor*)inViewBackgroundColor andDrawStroke:(BOOL)inDrawStroke;
 {
 	LoadingView *loadingView =
-	[[[LoadingView alloc] initWithFrame:[inASuperview bounds]] autorelease];
+	[[[LoadingView alloc] initWithFrame:[[inASuperview superview] bounds]] autorelease];
 	if (!loadingView)
 	{
 		return nil;
@@ -129,9 +130,11 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 	//Add loading spinner animation
 	UIActivityIndicatorView *activityIndicatorView =
 	[[[UIActivityIndicatorView alloc]
-	  initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge]
+	  initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray]
 	 autorelease];
 	[loadingView addSubview:activityIndicatorView];
+	
+	
 	activityIndicatorView.autoresizingMask =
 	UIViewAutoresizingFlexibleLeftMargin |
 	UIViewAutoresizingFlexibleRightMargin |

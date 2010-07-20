@@ -7,6 +7,7 @@
 //
 
 #import "LocationController.h"
+#import "LogManager.h"
 
 @implementation LocationController
 
@@ -60,10 +61,12 @@ static LocationController *sharedInstance;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    UIAlertView *alert;
+#ifdef DEBUG
+	UIAlertView *alert;
     alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [alert release];
+#endif
 }
 @end
 

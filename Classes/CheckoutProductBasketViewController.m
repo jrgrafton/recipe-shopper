@@ -428,7 +428,7 @@
 	[passwordField setBorderStyle:UITextBorderStyleBezel];
 	[loginPrompt addSubview:passwordField];
 	
-	[loginPrompt setTransform:CGAffineTransformMakeTranslation(0.0, 110.0)];
+	//[loginPrompt setTransform:CGAffineTransformMakeTranslation(0.0, 110.0)];
 	[emailField becomeFirstResponder];
 	[loginPrompt show];
     [loginPrompt release];
@@ -436,7 +436,7 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if ([[alertView title] isEqualToString:@"Login"]){
+	if ([[alertView title] isEqualToString:@"Login"] && [alertView cancelButtonIndex] != buttonIndex){
 		UITextField *emailField = [[alertView subviews] objectAtIndex:4];
 		[emailField resignFirstResponder];
 		[self showLoadingOverlay];
