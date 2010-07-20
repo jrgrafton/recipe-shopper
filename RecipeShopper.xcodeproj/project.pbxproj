@@ -711,6 +711,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: james grafton (M885ELZWAR)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -718,6 +719,7 @@
 				GCC_PREFIX_HEADER = RecipeShopper_Prefix.pch;
 				INFOPLIST_FILE = "RecipeShopper-Info.plist";
 				PRODUCT_NAME = RecipeShopper;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "94EA5466-0A4C-4482-BDA6-C33806470338";
 				SDKROOT = iphoneos4.0;
 			};
 			name = Debug;

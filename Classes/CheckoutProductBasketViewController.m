@@ -525,6 +525,7 @@
 }
 
 -(void)showLoadingOverlay {
+	[productBasketTableView setScrollEnabled:FALSE]:
 	loadingView = [LoadingView loadingViewInView:(UIView *)productBasketTableView withText:@"Logging in..." 
 										 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
 								 andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
@@ -539,6 +540,7 @@
 		[loadingView removeView];
 		loadingView = nil;
 	}
+	[productBasketTableView setScrollEnabled:TRUE]:
 }
 
 
