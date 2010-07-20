@@ -364,6 +364,7 @@ static sqlite3 *database = nil;
 	iconSmall = [UIImage imageWithData: [NSData dataWithBase64EncodedString: iconSmallString]];
 	iconLargeRaw = [NSString stringWithUTF8String: (const char *) sqlite3_column_blob(selectstmt, 11)];
 	
+	
 	//Get multi part data from rest of tables...starting with ingredient text
 	sqlite3_stmt *selectstmt2;
 	const char *ingredientTextQuery = [[NSString stringWithFormat:@"Select ingredientText from recipeIngredients where recipeID = %@",recipeID] UTF8String];

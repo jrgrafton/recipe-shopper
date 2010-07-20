@@ -580,9 +580,9 @@
 	};
 	F2301E2811C7E0CC00CEA616 /* CheckoutProductBasketViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1587, 6929}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1587, 6968}}";
 			sepNavSelRange = "{14735, 0}";
-			sepNavVisRange = "{13617, 1468}";
+			sepNavVisRange = "{13580, 1610}";
 			sepNavWindowFrame = "{{38, 202}, {1133, 650}}";
 		};
 	};
@@ -715,9 +715,9 @@
 	};
 	F27D69D411AAB0B100BAC6E6 /* HomeStoreViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1636, 4446}}";
-			sepNavSelRange = "{6854, 0}";
-			sepNavVisRange = "{6505, 658}";
+			sepNavIntBoundsRect = "{{0, 0}, {1636, 4550}}";
+			sepNavSelRange = "{2397, 0}";
+			sepNavVisRange = "{2555, 1055}";
 		};
 	};
 	F27D6A9211AAC27600BAC6E6 /* Reachability.h */ = {
@@ -771,9 +771,9 @@
 	};
 	F293DC2A11A5EA8B008AA947 /* DataManager.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {803, 2925}}";
+			sepNavIntBoundsRect = "{{0, 0}, {803, 2899}}";
 			sepNavSelRange = "{4373, 0}";
-			sepNavVisRange = "{4579, 1050}";
+			sepNavVisRange = "{4535, 1095}";
 			sepNavWindowFrame = "{{15, 223}, {1133, 650}}";
 		};
 	};
