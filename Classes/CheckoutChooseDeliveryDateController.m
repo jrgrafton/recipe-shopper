@@ -7,9 +7,13 @@
 //
 
 #import "CheckoutChooseDeliveryDateController.h"
-#import "APIDeliverylot.h"
+#import "APIDeliverySlot.h"
+#import "DataManager.h"
 
-#define SCROLL_VIEW_MAX_HEIGHT 624.0f
+@interface CheckoutChooseDeliveryDateController ()
+//Private class functions
+-(APIDeliverySlot*) getImpliedDeliverySlotObject;
+@end
 
 @implementation CheckoutChooseDeliveryDateController
 
@@ -31,6 +35,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+	[deliveryDatePicker  selectRow:0 inComponent:0 animated:FALSE];
+	[deliveryDatePicker  selectRow:0 inComponent:1 animated:FALSE];
+	[deliveryDatePicker  selectRow:0 inComponent:2 animated:FALSE];
 	[deliveryDatePicker reloadAllComponents];
 }
 
@@ -52,6 +59,7 @@
 	collatedDayMonthDeliverySlots = [[NSMutableArray alloc] init];
 	dayMonthTimeSlotReference = [[NSMutableDictionary alloc] init]; 
 	dayMonthYearSlotReference = [[NSMutableDictionary alloc] init];
+	pickerDateSlotReference = [[NSMutableDictionary alloc] init];
 }
 
 
@@ -79,7 +87,30 @@
 #pragma mark -
 #pragma mark UIPickerViewDelegate
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+	//If we are changing the day month column refresh the others...
+	[deliveryDatePicker  selectRow:0 inComponent:1 animated:FALSE];
+	[deliveryDatePicker  selectRow:0 inComponent:2 animated:FALSE];
+	[deliveryDatePicker reloadComponent:1];
+	[deliveryDatePicker reloadComponent:2];
 	
+	//And refresh UILabels
+	APIDeliverySlot *apiDeliverySlot = [self getImpliedDeliverySlotObject];
+	
+	//Setup formatter for deliveryTimeLabel
+	NSDateFormatter *deliveryLabelFormatter = [[NSDateFormatter alloc] init];
+	[deliveryLabelFormatter setDateFormat:@"dd/MM/YYYY hh:mma"];
+	NSString *firstHalfDeliveryDateString = [deliveryLabelFormatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]]; 
+	[deliveryLabelFormatter setDateFormat:@"hh:mma"];
+	NSString *secondHalfDeliveryDateString = [deliveryLabelFormatter stringFromDate:[apiDeliverySlot deliverySlotEndDate]]; 
+	
+	//Update all label fields
+	[deliveryTimeLabel setText:[NSString stringWithFormat:@"%@ - %@",firstHalfDeliveryDateString,secondHalfDeliveryDateString]];
+	[deliveryCostLabel setText:[apiDeliverySlot deliverySlotCost]];
+	CGFloat totalCost = [DataManager getTotalProductBasketCost] + [[apiDeliverySlot deliverySlotCost] floatValue];
+	[totalCostLabel setText:[NSString stringWithFormat:@"£%.2f",totalCost]];
+	
+	//Release formatter object
+	[deliveryLabelFormatter release];
 }
 
 - (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
@@ -87,20 +118,23 @@
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+	NSString *dayMonthReferenceKey = [collatedDayMonthDeliverySlots objectAtIndex: [pickerView selectedRowInComponent:0]];
 	
 	switch (component) {
 		case 0:
-			return [collatedDayMonthDeliverySlots objectAtIndex:row];
+			return dayMonthReferenceKey;
 			break;
 		case 1:
-			return @"19:00";
+			return [[dayMonthTimeSlotReference objectForKey:dayMonthReferenceKey] objectAtIndex:row];
 			break;
 		case 2:
-			return @"2009";
+			return [[dayMonthYearSlotReference objectForKey:dayMonthReferenceKey] objectAtIndex:row];
 			break;
 		default:
 			return @"";
 	}
+	
+	return @"";
 }
 
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
@@ -127,15 +161,17 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+	NSString *dayMonthReferenceKey = [collatedDayMonthDeliverySlots objectAtIndex: [pickerView selectedRowInComponent:0]];
+	
 	switch (component) {
 		case 0:
 			return [collatedDayMonthDeliverySlots count];
 			break;
 		case 1:
-			return 10;
+			return [[dayMonthTimeSlotReference objectForKey:dayMonthReferenceKey] count];
 			break;
 		case 2:
-			return 2;
+			return [[dayMonthYearSlotReference objectForKey:dayMonthReferenceKey] count];
 			break;
 		default:
 			return 0;
@@ -147,7 +183,26 @@
 #pragma mark IBActions and Additional
 
 -(IBAction) proceedToCheckoutAction:(id)sender{
+	//Grab referenced APIDeliverySlot object
+	//APIDeliverySlot *apiDeliverySlot = [self getImpliedDeliverySlotObject];
+}
+
+-(APIDeliverySlot*) getImpliedDeliverySlotObject {
+	//Figure out indexes
+	NSInteger selectedDayMonthIndex = [deliveryDatePicker selectedRowInComponent:0];
+	NSInteger selectedTimeIndex = [deliveryDatePicker selectedRowInComponent:1];
+	NSInteger selectedYearIndex = [deliveryDatePicker selectedRowInComponent:2];
 	
+	//Figure out strings
+	NSString *dayMonthString = [collatedDayMonthDeliverySlots objectAtIndex:selectedDayMonthIndex];
+	NSString *timeString = [[dayMonthTimeSlotReference objectForKey: dayMonthString] objectAtIndex:selectedTimeIndex];
+	NSString *yearString = [[dayMonthYearSlotReference objectForKey: dayMonthString] objectAtIndex:selectedYearIndex];
+	
+	//Concatinate
+	NSString *dateString = [NSString stringWithFormat:@"%@ %@ %@",dayMonthString,timeString,yearString];
+	
+	//Grab referenced APIDeliverySlot object
+	return [pickerDateSlotReference objectForKey:dateString];
 }
 
 -(void) processDeliverySlots:(NSArray*) deliverySlots {
@@ -155,6 +210,7 @@
 	[collatedDayMonthDeliverySlots removeAllObjects];
 	[dayMonthTimeSlotReference removeAllObjects];
 	[dayMonthYearSlotReference removeAllObjects];
+	[pickerDateSlotReference removeAllObjects];
 	
 	//Sanity check
 	if ([deliverySlots count] == 0) {
@@ -165,36 +221,40 @@
 	NSDateFormatter *dayMonthformatter = [[NSDateFormatter alloc] init];
 	[dayMonthformatter setDateFormat:@"ccc MMM dd"];
 	NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
-	[timeFormatter setDateFormat:@"hh:mm"];
+	[timeFormatter setDateFormat:@"HH:mm"];
 	NSDateFormatter *yearFormatter = [[NSDateFormatter alloc] init];
 	[yearFormatter setDateFormat:@"YYYY"];
 	
 	//Setup for loop
-	NSString *firstYear = [yearFormatter stringFromDate:[[deliverySlots objectAtIndex:0] deliverySlotStartDate]];
-	NSString *lastSeenDay = [dayMonthformatter stringFromDate:[[deliverySlots objectAtIndex:0] deliverySlotStartDate]];
-	[dayMonthYearSlotReference setValue:firstYear forKey:lastSeenDay];
-	NSMutableArray *timesForDate = [NSMutableArray array];
+	NSString *firstYearString = [yearFormatter stringFromDate:[[deliverySlots objectAtIndex:0] deliverySlotStartDate]];
+	NSString *lastSeenDayMonthString = [dayMonthformatter stringFromDate:[[deliverySlots objectAtIndex:0] deliverySlotStartDate]];
+	[dayMonthYearSlotReference setValue:firstYearString forKey:lastSeenDayMonthString];
+	NSMutableArray *timesForDayMonth = [NSMutableArray array];
 	
 	for (APIDeliverySlot *apiDeliverySlot in deliverySlots) {
-		NSString *thisDay = [dayMonthformatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]];
+		NSString *dayMonthString = [dayMonthformatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]];
+		NSString *timeString = [timeFormatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]];
+		NSString *yearString = [yearFormatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]];
+		
+		NSString *collatedDateString = [NSString stringWithFormat:@"%@ %@ %@",dayMonthString,timeString,yearString];
+		[pickerDateSlotReference setValue:apiDeliverySlot forKey:collatedDateString];
+		
 		//If we have come across a new day...
-		if (![thisDay isEqualToString:lastSeenDay]) {
+		if (![dayMonthString isEqualToString:lastSeenDayMonthString]) {
 			//Add new item to collated list if its new day
-			[collatedDayMonthDeliverySlots addObject:thisDay];
+			[collatedDayMonthDeliverySlots addObject:dayMonthString];
 			//Create a reference from lastSeenDay to timesForDate
-			[dayMonthTimeSlotReference setValue:timesForDate forKey:thisDay];
+			[dayMonthTimeSlotReference setValue:timeString forKey:dayMonthString];
 			//Create new timesForDate Array
-			timesForDate = [NSMutableArray array];
+			timesForDayMonth = [NSMutableArray array];
 			//Create a year reference for this day
-			NSString *thisYear = [yearFormatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]];
-			[dayMonthYearSlotReference setValue:thisYear forKey:thisDay];
+			[dayMonthYearSlotReference setValue:yearString forKey:dayMonthString];
 		}else {
 			//If its same day add new time to reference dict
-			NSString *timeSlot = [timeFormatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]];
-			[timesForDate addObject:timeSlot];
+			[timesForDayMonth addObject:timeString];
 		}
 
-		lastSeenDay = thisDay;
+		lastSeenDayMonthString = dayMonthString;
 	}
 			 
 	//Release all the date formatters
@@ -207,6 +267,10 @@
 
 - (void)dealloc {
 	[availableDeliverySlots release];
+	[collatedDayMonthDeliverySlots release];
+	[dayMonthTimeSlotReference release];
+	[dayMonthYearSlotReference release];
+	[pickerDateSlotReference release];
     [super dealloc];
 }
 

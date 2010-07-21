@@ -22,6 +22,9 @@
 	NSMutableArray* collatedDayMonthDeliverySlots;
 	NSMutableDictionary *dayMonthTimeSlotReference;
 	NSMutableDictionary *dayMonthYearSlotReference;
+	
+	//Used so that we can quickly lookup delivery slot objects from 
+	NSMutableDictionary *pickerDateSlotReference;
 }
 
 -(IBAction) proceedToCheckoutAction:(id)sender;

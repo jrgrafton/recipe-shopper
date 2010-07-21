@@ -6,7 +6,7 @@
 //  Copyright 2010 Assent Software. All rights reserved.
 //
 
-#import "APIDeliverylot.h"
+#import "APIDeliverySlot.h"
 
 @interface APIDeliverySlot ()
 @property (readwrite,copy) NSString *deliverySlotID;

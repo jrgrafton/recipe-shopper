@@ -112,7 +112,7 @@
 		CE77738B11F62DE200003B5D /* CheckoutChooseDeliveryDateView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckoutChooseDeliveryDateView.xib; sourceTree = "<group>"; };
 		CE77739011F6312C00003B5D /* CheckoutChooseDeliveryDateController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckoutChooseDeliveryDateController.h; sourceTree = "<group>"; };
 		CE77739111F6312C00003B5D /* CheckoutChooseDeliveryDateController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckoutChooseDeliveryDateController.m; sourceTree = "<group>"; };
-		CE77746711F6611C00003B5D /* APIDeliverylot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIDeliverylot.h; sourceTree = "<group>"; };
+		CE77746711F6611C00003B5D /* APIDeliverySlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIDeliverySlot.h; sourceTree = "<group>"; };
 		CE77746811F6611C00003B5D /* APIDeliverySlot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIDeliverySlot.m; sourceTree = "<group>"; };
 		CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckoutAddProductView.xib; sourceTree = "<group>"; };
 		CE79F4BD11EA1B7500468A6C /* CheckoutAddProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckoutAddProductViewController.h; sourceTree = "<group>"; };
@@ -545,7 +545,7 @@
 			children = (
 				F293DC2D11A5EB20008AA947 /* APIRequestManager.h */,
 				F293DC2E11A5EB20008AA947 /* APIRequestManager.m */,
-				CE77746711F6611C00003B5D /* APIDeliverylot.h */,
+				CE77746711F6611C00003B5D /* APIDeliverySlot.h */,
 				CE77746811F6611C00003B5D /* APIDeliverySlot.m */,
 			);
 			name = TescoApi;
