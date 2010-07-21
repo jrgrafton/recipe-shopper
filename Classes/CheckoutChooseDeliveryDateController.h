@@ -18,7 +18,7 @@
 	IBOutlet UILabel *totalCostLabel;
 		
 	@private
-	NSArray* availableDeliverySlots;
+	NSMutableArray* availableDeliverySlots;
 	NSMutableArray* collatedDayMonthDeliverySlots;
 	NSMutableDictionary *dayMonthTimeSlotReference;
 	NSMutableDictionary *dayMonthYearSlotReference;

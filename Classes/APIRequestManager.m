@@ -11,7 +11,7 @@
 #import "LogManager.h"
 #import "DataManager.h"
 #import "DBProduct.h"
-#import "APIDeliverylot.h"
+#import "APIDeliverySlot.h"
 #import "UIImage-Extended.h"
 
 #define DEVELOPER_KEY @"xIvRaeGkY6OavPL1XtX9"
@@ -62,14 +62,15 @@
 			//Request seems to have returned successfully...
 			NSArray *JSONDeliveryDates = [deliveryDetails objectForKey:@"DeliverySlots"];
 			NSDateFormatter *df = [[NSDateFormatter alloc] init];
-			[df setDateFormat:@"yyyy-MM-dd hh:mm"];
+			[df setDateFormat:@"yyyy-MM-dd HH:mm"];
 			
+			NSInteger index = 0;
 			for (NSDictionary *JSONDeliveryDate in JSONDeliveryDates) {
-				NSString *deliverySlotID = [JSONDeliveryDate objectForKey:@"DeliverySlotId"];
-				NSString *deliverySlotBranchNumber = [JSONDeliveryDate objectForKey:@"BranchNumber"];
+				NSString *deliverySlotID = [NSString stringWithFormat:@"%@",[JSONDeliveryDate objectForKey:@"DeliverySlotId"]];
+				NSString *deliverySlotBranchNumber = [NSString stringWithFormat:@"%@",[JSONDeliveryDate objectForKey:@"BranchNumber"]];
 				NSDate *deliverySlotStartDate = [df dateFromString:[JSONDeliveryDate objectForKey:@"SlotDateTimeStart"]];
 				NSDate *deliverySlotEndDate = [df dateFromString:[JSONDeliveryDate objectForKey:@"SlotDateTimeEnd"]];
-				NSString *deliverySlotCost = [NSString stringWithFormat:@"%@",[JSONDeliveryDate objectForKey:@"ServiceCharge"]];
+				NSString *deliverySlotCost = [JSONDeliveryDate objectForKey:@"ServiceCharge"];
 				
 				APIDeliverySlot * apiDeliverySlot = [[APIDeliverySlot alloc] initWithDeliverySlotID:deliverySlotID 
 																		andDeliverySlotBranchNumber:deliverySlotBranchNumber 
@@ -78,16 +79,15 @@
 																		andDeliverySlotCost:deliverySlotCost];
 				
 				[availableDeliverySlots addObject:apiDeliverySlot];
+				index++;
 			}
 			[df release];
 		}
 	}
 	
 	//Ensure returned array is sorted
-	[availableDeliverySlots sortUsingSelector:@selector(compareByDeliverySlotStart:)];
-	
-	return [NSArray arrayWithArray:availableDeliverySlots];
-
+	[availableDeliverySlots sortUsingSelector:@selector(compareByDeliverySlotStart:)];	
+	return availableDeliverySlots;
 }
 
 - (BOOL)addProductBasketToStoreBasket {
@@ -148,6 +148,11 @@
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
 	#endif
 		return nil;
+	}else{
+	#ifdef DEBUG
+		NSString* msg = [NSString stringWithFormat:@"Login succeeded for [%@]/[%@] (%@)",email,password,sessionKey];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+	#endif
 	}
 	
 	return sessionKey;
@@ -191,7 +196,7 @@
 	if ([email length] == 0 || [password length] == 0) {
 		return FALSE;
 	}
-	authenticatedSessionKey = [self getSessionKeyForEmail:email usingPassword:password];
+	authenticatedSessionKey = [[self getSessionKeyForEmail:email usingPassword:password] retain];
 	authenticatedTime = [NSDate date];
 	
 	return authenticatedSessionKey != nil;

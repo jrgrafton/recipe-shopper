@@ -54,12 +54,6 @@
 	//Add delegate and data source for uipickerview
 	[deliveryDatePicker setDelegate:self];
 	[deliveryDatePicker setDataSource:self];
-	
-	//Initialise globals
-	collatedDayMonthDeliverySlots = [[NSMutableArray alloc] init];
-	dayMonthTimeSlotReference = [[NSMutableDictionary alloc] init]; 
-	dayMonthYearSlotReference = [[NSMutableDictionary alloc] init];
-	pickerDateSlotReference = [[NSMutableDictionary alloc] init];
 }
 
 
@@ -207,6 +201,7 @@
 
 -(void) processDeliverySlots:(NSArray*) deliverySlots {
 	//Reset globals
+	[availableDeliverySlots removeAllObjects];
 	[collatedDayMonthDeliverySlots removeAllObjects];
 	[dayMonthTimeSlotReference removeAllObjects];
 	[dayMonthYearSlotReference removeAllObjects];
@@ -216,6 +211,10 @@
 	if ([deliverySlots count] == 0) {
 		return;
 	}
+	
+	NSLog(@"Adding all delivery slot objects (processDSlot)");
+	
+	[availableDeliverySlots addObjectsFromArray:deliverySlots];
 	
 	//Setup all the date formatters
 	NSDateFormatter *dayMonthformatter = [[NSDateFormatter alloc] init];

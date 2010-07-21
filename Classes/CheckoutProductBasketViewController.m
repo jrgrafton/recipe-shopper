@@ -22,7 +22,7 @@
 - (void) loginToStore:(id)sender;
 - (void) showLoginError;
 - (void) transmitBasket;
-- (void) transitionToDeliverySelection;
+- (void) transitionToDeliverySelection:(NSArray*)deliverySlots;
 - (void) showLoadingOverlay;
 - (void) hideLoadingOverlay;
 @end
@@ -493,11 +493,27 @@
 
 -(void) transmitBasket {
 	[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewLoadingText:) withObject:@"Adding products to basket" waitUntilDone:TRUE];
-	[DataManager addProductBasketToStoreBasket];
-	[self performSelectorOnMainThread:@selector(transitionToDeliverySelection) withObject:nil waitUntilDone:FALSE];
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	@try {
+		//Add product basket to online basket
+		[DataManager addProductBasketToStoreBasket];
+		
+		//Fetch delivery slots
+		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewLoadingText:) withObject:@"Fetching Delivery Slots" waitUntilDone:TRUE];
+		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewProgressText:) withObject:@"" waitUntilDone:TRUE];
+		NSArray *deliverySlots = [DataManager fetchAvailableDeliverySlots];
+		
+		[self performSelectorOnMainThread:@selector(transitionToDeliverySelection:) withObject:deliverySlots waitUntilDone:FALSE];
+	}@catch (id exception) {
+		NSString *msg = [NSString stringWithFormat:@"Exception: '%@'.",exception];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"CheckoutProductBasketViewController"];
+	}@finally {
+		[pool release];
+	}
 }
 
--(void) transitionToDeliverySelection {
+-(void) transitionToDeliverySelection:(NSArray*)deliverySlots{
 	//Create next view
 	if (checkoutChooseDeliveryDateController == nil) {
 		CheckoutChooseDeliveryDateController *checkoutView = [[CheckoutChooseDeliveryDateController alloc] initWithNibName:@"CheckoutChooseDeliveryDateView" bundle:nil];
@@ -505,17 +521,25 @@
 		[checkoutView release];
 	}
 	
-	//Fetch delivery slots
-	[LoadingView updateCurrentLoadingViewLoadingText:@"Fetching Delivery Slots"];
-	[LoadingView updateCurrentLoadingViewProgressText:@""];
-	[checkoutChooseDeliveryDateController processDeliverySlots:[DataManager fetchAvailableDeliverySlots]];
-	
-	//Hide loading overlay
-	[self hideLoadingOverlay];
-	
-	//Do transition
-	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-	[[appDelegate checkoutViewNavController] pushViewController:checkoutChooseDeliveryDateController animated:YES];
+	if ([deliverySlots count] == 0) {
+		//Show error
+		UIAlertView *apiError = [[UIAlertView alloc] initWithTitle: @"Tesco API error" message: @"Unable to fetch delivery slots. Please try logging in again" delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
+		[apiError show];
+		[apiError release]; 
+		
+		//Hide loading screen
+		[self hideLoadingOverlay];
+	}else {
+		//Hide loading overlay
+		[self hideLoadingOverlay];
+		
+		//Set delivery slots for next view
+		[checkoutChooseDeliveryDateController processDeliverySlots:deliverySlots];
+		
+		//Do transition
+		RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+		[[appDelegate checkoutViewNavController] pushViewController:checkoutChooseDeliveryDateController animated:YES];
+	}
 }
 
 - (void) addProduct:(id)sender {
