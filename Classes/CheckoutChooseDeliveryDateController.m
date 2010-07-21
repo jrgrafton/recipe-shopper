@@ -1,4 +1,4 @@
-    //
+//
 //  CheckoutChooseDeliveryDate.m
 //  RecipeShopper
 //
@@ -47,6 +47,11 @@
 	//Add delegate and data source for uipickerview
 	[deliveryDatePicker setDelegate:self];
 	[deliveryDatePicker setDataSource:self];
+	
+	//Initialise globals
+	collatedDayMonthDeliverySlots = [[NSMutableArray alloc] init];
+	dayMonthTimeSlotReference = [[NSMutableDictionary alloc] init]; 
+	dayMonthYearSlotReference = [[NSMutableDictionary alloc] init];
 }
 
 
@@ -146,21 +151,56 @@
 }
 
 -(void) processDeliverySlots:(NSArray*) deliverySlots {
+	//Reset globals
+	[collatedDayMonthDeliverySlots removeAllObjects];
+	[dayMonthTimeSlotReference removeAllObjects];
+	[dayMonthYearSlotReference removeAllObjects];
+	
+	//Sanity check
+	if ([deliverySlots count] == 0) {
+		return;
+	}
+	
+	//Setup all the date formatters
 	NSDateFormatter *dayMonthformatter = [[NSDateFormatter alloc] init];
 	[dayMonthformatter setDateFormat:@"ccc MMM dd"];
-	
 	NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
 	[timeFormatter setDateFormat:@"hh:mm"];
+	NSDateFormatter *yearFormatter = [[NSDateFormatter alloc] init];
+	[yearFormatter setDateFormat:@"YYYY"];
 	
-	NSString *lastSeenDay = @"";
-	collatedDayMonthDeliverySlots = [NSMutableArray array];
+	//Setup for loop
+	NSString *firstYear = [yearFormatter stringFromDate:[[deliverySlots objectAtIndex:0] deliverySlotStartDate]];
+	NSString *lastSeenDay = [dayMonthformatter stringFromDate:[[deliverySlots objectAtIndex:0] deliverySlotStartDate]];
+	[dayMonthYearSlotReference setValue:firstYear forKey:lastSeenDay];
+	NSMutableArray *timesForDate = [NSMutableArray array];
+	
 	for (APIDeliverySlot *apiDeliverySlot in deliverySlots) {
 		NSString *thisDay = [dayMonthformatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]];
+		//If we have come across a new day...
 		if (![thisDay isEqualToString:lastSeenDay]) {
+			//Add new item to collated list if its new day
 			[collatedDayMonthDeliverySlots addObject:thisDay];
+			//Create a reference from lastSeenDay to timesForDate
+			[dayMonthTimeSlotReference setValue:timesForDate forKey:thisDay];
+			//Create new timesForDate Array
+			timesForDate = [NSMutableArray array];
+			//Create a year reference for this day
+			NSString *thisYear = [yearFormatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]];
+			[dayMonthYearSlotReference setValue:thisYear forKey:thisDay];
+		}else {
+			//If its same day add new time to reference dict
+			NSString *timeSlot = [timeFormatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]];
+			[timesForDate addObject:timeSlot];
 		}
+
 		lastSeenDay = thisDay;
 	}
+			 
+	//Release all the date formatters
+	 [dayMonthformatter release];
+	 [timeFormatter release];
+	 [yearFormatter release];
 }
 										
 #pragma mark -

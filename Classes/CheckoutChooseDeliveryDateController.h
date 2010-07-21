@@ -20,7 +20,8 @@
 	@private
 	NSArray* availableDeliverySlots;
 	NSMutableArray* collatedDayMonthDeliverySlots;
-	NSDictionary *dayMonthTimeYearSlotReference;
+	NSMutableDictionary *dayMonthTimeSlotReference;
+	NSMutableDictionary *dayMonthYearSlotReference;
 }
 
 -(IBAction) proceedToCheckoutAction:(id)sender;
