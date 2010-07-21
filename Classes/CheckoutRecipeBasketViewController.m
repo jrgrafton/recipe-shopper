@@ -248,12 +248,6 @@
 */
 
 - (void) createProductList:(id)sender {
-	if (checkoutProductBasketViewController == nil) {
-		CheckoutProductBasketViewController *productBasketView = [[CheckoutProductBasketViewController alloc] initWithNibName:@"CheckoutProductBasketView" bundle:nil];
-		[self setCheckoutProductBasketViewController: productBasketView];
-		[productBasketView release];
-	}
-		
 	if ([DataManager phoneIsOnline] && [[DataManager getRecipeBasket] count] > 0){
 		//Perform product verification
 		[recipeBasketTableView setScrollEnabled:FALSE];
@@ -261,7 +255,8 @@
 		[NSThread detachNewThreadSelector: @selector(verifyProductBasket) toTarget:self withObject:nil];
 	}else if([[DataManager getRecipeBasket] count] > 0){
 		//Phone is offline but we have recipes in basket
-		[self verifyProductBasket];
+		[DataManager createProductListFromRecipeBasket];
+		[self transitionToProductPage];
 	}else{
 		//Phone is offline and we have empty basket (just transition to next view!!)
 		[self transitionToProductPage];
@@ -285,6 +280,12 @@
 -(void)transitionToProductPage {
 	[recipeBasketTableView setScrollEnabled:TRUE];
 	[self hideLoadingOverlay];
+	
+	if (checkoutProductBasketViewController == nil) {
+		CheckoutProductBasketViewController *productBasketView = [[CheckoutProductBasketViewController alloc] initWithNibName:@"CheckoutProductBasketView" bundle:nil];
+		[self setCheckoutProductBasketViewController: productBasketView];
+		[productBasketView release];
+	}
 	
 	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 	[[appDelegate checkoutViewNavController] pushViewController:checkoutProductBasketViewController animated:YES];

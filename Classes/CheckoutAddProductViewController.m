@@ -346,12 +346,6 @@
     // For example: self.myOutlet = nil;
 }
 
-
-- (void)dealloc {
-    [super dealloc];
-	[desiredProductQuantities dealloc];
-}
-
 #pragma mark -
 #pragma action management
 
@@ -453,6 +447,13 @@
 		currentPage++;
 		[NSThread detachNewThreadSelector: @selector(getProductsMatchingSearchTerm:) toTarget:self withObject:lastSearchTerm];
 	}
+}
+
+
+- (void)dealloc {
+    [super dealloc];
+	[desiredProductQuantities release];
+	[loadingView release];
 }
 
 @end

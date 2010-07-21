@@ -45,7 +45,7 @@
 {
     NSComparisonResult retVal = NSOrderedSame;
 	
-    if ([[self storeDistanceFromCurrentLocation] floatValue] < [[obj storeDistanceFromCurrentLocation] floatValue]){ // by whatever rules make sense for your class of course
+    if ([[self storeDistanceFromCurrentLocation] floatValue] < [[obj storeDistanceFromCurrentLocation] floatValue]){
 		retVal = NSOrderedAscending;
 	}
     else if ([[self storeDistanceFromCurrentLocation] floatValue] > [[obj storeDistanceFromCurrentLocation] floatValue]){

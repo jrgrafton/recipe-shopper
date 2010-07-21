@@ -17,6 +17,9 @@
 		CE4826C511ECCF2300937DEF /* icon_product_default.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE4826C411ECCF2300937DEF /* icon_product_default.jpg */; };
 		CE71733911A2C3B700D71D08 /* UIViewController-Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = CE71733811A2C3B700D71D08 /* UIViewController-Extended.m */; };
 		CE7173AE11A2C48600D71D08 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7173AD11A2C48600D71D08 /* QuartzCore.framework */; };
+		CE77738C11F62DE200003B5D /* CheckoutChooseDeliveryDateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE77738B11F62DE200003B5D /* CheckoutChooseDeliveryDateView.xib */; };
+		CE77739211F6312C00003B5D /* CheckoutChooseDeliveryDateController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE77739111F6312C00003B5D /* CheckoutChooseDeliveryDateController.m */; };
+		CE77746911F6611C00003B5D /* APIDeliverySlot.m in Sources */ = {isa = PBXBuildFile; fileRef = CE77746811F6611C00003B5D /* APIDeliverySlot.m */; };
 		CE79F48011EA143900468A6C /* CheckoutAddProductView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */; };
 		CE79F4BF11EA1B7500468A6C /* CheckoutAddProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE79F4BE11EA1B7500468A6C /* CheckoutAddProductViewController.m */; };
 		CE826FFB11F5124D00A72C57 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE826FFA11F5124D00A72C57 /* CoreLocation.framework */; };
@@ -106,6 +109,11 @@
 		CE71733711A2C3B700D71D08 /* UIViewController-Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController-Extended.h"; sourceTree = "<group>"; };
 		CE71733811A2C3B700D71D08 /* UIViewController-Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController-Extended.m"; sourceTree = "<group>"; };
 		CE7173AD11A2C48600D71D08 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		CE77738B11F62DE200003B5D /* CheckoutChooseDeliveryDateView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckoutChooseDeliveryDateView.xib; sourceTree = "<group>"; };
+		CE77739011F6312C00003B5D /* CheckoutChooseDeliveryDateController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckoutChooseDeliveryDateController.h; sourceTree = "<group>"; };
+		CE77739111F6312C00003B5D /* CheckoutChooseDeliveryDateController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckoutChooseDeliveryDateController.m; sourceTree = "<group>"; };
+		CE77746711F6611C00003B5D /* APIDeliverylot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIDeliverylot.h; sourceTree = "<group>"; };
+		CE77746811F6611C00003B5D /* APIDeliverySlot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIDeliverySlot.m; sourceTree = "<group>"; };
 		CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckoutAddProductView.xib; sourceTree = "<group>"; };
 		CE79F4BD11EA1B7500468A6C /* CheckoutAddProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckoutAddProductViewController.h; sourceTree = "<group>"; };
 		CE79F4BE11EA1B7500468A6C /* CheckoutAddProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckoutAddProductViewController.m; sourceTree = "<group>"; };
@@ -490,6 +498,8 @@
 				F2301E2811C7E0CC00CEA616 /* CheckoutProductBasketViewController.m */,
 				CE79F4BD11EA1B7500468A6C /* CheckoutAddProductViewController.h */,
 				CE79F4BE11EA1B7500468A6C /* CheckoutAddProductViewController.m */,
+				CE77739011F6312C00003B5D /* CheckoutChooseDeliveryDateController.h */,
+				CE77739111F6312C00003B5D /* CheckoutChooseDeliveryDateController.m */,
 			);
 			name = CheckoutTab;
 			sourceTree = "<group>";
@@ -500,6 +510,7 @@
 				F27BE0E411C2821000C6883B /* CheckoutRecipeBasketView.xib */,
 				F2301E2911C7E0CC00CEA616 /* CheckoutProductBasketView.xib */,
 				CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */,
+				CE77738B11F62DE200003B5D /* CheckoutChooseDeliveryDateView.xib */,
 			);
 			name = CheckoutTab;
 			sourceTree = "<group>";
@@ -534,6 +545,8 @@
 			children = (
 				F293DC2D11A5EB20008AA947 /* APIRequestManager.h */,
 				F293DC2E11A5EB20008AA947 /* APIRequestManager.m */,
+				CE77746711F6611C00003B5D /* APIDeliverylot.h */,
+				CE77746811F6611C00003B5D /* APIDeliverySlot.m */,
 			);
 			name = TescoApi;
 			sourceTree = "<group>";
@@ -657,6 +670,7 @@
 				F27C38E411CB8A2C003BB50F /* button_plus.png in Resources */,
 				CE79F48011EA143900468A6C /* CheckoutAddProductView.xib in Resources */,
 				CE4826C511ECCF2300937DEF /* icon_product_default.jpg in Resources */,
+				CE77738C11F62DE200003B5D /* CheckoutChooseDeliveryDateView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -701,6 +715,8 @@
 				F26DBDAE11C7CDC300D6D6CA /* DBProduct.m in Sources */,
 				F2301E2A11C7E0CC00CEA616 /* CheckoutProductBasketViewController.m in Sources */,
 				CE79F4BF11EA1B7500468A6C /* CheckoutAddProductViewController.m in Sources */,
+				CE77739211F6312C00003B5D /* CheckoutChooseDeliveryDateController.m in Sources */,
+				CE77746911F6611C00003B5D /* APIDeliverySlot.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,6 +11,7 @@
 #import "LogManager.h"
 #import "DataManager.h"
 #import "DBProduct.h"
+#import "APIDeliverylot.h"
 #import "UIImage-Extended.h"
 
 #define DEVELOPER_KEY @"xIvRaeGkY6OavPL1XtX9"
@@ -38,8 +39,58 @@
 	return self;
 }
 
-- (BOOL)addProductBasketToStoreBasket {
+- (NSArray*)fetchAvailableDeliverySlots {
+	NSMutableArray *availableDeliverySlots = [NSMutableArray array];
 	
+	NSString *fetchDeliverySlotsRequestString = [NSString stringWithFormat:@"%@?command=LISTDELIVERYSLOTS&SESSIONKEY=%@",REST_SERVICE_URL,authenticatedSessionKey];
+	NSDictionary *deliveryDetails = [self getJSONForRequest:fetchDeliverySlotsRequestString];
+	
+	if (deliveryDetails == nil) {
+	#ifdef DEBUG
+		[LogManager log:@"Error fetching delivery slots (NO JSON RETURNED)" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+	#endif
+		return [NSArray array];
+	}else {
+		NSNumber *statusCode = [deliveryDetails objectForKey:@"StatusCode"];
+		if ([statusCode intValue] != 0) {
+	#ifdef DEBUG
+			NSString* msg = [NSString stringWithFormat:@"Error fetching delivery slots (%@)",deliveryDetails];
+			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+	#endif
+			return [NSArray array];
+		}else{
+			//Request seems to have returned successfully...
+			NSArray *JSONDeliveryDates = [deliveryDetails objectForKey:@"DeliverySlots"];
+			NSDateFormatter *df = [[NSDateFormatter alloc] init];
+			[df setDateFormat:@"yyyy-MM-dd hh:mm"];
+			
+			for (NSDictionary *JSONDeliveryDate in JSONDeliveryDates) {
+				NSString *deliverySlotID = [JSONDeliveryDate objectForKey:@"DeliverySlotId"];
+				NSString *deliverySlotBranchNumber = [JSONDeliveryDate objectForKey:@"BranchNumber"];
+				NSDate *deliverySlotStartDate = [df dateFromString:[JSONDeliveryDate objectForKey:@"SlotDateTimeStart"]];
+				NSDate *deliverySlotEndDate = [df dateFromString:[JSONDeliveryDate objectForKey:@"SlotDateTimeEnd"]];
+				NSString *deliverySlotCost = [NSString stringWithFormat:@"%@",[JSONDeliveryDate objectForKey:@"ServiceCharge"]];
+				
+				APIDeliverySlot * apiDeliverySlot = [[APIDeliverySlot alloc] initWithDeliverySlotID:deliverySlotID 
+																		andDeliverySlotBranchNumber:deliverySlotBranchNumber 
+																		andDeliverySlotStartDate:deliverySlotStartDate 
+																	    andDeliverySlotEndDate:deliverySlotEndDate 
+																		andDeliverySlotCost:deliverySlotCost];
+				
+				[availableDeliverySlots addObject:apiDeliverySlot];
+			}
+			[df release];
+		}
+	}
+	
+	//Ensure returned array is sorted
+	[availableDeliverySlots sortUsingSelector:@selector(compareByDeliverySlotStart:)];
+	
+	return [NSArray arrayWithArray:availableDeliverySlots];
+
+}
+
+- (BOOL)addProductBasketToStoreBasket {
 	NSArray *productBasket = [DataManager getProductBasket];
 	
 	NSInteger index = 1;
@@ -102,7 +153,7 @@
 	return sessionKey;
 }
 
-- (NSArray*)filterAvailableProducts:(NSArray*)productIdList{
+- (NSArray*)getFilteredProductList:(NSArray*)productIdList{
 	NSString* sessionKey = [self getSessionKeyForEmail:@"" usingPassword:@""];
 	
 	//If API is down just return original list
@@ -116,19 +167,21 @@
 	NSInteger totalSize = [productIdList count];
 	for (NSNumber *productBaseId in productIdList) {
 		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewProgressText:) withObject:[NSString stringWithFormat:@"Verifying product %d of %d",index,totalSize] waitUntilDone:FALSE];
-
+		
 		NSString *productSearchRequestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&sessionkey=%@",REST_SERVICE_URL,productBaseId,sessionKey];
 		NSDictionary *productSearchResult = [self getJSONForRequest:productSearchRequestString];
 		NSArray *JSONProducts = [productSearchResult objectForKey:@"Products"];
 		if ([JSONProducts count] != 0) {
-			[filteredProducts addObject: productBaseId];
+			//Have to rebuild product in case price, description etc has changed
+			[filteredProducts addObject: [self buildProductFromInfo:[JSONProducts objectAtIndex:0]]];
 		}
-		#ifdef DEBUG
+		
+#ifdef DEBUG
 		else{
 			NSString *msg = [NSString stringWithFormat:@"Product with baseid %@ exists in database but not on website",productBaseId];
 			[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
 		}
-		#endif
+#endif
 		index++;
 	}
 	return filteredProducts;
@@ -156,7 +209,10 @@
 	//Now we have session key try doing search...
 	NSString *productSearchRequestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&page=%d&sessionkey=%@",REST_SERVICE_URL,searchTerm,pageNumber,sessionKey];
 	NSDictionary *productSearchResult = [self getJSONForRequest:productSearchRequestString];
-	*pageCountHolder = [[productSearchResult objectForKey:@"TotalPageCount"] intValue];
+	
+	if (pageCountHolder != nil){
+		*pageCountHolder = [[productSearchResult objectForKey:@"TotalPageCount"] intValue];
+	}
 	
 	NSArray *JSONProducts = [productSearchResult objectForKey:@"Products"];
 	
@@ -236,7 +292,7 @@
 	
 	if(error != nil){
 	#ifdef DEBUG
-		NSString *msg = [NSString stringWithFormat:@"error parsing JSON: '%@'.",[error localizedDescription]];		NSString *msg = [NSString stringWithFormat:@"error parsing JSON: '%@'.",[error localizedDescription]];
+		NSString *msg = [NSString stringWithFormat:@"error parsing JSON: '%@'.",[error localizedDescription]];
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
 	#endif
 		results = [NSArray array];

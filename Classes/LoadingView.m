@@ -90,7 +90,7 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 		   andBackgroundColor:(UIColor*)inViewBackgroundColor andDrawStroke:(BOOL)inDrawStroke;
 {
 	LoadingView *loadingView =
-	[[[LoadingView alloc] initWithFrame:[[inASuperview superview] bounds]] autorelease];
+	[[[LoadingView alloc] initWithFrame:[inASuperview bounds]] autorelease];
 	if (!loadingView)
 	{
 		return nil;

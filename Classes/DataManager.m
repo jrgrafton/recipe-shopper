@@ -88,11 +88,8 @@ static BOOL phoneIsOnline;
 
 + (NSArray*)fetchProductsFromIDs: (NSArray*) productIDs{
 	if ([DataManager phoneIsOnline]) {
-		//1. Verify that all these products are still available (Important!!)
-		productIDs = [apiRequestManager filterAvailableProducts:productIDs];
-		
-		//2. Check if products not found in DB can be found online (Not so important)
-		/*TODO*/
+		//Verify that all these products are still available if we are online
+		return [apiRequestManager getFilteredProductList:productIDs];
 	}
 	
 	return [databaseRequestManager fetchProductsFromIDs:productIDs];
@@ -209,6 +206,9 @@ static BOOL phoneIsOnline;
 #pragma mark API functions
 + (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder {
 	return [apiRequestManager fetchProductsMatchingSearchTerm: searchTerm onThisPage: pageNumber andGiveMePageCount: pageCountHolder];
+}
++ (NSArray*)fetchAvailableDeliverySlots{
+	return [apiRequestManager fetchAvailableDeliverySlots];
 }
 
 + (BOOL)loginToStore:(NSString*) email withPassword:(NSString*) password{

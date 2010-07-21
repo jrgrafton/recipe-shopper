@@ -17,8 +17,9 @@
 }
 
 - (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder;
+- (NSArray*)fetchAvailableDeliverySlots;
 - (BOOL)loginToStore:(NSString*) email withPassword:(NSString*) password;
-- (NSArray*)filterAvailableProducts:(NSArray*)productIdList;
+- (NSArray*)getFilteredProductList:(NSArray*)productIdList;
 - (BOOL)addProductBasketToStoreBasket;
 - (id)init;
 

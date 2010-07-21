@@ -60,13 +60,13 @@ static LocationController *sharedInstance;
     }
 }
 
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+/*- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
 #ifdef DEBUG
 	UIAlertView *alert;
     alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     [alert release];
 #endif
-}
+}*/
 @end
 

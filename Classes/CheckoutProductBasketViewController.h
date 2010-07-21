@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LoadingView.h"
+#import "CheckoutChooseDeliveryDateController.h"
 
 @protocol PreviousViewControllerDelegate;
 
@@ -18,9 +19,12 @@
 @interface CheckoutProductBasketViewController : UITableViewController <PreviousViewControllerDelegate,UIAlertViewDelegate> {
 	IBOutlet UITableView *productBasketTableView;	
 	UIView *footerView;
+	CheckoutChooseDeliveryDateController *checkoutChooseDeliveryDateController;
 	
 	@private
 	LoadingView *loadingView;
 }
+
+@property (nonatomic,retain) CheckoutChooseDeliveryDateController *checkoutChooseDeliveryDateController;
 
 @end

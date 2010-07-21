@@ -29,6 +29,8 @@
 
 @implementation CheckoutProductBasketViewController
 
+@synthesize checkoutChooseDeliveryDateController;
+
 /*
 - (id)initWithStyle:(UITableViewStyle)style {
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -496,9 +498,24 @@
 }
 
 -(void) transitionToDeliverySelection {
+	//Create next view
+	if (checkoutChooseDeliveryDateController == nil) {
+		CheckoutChooseDeliveryDateController *checkoutView = [[CheckoutChooseDeliveryDateController alloc] initWithNibName:@"CheckoutChooseDeliveryDateView" bundle:nil];
+		[self setCheckoutChooseDeliveryDateController: checkoutView];
+		[checkoutView release];
+	}
+	
+	//Fetch delivery slots
+	[LoadingView updateCurrentLoadingViewLoadingText:@"Fetching Delivery Slots"];
+	[LoadingView updateCurrentLoadingViewProgressText:@""];
+	[checkoutChooseDeliveryDateController processDeliverySlots:[DataManager fetchAvailableDeliverySlots]];
+	
+	//Hide loading overlay
 	[self hideLoadingOverlay];
 	
-	//Do view transition
+	//Do transition
+	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	[[appDelegate checkoutViewNavController] pushViewController:checkoutChooseDeliveryDateController animated:YES];
 }
 
 - (void) addProduct:(id)sender {
@@ -525,7 +542,7 @@
 }
 
 -(void)showLoadingOverlay {
-	[productBasketTableView setScrollEnabled:FALSE]:
+	[productBasketTableView setScrollEnabled:FALSE];
 	loadingView = [LoadingView loadingViewInView:(UIView *)productBasketTableView withText:@"Logging in..." 
 										 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
 								 andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
@@ -540,7 +557,7 @@
 		[loadingView removeView];
 		loadingView = nil;
 	}
-	[productBasketTableView setScrollEnabled:TRUE]:
+	[productBasketTableView setScrollEnabled:TRUE];
 }
 
 
