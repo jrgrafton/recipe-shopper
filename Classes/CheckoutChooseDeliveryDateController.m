@@ -13,19 +13,26 @@
 @interface CheckoutChooseDeliveryDateController ()
 //Private class functions
 -(APIDeliverySlot*) getImpliedDeliverySlotObject;
+-(NSString*) getDaySuffixForDate:(NSDate*)date;
+-(void) reloadUILabels;
 @end
 
 @implementation CheckoutChooseDeliveryDateController
 
-/*
+
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-        // Custom initialization
+		//Initialise all member variables
+		availableDeliverySlots = [[NSMutableArray alloc] init];
+		collatedDayMonthDeliverySlots = [[NSMutableArray alloc] init];
+		dayMonthTimeSlotReference = [[NSMutableDictionary alloc] init];
+		dayMonthYearSlotReference = [[NSMutableDictionary alloc] init];
+		pickerDateSlotReference = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
-*/
+
 
 /*
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -35,10 +42,11 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+	//Make sure date picker is reset and UILabels are reloaded
 	[deliveryDatePicker  selectRow:0 inComponent:0 animated:FALSE];
 	[deliveryDatePicker  selectRow:0 inComponent:1 animated:FALSE];
-	[deliveryDatePicker  selectRow:0 inComponent:2 animated:FALSE];
 	[deliveryDatePicker reloadAllComponents];
+	[self reloadUILabels];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -50,10 +58,6 @@
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
 	self.navigationItem.titleView = imageView;
 	[imageView release];
-	
-	//Add delegate and data source for uipickerview
-	[deliveryDatePicker setDelegate:self];
-	[deliveryDatePicker setDataSource:self];
 }
 
 
@@ -81,30 +85,14 @@
 #pragma mark -
 #pragma mark UIPickerViewDelegate
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-	//If we are changing the day month column refresh the others...
-	[deliveryDatePicker  selectRow:0 inComponent:1 animated:FALSE];
-	[deliveryDatePicker  selectRow:0 inComponent:2 animated:FALSE];
-	[deliveryDatePicker reloadComponent:1];
-	[deliveryDatePicker reloadComponent:2];
+	if (component == 0) {
+		//If we are changing the day month column refresh the others...
+		[deliveryDatePicker  selectRow:0 inComponent:1 animated:TRUE];
+		[deliveryDatePicker reloadComponent:1];
+	}
 	
-	//And refresh UILabels
-	APIDeliverySlot *apiDeliverySlot = [self getImpliedDeliverySlotObject];
-	
-	//Setup formatter for deliveryTimeLabel
-	NSDateFormatter *deliveryLabelFormatter = [[NSDateFormatter alloc] init];
-	[deliveryLabelFormatter setDateFormat:@"dd/MM/YYYY hh:mma"];
-	NSString *firstHalfDeliveryDateString = [deliveryLabelFormatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]]; 
-	[deliveryLabelFormatter setDateFormat:@"hh:mma"];
-	NSString *secondHalfDeliveryDateString = [deliveryLabelFormatter stringFromDate:[apiDeliverySlot deliverySlotEndDate]]; 
-	
-	//Update all label fields
-	[deliveryTimeLabel setText:[NSString stringWithFormat:@"%@ - %@",firstHalfDeliveryDateString,secondHalfDeliveryDateString]];
-	[deliveryCostLabel setText:[apiDeliverySlot deliverySlotCost]];
-	CGFloat totalCost = [DataManager getTotalProductBasketCost] + [[apiDeliverySlot deliverySlotCost] floatValue];
-	[totalCostLabel setText:[NSString stringWithFormat:@"£%.2f",totalCost]];
-	
-	//Release formatter object
-	[deliveryLabelFormatter release];
+	//Refresh UILabels
+	[self reloadUILabels];
 }
 
 - (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
@@ -116,13 +104,10 @@
 	
 	switch (component) {
 		case 0:
-			return dayMonthReferenceKey;
+			return [collatedDayMonthDeliverySlots objectAtIndex: row];
 			break;
 		case 1:
 			return [[dayMonthTimeSlotReference objectForKey:dayMonthReferenceKey] objectAtIndex:row];
-			break;
-		case 2:
-			return [[dayMonthYearSlotReference objectForKey:dayMonthReferenceKey] objectAtIndex:row];
 			break;
 		default:
 			return @"";
@@ -134,42 +119,45 @@
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
 	switch (component) {
 		case 0:
-			return 150;
+			return 190;
 			break;
 		case 1:
-			return 85;
-			break;
-		case 2:
-			return 85;
+			return 120;
 			break;
 		default:
 			return 0;
 	}
+	
+	return 0;
 }
 
 
 #pragma mark -
 #pragma mark UIPickerViewDataSource
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView*) pickerView {
-	return 3;
+	return 2;
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+	//Need this since [pickerView selectedRowInComponent:0] leads to recursive call
+	if (component == 0) {
+		return [collatedDayMonthDeliverySlots count];
+	}
+	
 	NSString *dayMonthReferenceKey = [collatedDayMonthDeliverySlots objectAtIndex: [pickerView selectedRowInComponent:0]];
 	
 	switch (component) {
-		case 0:
-			return [collatedDayMonthDeliverySlots count];
-			break;
 		case 1:
 			return [[dayMonthTimeSlotReference objectForKey:dayMonthReferenceKey] count];
 			break;
 		case 2:
-			return [[dayMonthYearSlotReference objectForKey:dayMonthReferenceKey] count];
+			return 1; //A day belongs to only one year!
 			break;
 		default:
-			return 0;
+			return 1;
 	}
+	
+	return 1;
 }
 
 
@@ -181,16 +169,28 @@
 	//APIDeliverySlot *apiDeliverySlot = [self getImpliedDeliverySlotObject];
 }
 
+-(NSString*) getDaySuffixForDate:(NSDate*) date {
+	NSDateFormatter *monthDayFormatter = [[NSDateFormatter alloc] init];
+	[monthDayFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+	[monthDayFormatter setDateFormat:@"d"];
+	NSInteger dateDay = [[monthDayFormatter stringFromDate:date] intValue];      
+	NSString *suffixString = @"|st|nd|rd|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|st|nd|rd|th|th|th|th|th|th|th|st";
+	NSArray *suffixes = [suffixString componentsSeparatedByString: @"|"];
+	[monthDayFormatter release];
+	
+	return [suffixes objectAtIndex:dateDay];
+}
+
+
 -(APIDeliverySlot*) getImpliedDeliverySlotObject {
 	//Figure out indexes
 	NSInteger selectedDayMonthIndex = [deliveryDatePicker selectedRowInComponent:0];
 	NSInteger selectedTimeIndex = [deliveryDatePicker selectedRowInComponent:1];
-	NSInteger selectedYearIndex = [deliveryDatePicker selectedRowInComponent:2];
 	
 	//Figure out strings
 	NSString *dayMonthString = [collatedDayMonthDeliverySlots objectAtIndex:selectedDayMonthIndex];
 	NSString *timeString = [[dayMonthTimeSlotReference objectForKey: dayMonthString] objectAtIndex:selectedTimeIndex];
-	NSString *yearString = [[dayMonthYearSlotReference objectForKey: dayMonthString] objectAtIndex:selectedYearIndex];
+	NSString *yearString = [dayMonthYearSlotReference objectForKey: dayMonthString];
 	
 	//Concatinate
 	NSString *dateString = [NSString stringWithFormat:@"%@ %@ %@",dayMonthString,timeString,yearString];
@@ -199,9 +199,28 @@
 	return [pickerDateSlotReference objectForKey:dateString];
 }
 
+-(void) reloadUILabels {
+	APIDeliverySlot *apiDeliverySlot = [self getImpliedDeliverySlotObject];
+	
+	//Setup formatter for deliveryTimeLabel
+	NSDateFormatter *deliveryLabelFormatter = [[NSDateFormatter alloc] init];
+	[deliveryLabelFormatter setDateFormat:@"dd/MM/YYYY hh:mma"];
+	NSString *firstHalfDeliveryDateString = [deliveryLabelFormatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]]; 
+	[deliveryLabelFormatter setDateFormat:@"hh:mma"];
+	NSString *secondHalfDeliveryDateString = [deliveryLabelFormatter stringFromDate:[apiDeliverySlot deliverySlotEndDate]]; 
+	
+	//Update all label fields
+	[deliveryTimeLabel setText:[NSString stringWithFormat:@"%@ - %@",firstHalfDeliveryDateString,secondHalfDeliveryDateString]];
+	[deliveryCostLabel setText:[NSString stringWithFormat:@"£%.2f",[[apiDeliverySlot deliverySlotCost] floatValue]]];
+	CGFloat totalCost = [DataManager getTotalProductBasketCost] + [[apiDeliverySlot deliverySlotCost] floatValue];
+	[totalCostLabel setText:[NSString stringWithFormat:@"£%.2f",totalCost]];
+	
+	//Release formatter object
+	[deliveryLabelFormatter release];
+}
+
 -(void) processDeliverySlots:(NSArray*) deliverySlots {
 	//Reset globals
-	[availableDeliverySlots removeAllObjects];
 	[collatedDayMonthDeliverySlots removeAllObjects];
 	[dayMonthTimeSlotReference removeAllObjects];
 	[dayMonthYearSlotReference removeAllObjects];
@@ -211,27 +230,32 @@
 	if ([deliverySlots count] == 0) {
 		return;
 	}
+	//Release exisiting array
+	[availableDeliverySlots release];
 	
-	NSLog(@"Adding all delivery slot objects (processDSlot)");
-	
-	[availableDeliverySlots addObjectsFromArray:deliverySlots];
+	//Take ownership of passed in array
+	availableDeliverySlots = [deliverySlots retain];
 	
 	//Setup all the date formatters
 	NSDateFormatter *dayMonthformatter = [[NSDateFormatter alloc] init];
-	[dayMonthformatter setDateFormat:@"ccc MMM dd"];
+	[dayMonthformatter setDateFormat:@"ccc MMMM d"];
 	NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
-	[timeFormatter setDateFormat:@"HH:mm"];
+	[timeFormatter setDateFormat:@"hh:mm a"];
 	NSDateFormatter *yearFormatter = [[NSDateFormatter alloc] init];
 	[yearFormatter setDateFormat:@"YYYY"];
 	
 	//Setup for loop
-	NSString *firstYearString = [yearFormatter stringFromDate:[[deliverySlots objectAtIndex:0] deliverySlotStartDate]];
-	NSString *lastSeenDayMonthString = [dayMonthformatter stringFromDate:[[deliverySlots objectAtIndex:0] deliverySlotStartDate]];
+	NSString *firstYearString = [yearFormatter stringFromDate:[[availableDeliverySlots objectAtIndex:0] deliverySlotStartDate]];
+	NSString *lastSeenDayMonthString = [dayMonthformatter stringFromDate:[[availableDeliverySlots objectAtIndex:0] deliverySlotStartDate]];
+	lastSeenDayMonthString = [NSString stringWithFormat:@"%@%@",lastSeenDayMonthString,[self getDaySuffixForDate:[[availableDeliverySlots objectAtIndex:0] deliverySlotStartDate]]];
 	[dayMonthYearSlotReference setValue:firstYearString forKey:lastSeenDayMonthString];
 	NSMutableArray *timesForDayMonth = [NSMutableArray array];
 	
-	for (APIDeliverySlot *apiDeliverySlot in deliverySlots) {
+	for (APIDeliverySlot *apiDeliverySlot in availableDeliverySlots) {
 		NSString *dayMonthString = [dayMonthformatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]];
+		//Add day suffix
+		dayMonthString = [NSString stringWithFormat:@"%@%@",dayMonthString,[self getDaySuffixForDate:[apiDeliverySlot deliverySlotStartDate]]];
+		
 		NSString *timeString = [timeFormatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]];
 		NSString *yearString = [yearFormatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]];
 		
@@ -242,8 +266,8 @@
 		if (![dayMonthString isEqualToString:lastSeenDayMonthString]) {
 			//Add new item to collated list if its new day
 			[collatedDayMonthDeliverySlots addObject:dayMonthString];
-			//Create a reference from lastSeenDay to timesForDate
-			[dayMonthTimeSlotReference setValue:timeString forKey:dayMonthString];
+			//Create a reference from dayMonthString to times for dayMonthArray
+			[dayMonthTimeSlotReference setValue:timesForDayMonth forKey:dayMonthString];
 			//Create new timesForDate Array
 			timesForDayMonth = [NSMutableArray array];
 			//Create a year reference for this day
@@ -255,11 +279,11 @@
 
 		lastSeenDayMonthString = dayMonthString;
 	}
-			 
+	
 	//Release all the date formatters
-	 [dayMonthformatter release];
-	 [timeFormatter release];
-	 [yearFormatter release];
+	[dayMonthformatter release];
+	[timeFormatter release];
+	[yearFormatter release];
 }
 										
 #pragma mark -

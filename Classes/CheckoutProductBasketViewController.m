@@ -492,7 +492,7 @@
 }
 
 -(void) transmitBasket {
-	[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewLoadingText:) withObject:@"Adding products to basket" waitUntilDone:TRUE];
+	[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewLoadingText:) withObject:@"Adding products to Tesco.com basket" waitUntilDone:TRUE];
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	@try {
@@ -502,9 +502,7 @@
 		//Fetch delivery slots
 		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewLoadingText:) withObject:@"Fetching Delivery Slots" waitUntilDone:TRUE];
 		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewProgressText:) withObject:@"" waitUntilDone:TRUE];
-		NSArray *deliverySlots = [DataManager fetchAvailableDeliverySlots];
-		
-		[self performSelectorOnMainThread:@selector(transitionToDeliverySelection:) withObject:deliverySlots waitUntilDone:FALSE];
+		[self performSelectorOnMainThread:@selector(transitionToDeliverySelection:) withObject:[DataManager fetchAvailableDeliverySlots] waitUntilDone:FALSE];
 	}@catch (id exception) {
 		NSString *msg = [NSString stringWithFormat:@"Exception: '%@'.",exception];
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"CheckoutProductBasketViewController"];
@@ -592,6 +590,7 @@
 - (void)dealloc {
 	[productBasketTableView release];
 	[footerView release];
+	[checkoutChooseDeliveryDateController release];
     [super dealloc];
 }
 
