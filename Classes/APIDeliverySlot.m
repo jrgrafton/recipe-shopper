@@ -34,6 +34,10 @@
 	return self;
 }
 
+- (NSString *)description {
+	return [NSString stringWithFormat:@"DeliverySlot: ID=%@ Branch=%@ Start=%@ End=%@ Cost=%@",deliverySlotID,deliverySlotBranchNumber,deliverySlotStartDate,deliverySlotEndDate,deliverySlotCost];
+}
+
 - (NSComparisonResult) compareByDeliverySlotStart:(APIDeliverySlot *)obj
 {
     NSComparisonResult retVal = NSOrderedSame;

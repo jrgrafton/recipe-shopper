@@ -411,6 +411,10 @@
 		[networkError release]; 
 		return;
 	}
+	//Fetch cached username and password (if they exist)
+	NSString* cachedEmail = [DataManager fetchUserPreference:@"login.email"];
+	NSString* cachedPassword = [DataManager fetchUserPreference:@"login.password"];
+	
 	UIAlertView *loginPrompt = [[UIAlertView alloc] initWithTitle: @"Login" message: @"Please login to your account\n\n\n\n\n" delegate: self cancelButtonTitle: @"Cancel" otherButtonTitles: @"OK", nil];
 	
 	UITextField *emailField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 80.0, 260.0, 30.0)];
@@ -420,6 +424,9 @@
 	[emailField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
 	[emailField setBorderStyle:UITextBorderStyleBezel];
 	[emailField setKeyboardType:UIKeyboardTypeEmailAddress];
+	if (cachedEmail != nil){
+		[emailField setText:cachedEmail];
+	}
 	[loginPrompt addSubview:emailField];
 	
 	UITextField *passwordField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 120.0, 260.0, 30.0)];
@@ -428,6 +435,9 @@
 	[passwordField setSecureTextEntry:YES];
 	[passwordField setAutocorrectionType: UITextAutocorrectionTypeNo];
 	[passwordField setBorderStyle:UITextBorderStyleBezel];
+	if (cachedPassword != nil){
+		[passwordField setText:cachedPassword];
+	}
 	[loginPrompt addSubview:passwordField];
 	
 	//[loginPrompt setTransform:CGAffineTransformMakeTranslation(0.0, 110.0)];
@@ -478,6 +488,10 @@
 		[self performSelectorOnMainThread:@selector(hideLoadingOverlay) withObject:nil waitUntilDone:TRUE];
 		[self performSelectorOnMainThread:@selector(showLoginError) withObject:nil waitUntilDone:TRUE];
 	}else {
+		//Save username and password in preferences
+		[DataManager putUserPreference: @"login.email" andValue:[details objectAtIndex:0]];
+		[DataManager putUserPreference: @"login.password" andValue:[details objectAtIndex:1]];
+		
 		//Dont want to perform this on main thread
 		[self transmitBasket];
 	}

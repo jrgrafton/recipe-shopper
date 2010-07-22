@@ -195,6 +195,8 @@
 	//Concatinate
 	NSString *dateString = [NSString stringWithFormat:@"%@ %@ %@",dayMonthString,timeString,yearString];
 	
+	NSLog(@"Looking up reference for [%@]",dateString);
+	
 	//Grab referenced APIDeliverySlot object
 	return [pickerDateSlotReference objectForKey:dateString];
 }
@@ -202,9 +204,11 @@
 -(void) reloadUILabels {
 	APIDeliverySlot *apiDeliverySlot = [self getImpliedDeliverySlotObject];
 	
+	NSLog(@"Found [%@]",apiDeliverySlot);
+	
 	//Setup formatter for deliveryTimeLabel
 	NSDateFormatter *deliveryLabelFormatter = [[NSDateFormatter alloc] init];
-	[deliveryLabelFormatter setDateFormat:@"dd/MM/YYYY hh:mma"];
+	[deliveryLabelFormatter setDateFormat:@"hh:mma"];
 	NSString *firstHalfDeliveryDateString = [deliveryLabelFormatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]]; 
 	[deliveryLabelFormatter setDateFormat:@"hh:mma"];
 	NSString *secondHalfDeliveryDateString = [deliveryLabelFormatter stringFromDate:[apiDeliverySlot deliverySlotEndDate]]; 
@@ -248,9 +252,11 @@
 	NSString *firstYearString = [yearFormatter stringFromDate:[[availableDeliverySlots objectAtIndex:0] deliverySlotStartDate]];
 	NSString *lastSeenDayMonthString = [dayMonthformatter stringFromDate:[[availableDeliverySlots objectAtIndex:0] deliverySlotStartDate]];
 	lastSeenDayMonthString = [NSString stringWithFormat:@"%@%@",lastSeenDayMonthString,[self getDaySuffixForDate:[[availableDeliverySlots objectAtIndex:0] deliverySlotStartDate]]];
+	[collatedDayMonthDeliverySlots addObject:lastSeenDayMonthString];
 	[dayMonthYearSlotReference setValue:firstYearString forKey:lastSeenDayMonthString];
 	NSMutableArray *timesForDayMonth = [NSMutableArray array];
 	
+	NSInteger index = 1;
 	for (APIDeliverySlot *apiDeliverySlot in availableDeliverySlots) {
 		NSString *dayMonthString = [dayMonthformatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]];
 		//Add day suffix
@@ -266,18 +272,22 @@
 		if (![dayMonthString isEqualToString:lastSeenDayMonthString]) {
 			//Add new item to collated list if its new day
 			[collatedDayMonthDeliverySlots addObject:dayMonthString];
-			//Create a reference from dayMonthString to times for dayMonthArray
-			[dayMonthTimeSlotReference setValue:timesForDayMonth forKey:dayMonthString];
+			//Create a reference from lastSeenDayMonthString to times for dayMonthArray
+			[dayMonthTimeSlotReference setValue:timesForDayMonth forKey:lastSeenDayMonthString];
 			//Create new timesForDate Array
 			timesForDayMonth = [NSMutableArray array];
 			//Create a year reference for this day
+			[dayMonthYearSlotReference setValue:yearString forKey:lastSeenDayMonthString];
+		}else if (index == [availableDeliverySlots count]) {
+			//Make sure last day month is captured!
+			[dayMonthTimeSlotReference setValue:timesForDayMonth forKey:dayMonthString];
 			[dayMonthYearSlotReference setValue:yearString forKey:dayMonthString];
 		}else {
 			//If its same day add new time to reference dict
 			[timesForDayMonth addObject:timeString];
 		}
-
 		lastSeenDayMonthString = dayMonthString;
+		index++;
 	}
 	
 	//Release all the date formatters

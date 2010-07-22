@@ -100,9 +100,10 @@
 		NSMutableArray *toRemove = [NSMutableArray array];
 		NSArray *productKeys = [productBasket allKeys];
 		for (DBProduct* product in productKeys) {
-			if (![product userAdded]) {
+			//ALWAYS REMOVE ALL PRODUCTS TEST!!!!!!!
+			//if (![product userAdded]) {
 				[toRemove addObject:product];
-			}
+			//}
 		}
 		[productBasket removeObjectsForKeys:toRemove];
 	}
