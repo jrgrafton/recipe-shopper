@@ -323,7 +323,7 @@
 		[DataManager addProductToBasket:product];
 	}
 	
-	UIAlertView *productAdded = [[UIAlertView alloc] initWithTitle: @"Product Added" message: @"Product successfully added to basket" delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
+	UIAlertView *productAdded = [[UIAlertView alloc] initWithTitle: @"Product Added" message: @"Product successfully added to basket" delegate: self cancelButtonTitle: @"OK" otherButtonTitles: nil];
 	[productAdded show];
 	[productAdded release]; 
 	

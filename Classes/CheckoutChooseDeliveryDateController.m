@@ -14,7 +14,8 @@
 //Private class functions
 -(APIDeliverySlot*) getImpliedDeliverySlotObject;
 -(NSString*) getDaySuffixForDate:(NSDate*)date;
--(void) reloadUILabels;
+-(void) reloadDeliveryInfo;
+-(void) proceedToCheckoutAction:(id)sender;
 @end
 
 @implementation CheckoutChooseDeliveryDateController
@@ -29,6 +30,9 @@
 		dayMonthTimeSlotReference = [[NSMutableDictionary alloc] init];
 		dayMonthYearSlotReference = [[NSMutableDictionary alloc] init];
 		pickerDateSlotReference = [[NSMutableDictionary alloc] init];
+		deliveryTimeSlotString = [[NSString alloc] init];
+		deliveryCostString = [[NSString alloc] init];
+		totalCostString = [[NSString alloc] init];
     }
     return self;
 }
@@ -46,7 +50,7 @@
 	[deliveryDatePicker  selectRow:0 inComponent:0 animated:FALSE];
 	[deliveryDatePicker  selectRow:0 inComponent:1 animated:FALSE];
 	[deliveryDatePicker reloadAllComponents];
-	[self reloadUILabels];
+	[self reloadDeliveryInfo];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -58,6 +62,16 @@
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
 	self.navigationItem.titleView = imageView;
 	[imageView release];
+	
+	//Ensure table can't be selected
+	[deliveryInformationTableView setAllowsSelection:NO];
+	
+	//Add right navigation button
+	//Add product add button to top right corner
+	UIBarButtonItem *checkoutButton = [[UIBarButtonItem alloc]
+                                  initWithTitle:@"Checkout" style:UIBarButtonItemStyleBordered target:self action:@selector(proceedToCheckoutAction:)];
+	
+	self.navigationItem.rightBarButtonItem = checkoutButton;
 }
 
 
@@ -92,7 +106,7 @@
 	}
 	
 	//Refresh UILabels
-	[self reloadUILabels];
+	[self reloadDeliveryInfo];
 }
 
 - (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
@@ -119,10 +133,10 @@
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
 	switch (component) {
 		case 0:
-			return 190;
+			return 130;
 			break;
 		case 1:
-			return 120;
+			return 105;
 			break;
 		default:
 			return 0;
@@ -160,11 +174,84 @@
 	return 1;
 }
 
+#pragma mark -
+#pragma mark Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Return the number of sections.
+    return 1;
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    // Return the number of rows in the section.
+    return 3;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+	return @"";
+}
+
+- (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath{
+	return 42;
+}
+
+// Customize the appearance of table view cells.
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    }
+    
+	UILabel *infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,130,35)];
+	[infoLabel setFont:[UIFont systemFontOfSize:14]];
+	[infoLabel setTextAlignment: UITextAlignmentRight];
+	
+	switch ([indexPath row]) {
+		case 0:
+			[[cell textLabel] setText:@"Slot Time"];
+			[infoLabel setText:deliveryTimeSlotString];
+			break;
+		case 1:
+			[[cell textLabel] setText:@"Slot Cost"];
+			[infoLabel setText:deliveryCostString];
+			break;
+		case 2:
+			[[cell textLabel] setText:@"Total Cost"];
+			[infoLabel setText:totalCostString];
+			break;
+		default:
+			break;
+	}
+	
+	//Having a view allows us to right pad UILabel
+	UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0,0,140,35)];
+	[accessoryView addSubview:infoLabel];
+	[infoLabel release];
+	
+	[cell setAccessoryView:accessoryView];
+	[accessoryView release];
+	
+    return cell;
+}
+
+#pragma mark -
+#pragma mark Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+	return NO;
+}
 
 #pragma mark -
 #pragma mark IBActions and Additional
 
--(IBAction) proceedToCheckoutAction:(id)sender{
+-(void) proceedToCheckoutAction:(id)sender{
 	//Grab referenced APIDeliverySlot object
 	//APIDeliverySlot *apiDeliverySlot = [self getImpliedDeliverySlotObject];
 }
@@ -201,10 +288,13 @@
 	return [pickerDateSlotReference objectForKey:dateString];
 }
 
--(void) reloadUILabels {
+-(void) reloadDeliveryInfo {
 	APIDeliverySlot *apiDeliverySlot = [self getImpliedDeliverySlotObject];
 	
-	NSLog(@"Found [%@]",apiDeliverySlot);
+	//Possibility of this function being called before UIPicker is instantiated
+	if (apiDeliverySlot == nil) {
+		return;
+	}
 	
 	//Setup formatter for deliveryTimeLabel
 	NSDateFormatter *deliveryLabelFormatter = [[NSDateFormatter alloc] init];
@@ -213,14 +303,21 @@
 	[deliveryLabelFormatter setDateFormat:@"hh:mma"];
 	NSString *secondHalfDeliveryDateString = [deliveryLabelFormatter stringFromDate:[apiDeliverySlot deliverySlotEndDate]]; 
 	
-	//Update all label fields
-	[deliveryTimeLabel setText:[NSString stringWithFormat:@"%@ - %@",firstHalfDeliveryDateString,secondHalfDeliveryDateString]];
-	[deliveryCostLabel setText:[NSString stringWithFormat:@"£%.2f",[[apiDeliverySlot deliverySlotCost] floatValue]]];
-	CGFloat totalCost = [DataManager getTotalProductBasketCost] + [[apiDeliverySlot deliverySlotCost] floatValue];
-	[totalCostLabel setText:[NSString stringWithFormat:@"£%.2f",totalCost]];
+	//Update all delivery info fields
+	[deliveryTimeSlotString release];
+	[deliveryCostString release];
+	[totalCostString release];
+	
+	deliveryTimeSlotString = [[NSString stringWithFormat:@"%@ - %@",firstHalfDeliveryDateString,secondHalfDeliveryDateString] retain];
+	deliveryCostString = [[NSString stringWithFormat:@"£%.2f",[[apiDeliverySlot deliverySlotCost] floatValue]] retain];
+	CGFloat totalCostFloat = [DataManager getTotalProductBasketCost] + [[apiDeliverySlot deliverySlotCost] floatValue];
+	totalCostString = [[NSString stringWithFormat:@"£%.2f",totalCostFloat] retain];
 	
 	//Release formatter object
 	[deliveryLabelFormatter release];
+	
+	//Reload table view
+	[deliveryInformationTableView reloadData];
 }
 
 -(void) processDeliverySlots:(NSArray*) deliverySlots {
@@ -242,16 +339,16 @@
 	
 	//Setup all the date formatters
 	NSDateFormatter *dayMonthformatter = [[NSDateFormatter alloc] init];
-	[dayMonthformatter setDateFormat:@"ccc MMMM d"];
+	[dayMonthformatter setDateFormat:@"ccc MMM d"];
 	NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
-	[timeFormatter setDateFormat:@"hh:mm a"];
+	[timeFormatter setDateFormat:@"hh:mma"];
 	NSDateFormatter *yearFormatter = [[NSDateFormatter alloc] init];
 	[yearFormatter setDateFormat:@"YYYY"];
 	
 	//Setup for loop
 	NSString *firstYearString = [yearFormatter stringFromDate:[[availableDeliverySlots objectAtIndex:0] deliverySlotStartDate]];
 	NSString *lastSeenDayMonthString = [dayMonthformatter stringFromDate:[[availableDeliverySlots objectAtIndex:0] deliverySlotStartDate]];
-	lastSeenDayMonthString = [NSString stringWithFormat:@"%@%@",lastSeenDayMonthString,[self getDaySuffixForDate:[[availableDeliverySlots objectAtIndex:0] deliverySlotStartDate]]];
+	//lastSeenDayMonthString = [NSString stringWithFormat:@"%@%@",lastSeenDayMonthString,[self getDaySuffixForDate:[[availableDeliverySlots objectAtIndex:0] deliverySlotStartDate]]];
 	[collatedDayMonthDeliverySlots addObject:lastSeenDayMonthString];
 	[dayMonthYearSlotReference setValue:firstYearString forKey:lastSeenDayMonthString];
 	NSMutableArray *timesForDayMonth = [NSMutableArray array];
@@ -260,7 +357,7 @@
 	for (APIDeliverySlot *apiDeliverySlot in availableDeliverySlots) {
 		NSString *dayMonthString = [dayMonthformatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]];
 		//Add day suffix
-		dayMonthString = [NSString stringWithFormat:@"%@%@",dayMonthString,[self getDaySuffixForDate:[apiDeliverySlot deliverySlotStartDate]]];
+		//dayMonthString = [NSString stringWithFormat:@"%@%@",dayMonthString,[self getDaySuffixForDate:[apiDeliverySlot deliverySlotStartDate]]];
 		
 		NSString *timeString = [timeFormatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]];
 		NSString *yearString = [yearFormatter stringFromDate:[apiDeliverySlot deliverySlotStartDate]];
@@ -304,6 +401,10 @@
 	[dayMonthTimeSlotReference release];
 	[dayMonthYearSlotReference release];
 	[pickerDateSlotReference release];
+	[deliveryTimeSlotString release];
+	[deliveryCostString release];
+	[totalCostString release];
+	
     [super dealloc];
 }
 

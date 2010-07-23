@@ -9,15 +9,12 @@
 #import <UIKit/UIKit.h>
 
 
-@interface CheckoutChooseDeliveryDateController : UIViewController <UIPickerViewDataSource,UIPickerViewDelegate> {
-	IBOutlet UIButton *bookDeliverySlotButton;
+@interface CheckoutChooseDeliveryDateController : UIViewController <UIPickerViewDataSource,UIPickerViewDelegate,UITableViewDataSource,UITableViewDelegate> {
 	IBOutlet UIPickerView *deliveryDatePicker;
-	
-	IBOutlet UILabel *deliveryTimeLabel;
-	IBOutlet UILabel *deliveryCostLabel;
-	IBOutlet UILabel *totalCostLabel;
+	IBOutlet UITableView *deliveryInformationTableView;
 		
 	@private
+	//Delivery date information
 	NSMutableArray* availableDeliverySlots;
 	NSMutableArray* collatedDayMonthDeliverySlots;
 	NSMutableDictionary *dayMonthTimeSlotReference;
@@ -25,9 +22,13 @@
 	
 	//Used so that we can quickly lookup delivery slot objects from 
 	NSMutableDictionary *pickerDateSlotReference;
+	
+	//Delivery information used by tableview
+	NSString *deliveryTimeSlotString;
+	NSString *deliveryCostString;
+	NSString *totalCostString;
 }
 
--(IBAction) proceedToCheckoutAction:(id)sender;
 -(void) processDeliverySlots: (NSArray*) deliverySlots;
 
 @end
