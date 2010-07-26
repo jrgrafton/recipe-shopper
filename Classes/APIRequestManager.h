@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "APIDeliverySlot.h"
 #import "LoadingView.h"
 
 @interface APIRequestManager : NSObject {
@@ -21,6 +22,9 @@
 - (BOOL)loginToStore:(NSString*) email withPassword:(NSString*) password;
 - (NSArray*)getFilteredProductList:(NSArray*)productIdList;
 - (BOOL)addProductBasketToStoreBasket;
+- (BOOL)chooseDeliverySlot:(APIDeliverySlot*)deliverySlot returningError:(NSString**)error;
+- (NSDate*)verifyOrder:(NSString**)error;
+
 - (id)init;
 
 @end

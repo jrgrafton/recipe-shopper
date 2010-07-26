@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LoadingView.h"
 
 
 @interface CheckoutChooseDeliveryDateController : UIViewController <UIPickerViewDataSource,UIPickerViewDelegate,UITableViewDataSource,UITableViewDelegate> {
@@ -27,6 +28,9 @@
 	NSString *deliveryTimeSlotString;
 	NSString *deliveryCostString;
 	NSString *totalCostString;
+	
+	//Loading view
+	LoadingView *loadingView;
 }
 
 -(void) processDeliverySlots: (NSArray*) deliverySlots;

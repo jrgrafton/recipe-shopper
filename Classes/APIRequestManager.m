@@ -11,7 +11,6 @@
 #import "LogManager.h"
 #import "DataManager.h"
 #import "DBProduct.h"
-#import "APIDeliverySlot.h"
 #import "UIImage-Extended.h"
 
 #define DEVELOPER_KEY @"xIvRaeGkY6OavPL1XtX9"
@@ -39,6 +38,63 @@
 	return self;
 }
 
+- (NSDate*)verifyOrder:(NSString**)error {
+	NSString *verifyOrderString = [NSString stringWithFormat:@"%@?command=READYFORCHECKOUT&SESSIONKEY=%@",REST_SERVICE_URL,authenticatedSessionKey];
+	NSDictionary *verifyOrderDetails = [self getJSONForRequest:verifyOrderString];
+	
+	if (verifyOrderDetails == nil) {
+	#ifdef DEBUG
+		[LogManager log:@"Error verifying order (NO JSON RETURNED)" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];	
+	#endif
+		*error = [[[NSString alloc] initWithFormat:@"Tesco API endpoint unreachable"] autorelease];
+		return nil;
+	}else{
+		NSNumber *statusCode = [verifyOrderDetails objectForKey:@"StatusCode"];
+		if ([statusCode intValue] != 0) {
+		#ifdef DEBUG
+			NSString* msg = [NSString stringWithFormat:@"Error verifying order (%@)",verifyOrderDetails];
+			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+		#endif
+			*error = [[[NSString alloc] initWithFormat:@"%@",[verifyOrderDetails objectForKey:@"StatusInfo"]]autorelease];
+			return nil;
+		}else{
+			NSLocale *          enUSPOSIXLocale;
+			enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+			
+			NSDateFormatter *df = [[NSDateFormatter alloc] init];
+			[df setLocale:enUSPOSIXLocale];
+			[df setDateFormat:@"yyyy-MM-dd HH:mm"];
+			
+			return [df dateFromString:[verifyOrderDetails objectForKey:@"DeliverySlotReservationExpires"]];
+		}
+	}
+}
+
+- (BOOL)chooseDeliverySlot:(APIDeliverySlot*)deliverySlot returningError:(NSString**)error {
+	NSString *chooseDeliverySlotString = [NSString stringWithFormat:@"%@?command=CHOOSEDELIVERYSLOT&DELIVERYSLOTID=%@&SESSIONKEY=%@",REST_SERVICE_URL,[deliverySlot deliverySlotID],authenticatedSessionKey];
+	NSDictionary *chooseDeliverySlotResponse = [self getJSONForRequest:chooseDeliverySlotString];
+	
+	if (chooseDeliverySlotResponse == nil) {
+	#ifdef DEBUG
+		[LogManager log:@"Error reserving delivery slot (NO JSON RETURNED)" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];	
+	#endif
+		*error = [[[NSString alloc] initWithFormat:@"Tesco API endpoint unreachable"] autorelease];
+		return FALSE;
+	}else{
+		NSNumber *statusCode = [chooseDeliverySlotResponse objectForKey:@"StatusCode"];
+		if ([statusCode intValue] != 0) {
+		#ifdef DEBUG
+			NSString* msg = [NSString stringWithFormat:@"Error reserving delivery slot (%@)",chooseDeliverySlotResponse];
+			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+		#endif
+			*error = [[[NSString alloc] initWithFormat:@"%@",[chooseDeliverySlotResponse objectForKey:@"StatusInfo"]]autorelease];
+			return FALSE;
+		}else{
+			return TRUE;
+		}
+	}
+}
+
 - (NSArray*)fetchAvailableDeliverySlots {
 	NSMutableArray *availableDeliverySlots = [NSMutableArray array];
 	
@@ -60,8 +116,12 @@
 			return [NSArray array];
 		}else{
 			//Request seems to have returned successfully...
+			NSLocale *          enUSPOSIXLocale;
+			enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+			
 			NSArray *JSONDeliveryDates = [deliveryDetails objectForKey:@"DeliverySlots"];
 			NSDateFormatter *df = [[NSDateFormatter alloc] init];
+			[df setLocale:enUSPOSIXLocale];
 			[df setDateFormat:@"yyyy-MM-dd HH:mm"];
 			
 			NSInteger index = 0;

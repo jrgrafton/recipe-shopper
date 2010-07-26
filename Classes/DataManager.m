@@ -17,7 +17,6 @@
 #import "LogManager.h"
 #import "Reachability.h"
 #import "LocationController.h"
-#import "DBProduct.h"
 #import "LoadingView.h"
 
 static DatabaseRequestManager *databaseRequestManager;
@@ -217,6 +216,14 @@ static BOOL phoneIsOnline;
 
 + (BOOL)addProductBasketToStoreBasket{
 	return [apiRequestManager addProductBasketToStoreBasket];
+}
+
++ (BOOL)chooseDeliverySlot:(APIDeliverySlot*)deliverySlot returningError:(NSString**)error{
+	return [apiRequestManager chooseDeliverySlot:deliverySlot returningError:error];
+}
+
++ (NSDate*)verifyOrder:(NSString**)error {
+	return [apiRequestManager verifyOrder:error];
 }
 
 @end

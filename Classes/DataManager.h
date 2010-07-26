@@ -10,6 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "DBRecipe.h"
 #import "DBProduct.h"
+#import "APIDeliverySlot.h"
 #import "LoadingView.h"
 
 @interface DataManager : NSObject <CLLocationManagerDelegate>{
@@ -41,6 +42,8 @@
 + (NSArray*)fetchAvailableDeliverySlots;
 + (BOOL)loginToStore:(NSString*) username withPassword:(NSString*) password;
 + (BOOL)addProductBasketToStoreBasket;
++ (BOOL)chooseDeliverySlot:(APIDeliverySlot*)deliverySlot returningError:(NSString**)error;
++ (NSDate*)verifyOrder:(NSString**)error;
 
 //Application data
 + (void)addRecipeToBasket: (DBRecipe*)recipe;

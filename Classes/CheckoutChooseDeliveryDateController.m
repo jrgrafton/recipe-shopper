@@ -16,6 +16,13 @@
 -(NSString*) getDaySuffixForDate:(NSDate*)date;
 -(void) reloadDeliveryInfo;
 -(void) proceedToCheckoutAction:(id)sender;
+-(void) showLoadingOverlay;
+-(void) hideLoadingOverlay;
+-(void) verifyOrder;
+-(void) verifyOrderError:(NSString*) error;
+-(void) chooseDeliverySlot:(APIDeliverySlot*) deliverySlot;
+-(void) chooseDeliverySlotError:(NSString*) error;
+-(void) transitionToCheckout:(NSDate*) slotExpireyDate;
 @end
 
 @implementation CheckoutChooseDeliveryDateController
@@ -253,7 +260,73 @@
 
 -(void) proceedToCheckoutAction:(id)sender{
 	//Grab referenced APIDeliverySlot object
-	//APIDeliverySlot *apiDeliverySlot = [self getImpliedDeliverySlotObject];
+	APIDeliverySlot *apiDeliverySlot = [self getImpliedDeliverySlotObject];
+	[self showLoadingOverlay];
+	
+	//Detach thread to choose delivery slot
+	[NSThread detachNewThreadSelector: @selector(chooseDeliverySlot:) toTarget:self withObject:apiDeliverySlot];
+}
+
+-(void) chooseDeliverySlot:(APIDeliverySlot*) deliverySlot {
+	NSString *error = nil;
+	
+	if (![DataManager chooseDeliverySlot: deliverySlot returningError: &error]) {
+		[self performSelectorOnMainThread:@selector(chooseDeliverySlotError:) withObject:error waitUntilDone:TRUE];
+	}else {
+		//Verify that entire order is OK before proceeding
+		[self verifyOrder];
+	}
+}
+
+-(void) chooseDeliverySlotError:(NSString*) error {
+	//Show error
+	UIAlertView *apiError = [[UIAlertView alloc] initWithTitle: @"Tesco API error" message: error delegate: nil cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
+	[apiError show];
+	[apiError release];
+	[self hideLoadingOverlay];
+}
+
+-(void) verifyOrder{
+	[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewLoadingText:) withObject:@"Verifying order..." waitUntilDone:FALSE];
+	
+	NSString *error = nil;
+	NSDate* slotExpireyDate = [DataManager verifyOrder:&error];
+	
+	if (error != nil) {
+		[self performSelectorOnMainThread:@selector(verifyOrderError:) withObject:error waitUntilDone:TRUE];
+	}else {
+		[self performSelectorOnMainThread:@selector(transitionToCheckout:) withObject:slotExpireyDate waitUntilDone:TRUE];
+	}
+}
+
+-(void) verifyOrderError:(NSString*) error{
+	//Show error
+	UIAlertView *apiError = [[UIAlertView alloc] initWithTitle: @"Tesco API error" message: error delegate: nil cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
+	[apiError show];
+	[apiError release];
+	[self hideLoadingOverlay];
+}
+
+-(void) transitionToCheckout:(NSDate*) slotExpireyDate {
+	NSLocale *          enUSPOSIXLocale;
+	enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+	
+	NSDateFormatter *df = [[NSDateFormatter alloc] init];
+	[df setLocale:enUSPOSIXLocale];
+	[df setDateFormat:@"hh:mma"];
+	
+	NSString *msg = [NSString stringWithFormat:@"Order slot reserved until %@",[df stringFromDate:slotExpireyDate]];
+	UIAlertView *apiError = [[UIAlertView alloc] initWithTitle: @"Success" message: msg delegate: nil cancelButtonTitle: @"Proceed" otherButtonTitles: nil];
+	[apiError show];
+	[apiError release];
+					
+	[df release];
+	[self hideLoadingOverlay];
+	
+	//TRANSITION TO CHECKOUT PAGE - WE ARE READY TO PAY!
+	
+	
+	
 }
 
 -(NSString*) getDaySuffixForDate:(NSDate*) date {
@@ -282,10 +355,16 @@
 	//Concatinate
 	NSString *dateString = [NSString stringWithFormat:@"%@ %@ %@",dayMonthString,timeString,yearString];
 	
-	NSLog(@"Looking up reference for [%@]",dateString);
+	APIDeliverySlot* slot = [pickerDateSlotReference objectForKey:dateString];
+	
+	if (slot == nil) {
+	#ifdef DEBUG
+		NSLog(@"NULL APIDeliverySlot object for [%@]",dateString);
+	#endif
+	}
 	
 	//Grab referenced APIDeliverySlot object
-	return [pickerDateSlotReference objectForKey:dateString];
+	return slot;
 }
 
 -(void) reloadDeliveryInfo {
@@ -338,11 +417,17 @@
 	availableDeliverySlots = [deliverySlots retain];
 	
 	//Setup all the date formatters
+	NSLocale *          enUSPOSIXLocale;
+	enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+	
 	NSDateFormatter *dayMonthformatter = [[NSDateFormatter alloc] init];
+	[dayMonthformatter setLocale:enUSPOSIXLocale];
 	[dayMonthformatter setDateFormat:@"ccc MMM d"];
 	NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
-	[timeFormatter setDateFormat:@"hh:mma"];
+	[timeFormatter setLocale:enUSPOSIXLocale];
+	[timeFormatter setDateFormat:@"hh:mmaa"];
 	NSDateFormatter *yearFormatter = [[NSDateFormatter alloc] init];
+	[yearFormatter setLocale:enUSPOSIXLocale];
 	[yearFormatter setDateFormat:@"YYYY"];
 	
 	//Setup for loop
@@ -392,7 +477,24 @@
 	[timeFormatter release];
 	[yearFormatter release];
 }
-										
+
+-(void)showLoadingOverlay{
+	loadingView = [LoadingView loadingViewInView:(UIView *)[self view] withText:@"Booking Slot..." 
+										 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
+								 andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
+																					  green:1.0 
+																					   blue:1.0
+																					  alpha:1.0]
+								   andDrawStroke:FALSE];
+}
+
+-(void)hideLoadingOverlay{
+	if(loadingView != nil){
+		[loadingView removeView];
+		loadingView = nil;
+	}
+}
+
 #pragma mark -
 
 - (void)dealloc {
