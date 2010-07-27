@@ -15,7 +15,6 @@
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* AllViewsNavController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* AllViewsNavController.m */; };
 		CE4826C511ECCF2300937DEF /* icon_product_default.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE4826C411ECCF2300937DEF /* icon_product_default.jpg */; };
-		CE71733911A2C3B700D71D08 /* UIViewController-Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = CE71733811A2C3B700D71D08 /* UIViewController-Extended.m */; };
 		CE7173AE11A2C48600D71D08 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7173AD11A2C48600D71D08 /* QuartzCore.framework */; };
 		CE77738C11F62DE200003B5D /* CheckoutChooseDeliveryDateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE77738B11F62DE200003B5D /* CheckoutChooseDeliveryDateView.xib */; };
 		CE77739211F6312C00003B5D /* CheckoutChooseDeliveryDateController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE77739111F6312C00003B5D /* CheckoutChooseDeliveryDateController.m */; };
@@ -106,8 +105,6 @@
 		32CA4F630368D1EE00C91783 /* RecipeShopper_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecipeShopper_Prefix.pch; path = ../RecipeShopper_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* RecipeShopper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RecipeShopper-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		CE4826C411ECCF2300937DEF /* icon_product_default.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = icon_product_default.jpg; sourceTree = "<group>"; };
-		CE71733711A2C3B700D71D08 /* UIViewController-Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController-Extended.h"; sourceTree = "<group>"; };
-		CE71733811A2C3B700D71D08 /* UIViewController-Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController-Extended.m"; sourceTree = "<group>"; };
 		CE7173AD11A2C48600D71D08 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		CE77738B11F62DE200003B5D /* CheckoutChooseDeliveryDateView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckoutChooseDeliveryDateView.xib; sourceTree = "<group>"; };
 		CE77739011F6312C00003B5D /* CheckoutChooseDeliveryDateController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckoutChooseDeliveryDateController.h; sourceTree = "<group>"; };
@@ -352,8 +349,6 @@
 			children = (
 				28D7ACF60DDB3853001CB0EB /* AllViewsNavController.h */,
 				28D7ACF70DDB3853001CB0EB /* AllViewsNavController.m */,
-				CE71733711A2C3B700D71D08 /* UIViewController-Extended.h */,
-				CE71733811A2C3B700D71D08 /* UIViewController-Extended.m */,
 				F2794D6411B5587A00303B0A /* LoadingView.h */,
 				F2794D6311B5587A00303B0A /* LoadingView.m */,
 				F27D6AB611AACA6800BAC6E6 /* CommonSpecificRecipeViewController.h */,
@@ -684,7 +679,6 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* RecipeShopperAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* AllViewsNavController.m in Sources */,
-				CE71733911A2C3B700D71D08 /* UIViewController-Extended.m in Sources */,
 				F20D2F8B11A2EEE6006EA070 /* HomeViewController.m in Sources */,
 				F278EADC11A59F1C00E688C5 /* DBUserPreference.m in Sources */,
 				F278EADF11A59F2900E688C5 /* DBRecipeHistory.m in Sources */,

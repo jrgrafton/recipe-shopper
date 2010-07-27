@@ -15,6 +15,7 @@
 	HomeStoreViewController *homeStoreViewController;
 	CommonSpecificRecipeViewController *commonSpecificRecipeViewController;
 	
+	@private
 	NSArray *recipeHistory;
 }
 

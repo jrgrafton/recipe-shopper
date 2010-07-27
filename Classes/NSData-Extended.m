@@ -5,6 +5,8 @@
 //  Created by James Grafton on 5/23/10.
 //  Copyright 2010 Asset Enhancing Technologies. All rights reserved.
 //
+//  Extends the NSData class allowing us to create an NSData object from
+//  a base64 encoded NSString
 
 #import "NSData-Extended.h"
 

@@ -34,18 +34,18 @@
 @property (readonly,copy) NSString *recipeName;
 @property (readonly,copy) NSString *categoryName;
 @property (readonly,copy) NSString *recipeDescription;
-@property (readonly,copy) NSArray *instructions;
+@property (readwrite,copy) NSArray *instructions;			//Fetched just in time
 @property (readonly,copy) NSNumber *rating;
 @property (readonly,assign) NSInteger ratingCount;
 @property (readonly,copy) NSString *contributor;
 @property (readonly,copy) NSString *cookingTime;
 @property (readonly,copy) NSString *preparationTime;
 @property (readonly,copy) NSString *serves;
-@property (readonly,copy) NSArray *textIngredients;
-@property (readonly,copy) NSArray *idProducts;
-@property (readonly,copy) NSArray *idProductsQuantity;
-@property (readonly,copy) NSArray *nutritionalInfo;
-@property (readonly,copy) NSArray *nutritionalInfoPercent;
+@property (readwrite,copy) NSArray *textIngredients;		//Fetched just in time
+@property (readwrite,copy) NSArray *idProducts;				//Fetched just in time
+@property (readwrite,copy) NSArray *idProductsQuantity;		//Fetched just in time
+@property (readwrite,copy) NSArray *nutritionalInfo;		//Fetched just in time
+@property (readwrite,copy) NSArray *nutritionalInfoPercent;	//Fetched just in time
 @property (readonly,copy) UIImage *iconSmall;
 @property (readonly,copy) NSString *iconLargeRaw;
 

@@ -40,6 +40,8 @@
 }
 */
 
+#pragma mark -
+#pragma mark View Lifecycle Management
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -74,46 +76,32 @@
 	[self.tableView reloadData];
 }
 
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
-}
-*/
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
+-(void)showLoadingOverlay {
+	[productBasketTableView setScrollEnabled:FALSE];
+	loadingView = [LoadingView loadingViewInView:(UIView *)productBasketTableView withText:@"Logging in..." 
+										 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
+								 andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
+																					  green:1.0 
+																					   blue:1.0
+																					  alpha:1.0]
+								   andDrawStroke:FALSE];
 }
 
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
+-(void)hideLoadingOverlay{
+	if(loadingView != nil){
+		[loadingView removeView];
+		loadingView = nil;
+	}
+	[productBasketTableView setScrollEnabled:TRUE];
 }
 
 
+- (void)currentViewControllerDidFinish:(UIViewController *)controller {
+	[self dismissModalViewControllerAnimated:YES];
+}
+
+#pragma mark -
 #pragma mark Table view methods
-
-
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -225,6 +213,7 @@
 			[accessoryView addSubview:accLabel];
 			[cell setAccessoryView:accessoryView];
 			[accessoryView release];
+			[accLabel release];
 		}else {
 			//Ensure we dont show an image
 			[[cell imageView] setImage: nil];
@@ -244,6 +233,7 @@
 			[accessoryView addSubview:accLabel];
 			[cell setAccessoryView:accessoryView];
 			[accessoryView release];
+			[accLabel release];
 		}
 	}else if (indexPath.section == 1) {
 		// Set up the cell...
@@ -297,10 +287,41 @@
 		//Finally add accessory view itself
 		[cell setAccessoryView:accessoryView];
 		[accessoryView release];
+		[minusButton release];
+		[plusButton release];
+		[countLabel release];
+		[priceLabel release];
 	}
 	
     return cell;
 }
+
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+	if ([indexPath section] == 0){
+		return NO;
+	}else{
+		return YES;
+	}
+}
+
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+		DBProduct *product = [[DataManager getProductBasket] objectAtIndex:[indexPath row]];
+		[DataManager removeProductFromBasket:product];		
+		
+		// Delete row from table view
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+		
+		//Will need to update totals
+		[self.tableView reloadData];
+    }
+}
+
+#pragma mark -
+#pragma mark Additional Instance Functions
 
 - (void) decreaseCountForProduct:(id)sender {
 	NSInteger productBaseID = [sender tag];
@@ -327,74 +348,6 @@
 	
 	[self.tableView reloadData];
 }
-
-/*
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-}*/
-
-
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-	if ([indexPath section] == 0){
-		return NO;
-	}else{
-		return YES;
-	}
-}
-
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-		DBProduct *product = [[DataManager getProductBasket] objectAtIndex:[indexPath row]];
-		[DataManager removeProductFromBasket:product];		
-		
-		// Delete row from table view
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-		
-		//Will need to update totals
-		[self.tableView reloadData];
-    }
-}
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 - (void) bookDeliverySlotAction:(id)sender {
 	if ([DataManager getTotalProductCount] < 5) {
@@ -440,10 +393,12 @@
 	}
 	[loginPrompt addSubview:passwordField];
 	
-	//[loginPrompt setTransform:CGAffineTransformMakeTranslation(0.0, 110.0)];
+	//[loginPrompt setTransform:CGAffineTransformMakeTranslation(0.0, 110.0)]; //Not needed on iOS >= 4.0
 	[emailField becomeFirstResponder];
 	[loginPrompt show];
     [loginPrompt release];
+	[passwordField release];
+	[emailField release];
 
 }
 
@@ -577,28 +532,14 @@
 	[controller release];
 }
 
--(void)showLoadingOverlay {
-	[productBasketTableView setScrollEnabled:FALSE];
-	loadingView = [LoadingView loadingViewInView:(UIView *)productBasketTableView withText:@"Logging in..." 
-										 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
-								 andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
-																					  green:1.0 
-																					   blue:1.0
-																					  alpha:1.0]
-								   andDrawStroke:FALSE];
-}
+#pragma mark -
+#pragma mark Memory Management
 
--(void)hideLoadingOverlay{
-	if(loadingView != nil){
-		[loadingView removeView];
-		loadingView = nil;
-	}
-	[productBasketTableView setScrollEnabled:TRUE];
-}
-
-
-- (void)currentViewControllerDidFinish:(UIViewController *)controller {
-	[self dismissModalViewControllerAnimated:YES];
+- (void)didReceiveMemoryWarning {
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
 }
 
 - (void)dealloc {

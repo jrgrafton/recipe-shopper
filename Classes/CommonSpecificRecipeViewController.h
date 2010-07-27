@@ -18,7 +18,6 @@
 	
 	@private
 	NSURLRequest *recipeHtmlPage;
-	BOOL initialised;
 }
 
 

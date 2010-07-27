@@ -9,22 +9,17 @@
 #import "DBRecipe.h"
 
 @interface DBRecipe ()
+	// Note: no need to redeclare just in time properties here
 	@property (readwrite,copy) NSNumber *recipeID;
 	@property (readwrite,copy) NSString *recipeName;
 	@property (readwrite,copy) NSString *categoryName;
 	@property (readwrite,copy) NSString *recipeDescription;
-	@property (readwrite,copy) NSArray *instructions;
 	@property (readwrite,copy) NSNumber *rating;
 	@property (readwrite,assign) NSInteger ratingCount;
 	@property (readwrite,copy) NSString *contributor;
 	@property (readwrite,copy) NSString *cookingTime;
 	@property (readwrite,copy) NSString *preparationTime;
 	@property (readwrite,copy) NSString *serves;
-	@property (readwrite,copy) NSArray *textIngredients;
-	@property (readwrite,copy) NSArray *idProducts;
-	@property (readwrite,copy) NSArray *idProductsQuantity;
-	@property (readwrite,copy) NSArray *nutritionalInfo;
-	@property (readwrite,copy) NSArray *nutritionalInfoPercent;
 	@property (readwrite,copy) UIImage *iconSmall;
 	@property (readwrite,copy) NSString *iconLargeRaw;
 @end

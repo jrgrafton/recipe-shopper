@@ -77,9 +77,6 @@ static BOOL phoneIsOnline;
 + (NSArray*)fetchLastPurchasedRecipes: (NSInteger)count {
 	return [databaseRequestManager fetchLastPurchasedRecipes:count];
 }
-+ (NSArray*)fetchAllRecipesInCategory: (NSString*) category {
-	return [databaseRequestManager fetchAllRecipesInCategory:category];
-}
 
 + (NSString*)fetchUserPreference: (NSString*) key {
 	return [databaseRequestManager fetchUserPreference:key];
@@ -100,6 +97,14 @@ static BOOL phoneIsOnline;
 
 + (void)putRecipeHistory: (NSNumber*)recipeID {
 	[databaseRequestManager putRecipeHistory: recipeID];
+}
+
++ (NSArray*)fetchAllRecipesInCategory: (NSString*) category {
+	return [databaseRequestManager fetchAllRecipesInCategory:category];
+}
+
++ (void)fetchExtendedDataForRecipe: (DBRecipe*) recipe {
+	[databaseRequestManager fetchExtendedDataForRecipe:recipe];
 }
 
 #pragma mark SDK Functions

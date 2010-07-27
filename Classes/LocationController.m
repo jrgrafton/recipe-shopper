@@ -18,7 +18,7 @@ static LocationController *sharedInstance;
 + (LocationController *)sharedInstance {
     @synchronized(self) {
         if (!sharedInstance)
-			[[LocationController alloc] init];              
+			[[[LocationController alloc] init] autorelease];              
     }
     return sharedInstance;
 }

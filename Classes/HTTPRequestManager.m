@@ -48,7 +48,7 @@
 
 -(NSArray *)getJSONForRequest:(NSString*)requestString andFixTescoResponse:(BOOL)fixResponse{
 	NSData *data = [self httpGetRequest:requestString];	
-	NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *dataString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
 	
 	if([dataString length] == 0 || [dataString rangeOfString:@"["].location == NSNotFound || [dataString rangeOfString:@"]"].location == NSNotFound){
 		[LogManager log:@"Request fetched no/invalid results" withLevel:LOG_INFO fromClass:@"HTTPRequestManager"];
@@ -77,7 +77,6 @@
 	
 	//Always release alloc'd objects
 	[parser release];
-	[dataString release];
 	
 	return results;
 }
@@ -134,9 +133,9 @@
 		
 		NSNumber *storeDistanceFromCurrentLocation = [self getDistanceInMilesBetween:point1 andPoint:point2];
 		
-		HTTPStore *store = [[HTTPStore alloc] initWithStoreID:storeID andStoreName:storeName
+		HTTPStore *store = [[[HTTPStore alloc] initWithStoreID:storeID andStoreName:storeName
 								andStoreType:storeType andStoreDistanceFromCurrentLocation:storeDistanceFromCurrentLocation
-								andStoreLatitude:storeLatitude andStoreLongitude:storeLongitude];
+								andStoreLatitude:storeLatitude andStoreLongitude:storeLongitude] autorelease];
 		
 		[closestStores addObject:store];		
 	}

@@ -28,17 +28,18 @@
 @synthesize recipeHtmlPage,initialised,currentRecipe;
 
 
+/*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         // Custom initialization
     }
-	//Not initialised until view did load completes!
-	[self setInitialised:FALSE];
     return self;
-}
+}*/
 
 
+#pragma mark -
+#pragma mark View Lifecycle Management
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
@@ -70,12 +71,60 @@
 	
 	//Copy Html resources if needed
 	[self copyHtmlResourcesIfNeeded];
-	
-	//Finally load our recipe HTML page
-	[webView loadRequest:[self recipeHtmlPage]];
-	
-	[self setInitialised: TRUE];
 }
+
+- (void)viewDidDisappear:(BOOL)animated {
+	//Load blank page on exiting
+	[webView loadHTMLString:@"" baseURL:nil];
+#ifdef DEBUG
+	[LogManager log:@"VIEW UNLOADING" withLevel:LOG_INFO fromClass:@"CommonSpecificRecipeViewController"];
+#endif
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[webView loadRequest:[self recipeHtmlPage]];
+}
+
+#pragma mark -
+#pragma mark UIWebViewDelegate Methods
+
+/**
+ Intercepts links clicked from webview
+ */
+- (BOOL)webView: (UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
+	NSURL *url = request.URL;
+	NSString *urlString = url.absoluteString;
+#ifdef DEBUG
+	NSString *msg = [NSString stringWithFormat:@"Intercepting link ::: %@",urlString];
+	[LogManager log:msg withLevel:LOG_INFO fromClass:@"CommonSpecificRecipeViewController"];
+#endif
+	//We wanna add something to the basket :D
+	if ([urlString rangeOfString:@"_addtocart_"].location != NSNotFound){
+		//Add to basket and to history
+		[DataManager addRecipeToBasket:[self currentRecipe]];
+		[DataManager putRecipeHistory:[currentRecipe recipeID]];
+		
+		//Increment badge number
+		RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+		UITabBarController *rootController = [appDelegate rootController];
+		[[rootController.tabBar.items objectAtIndex:2] setBadgeValue: [NSString stringWithFormat:@"%d",[[DataManager getRecipeBasket] count]]];
+		
+		UIAlertView *recipeAlert = [[UIAlertView alloc] initWithTitle: @"Add recipe" message: @"Recipe successfully added to cart" delegate: self cancelButtonTitle: @"OK" otherButtonTitles: nil];
+		[recipeAlert show];
+		[recipeAlert release];
+		
+		//Pop checkout navigation back to root (if we aren't adding item from that tab)
+		if ([[appDelegate rootController] selectedIndex] != 2) {
+			[[appDelegate checkoutViewNavController] popToRootViewControllerAnimated:FALSE];
+		}
+	}
+	
+	return YES;
+}
+
+#pragma mark -
+#pragma mark Additional Instance Functions
 
 - (void)processViewForRecipe: (DBRecipe*)recipe {
 	//Release previous recipe
@@ -87,10 +136,11 @@
 	//Set current recipe
 	[self setCurrentRecipe:recipe];
 	
+	//Fetch extended data for recipe
+	[DataManager fetchExtendedDataForRecipe:[self currentRecipe]];
+	
 	//Get template path
 	NSString *templatePath = [self replaceTokensInPage: @"recipe_base" forRecipe:recipe];
-	
-	//NSURL *url = [NSURL fileURLWithPath:templatePath];
 	NSURL *url = [NSURL fileURLWithPath:templatePath];
 	
 	#ifdef DEBUG
@@ -100,10 +150,6 @@
 	
 	NSURLRequest *request = [NSURLRequest requestWithURL:url];
 	[self setRecipeHtmlPage:request];
-	
-	if ( [self initialised] ){
-		[webView loadRequest:[self recipeHtmlPage]];
-	}
 }
 
 - (NSString*) replaceTokensInPage:(NSString*)templatePrefix forRecipe:(DBRecipe*)recipe {
@@ -236,6 +282,10 @@
 	return htmlPath;
 }
 
+/**
+ Copies over html imgs folder to user documents
+ so we can cache generated webpages (if needed)
+*/
 - (void) copyHtmlResourcesIfNeeded {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSError *error;
@@ -261,44 +311,8 @@
 	}
 }
 
-- (BOOL)webView: (UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
-	NSURL *url = request.URL;
-	NSString *urlString = url.absoluteString;
-	#ifdef DEBUG
-		NSString *msg = [NSString stringWithFormat:@"Intercepting link ::: %@",urlString];
-		[LogManager log:msg withLevel:LOG_INFO fromClass:@"CommonSpecificRecipeViewController"];
-	#endif
-	//We wanna add something to the basket :D
-	if ([urlString rangeOfString:@"_addtocart_"].location != NSNotFound){
-		//Add to basket and to history
-		[DataManager addRecipeToBasket:[self currentRecipe]];
-		[DataManager putRecipeHistory:[currentRecipe recipeID]];
-		
-		//Increment badge number
-		RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-		UITabBarController *rootController = [appDelegate rootController];
-		[[rootController.tabBar.items objectAtIndex:2] setBadgeValue: [NSString stringWithFormat:@"%d",[[DataManager getRecipeBasket] count]]];
-		
-		UIAlertView *recipeAlert = [[UIAlertView alloc] initWithTitle: @"Add recipe" message: @"Recipe successfully added to cart" delegate: self cancelButtonTitle: @"OK" otherButtonTitles: nil];
-		[recipeAlert show];
-		[recipeAlert release];
-		
-		//Pop checkout navigation back to root (if we aren't adding item from that tab)
-		if ([[appDelegate rootController] selectedIndex] != 2) {
-			[[appDelegate checkoutViewNavController] popToRootViewControllerAnimated:FALSE];
-		}
-	}
-	
-	return YES;
-}
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
+#pragma mark -
+#pragma mark Memory Management
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
@@ -306,26 +320,6 @@
 	
 	// Release any cached data, images, etc that aren't in use.
 }
-
-- (void)viewDidDisappear:(BOOL)animated {
-	//Load blank page on exiting
-	[webView loadHTMLString:@"" baseURL:nil];
-#ifdef DEBUG
-	[LogManager log:@"VIEW UNLOADING" withLevel:LOG_INFO fromClass:@"CommonSpecificRecipeViewController"];
-#endif
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-	 [super viewWillAppear:animated];
-	 [webView loadRequest:[self recipeHtmlPage]];
-}
-
-
-/*
-- (void)viewDidUnload {
-
-}*/
-
 
 - (void)dealloc {
     [super dealloc];

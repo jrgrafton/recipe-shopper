@@ -21,11 +21,12 @@
 
 //DB data
 + (NSArray*)fetchLastPurchasedRecipes: (NSInteger) count;
-+ (NSArray*)fetchAllRecipesInCategory: (NSString*) category;
 + (NSString*)fetchUserPreference: (NSString*) key;
 + (NSArray*)fetchProductsFromIDs: (NSArray*) productIDs;
 + (void)putUserPreference: (NSString*)key andValue:(NSString*) value;
 + (void)putRecipeHistory: (NSNumber*)recipeID;
++ (NSArray*)fetchAllRecipesInCategory: (NSString*) category; //Will get enough data to display in tableview
++ (void)fetchExtendedDataForRecipe: (DBRecipe*) recipe;	//Will populate recipe for all info needed for HTML view
 
 //iPhone SDK data
 + (BOOL)fileExistsInUserDocuments: (NSString*) fileName;

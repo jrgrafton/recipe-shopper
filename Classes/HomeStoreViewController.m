@@ -36,6 +36,8 @@
 }
 */
 
+#pragma mark -
+#pragma mark View Lifecycle Management
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -55,14 +57,43 @@
 	[segmentedControl release];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+	//Ensure that first segment is disabled and second is enabled
+	UISegmentedControl *segmentedControl =  (UISegmentedControl*) self.navigationItem.titleView;
+	[segmentedControl setEnabled:TRUE forSegmentAtIndex:0];
+	[segmentedControl setEnabled:FALSE forSegmentAtIndex:1];
+	
+	//Fetch closest stores to populate view
+	[self showLoadingOverlay];
+	[self.tableView setScrollEnabled:FALSE];
+	[NSThread detachNewThreadSelector: @selector(getClosestStoresToCurrentLocation) toTarget:self withObject:nil];
+}
+
+
+- (void)viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
+	[searchBar resignFirstResponder];
+	UISegmentedControl *segmentedControl = (UISegmentedControl*) self.navigationItem.titleView;
+	segmentedControl.selectedSegmentIndex = 0;
+	
+	//Blank out closest stores array
+	[closestStores release];
+	closestStores = [NSArray array];
+	[self.tableView reloadData];
+	
+	//Ensure loading overlay is removed
+	[self hideLoadingOverlay];
+}
+
 -(void)showLoadingOverlay{
 	loadingView = [LoadingView loadingViewInView:(UIView *)[self tableView] withText:@"Finding Stores..." 
-								 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
+										 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
 								 andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
 																					  green:1.0 
 																					   blue:1.0
 																					  alpha:1.0]
-								 andDrawStroke:FALSE];
+								   andDrawStroke:FALSE];
 }
 
 -(void)hideLoadingOverlay{
@@ -71,6 +102,9 @@
 		loadingView = nil;
 	}
 }
+
+#pragma mark -
+#pragma mark Additional Instance Functions
 
 - (void) segmentButtonPressed:(id)sender{
 	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
@@ -185,66 +219,7 @@
 	[self hideLoadingOverlay];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-	//Ensure that first segment is disabled and second is enabled
-	UISegmentedControl *segmentedControl =  (UISegmentedControl*) self.navigationItem.titleView;
-	[segmentedControl setEnabled:TRUE forSegmentAtIndex:0];
-	[segmentedControl setEnabled:FALSE forSegmentAtIndex:1];
-	
-	//Fetch closest stores to populate view
-	[self showLoadingOverlay];
-	[self.tableView setScrollEnabled:FALSE];
-	[NSThread detachNewThreadSelector: @selector(getClosestStoresToCurrentLocation) toTarget:self withObject:nil];
-}
-
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-
-/*- (void)viewWillDisappear:(BOOL)animated {	
-	[super viewWillDisappear:animated];
-}*/
-
-
-- (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
-	[searchBar resignFirstResponder];
-	UISegmentedControl *segmentedControl = (UISegmentedControl*) self.navigationItem.titleView;
-	segmentedControl.selectedSegmentIndex = 0;
-	
-	//Blank out closest stores array
-	[closestStores release];
-	closestStores = [NSArray array];
-	[self.tableView reloadData];
-	
-	//Ensure loading overlay is removed
-	[self hideLoadingOverlay];
-}
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-
-
+#pragma mark -
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -299,45 +274,20 @@
 	[[appDelegate homeViewNavController] popViewControllerAnimated:TRUE];
 }
 
+#pragma mark -
+#pragma mark Memory Management
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (void)didReceiveMemoryWarning {
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
 }
-*/
 
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+- (void)viewDidUnload {
+	// Release any retained subviews of the main view.
+	// e.g. self.myOutlet = nil;
 }
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 - (void)dealloc {
     [super dealloc];

@@ -61,7 +61,7 @@
 			NSLocale *          enUSPOSIXLocale;
 			enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
 			
-			NSDateFormatter *df = [[NSDateFormatter alloc] init];
+			NSDateFormatter *df = [[[NSDateFormatter alloc] init] autorelease];
 			[df setLocale:enUSPOSIXLocale];
 			[df setDateFormat:@"yyyy-MM-dd HH:mm"];
 			
@@ -132,11 +132,11 @@
 				NSDate *deliverySlotEndDate = [df dateFromString:[JSONDeliveryDate objectForKey:@"SlotDateTimeEnd"]];
 				NSString *deliverySlotCost = [JSONDeliveryDate objectForKey:@"ServiceCharge"];
 				
-				APIDeliverySlot * apiDeliverySlot = [[APIDeliverySlot alloc] initWithDeliverySlotID:deliverySlotID 
+				APIDeliverySlot * apiDeliverySlot = [[[APIDeliverySlot alloc] initWithDeliverySlotID:deliverySlotID 
 																		andDeliverySlotBranchNumber:deliverySlotBranchNumber 
 																		andDeliverySlotStartDate:deliverySlotStartDate 
 																	    andDeliverySlotEndDate:deliverySlotEndDate 
-																		andDeliverySlotCost:deliverySlotCost];
+																		andDeliverySlotCost:deliverySlotCost] autorelease];
 				
 				[availableDeliverySlots addObject:apiDeliverySlot];
 				index++;
@@ -299,9 +299,9 @@
 	UIImage *productIcon = [self getImageForProduct:[productInfo objectForKey:@"ImagePath"]];
 	NSDate *lastUpdated = [NSDate date];
 	
-	return [[DBProduct alloc] initWithProductID:productBaseID andProductName:productName
+	return [[[DBProduct alloc] initWithProductID:productBaseID andProductName:productName
 								andProductPrice:productPrice andProductIcon:productIcon
-								 andLastUpdated:lastUpdated andUserAdded:YES];
+								 andLastUpdated:lastUpdated andUserAdded:YES] autorelease];
 }
 							   
 -(UIImage*) getImageForProduct:(NSString*)iconUrl{
@@ -342,7 +342,7 @@
 
 -(id)getJSONForRequest:(NSString*)requestString{
 	NSData *data = [self httpGetRequest:requestString];	
-	NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *dataString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
 	
 	if([dataString length] == 0){
 		[LogManager log:@"Request fetched no/invalid results" withLevel:LOG_INFO fromClass:@"APIRequestManager"];
@@ -365,7 +365,6 @@
 	
 	//Always release alloc'd objects
 	[parser release];
-	[dataString release];
 	
 	return results;
 }

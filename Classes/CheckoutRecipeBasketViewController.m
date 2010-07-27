@@ -34,6 +34,8 @@
 }
 */
 
+#pragma mark -
+#pragma mark View Lifecycle Management
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -60,17 +62,6 @@
 	[self.tableView reloadData];
 }
 
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-}
-*/
-
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 	
@@ -78,28 +69,26 @@
 	[self hideLoadingOverlay];
 }
 
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
+-(void)showLoadingOverlay {
+	loadingView = [LoadingView loadingViewInView:(UIView *)recipeBasketTableView withText:@"Verifying Products..." 
+										 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
+								 andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
+																					  green:1.0 
+																					   blue:1.0
+																					  alpha:1.0]
+								   andDrawStroke:FALSE];
 }
 
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
+-(void)hideLoadingOverlay{
+	if(loadingView != nil){
+		[loadingView removeView];
+		loadingView = nil;
+	}
 }
 
 
+
+#pragma mark -
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -231,21 +220,8 @@
     }
 }
 
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+#pragma mark -
+#pragma mark Additional Instance Functions
 
 - (void) createProductList:(id)sender {
 	if ([DataManager phoneIsOnline] && [[DataManager getRecipeBasket] count] > 0){
@@ -291,22 +267,16 @@
 	[[appDelegate checkoutViewNavController] pushViewController:checkoutProductBasketViewController animated:YES];
 }
 
--(void)showLoadingOverlay {
-	loadingView = [LoadingView loadingViewInView:(UIView *)recipeBasketTableView withText:@"Verifying Products..." 
-										 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
-								 andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
-																					  green:1.0 
-																					   blue:1.0
-																					  alpha:1.0]
-								   andDrawStroke:FALSE];
+
+- (void)didReceiveMemoryWarning {
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
 }
 
--(void)hideLoadingOverlay{
-	if(loadingView != nil){
-		[loadingView removeView];
-		loadingView = nil;
-	}
-}
+#pragma mark -
+#pragma mark Memory Management
 
 - (void)dealloc {
 	[commonSpecificRecipeViewController release];

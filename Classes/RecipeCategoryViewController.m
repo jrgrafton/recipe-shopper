@@ -25,6 +25,8 @@
 }
 */
 
+#pragma mark -
+#pragma mark View Lifecycle Management
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
@@ -59,13 +61,8 @@
 	scrollView.contentSize = CGSizeMake(320.0f, SCROLL_VIEW_MAX_HEIGHT);
 }
 
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
+#pragma mark -
+#pragma mark Additional Instance Functions
 
 -(IBAction)categoryChosen:(id) sender {
 	NSNumber *category = [NSNumber numberWithInt:[sender tag]];
@@ -88,18 +85,15 @@
 	[[appDelegate recipeCategoryViewNavController] pushViewController:self.recipeSpecificCategoryViewController animated:YES];
 }
 
+#pragma mark -
+#pragma mark Memory Management
+
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
 	
 	// Release any cached data, images, etc that aren't in use.
 }
-
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-
 
 - (void)dealloc {
     [super dealloc];

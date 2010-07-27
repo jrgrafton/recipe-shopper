@@ -3,7 +3,7 @@
 //  RecipeShopper
 //
 //  Created by User on 7/20/10.
-//  Copyright 2010 Assent Software. All rights reserved.
+//  Copyright 2010 Asset Enhancing Software Software. All rights reserved.
 //
 
 #import "CheckoutChooseDeliveryDateController.h"
@@ -27,7 +27,6 @@
 
 @implementation CheckoutChooseDeliveryDateController
 
-
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
@@ -44,12 +43,8 @@
     return self;
 }
 
-
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView {
-}
-*/
+#pragma mark -
+#pragma mark View Lifecycle Management
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -81,26 +76,21 @@
 	self.navigationItem.rightBarButtonItem = checkoutButton;
 }
 
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
+-(void)showLoadingOverlay{
+	loadingView = [LoadingView loadingViewInView:(UIView *)[self view] withText:@"Booking Slot..." 
+										 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
+								 andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
+																					  green:1.0 
+																					   blue:1.0
+																					  alpha:1.0]
+								   andDrawStroke:FALSE];
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+-(void)hideLoadingOverlay{
+	if(loadingView != nil){
+		[loadingView removeView];
+		loadingView = nil;
+	}
 }
 
 #pragma mark -
@@ -256,7 +246,7 @@
 }
 
 #pragma mark -
-#pragma mark IBActions and Additional
+#pragma mark Additional Instance Functions
 
 -(void) proceedToCheckoutAction:(id)sender{
 	//Grab referenced APIDeliverySlot object
@@ -478,24 +468,17 @@
 	[yearFormatter release];
 }
 
--(void)showLoadingOverlay{
-	loadingView = [LoadingView loadingViewInView:(UIView *)[self view] withText:@"Booking Slot..." 
-										 andFont:[UIFont systemFontOfSize:16.0f] andFontColor:[UIColor grayColor]
-								 andCornerRadius:0 andBackgroundColor:[UIColor colorWithRed:1.0 
-																					  green:1.0 
-																					   blue:1.0
-																					  alpha:1.0]
-								   andDrawStroke:FALSE];
-}
 
--(void)hideLoadingOverlay{
-	if(loadingView != nil){
-		[loadingView removeView];
-		loadingView = nil;
-	}
-}
 
 #pragma mark -
+#pragma mark Memory Management
+
+- (void)didReceiveMemoryWarning {
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Release any cached data, images, etc that aren't in use.
+}
 
 - (void)dealloc {
 	[availableDeliverySlots release];

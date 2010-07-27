@@ -10,7 +10,6 @@
 #import "DatabaseRequestManager.h"
 #import "DataManager.h"
 #import "NSData-Extended.h"
-#import "DBRecipe.h"
 #import "DBProduct.h"
 #import "LogManager.h"
 
@@ -173,8 +172,8 @@ static sqlite3 *database = nil;
 }
 
 - (NSArray*)fetchLastPurchasedRecipes: (NSInteger)count {
-	NSMutableArray *recipes = [NSMutableArray array];
-	NSMutableArray *recipeIDs = [[NSMutableArray alloc] init];
+	NSMutableArray *recipes = [[[NSMutableArray alloc] init] autorelease];
+	NSMutableArray *recipeIDs = [NSMutableArray array];
 	
 	//First get recipe ID's from 'recipeHistory' table
 	const char *recipeHistoryQuery = [[NSString stringWithFormat:@"select recipeID from recipeHistory ORDER BY dateTime DESC LIMIT %d",count] UTF8String];
@@ -191,7 +190,7 @@ static sqlite3 *database = nil;
 		#ifdef DEBUG
 				[LogManager log:@"Recipe history table appears empty..." withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
 		#endif
-		return recipes;
+		return [NSArray arrayWithArray:recipes];
 	}
 	sqlite3_reset(selectstmt);
 	
@@ -225,7 +224,6 @@ static sqlite3 *database = nil;
 	}
 	
 	//Release original recipeIDs array since we explicitly alloc'd
-	[recipeIDs release];
 	return [NSArray arrayWithArray:recipes];
 }
 
@@ -239,7 +237,6 @@ static sqlite3 *database = nil;
 	   while(sqlite3_step(selectstmt) == SQLITE_ROW) {
 		   DBRecipe *recipe = [self buildRecipeDBObjectFromRow: selectstmt];
 		   [recipes addObject: recipe];
-		   [recipe release];
 	   }
    }else{
 	   NSString *msg = [NSString stringWithFormat:@"Error executing statement %@",recipeQuery];
@@ -273,7 +270,6 @@ static sqlite3 *database = nil;
 		while(sqlite3_step(selectstmt) == SQLITE_ROW) {
 			DBProduct *product = [self buildProductDBObjectFromRow: selectstmt];
 			[products addObject: product];
-			[product release];
 		}
 	}else{
 		NSString *msg = [NSString stringWithFormat:@"Error executing statement %@",productQuery];
@@ -297,9 +293,9 @@ static sqlite3 *database = nil;
 	productIcon = [UIImage imageWithData: [NSData dataWithBase64EncodedString: productIconString]];
 	lastUpdated =[NSDate dateWithTimeIntervalSinceNow: sqlite3_column_double(selectstmt, 4)];
 	
-	return [[DBProduct alloc] initWithProductID:productBaseID andProductName:productName
+	return [[[DBProduct alloc] initWithProductID:productBaseID andProductName:productName
 							  andProductPrice:productPrice andProductIcon:productIcon
-							  andLastUpdated:lastUpdated andUserAdded:NO];
+								 andLastUpdated:lastUpdated andUserAdded:NO] autorelease];
 }
 
 - (DBRecipe *)buildRecipeDBObjectFromRow: (sqlite3_stmt *)selectstmt {
@@ -363,7 +359,26 @@ static sqlite3 *database = nil;
 	//Small icon is more useful as UIImage
 	iconSmall = [UIImage imageWithData: [NSData dataWithBase64EncodedString: iconSmallString]];
 	iconLargeRaw = [NSString stringWithUTF8String: (const char *) sqlite3_column_blob(selectstmt, 11)];
-	
+				 
+    return [[[DBRecipe alloc] initWithRecipeID:recipeID andRecipeName:recipeName
+							  andCategoryName:categoryName andRecipeDescription:recipeDescription
+							  andInstructions:instructions andRating:rating 
+							  andRatingCount:ratingCount andContributor:contributor
+							  andCookingTime:cookingTime andPreparationTime:preparationTime
+							  andServes:serves andTextIngredients:textIngredients 
+							  andIDProducts:idProducts andIDProductsQuantity:idProductsQuantity
+							  andNutritionalInfo:nutritionalInfo andNutritionalInfoPercent:nutritionalInfoPercent 
+							  andIconSmall:iconSmall andIconLargeRaw:iconLargeRaw] autorelease];
+}
+
+- (void)fetchExtendedDataForRecipe: (DBRecipe*) recipe {
+	NSNumber *recipeID = [recipe recipeID];
+	NSMutableArray *idProducts = [NSMutableArray array];
+	NSMutableArray *idProductsQuantity = [NSMutableArray array];
+	NSMutableArray *textIngredients = [NSMutableArray array];
+	NSMutableArray *instructions = [NSMutableArray array];
+	NSMutableArray *nutritionalInfo = [NSMutableArray array];
+	NSMutableArray *nutritionalInfoPercent = [NSMutableArray array];
 	
 	//Get multi part data from rest of tables...starting with ingredient text
 	sqlite3_stmt *selectstmt2;
@@ -420,16 +435,14 @@ static sqlite3 *database = nil;
 		NSString *msg = [NSString stringWithFormat:@"Error executing statement %s",recipeNutritionQuery];
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
 	}
-				 
-    return [[DBRecipe alloc] initWithRecipeID:recipeID andRecipeName:recipeName
-							  andCategoryName:categoryName andRecipeDescription:recipeDescription
-							  andInstructions:instructions andRating:rating 
-							  andRatingCount:ratingCount andContributor:contributor
-							  andCookingTime:cookingTime andPreparationTime:preparationTime
-							  andServes:serves andTextIngredients:textIngredients 
-							  andIDProducts:idProducts andIDProductsQuantity:idProductsQuantity
-							  andNutritionalInfo:nutritionalInfo andNutritionalInfoPercent:nutritionalInfoPercent 
-							  andIconSmall:iconSmall andIconLargeRaw:iconLargeRaw];
+	
+	//Set the recipe extended instance variables
+	[recipe setIdProducts:idProducts];
+	[recipe setIdProductsQuantity:idProductsQuantity];
+	[recipe setTextIngredients:textIngredients];
+	[recipe setInstructions:instructions];
+	[recipe setNutritionalInfo:nutritionalInfo];
+	[recipe setNutritionalInfoPercent:nutritionalInfoPercent];
 }
 
 - (void)dealloc {
