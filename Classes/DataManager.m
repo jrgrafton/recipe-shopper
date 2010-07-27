@@ -25,16 +25,10 @@ static HTTPRequestManager *httpRequestManager;
 static ApplicationRequestManager *applicationRequestManager;
 
 static LocationController *locationController;
-static BOOL phoneIsOnline;
 
 @implementation DataManager
 
 + (void)initialiseAll {
-	//Network availability
-	Reachability *r = [Reachability reachabilityWithHostName:@"techfortesco.com"];
-	NetworkStatus internetStatus = [r currentReachabilityStatus];
-	phoneIsOnline = ((internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN));
-	
 	//Location services
 	#ifdef DEBUG
 		[LogManager log:@"Initialising location controller" withLevel:LOG_INFO fromClass:@"DataManager"];
@@ -124,7 +118,10 @@ static BOOL phoneIsOnline;
 }
 
 + (BOOL)phoneIsOnline {	
-	return phoneIsOnline;
+	//Network availability
+	Reachability *r = [Reachability reachabilityWithHostName:@"techfortesco.com"];
+	NetworkStatus internetStatus = [r currentReachabilityStatus];
+	return ((internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN));
 }
 
 + (NSArray*)getCurrentLatitudeLongitude{
