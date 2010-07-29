@@ -312,9 +312,13 @@
 		return defaultImage;
 	}
 	
-	image = [image resizedImage:CGSizeMake(41,41) interpolationQuality:kCGInterpolationHigh];
-	UIImage *finalImage = [UIImage pasteImage:image intoImage:defaultImage atOffset:CGPointMake(2, 2)];
-	return finalImage;					  
+	// to put the image in the small box, use this code
+	//image = [image resizedImage:CGSizeMake(41,41) interpolationQuality:kCGInterpolationHigh];
+	//UIImage *finalImage = [UIImage pasteImage:image intoImage:defaultImage atOffset:CGPointMake(2, 2)];
+	//return finalImage;
+	
+	// to leave the images full size, use this code
+	return image;
 }
 
 -(NSString *) urlEncodeValue:(NSString*)requestString{

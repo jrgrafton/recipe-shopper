@@ -16,9 +16,8 @@
 -(void) getProductsMatchingSearchTerm:(NSString*) searchTerm;
 -(void) showLoadingOverlay;
 -(void) hideLoadingOverlay;
--(void) decreaseCountForProduct:(id)sender;
--(void) increaseCountForProduct:(id)sender;
--(NSInteger) getDesiredProductQuantity:(DBProduct*) product;
+-(void) addProductToBasket:(id)sender;
+-(void) removeProductFromBasket:(id)sender;
 -(void) updateTableViewWithProducts:(NSArray*)products;
 -(void) fetchNextPage:(id)sender;
 @end
@@ -58,6 +57,9 @@
 																 blue:0.9568627450980392
 																alpha:1.0]];
 	
+	// make sure the rows in the product search view can't be selected
+	[productSearchTableView  setAllowsSelection:NO];
+	
 	//Add the search bar
 	[searchBar setPlaceholder:@"Enter Search Term"];
 	[searchBar setDelegate: self];
@@ -67,7 +69,6 @@
 	//Initialisations
 	currentPage = 1;
 	maxPage = 1;
-	desiredProductQuantities = [[NSMutableDictionary alloc] initWithCapacity:20];//20 Being the number of items per page
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -135,7 +136,7 @@
 }
 
 - (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath{
-	return 60;
+	return 120;
 }
 
 // specify the height of your footer section
@@ -188,85 +189,72 @@
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
     }
+	
+    // get the product we're displaying ...
+    DBProduct *product = [foundProducts objectAtIndex:[indexPath row]];
     
-    // Set up the cell...
-	DBProduct *product = [foundProducts objectAtIndex:[indexPath row]];
-	[[cell textLabel] setNumberOfLines:2];
-	[[cell textLabel] setText: [product productName]];
-	[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:10]];
-	[[cell imageView] setImage: [product productIcon]];
+	// and the count of how many are already in the basket
+	NSString *productKey = [[NSString stringWithFormat:@"%@", [product productBaseID]] retain];
+	NSInteger productQuantity = [DataManager getCountForProduct:product];
 	
-	//Create the accessoryView for everything to be inserted into
-	UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0,0,126,54)];
-	
-	//Minus button
-	UIButton *minusButton  = [[UIButton alloc] initWithFrame:CGRectMake(0,6,44,44)];
-	[minusButton setTag:[[product productBaseID] intValue]];
-	[minusButton addTarget:self action:@selector(decreaseCountForProduct:) forControlEvents:UIControlEventTouchUpInside];
-	UIImage *minusImage = [UIImage imageNamed:@"button_minus.png"];
-	[minusButton setImage:minusImage forState:UIControlStateNormal];
-	
-	//Count label
-	UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(37,0,13,54)];
-	NSInteger productQuantity = [self getDesiredProductQuantity:product];
-	
-	[countLabel setText:[NSString stringWithFormat:@"%d", productQuantity]];
-	[countLabel setFont:[UIFont boldSystemFontOfSize:11]];
-	[countLabel setTextAlignment: UITextAlignmentCenter];
-	
-	//Plus button
-	UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(43,6,44,44)];
-	[plusButton setTag:[[product productBaseID] intValue]];
-	[plusButton addTarget:self action:@selector(increaseCountForProduct:) forControlEvents:UIControlEventTouchUpInside];
-	UIImage *plusImage = [UIImage imageNamed:@"button_plus.png"];
-	[plusButton setBackgroundImage:plusImage forState:UIControlStateNormal];
-	
-	//Price label
-	UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(80,0,42,54)];
-	[priceLabel setText:[NSString stringWithFormat:@"£%.2f", ([[product productPrice] floatValue] * productQuantity)]];
-	[priceLabel setFont:[UIFont boldSystemFontOfSize:11]];
-	[priceLabel setTextAlignment: UITextAlignmentRight];
-	
-	//Add everything to accessory view
-	[accessoryView addSubview:minusButton];
-	[accessoryView addSubview:plusButton];
-	[accessoryView addSubview:countLabel];
-	[accessoryView addSubview:priceLabel];
-	
-	//Ensure count label is in front of button
-	[accessoryView bringSubviewToFront:countLabel];
-	
-	//Finally add accessory view itself
-	[cell setAccessoryView:accessoryView];
-	[accessoryView release];
-	[minusButton release];
-	[plusButton release];
-	[countLabel release];
-	[priceLabel release];
+	// Set up the cell...
+    [[cell textLabel] setText:[product productName]];
+    [[cell textLabel] setNumberOfLines:4 ];
+    [[cell textLabel] setFont:[UIFont boldSystemFontOfSize:12]];
+    [[cell detailTextLabel] setText:[NSString stringWithFormat:@"£%.2f", ([[product productPrice] floatValue])]];
+    [[cell imageView] setImage:[product productIcon]];
     
-    return cell;
-}
-
-#pragma mark -
-#pragma mark Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    DBProduct* product = [foundProducts objectAtIndex:[indexPath row]];
-	NSInteger count = [[desiredProductQuantities objectForKey:[NSString stringWithFormat:@"%@",[product productBaseID]]] intValue];
-	for (int i = 0; i < count; i++) {
-		[DataManager addProductToBasket:product];
+    // Create the accessoryView for everything to be inserted into
+    UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0,0,75,120)];
+    
+	if (productQuantity != 0) {
+		// Minus button
+		UIButton *minusButton = [[UIButton alloc] initWithFrame:CGRectMake(0,25,44,44)];
+		[minusButton setTag:[indexPath row]];
+		[minusButton addTarget:self action:@selector(removeProductFromBasket:) forControlEvents:UIControlEventTouchUpInside];
+		UIImage *minusImage = [UIImage imageNamed:@"button_minus.png"];
+		[minusButton setBackgroundImage:minusImage forState:UIControlStateNormal];
+	
+		[accessoryView addSubview:minusButton];
+		[minusButton release];
 	}
 	
-	UIAlertView *productAdded = [[UIAlertView alloc] initWithTitle: @"Product Added" message: @"Product successfully added to basket" delegate: self cancelButtonTitle: @"OK" otherButtonTitles: nil];
-	[productAdded show];
-	[productAdded release]; 
+    // Plus button
+    UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(30,25,44,44)];
+    [plusButton setTag:[indexPath row]];
+    [plusButton addTarget:self action:@selector(addProductToBasket:) forControlEvents:UIControlEventTouchUpInside];
+    UIImage *plusImage = [UIImage imageNamed:@"button_plus.png"];
+    [plusButton setBackgroundImage:plusImage forState:UIControlStateNormal];
 	
-	[productSearchTableView  deselectRowAtIndexPath:indexPath  animated:YES];
+    [accessoryView addSubview:plusButton];
+	
+	if (productQuantity != 0) {
+		// Count label
+		UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,70,65,44)];
+		NSMutableString* basketString = [NSMutableString stringWithFormat:@"%d", productQuantity];
+		[basketString appendString:@" in basket"];
+		[countLabel setText:basketString];
+		[countLabel setFont:[UIFont boldSystemFontOfSize:11]];
+		[countLabel setTextAlignment: UITextAlignmentCenter];
+	
+		[accessoryView addSubview:countLabel];
+		[countLabel release];
+	}
+	
+    // Finally add accessory view itself
+    [cell setAccessoryView:accessoryView];
+	
+	// release memory
+    [accessoryView release];
+    [plusButton release];
+	[productKey release];
+	
+    return cell;
 }
-
 
 #pragma mark -
 #pragma mark Additional Instance Functions
@@ -275,43 +263,20 @@
 	[self.delegate currentViewControllerDidFinish:self];	
 }
 
--(NSInteger) getDesiredProductQuantity:(DBProduct*) product {
-	NSString *productKey = [[NSString stringWithFormat:@"%@",[product productBaseID]] retain];
+- (void) addProductToBasket:(id)sender {
+    NSInteger row = [sender tag];
+    DBProduct* product = [foundProducts objectAtIndex:row];
 	
-	NSNumber *count = [desiredProductQuantities objectForKey:productKey];
-	if (count == nil) {
-		count = [[[NSNumber alloc] initWithInt:1] autorelease];
-		[desiredProductQuantities setValue:count forKey:productKey];
-	}
-	
-	[productKey release];
-	return [count intValue];
-}
-
-- (void) decreaseCountForProduct:(id)sender {
-	NSInteger productBaseID = [sender tag];
-	NSString *productKey = [NSString stringWithFormat:@"%d",productBaseID];
-	
-	NSNumber *count = [desiredProductQuantities objectForKey:productKey];
-	if ([count intValue] > 1) {
-		count = [NSNumber numberWithInt:[count intValue] - 1];
-	}
-	
-	[desiredProductQuantities setValue:count forKey:productKey];
+    [DataManager increaseCountForProduct:product];
 	
 	[productSearchTableView reloadData];
 }
 
-- (void) increaseCountForProduct:(id)sender {
-	NSInteger productBaseID = [sender tag];
-	NSString *productKey = [NSString stringWithFormat:@"%d",productBaseID];
+- (void) removeProductFromBasket:(id)sender {
+    NSInteger row = [sender tag];
+    DBProduct* product = [foundProducts objectAtIndex:row];
 	
-	NSNumber *count = [desiredProductQuantities objectForKey:productKey];
-	if ([count intValue] < 99) {
-		count = [NSNumber numberWithInt:[count intValue] + 1];
-	}
-	
-	[desiredProductQuantities setValue:count forKey:productKey];
+    [DataManager decreaseCountForProduct:product];
 	
 	[productSearchTableView reloadData];
 }
@@ -384,7 +349,6 @@
 
 - (void)dealloc {
     [super dealloc];
-	[desiredProductQuantities release];
 	[loadingView release];
 }
 

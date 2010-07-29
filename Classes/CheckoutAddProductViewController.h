@@ -20,7 +20,6 @@
 	@private
 	LoadingView *loadingView;
 	NSArray *foundProducts;
-	NSMutableDictionary *desiredProductQuantities;
 	NSInteger currentPage;
 	NSInteger maxPage;
 	NSString *lastSearchTerm;

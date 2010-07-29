@@ -16,8 +16,8 @@
 @interface CheckoutProductBasketViewController ()
 //Private class functions
 - (void) bookDeliverySlotAction:(id)sender;
-- (void) decreaseCountForProduct:(id)sender;
-- (void) increaseCountForProduct:(id)sender;
+- (void) addProductToBasket:(id)sender;
+- (void) removeProductFromBasket:(id)sender;
 - (void) addProduct:(id)sender;
 - (void) loginToStore:(id)sender;
 - (void) showLoginError;
@@ -124,7 +124,7 @@
 	if (indexPath.section == 0) {
 		return 50;
 	}else{
-		return 60;
+		return 120;
 	}
 }
 
@@ -235,65 +235,71 @@
 			[accessoryView release];
 			[accLabel release];
 		}
-	}else if (indexPath.section == 1) {
-		// Set up the cell...
+	} else if (indexPath.section == 1) {
+		// get the product basket
 		NSArray *productBasket = [DataManager getProductBasket];
+
+		// get the product we're displaying from the product basket
 		DBProduct *product = [productBasket objectAtIndex:[indexPath row]];
-		[[cell textLabel] setNumberOfLines:2];
-		[[cell textLabel] setText: [product productName]];
-		[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:10]];
-		[[cell imageView] setImage: [product productIcon]];
 		
-		
-		//Create the accessoryView for everything to be inserted into
-		UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0,0,126,54)];
-		
-		//Minus button
-		UIButton *minusButton  = [[UIButton alloc] initWithFrame:CGRectMake(0,6,44,44)];
-		[minusButton setTag:[[product productBaseID] intValue]];
-		[minusButton addTarget:self action:@selector(decreaseCountForProduct:) forControlEvents:UIControlEventTouchUpInside];
-		UIImage *minusImage = [UIImage imageNamed:@"button_minus.png"];
-		[minusButton setImage:minusImage forState:UIControlStateNormal];
-		
-		//Count label
-		UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(37,0,13,54)];
+		// and the count of how many are already in the basket
+		NSString *productKey = [[NSString stringWithFormat:@"%@", [product productBaseID]] retain];
 		NSInteger productQuantity = [DataManager getCountForProduct:product];
-		[countLabel setText:[NSString stringWithFormat:@"%d", productQuantity]];
-		[countLabel setFont:[UIFont boldSystemFontOfSize:11]];
-		[countLabel setTextAlignment: UITextAlignmentCenter];
 		
-		//Plus button
-		UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(43,6,44,44)];
-		[plusButton setTag:[[product productBaseID] intValue]];
-		[plusButton addTarget:self action:@selector(increaseCountForProduct:) forControlEvents:UIControlEventTouchUpInside];
+		// Set up the cell...
+		cell.textLabel.text = [product productName];
+		cell.textLabel.numberOfLines = 4;
+		cell.textLabel.font = [UIFont boldSystemFontOfSize:12];
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", ([[product productPrice] floatValue])];
+		cell.imageView.image = [product productIcon];
+		
+		// Create the accessoryView for everything to be inserted into
+		UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0,0,75,120)];
+		
+		if (productQuantity != 0) {
+			// Minus button
+			UIButton *minusButton = [[UIButton alloc] initWithFrame:CGRectMake(0,25,44,44)];
+			[minusButton setTag:[indexPath row]];
+			[minusButton addTarget:self action:@selector(removeProductFromBasket:) forControlEvents:UIControlEventTouchUpInside];
+			UIImage *minusImage = [UIImage imageNamed:@"button_minus.png"];
+			[minusButton setBackgroundImage:minusImage forState:UIControlStateNormal];
+			
+			[accessoryView addSubview:minusButton];
+			[minusButton release];
+		}
+		
+		// Plus button
+		UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(30,25,44,44)];
+		[plusButton setTag:[indexPath row]];
+		[plusButton addTarget:self action:@selector(addProductToBasket:) forControlEvents:UIControlEventTouchUpInside];
 		UIImage *plusImage = [UIImage imageNamed:@"button_plus.png"];
 		[plusButton setBackgroundImage:plusImage forState:UIControlStateNormal];
 		
-		//Price label
-		UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(80,0,42,54)];
-		[priceLabel setText:[NSString stringWithFormat:@"£%.2f", ([[product productPrice] floatValue] * productQuantity)]];
-		[priceLabel setFont:[UIFont boldSystemFontOfSize:11]];
-		[priceLabel setTextAlignment: UITextAlignmentRight];
-		
-		//Add everything to accessory view
-		[accessoryView addSubview:minusButton];
 		[accessoryView addSubview:plusButton];
-		[accessoryView addSubview:countLabel];
-		[accessoryView addSubview:priceLabel];
 		
-		//Ensure count label is in front of button
-		[accessoryView bringSubviewToFront:countLabel];
+		if (productQuantity != 0) {
+			// Count label
+			UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,70,65,44)];
+			NSMutableString* basketString = [NSMutableString stringWithFormat:@"%d", productQuantity];
+			[basketString appendString:@" in basket"];
+			[countLabel setText:basketString];
+			[countLabel setFont:[UIFont boldSystemFontOfSize:11]];
+			[countLabel setTextAlignment: UITextAlignmentCenter];
+			
+			[accessoryView addSubview:countLabel];
+			[countLabel release];
+		}
 		
-		//Finally add accessory view itself
+		// Finally add accessory view itself
 		[cell setAccessoryView:accessoryView];
+		
+		// release memory
 		[accessoryView release];
-		[minusButton release];
 		[plusButton release];
-		[countLabel release];
-		[priceLabel release];
+		[productKey release];
 	}
 	
-    return cell;
+	return cell;
 }
 
 // Override to support conditional editing of the table view.
@@ -323,31 +329,29 @@
 #pragma mark -
 #pragma mark Additional Instance Functions
 
-- (void) decreaseCountForProduct:(id)sender {
-	NSInteger productBaseID = [sender tag];
-	
+- (void) addProductToBasket:(id)sender {
+    NSInteger productBaseID = [sender tag];
 	NSArray *productBasket = [DataManager getProductBasket];
-	for (DBProduct *product in productBasket) {
-		if ([[product productBaseID] intValue] == productBaseID) {
-			[DataManager decreaseCountForProduct:product];
-		}
-	}
 	
-	[self.tableView reloadData];
-}
-
-- (void) increaseCountForProduct:(id)sender {
-	NSInteger productBaseID = [sender tag];
-	
-	NSArray *productBasket = [DataManager getProductBasket];
 	for (DBProduct *product in productBasket) {
 		if ([[product productBaseID] intValue] == productBaseID) {
 			[DataManager increaseCountForProduct:product];
 		}
 	}
 	
-	[self.tableView reloadData];
-}
+	[self.tableView reloadData];}
+
+- (void) removeProductFromBasket:(id)sender {
+    NSInteger productBaseID = [sender tag];
+	NSArray *productBasket = [DataManager getProductBasket];
+	
+	for (DBProduct *product in productBasket) {
+		if ([[product productBaseID] intValue] == productBaseID) {
+			[DataManager decreaseCountForProduct:product];
+		}
+	}
+	
+	[self.tableView reloadData];}
 
 - (void) bookDeliverySlotAction:(id)sender {
 	if ([DataManager getTotalProductCount] < 5) {
