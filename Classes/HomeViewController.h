@@ -10,7 +10,7 @@
 @class HomeStoreViewController;
 @class CommonSpecificRecipeViewController;
 
-@interface HomeViewController : UITableViewController <UITableViewDelegate,UITableViewDataSource> {
+@interface HomeViewController : UITableViewController <UITableViewDelegate,UITableViewDataSource,UIWebViewDelegate> {
 	IBOutlet UITableView *homeTableView;
 	HomeStoreViewController *homeStoreViewController;
 	CommonSpecificRecipeViewController *commonSpecificRecipeViewController;

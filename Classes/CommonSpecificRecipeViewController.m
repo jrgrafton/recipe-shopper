@@ -66,10 +66,7 @@
 	//Change background color
 	webView.backgroundColor = [UIColor whiteColor];
 	
-	//Intercept links!
-	webView.delegate = self;
-	
-	//Copy Html resources if needed
+	//Copy Html resources if needed (imgs folder)
 	[self copyHtmlResourcesIfNeeded];
 }
 
@@ -83,7 +80,11 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[webView loadRequest:[self recipeHtmlPage]];
+	
+	printf("Setting delegate self");
+	
+	//Switch delegate back to us so we can intercept links
+	[webView setDelegate: self];
 }
 
 #pragma mark -
@@ -126,7 +127,7 @@
 #pragma mark -
 #pragma mark Additional Instance Functions
 
-- (void)processViewForRecipe: (DBRecipe*)recipe {
+- (void)processViewForRecipe: (DBRecipe*)recipe withWebviewDelegate:(id) delegate {
 	//Release previous recipe
 	if ([self currentRecipe] != nil) {
 		[currentRecipe release];
@@ -150,6 +151,14 @@
 	
 	NSURLRequest *request = [NSURLRequest requestWithURL:url];
 	[self setRecipeHtmlPage:request];
+	
+	//Set delegate so that it can only start transition when webview has finished loading
+	[webView setDelegate: delegate];
+	
+	printf("Setting delegate other");
+	
+	//Refresh page
+	[webView loadRequest:[self recipeHtmlPage]];
 }
 
 - (NSString*) replaceTokensInPage:(NSString*)templatePrefix forRecipe:(DBRecipe*)recipe {

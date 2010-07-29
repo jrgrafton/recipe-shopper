@@ -156,12 +156,25 @@
 			[specificRecipeView release];
 		}
 		[homeTableView  deselectRowAtIndexPath:indexPath  animated:YES];
-		[commonSpecificRecipeViewController processViewForRecipe:[[self recipeHistory] objectAtIndex:[indexPath row]]];
-		
-		RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-		[[appDelegate homeViewNavController] pushViewController:[self commonSpecificRecipeViewController] animated:YES];
+		[commonSpecificRecipeViewController processViewForRecipe:[[self recipeHistory] objectAtIndex:[indexPath row]] withWebviewDelegate:self];
 	}
 }
+
+#pragma mark -
+#pragma mark UIWebViewDelegate Methods
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+		printf("Finished load!!");
+	
+	//Only transition when webview has finished loading
+	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	[[appDelegate checkoutViewNavController] pushViewController:commonSpecificRecipeViewController animated:YES];
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+				printf("Started load!!");
+}
+
 
 #pragma mark -
 #pragma mark Memory Management

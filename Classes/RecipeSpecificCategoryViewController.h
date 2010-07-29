@@ -10,7 +10,7 @@
 #import "CommonSpecificRecipeViewController.h"
 
 
-@interface RecipeSpecificCategoryViewController : UITableViewController {
+@interface RecipeSpecificCategoryViewController : UITableViewController <UIWebViewDelegate> {
 
 	IBOutlet UITableView *categoryTableView;
 	CommonSpecificRecipeViewController *commonSpecificRecipeViewController;

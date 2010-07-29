@@ -46,6 +46,15 @@
 }
 
 #pragma mark -
+#pragma mark UIWebViewDelegate Methods
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+	//Only transition when webview has finished loading
+	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	[[appDelegate checkoutViewNavController] pushViewController:commonSpecificRecipeViewController animated:YES];
+}
+
+#pragma mark -
 #pragma mark Additional Instance Functions
 
 -(void) loadRecipesForCategory:(NSString*) categoryString {
@@ -106,10 +115,7 @@
 		[specificRecipeView release];
 	}
 	[categoryTableView  deselectRowAtIndexPath:indexPath  animated:YES];
-	[commonSpecificRecipeViewController processViewForRecipe:[recipes objectAtIndex:[indexPath row]]];
-	
-	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-	[[appDelegate recipeCategoryViewNavController] pushViewController:commonSpecificRecipeViewController animated:YES];
+	[commonSpecificRecipeViewController processViewForRecipe:[recipes objectAtIndex:[indexPath row]] withWebviewDelegate:self];
 }
 
 #pragma mark -

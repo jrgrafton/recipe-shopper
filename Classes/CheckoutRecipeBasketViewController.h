@@ -12,7 +12,7 @@
 #import "LoadingView.h"
 
 
-@interface CheckoutRecipeBasketViewController : UITableViewController {
+@interface CheckoutRecipeBasketViewController : UITableViewController <UIWebViewDelegate>{
 	IBOutlet UITableView *recipeBasketTableView;
 	CommonSpecificRecipeViewController *commonSpecificRecipeViewController;
 	CheckoutProductBasketViewController *checkoutProductBasketViewController;
