@@ -19,8 +19,12 @@
 
 #define PRODUCT_SEARCH_REQUEST_STRING(searchTerm,sessionKey,pageNumber) @"http://www.techfortesco.com/groceryapi_b1/restservice.aspx?command=PRODUCTSEARCH&searchtext=" #searchTerm "&page=" #pageNumber "&sessionkey=" #sessionKey ""
 
+#define MAX_ASYNC_REQUESTS 15
+
 @interface APIRequestManager ()
 //Private class functions
+-(void)processJSONRequestQueue;
+-(void)processSingleJSONRequest:(NSString*) requestString;
 -(NSData *)httpGetRequest:(NSString*)requestUrl;
 -(NSString *)urlEncodeValue:(NSString *)string;
 -(id)getJSONForRequest:(NSString*)requestString;
@@ -34,9 +38,16 @@
 - (id)init {
 	if (self = [super init]) {
 		//Initialisation code
+		currentAsyncRequestCount = 0;
+		JSONRequestQueue = [[NSMutableArray alloc] init];
+		JSONRequestResults = [[NSMutableDictionary alloc] init];
+		JSONRequestLock = [[NSLock alloc] init];
 	}
 	return self;
 }
+
+#pragma mark -
+#pragma mark public functions
 
 - (NSDate*)verifyOrder:(NSString**)error {
 	NSString *verifyOrderString = [NSString stringWithFormat:@"%@?command=READYFORCHECKOUT&SESSIONKEY=%@",REST_SERVICE_URL,authenticatedSessionKey];
@@ -161,6 +172,7 @@
 		NSInteger productCount = [DataManager getCountForProduct:product];
 		NSNumber *productBaseID = [product productBaseID];
 		NSString *addToBasketRequestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&PRODUCTID=%@&CHANGEQUANTITY=%d&SESSIONKEY=%@",REST_SERVICE_URL,productBaseID,productCount,authenticatedSessionKey];
+		
 		NSDictionary *loginDetails = [self getJSONForRequest:addToBasketRequestString];
 		
 		if (loginDetails == nil){
@@ -187,69 +199,6 @@
 		index++;
 	}
 	return TRUE;
-}
-
-
--(id)getSessionKeyForEmail:(NSString*)email usingPassword:(NSString*)password {
-	NSString *loginRequestString = [NSString stringWithFormat:@"%@?command=LOGIN&email=%@&password=%@&developerkey=%@&applicationkey=%@",REST_SERVICE_URL,email,password,DEVELOPER_KEY,APPLICATION_KEY];
-	
-	//Perform anonymous login
-	NSDictionary *loginDetails = [self getJSONForRequest:loginRequestString];
-	NSString *sessionKey = @"";
-	
-	//Get Session key
-	if (loginDetails != nil) {
-		sessionKey = [loginDetails objectForKey:@"SessionKey"];
-	}
-	
-	if ([sessionKey length] == 0){
-	#ifdef DEBUG
-		NSString* msg = [NSString stringWithFormat:@"Login failed for [%@]/[%@]",email,password];
-		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-	#endif
-		return nil;
-	}else{
-	#ifdef DEBUG
-		NSString* msg = [NSString stringWithFormat:@"Login succeeded for [%@]/[%@] (%@)",email,password,sessionKey];
-		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-	#endif
-	}
-	
-	return sessionKey;
-}
-
-- (NSArray*)getFilteredProductList:(NSArray*)productIdList{
-	NSString* sessionKey = [self getSessionKeyForEmail:@"" usingPassword:@""];
-	
-	//If API is down just return original list
-	if (sessionKey == nil) {
-		return productIdList;
-	}
-	
-	//Now we have session key try doing search...
-	NSMutableArray *filteredProducts = [NSMutableArray array];
-	NSInteger index = 1;
-	NSInteger totalSize = [productIdList count];
-	for (NSNumber *productBaseId in productIdList) {
-		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewProgressText:) withObject:[NSString stringWithFormat:@"Verifying product %d of %d",index,totalSize] waitUntilDone:FALSE];
-		
-		NSString *productSearchRequestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&sessionkey=%@",REST_SERVICE_URL,productBaseId,sessionKey];
-		NSDictionary *productSearchResult = [self getJSONForRequest:productSearchRequestString];
-		NSArray *JSONProducts = [productSearchResult objectForKey:@"Products"];
-		if ([JSONProducts count] != 0) {
-			//Have to rebuild product in case price, description etc has changed
-			[filteredProducts addObject: [self buildProductFromInfo:[JSONProducts objectAtIndex:0]]];
-		}
-		
-#ifdef DEBUG
-		else{
-			NSString *msg = [NSString stringWithFormat:@"Product with baseid %@ exists in database but not on website",productBaseId];
-			[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
-		}
-#endif
-		index++;
-	}
-	return filteredProducts;
 }
 
 - (BOOL)loginToStore:(NSString*) email withPassword:(NSString*) password {
@@ -292,33 +241,150 @@
 	return products;
 }
 
--(DBProduct*)buildProductFromInfo:(NSDictionary*)productInfo{
-	NSNumber *productBaseID = [NSNumber numberWithInt:[[productInfo objectForKey:@"BaseProductId"] intValue]];
-	NSString *productName = [productInfo objectForKey:@"Name"];
-	NSString *productPrice = [productInfo objectForKey:@"Price"];
-	UIImage *productIcon = [self getImageForProduct:[productInfo objectForKey:@"ImagePath"]];
-	NSDate *lastUpdated = [NSDate date];
+
+- (NSArray*)getFilteredProductList:(NSArray*)productIdList{
+	NSString* sessionKey = [self getSessionKeyForEmail:@"" usingPassword:@""];
 	
-	return [[[DBProduct alloc] initWithProductID:productBaseID andProductName:productName
-								andProductPrice:productPrice andProductIcon:productIcon
-								 andLastUpdated:lastUpdated andUserAdded:YES] autorelease];
-}
-							   
--(UIImage*) getImageForProduct:(NSString*)iconUrl{
-	UIImage *image = [[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]] autorelease];
-	UIImage *defaultImage = [UIImage imageNamed:@"icon_product_default.jpg"];
-	
-	if (image == nil){
-		return defaultImage;
+	//If API is down just return original list
+	if (sessionKey == nil) {
+		return productIdList;
 	}
 	
-	// to put the image in the small box, use this code
-	//image = [image resizedImage:CGSizeMake(41,41) interpolationQuality:kCGInterpolationHigh];
-	//UIImage *finalImage = [UIImage pasteImage:image intoImage:defaultImage atOffset:CGPointMake(2, 2)];
-	//return finalImage;
+	//Now we have session key try doing search...
+	NSMutableArray *filteredProducts = [NSMutableArray array];
 	
-	// to leave the images full size, use this code
-	return image;
+	for (NSNumber *productBaseId in productIdList) {
+		//Add all our requests to queue
+		NSString *productSearchRequestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&sessionkey=%@",REST_SERVICE_URL,productBaseId,sessionKey];
+		[JSONRequestQueue addObject:productSearchRequestString];
+	}
+	
+	//Spawn a thread to process the request queue
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[NSThread detachNewThreadSelector: @selector(processJSONRequestQueue) toTarget:self withObject:nil];
+	[pool release];
+	
+	//Now spin until all requests have been serviced
+	while ([[JSONRequestResults allKeys] count] < [JSONRequestQueue count]) {
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewProgressText:) withObject:[NSString stringWithFormat:@"Verifying product %d of %d",[[JSONRequestResults allKeys] count] + 1,[JSONRequestQueue count]] waitUntilDone:TRUE];
+		[pool release];
+		
+		[NSThread sleepForTimeInterval:0.2];
+	}
+	
+	//All requests have returned, now interate through populating filteredProducts array
+	for (NSString *key in JSONRequestResults) {
+		id result = [JSONRequestResults valueForKey:key];
+		if (result != [NSNull null]) { //Request could have failed
+			//Assume its a dict object if its not null
+			NSArray *JSONProducts = [result objectForKey:@"Products"];
+			if ([JSONProducts count] != 0) {
+				//Have to rebuild product in case price, description etc has changed
+				[filteredProducts addObject: [self buildProductFromInfo:[JSONProducts objectAtIndex:0]]];
+			}
+			#ifdef DEBUG
+			else{
+				NSString *msg = [NSString stringWithFormat:@"Product with baseid %@ exists in database but not on website",productBaseId];
+				[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
+			}
+			#endif
+		}
+	}
+	
+	//Finally ensure that both requestQueue and restDictionary are emptied
+	[JSONRequestQueue removeAllObjects];
+	[JSONRequestResults removeAllObjects];
+	
+	return filteredProducts;
+}
+
+#pragma mark -
+#pragma mark private functions
+
+
+-(void)processJSONRequestQueue {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	for (NSInteger index = 0; index < [JSONRequestQueue count]; index++) {
+		NSString *JSONRequest = [JSONRequestQueue objectAtIndex: index];
+		if (currentAsyncRequestCount < MAX_ASYNC_REQUESTS){
+			currentAsyncRequestCount++;
+			[NSThread detachNewThreadSelector: @selector(processSingleJSONRequest:) toTarget:self withObject:JSONRequest];
+		}else {
+			[NSThread sleepForTimeInterval:0.5];
+			index--; //Reset index
+		}
+	}
+	
+	[pool release];
+	//currentAsyncRequestCount = 0;
+}
+
+-(void)processSingleJSONRequest:(NSString*) requestString{
+	//Need pool surrounding URL request since we are in thread
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	//Retain request string since we are operating in new thread
+	[requestString retain];
+	
+	//Perform actual request
+	NSDictionary *result = [self getJSONForRequest:requestString];
+	
+	if (result == nil) {
+		[JSONRequestResults setValue:[NSNull null] forKey:requestString];
+	#ifdef DEBUG
+		NSString* msg = [NSString stringWithFormat:@"Error processing request (NO JSON RETURNED)",productBaseID];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+	#endif
+	}else {
+		[JSONRequestResults setValue:result forKey:requestString];
+	}
+
+	
+	NSNumber *statusCode = [result objectForKey:@"StatusCode"];
+	if ([statusCode intValue] != 0) {
+	#ifdef DEBUG
+		NSString* msg = [NSString stringWithFormat:@"Error processing request %@ (%@)",request,result];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+	#endif
+	}
+	currentAsyncRequestCount--;
+	
+	//Release request string
+	[requestString release];
+	
+	//Release pool
+	[pool release];
+}
+
+-(id)getJSONForRequest:(NSString*)requestString{
+	NSData *data = [self httpGetRequest:requestString];	
+	NSString *dataString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+	
+	if([dataString length] == 0){
+		[LogManager log:@"Request fetched no/invalid results" withLevel:LOG_INFO fromClass:@"APIRequestManager"];
+		return [NSArray array];
+	}
+	
+	NSMutableString* jsonString = [NSMutableString stringWithFormat:@"%@", dataString];
+	
+	SBJSON *parser = [[SBJSON alloc] init];
+	NSError *error = nil;
+	id results = [parser objectWithString:jsonString allowScalar:TRUE error:&error];
+	
+	if(error != nil){
+#ifdef DEBUG
+		NSString *msg = [NSString stringWithFormat:@"error parsing JSON: '%@'.",[error localizedDescription]];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+#endif
+		results = [NSArray array];
+	}
+	
+	//Always release alloc'd objects
+	[parser release];
+	
+	return results;
 }
 
 -(NSString *) urlEncodeValue:(NSString*)requestString{
@@ -344,33 +410,69 @@
 	return [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
 }
 
--(id)getJSONForRequest:(NSString*)requestString{
-	NSData *data = [self httpGetRequest:requestString];	
-	NSString *dataString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+-(DBProduct*)buildProductFromInfo:(NSDictionary*)productInfo{
+	NSNumber *productBaseID = [NSNumber numberWithInt:[[productInfo objectForKey:@"BaseProductId"] intValue]];
+	NSString *productName = [productInfo objectForKey:@"Name"];
+	NSString *productPrice = [productInfo objectForKey:@"Price"];
+	UIImage *productIcon = [self getImageForProduct:[productInfo objectForKey:@"ImagePath"]];
+	NSDate *lastUpdated = [NSDate date];
 	
-	if([dataString length] == 0){
-		[LogManager log:@"Request fetched no/invalid results" withLevel:LOG_INFO fromClass:@"APIRequestManager"];
-		return [NSArray array];
+	return [[[DBProduct alloc] initWithProductID:productBaseID andProductName:productName
+								 andProductPrice:productPrice andProductIcon:productIcon
+								  andLastUpdated:lastUpdated andUserAdded:YES] autorelease];
+}
+
+-(id)getSessionKeyForEmail:(NSString*)email usingPassword:(NSString*)password {
+	NSString *loginRequestString = [NSString stringWithFormat:@"%@?command=LOGIN&email=%@&password=%@&developerkey=%@&applicationkey=%@",REST_SERVICE_URL,email,password,DEVELOPER_KEY,APPLICATION_KEY];
+	
+	//Perform anonymous login
+	NSDictionary *loginDetails = [self getJSONForRequest:loginRequestString];
+	NSString *sessionKey = @"";
+	
+	//Get Session key
+	if (loginDetails != nil) {
+		sessionKey = [loginDetails objectForKey:@"SessionKey"];
 	}
 	
-	NSMutableString* jsonString = [NSMutableString stringWithFormat:@"%@", dataString];
-	
-	SBJSON *parser = [[SBJSON alloc] init];
-	NSError *error = nil;
-	id results = [parser objectWithString:jsonString allowScalar:TRUE error:&error];
-	
-	if(error != nil){
-	#ifdef DEBUG
-		NSString *msg = [NSString stringWithFormat:@"error parsing JSON: '%@'.",[error localizedDescription]];
+	if ([sessionKey length] == 0){
+#ifdef DEBUG
+		NSString* msg = [NSString stringWithFormat:@"Login failed for [%@]/[%@]",email,password];
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-	#endif
-		results = [NSArray array];
+#endif
+		return nil;
+	}else{
+#ifdef DEBUG
+		NSString* msg = [NSString stringWithFormat:@"Login succeeded for [%@]/[%@] (%@)",email,password,sessionKey];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+#endif
 	}
 	
-	//Always release alloc'd objects
-	[parser release];
+	return sessionKey;
+}
+
+-(UIImage*) getImageForProduct:(NSString*)iconUrl{
+	UIImage *image = [[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]] autorelease];
+	UIImage *defaultImage = [UIImage imageNamed:@"icon_product_default.jpg"];
 	
-	return results;
+	if (image == nil){
+		return defaultImage;
+	}
+	
+	// to put the image in the small box, use this code
+	image = [image resizedImage:CGSizeMake(66,66) interpolationQuality:kCGInterpolationHigh];
+	//UIImage *finalImage = [UIImage pasteImage:image intoImage:defaultImage atOffset:CGPointMake(2, 2)];
+	//return finalImage;
+	
+	// to leave the images full size, use this code
+	return image;
+}
+
+- (void)dealloc {
+	[JSONRequestQueue release];
+	[JSONRequestResults release];
+	[JSONRequestLock release];
+	
+    [super dealloc];
 }
 
 @end
