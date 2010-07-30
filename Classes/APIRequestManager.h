@@ -18,7 +18,6 @@
 	volatile NSInteger currentAsyncRequestCount;
 	volatile NSMutableDictionary *JSONRequestResults;
 	volatile NSMutableArray *JSONRequestQueue;
-	volatile NSLock *JSONRequestLock;
 }
 
 - (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder;

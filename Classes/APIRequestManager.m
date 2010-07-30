@@ -41,7 +41,6 @@
 		currentAsyncRequestCount = 0;
 		JSONRequestQueue = [[NSMutableArray alloc] init];
 		JSONRequestResults = [[NSMutableDictionary alloc] init];
-		JSONRequestLock = [[NSLock alloc] init];
 	}
 	return self;
 }
@@ -164,40 +163,55 @@
 - (BOOL)addProductBasketToStoreBasket {
 	NSArray *productBasket = [DataManager getProductBasket];
 	
-	NSInteger index = 1;
-	NSInteger totalSize = [productBasket count];
-	
 	for (DBProduct *product in productBasket) {
-		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewProgressText:) withObject:[NSString stringWithFormat:@"Adding product %d of %d",index,totalSize] waitUntilDone:FALSE];
 		NSInteger productCount = [DataManager getCountForProduct:product];
 		NSNumber *productBaseID = [product productBaseID];
 		NSString *addToBasketRequestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&PRODUCTID=%@&CHANGEQUANTITY=%d&SESSIONKEY=%@",REST_SERVICE_URL,productBaseID,productCount,authenticatedSessionKey];
-		
-		NSDictionary *loginDetails = [self getJSONForRequest:addToBasketRequestString];
-		
-		if (loginDetails == nil){
+		[JSONRequestQueue addObject:addToBasketRequestString];
+	}
+	
+	//Spawn a thread to process the request queue
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[NSThread detachNewThreadSelector: @selector(processJSONRequestQueue) toTarget:self withObject:nil];
+	[pool release];
+	
+	//Now spin until all requests have been serviced
+	while ([[JSONRequestResults allKeys] count] < [JSONRequestQueue count]) {
+		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewProgressText:) withObject:[NSString stringWithFormat:@"Adding product %d of %d",[[JSONRequestResults allKeys] count] + 1,[JSONRequestQueue count]] waitUntilDone:TRUE];
+		[NSThread sleepForTimeInterval:0.2];
+	}
+	
+	//All requests have returned, now interate through populating filteredProducts array
+	for (NSString *key in JSONRequestResults) {
+		id result = [JSONRequestResults valueForKey:key];
+		if (result == [NSNull null]) { //Request could have failed
 			#ifdef DEBUG
-			NSString* msg = [NSString stringWithFormat:@"Error adding product [%@] to online basket (NO JSON RETURNED)",productBaseID];
+			NSString* msg = [NSString stringWithFormat:@"Error during add product to online basket request [%@] (NO JSON RETURNED)",key];
 			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
 			#endif
+			//If even one add to online basket fails we fail the whole process
 			return FALSE;
 		}else {
-			NSNumber *statusCode = [loginDetails objectForKey:@"StatusCode"];
+			NSNumber *statusCode = [result objectForKey:@"StatusCode"];
 			if ([statusCode intValue] != 0) {
 				#ifdef DEBUG
-				NSString* msg = [NSString stringWithFormat:@"Error adding product [%@] to online basket (%@)",productBaseID,loginDetails];
+				NSString* msg = [NSString stringWithFormat:@"Error during add product to online basket request [%@]",result];
 				[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
 				#endif
 				return FALSE;
 			}else {
 				#ifdef DEBUG
-				NSString* msg = [NSString stringWithFormat:@"Successfully added product [%@](%d) to online basket",productBaseID,productCount];
+				NSString* msg = [NSString stringWithFormat:@"Successfully addded product to basket [%@]",result];
 				[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
 				#endif
 			}
 		}
-		index++;
 	}
+	
+	//Finally ensure that both requestQueue and restDictionary are emptied
+	[JSONRequestQueue removeAllObjects];
+	[JSONRequestResults removeAllObjects];
+	
 	return TRUE;
 }
 
@@ -266,10 +280,9 @@
 	
 	//Now spin until all requests have been serviced
 	while ([[JSONRequestResults allKeys] count] < [JSONRequestQueue count]) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewProgressText:) withObject:[NSString stringWithFormat:@"Verifying product %d of %d",[[JSONRequestResults allKeys] count] + 1,[JSONRequestQueue count]] waitUntilDone:TRUE];
-		[pool release];
 		
+		//Would be better done with MUTEX locks if we had the time
 		[NSThread sleepForTimeInterval:0.2];
 	}
 	
@@ -312,13 +325,13 @@
 			currentAsyncRequestCount++;
 			[NSThread detachNewThreadSelector: @selector(processSingleJSONRequest:) toTarget:self withObject:JSONRequest];
 		}else {
+			//Better done with MUTEX locks if we had the time
 			[NSThread sleepForTimeInterval:0.5];
 			index--; //Reset index
 		}
 	}
 	
 	[pool release];
-	//currentAsyncRequestCount = 0;
 }
 
 -(void)processSingleJSONRequest:(NSString*) requestString{
@@ -469,9 +482,7 @@
 
 - (void)dealloc {
 	[JSONRequestQueue release];
-	[JSONRequestResults release];
-	[JSONRequestLock release];
-	
+	[JSONRequestResults release];	
     [super dealloc];
 }
 

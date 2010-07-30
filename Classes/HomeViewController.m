@@ -155,6 +155,7 @@
 			self.commonSpecificRecipeViewController = specificRecipeView;
 			[specificRecipeView release];
 		}
+		
 		[homeTableView  deselectRowAtIndexPath:indexPath  animated:YES];
 		
 		//This forces view to load all resources before its pushed on to main view stack
