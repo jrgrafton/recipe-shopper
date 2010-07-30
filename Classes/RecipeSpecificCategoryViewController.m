@@ -51,7 +51,7 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 	//Only transition when webview has finished loading
 	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-	[[appDelegate checkoutViewNavController] pushViewController:commonSpecificRecipeViewController animated:YES];
+	[[appDelegate recipeCategoryViewNavController] pushViewController:[self commonSpecificRecipeViewController] animated:YES];
 }
 
 #pragma mark -
@@ -115,7 +115,10 @@
 		[specificRecipeView release];
 	}
 	[categoryTableView  deselectRowAtIndexPath:indexPath  animated:YES];
-	[commonSpecificRecipeViewController processViewForRecipe:[recipes objectAtIndex:[indexPath row]] withWebviewDelegate:self];
+	
+	//This forces view to load all resources before its pushed on to main view stack
+	[[commonSpecificRecipeViewController view] setHidden:FALSE];
+	[commonSpecificRecipeViewController processViewForRecipe:[recipes objectAtIndex:[indexPath row]] withWebViewDelegate:self];
 }
 
 #pragma mark -

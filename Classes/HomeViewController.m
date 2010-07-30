@@ -156,7 +156,10 @@
 			[specificRecipeView release];
 		}
 		[homeTableView  deselectRowAtIndexPath:indexPath  animated:YES];
-		[commonSpecificRecipeViewController processViewForRecipe:[[self recipeHistory] objectAtIndex:[indexPath row]] withWebviewDelegate:self];
+		
+		//This forces view to load all resources before its pushed on to main view stack
+		[[commonSpecificRecipeViewController view] setHidden:FALSE];
+		[commonSpecificRecipeViewController processViewForRecipe:[[self recipeHistory] objectAtIndex:[indexPath row]] withWebViewDelegate:self];
 	}
 }
 
@@ -164,17 +167,10 @@
 #pragma mark UIWebViewDelegate Methods
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-		printf("Finished load!!");
-	
 	//Only transition when webview has finished loading
 	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-	[[appDelegate checkoutViewNavController] pushViewController:commonSpecificRecipeViewController animated:YES];
+	[[appDelegate homeViewNavController] pushViewController:[self commonSpecificRecipeViewController] animated:YES];
 }
-
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-				printf("Started load!!");
-}
-
 
 #pragma mark -
 #pragma mark Memory Management

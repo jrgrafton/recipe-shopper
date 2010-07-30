@@ -184,7 +184,10 @@
 		[specificRecipeView release];
 	}
 	[recipeBasketTableView  deselectRowAtIndexPath:indexPath  animated:YES];
-	[commonSpecificRecipeViewController processViewForRecipe:[[DataManager getRecipeBasket] objectAtIndex:[indexPath row]] withWebviewDelegate:self];
+	
+	//This forces view to load all resources before its pushed on to main view stack
+	[[commonSpecificRecipeViewController view] setHidden:FALSE];
+	[commonSpecificRecipeViewController processViewForRecipe:[[DataManager getRecipeBasket] objectAtIndex:[indexPath row]] withWebViewDelegate:self];
 }
 
 
@@ -223,7 +226,7 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 	//Only transition when webview has finished loading
 	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-	[[appDelegate checkoutViewNavController] pushViewController:commonSpecificRecipeViewController animated:YES];
+	[[appDelegate checkoutViewNavController] pushViewController:[self commonSpecificRecipeViewController] animated:YES];
 }
 
 #pragma mark -

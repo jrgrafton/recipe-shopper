@@ -25,6 +25,6 @@
 @property (nonatomic,retain) DBRecipe *currentRecipe;
 @property (nonatomic,assign) BOOL initialised;
 
-- (void)processViewForRecipe:(DBRecipe*)recipe withWebviewDelegate:(id) delegate;
+- (void)processViewForRecipe:(DBRecipe*)recipe withWebViewDelegate:(id <UIWebViewDelegate>) webViewDelegate;
 
 @end

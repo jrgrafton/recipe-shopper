@@ -28,14 +28,15 @@
 @synthesize recipeHtmlPage,initialised,currentRecipe;
 
 
-/*
+
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        // Custom initialization
+		//Copy Html resources if needed (imgs folder)
+		[self copyHtmlResourcesIfNeeded];
     }
     return self;
-}*/
+}
 
 
 #pragma mark -
@@ -65,23 +66,10 @@
 	
 	//Change background color
 	webView.backgroundColor = [UIColor whiteColor];
-	
-	//Copy Html resources if needed (imgs folder)
-	[self copyHtmlResourcesIfNeeded];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-	//Load blank page on exiting
-	[webView loadHTMLString:@"" baseURL:nil];
-#ifdef DEBUG
-	[LogManager log:@"VIEW UNLOADING" withLevel:LOG_INFO fromClass:@"CommonSpecificRecipeViewController"];
-#endif
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	
-	printf("Setting delegate self");
 	
 	//Switch delegate back to us so we can intercept links
 	[webView setDelegate: self];
@@ -127,7 +115,7 @@
 #pragma mark -
 #pragma mark Additional Instance Functions
 
-- (void)processViewForRecipe: (DBRecipe*)recipe withWebviewDelegate:(id) delegate {
+- (void)processViewForRecipe:(DBRecipe*)recipe withWebViewDelegate:(id <UIWebViewDelegate>) webViewDelegate {
 	//Release previous recipe
 	if ([self currentRecipe] != nil) {
 		[currentRecipe release];
@@ -153,11 +141,9 @@
 	[self setRecipeHtmlPage:request];
 	
 	//Set delegate so that it can only start transition when webview has finished loading
-	[webView setDelegate: delegate];
+	[webView setDelegate:webViewDelegate];
 	
-	printf("Setting delegate other");
-	
-	//Refresh page
+	//Load page
 	[webView loadRequest:[self recipeHtmlPage]];
 }
 
