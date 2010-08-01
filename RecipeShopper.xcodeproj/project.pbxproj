@@ -21,6 +21,28 @@
 		CE77746911F6611C00003B5D /* APIDeliverySlot.m in Sources */ = {isa = PBXBuildFile; fileRef = CE77746811F6611C00003B5D /* APIDeliverySlot.m */; };
 		CE79F48011EA143900468A6C /* CheckoutAddProductView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */; };
 		CE79F4BF11EA1B7500468A6C /* CheckoutAddProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE79F4BE11EA1B7500468A6C /* CheckoutAddProductViewController.m */; };
+		CE81642E12043B3D00E89700 /* breakfasts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81641912043B3D00E89700 /* breakfasts@2x.png */; };
+		CE81642F12043B3D00E89700 /* button_minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81641A12043B3D00E89700 /* button_minus@2x.png */; };
+		CE81643012043B3D00E89700 /* button_plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81641B12043B3D00E89700 /* button_plus@2x.png */; };
+		CE81643112043B3D00E89700 /* cakesBiscuits@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81641C12043B3D00E89700 /* cakesBiscuits@2x.png */; };
+		CE81643212043B3D00E89700 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81641D12043B3D00E89700 /* Default@2x.png */; };
+		CE81643312043B3D00E89700 /* desserts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81641E12043B3D00E89700 /* desserts@2x.png */; };
+		CE81643412043B3D00E89700 /* dinners@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81641F12043B3D00E89700 /* dinners@2x.png */; };
+		CE81643512043B3D00E89700 /* drinks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81642012043B3D00E89700 /* drinks@2x.png */; };
+		CE81643612043B3D00E89700 /* icon_book@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81642112043B3D00E89700 /* icon_book@2x.png */; };
+		CE81643712043B3D00E89700 /* icon_cart@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81642212043B3D00E89700 /* icon_cart@2x.png */; };
+		CE81643812043B3D00E89700 /* icon_home@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81642312043B3D00E89700 /* icon_home@2x.png */; };
+		CE81643912043B3D00E89700 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81642412043B3D00E89700 /* icon@2x.png */; };
+		CE81643A12043B3D00E89700 /* lunches@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81642512043B3D00E89700 /* lunches@2x.png */; };
+		CE81643B12043B3D00E89700 /* mains@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81642612043B3D00E89700 /* mains@2x.png */; };
+		CE81643C12043B3D00E89700 /* partyFood@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81642712043B3D00E89700 /* partyFood@2x.png */; };
+		CE81643D12043B3D00E89700 /* salads@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81642812043B3D00E89700 /* salads@2x.png */; };
+		CE81643E12043B3D00E89700 /* sauces@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81642912043B3D00E89700 /* sauces@2x.png */; };
+		CE81643F12043B3D00E89700 /* snacksSides@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81642A12043B3D00E89700 /* snacksSides@2x.png */; };
+		CE81644012043B3D00E89700 /* soups@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81642B12043B3D00E89700 /* soups@2x.png */; };
+		CE81644112043B3D00E89700 /* starters@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81642C12043B3D00E89700 /* starters@2x.png */; };
+		CE81644212043B3D00E89700 /* tesco_header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81642D12043B3D00E89700 /* tesco_header@2x.png */; };
+		CE81644A12043B7200E89700 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81644912043B7200E89700 /* icon.png */; };
 		CE826FFB11F5124D00A72C57 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE826FFA11F5124D00A72C57 /* CoreLocation.framework */; };
 		F20D2F6D11A2E32E006EA070 /* icon_cart.png in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F6C11A2E32E006EA070 /* icon_cart.png */; };
 		F20D2F6F11A2E466006EA070 /* icon_book.png in Resources */ = {isa = PBXBuildFile; fileRef = F20D2F6E11A2E466006EA070 /* icon_book.png */; };
@@ -114,6 +136,28 @@
 		CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckoutAddProductView.xib; sourceTree = "<group>"; };
 		CE79F4BD11EA1B7500468A6C /* CheckoutAddProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckoutAddProductViewController.h; sourceTree = "<group>"; };
 		CE79F4BE11EA1B7500468A6C /* CheckoutAddProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckoutAddProductViewController.m; sourceTree = "<group>"; };
+		CE81641912043B3D00E89700 /* breakfasts@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "breakfasts@2x.png"; sourceTree = "<group>"; };
+		CE81641A12043B3D00E89700 /* button_minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_minus@2x.png"; sourceTree = "<group>"; };
+		CE81641B12043B3D00E89700 /* button_plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_plus@2x.png"; sourceTree = "<group>"; };
+		CE81641C12043B3D00E89700 /* cakesBiscuits@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cakesBiscuits@2x.png"; sourceTree = "<group>"; };
+		CE81641D12043B3D00E89700 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		CE81641E12043B3D00E89700 /* desserts@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "desserts@2x.png"; sourceTree = "<group>"; };
+		CE81641F12043B3D00E89700 /* dinners@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dinners@2x.png"; sourceTree = "<group>"; };
+		CE81642012043B3D00E89700 /* drinks@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "drinks@2x.png"; sourceTree = "<group>"; };
+		CE81642112043B3D00E89700 /* icon_book@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_book@2x.png"; sourceTree = "<group>"; };
+		CE81642212043B3D00E89700 /* icon_cart@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_cart@2x.png"; sourceTree = "<group>"; };
+		CE81642312043B3D00E89700 /* icon_home@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_home@2x.png"; sourceTree = "<group>"; };
+		CE81642412043B3D00E89700 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
+		CE81642512043B3D00E89700 /* lunches@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lunches@2x.png"; sourceTree = "<group>"; };
+		CE81642612043B3D00E89700 /* mains@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mains@2x.png"; sourceTree = "<group>"; };
+		CE81642712043B3D00E89700 /* partyFood@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "partyFood@2x.png"; sourceTree = "<group>"; };
+		CE81642812043B3D00E89700 /* salads@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "salads@2x.png"; sourceTree = "<group>"; };
+		CE81642912043B3D00E89700 /* sauces@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sauces@2x.png"; sourceTree = "<group>"; };
+		CE81642A12043B3D00E89700 /* snacksSides@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snacksSides@2x.png"; sourceTree = "<group>"; };
+		CE81642B12043B3D00E89700 /* soups@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "soups@2x.png"; sourceTree = "<group>"; };
+		CE81642C12043B3D00E89700 /* starters@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "starters@2x.png"; sourceTree = "<group>"; };
+		CE81642D12043B3D00E89700 /* tesco_header@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tesco_header@2x.png"; sourceTree = "<group>"; };
+		CE81644912043B7200E89700 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		CE826FFA11F5124D00A72C57 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		F20D2F6C11A2E32E006EA070 /* icon_cart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_cart.png; sourceTree = "<group>"; };
 		F20D2F6E11A2E466006EA070 /* icon_book.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_book.png; sourceTree = "<group>"; };
@@ -271,6 +315,9 @@
 				F26DFCBE11AC2484006645A9 /* HTML */,
 				F26DFCBD11AC246C006645A9 /* Icons & Buttons */,
 				F27E92DE11AECE9B0031CA7E /* jamesgrafton_rs.sqlite */,
+				CE81644912043B7200E89700 /* icon.png */,
+				CE81642412043B3D00E89700 /* icon@2x.png */,
+				CE81641D12043B3D00E89700 /* Default@2x.png */,
 				F2FFC0BF11BD5E7E009EBB6F /* Default.png */,
 				8D1107310486CEB800E47090 /* RecipeShopper-Info.plist */,
 			);
@@ -370,8 +417,14 @@
 			isa = PBXGroup;
 			children = (
 				CE4826C411ECCF2300937DEF /* icon_product_default.jpg */,
+				CE81642112043B3D00E89700 /* icon_book@2x.png */,
+				CE81642212043B3D00E89700 /* icon_cart@2x.png */,
+				CE81642D12043B3D00E89700 /* tesco_header@2x.png */,
+				CE81642312043B3D00E89700 /* icon_home@2x.png */,
 				F27C38E111CB8A2C003BB50F /* button_minus.png */,
 				F27C38E211CB8A2C003BB50F /* button_plus.png */,
+				CE81641A12043B3D00E89700 /* button_minus@2x.png */,
+				CE81641B12043B3D00E89700 /* button_plus@2x.png */,
 				F22826A411C69AF40023ECAF /* button_green.png */,
 				F20D2FB811A2FB3A006EA070 /* tesco_header.png */,
 				F20D2F7211A2E4C9006EA070 /* icon_license.txt */,
@@ -403,6 +456,19 @@
 				F272FE0A11BEEF9600E61BB3 /* desserts.png */,
 				F272FE0B11BEEF9600E61BB3 /* dinners.png */,
 				F272FE0C11BEEF9600E61BB3 /* drinks.png */,
+				CE81641912043B3D00E89700 /* breakfasts@2x.png */,
+				CE81641C12043B3D00E89700 /* cakesBiscuits@2x.png */,
+				CE81641E12043B3D00E89700 /* desserts@2x.png */,
+				CE81641F12043B3D00E89700 /* dinners@2x.png */,
+				CE81642012043B3D00E89700 /* drinks@2x.png */,
+				CE81642512043B3D00E89700 /* lunches@2x.png */,
+				CE81642612043B3D00E89700 /* mains@2x.png */,
+				CE81642712043B3D00E89700 /* partyFood@2x.png */,
+				CE81642812043B3D00E89700 /* salads@2x.png */,
+				CE81642912043B3D00E89700 /* sauces@2x.png */,
+				CE81642A12043B3D00E89700 /* snacksSides@2x.png */,
+				CE81642B12043B3D00E89700 /* soups@2x.png */,
+				CE81642C12043B3D00E89700 /* starters@2x.png */,
 				F272FE0D11BEEF9600E61BB3 /* lunches.png */,
 				F272FE0E11BEEF9600E61BB3 /* mains.png */,
 				F272FE0F11BEEF9600E61BB3 /* partyFood.png */,
@@ -666,6 +732,28 @@
 				CE79F48011EA143900468A6C /* CheckoutAddProductView.xib in Resources */,
 				CE4826C511ECCF2300937DEF /* icon_product_default.jpg in Resources */,
 				CE77738C11F62DE200003B5D /* CheckoutChooseDeliveryDateView.xib in Resources */,
+				CE81642E12043B3D00E89700 /* breakfasts@2x.png in Resources */,
+				CE81642F12043B3D00E89700 /* button_minus@2x.png in Resources */,
+				CE81643012043B3D00E89700 /* button_plus@2x.png in Resources */,
+				CE81643112043B3D00E89700 /* cakesBiscuits@2x.png in Resources */,
+				CE81643212043B3D00E89700 /* Default@2x.png in Resources */,
+				CE81643312043B3D00E89700 /* desserts@2x.png in Resources */,
+				CE81643412043B3D00E89700 /* dinners@2x.png in Resources */,
+				CE81643512043B3D00E89700 /* drinks@2x.png in Resources */,
+				CE81643612043B3D00E89700 /* icon_book@2x.png in Resources */,
+				CE81643712043B3D00E89700 /* icon_cart@2x.png in Resources */,
+				CE81643812043B3D00E89700 /* icon_home@2x.png in Resources */,
+				CE81643912043B3D00E89700 /* icon@2x.png in Resources */,
+				CE81643A12043B3D00E89700 /* lunches@2x.png in Resources */,
+				CE81643B12043B3D00E89700 /* mains@2x.png in Resources */,
+				CE81643C12043B3D00E89700 /* partyFood@2x.png in Resources */,
+				CE81643D12043B3D00E89700 /* salads@2x.png in Resources */,
+				CE81643E12043B3D00E89700 /* sauces@2x.png in Resources */,
+				CE81643F12043B3D00E89700 /* snacksSides@2x.png in Resources */,
+				CE81644012043B3D00E89700 /* soups@2x.png in Resources */,
+				CE81644112043B3D00E89700 /* starters@2x.png in Resources */,
+				CE81644212043B3D00E89700 /* tesco_header@2x.png in Resources */,
+				CE81644A12043B7200E89700 /* icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -756,6 +844,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
+				PRODUCT_NAME = Tesco;
 				SDKROOT = iphoneos3.1.3;
 			};
 			name = Debug;
@@ -769,6 +858,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
+				PRODUCT_NAME = Tesco;
 				SDKROOT = iphoneos3.1.3;
 			};
 			name = Release;
