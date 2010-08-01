@@ -229,8 +229,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -272,7 +270,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>10</integer>
+									<integer>6</integer>
+									<integer>5</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
@@ -306,6 +305,8 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -323,7 +324,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>CE6D61B212059DC200AB5638</string>
+										<string>CE6D61DC1205A18500AB5638</string>
 										<key>history</key>
 										<array>
 											<string>CE7173B211A2C68B00D71D08</string>
@@ -344,7 +345,7 @@
 											<string>CE6D61AC12059DC200AB5638</string>
 											<string>CE6D61AD12059DC200AB5638</string>
 											<string>CE6D61AF12059DC200AB5638</string>
-											<string>CE6D61B112059DC200AB5638</string>
+											<string>CE6D61D31205A17D00AB5638</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -356,14 +357,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {1041, 545}}</string>
+								<string>{{0, 0}, {1041, 541}}</string>
 								<key>RubberWindowFrame</key>
 								<string>0 146 1400 732 0 0 1400 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>545pt</string>
+							<string>541pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -376,14 +377,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 550}, {1041, 141}}</string>
+								<string>{{0, 546}, {1041, 145}}</string>
 								<key>RubberWindowFrame</key>
 								<string>0 146 1400 732 0 0 1400 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>141pt</string>
+							<string>145pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -402,9 +403,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>CE6D61B312059DC200AB5638</string>
+				<string>CE6D61DD1205A18500AB5638</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>CE6D61B412059DC200AB5638</string>
+				<string>CE6D61DE1205A18500AB5638</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -542,10 +543,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>CE6D61BD12059DC200AB5638</string>
-		<string>CE6D61BE12059DC200AB5638</string>
-		<string>CE6D61BF12059DC200AB5638</string>
-		<string>1C78EAAD065D492600B07095</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>CE73302E1192C7D90078CC54</string>
 		<string>/Users/User/Documents/RecipeShopper/RecipeShopper.xcodeproj</string>
@@ -628,7 +625,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>CE73302E1192C7D90078CC54</string>
-				<string>CE6D61B512059DC200AB5638</string>
+				<string>CE6D61DF1205A18500AB5638</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -750,13 +747,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>CE6D61B612059DC200AB5638</string>
+				<string>CE6D61E01205A18500AB5638</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>CE6D61B712059DC200AB5638</string>
-				<string>CE6D61B812059DC200AB5638</string>
-				<string>CE6D61B912059DC200AB5638</string>
-				<string>CE6D61BA12059DC200AB5638</string>
-				<string>CE6D61BB12059DC200AB5638</string>
+				<string>CE6D61E11205A18500AB5638</string>
+				<string>CE6D61E21205A18500AB5638</string>
+				<string>CE6D61E31205A18500AB5638</string>
+				<string>CE6D61E41205A18500AB5638</string>
+				<string>CE6D61E51205A18500AB5638</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>
