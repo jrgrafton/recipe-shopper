@@ -108,7 +108,7 @@
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
 					20,
-					653,
+					778,
 					20,
 					48,
 					43,
@@ -152,6 +152,14 @@
 			PBXWorkspaceStateSaveDate = 302356420;
 		};
 		perUserProjectItems = {
+			CE6D61A912059DC200AB5638 /* PBXBookmark */ = CE6D61A912059DC200AB5638 /* PBXBookmark */;
+			CE6D61AA12059DC200AB5638 /* PBXBookmark */ = CE6D61AA12059DC200AB5638 /* PBXBookmark */;
+			CE6D61AB12059DC200AB5638 /* PBXTextBookmark */ = CE6D61AB12059DC200AB5638 /* PBXTextBookmark */;
+			CE6D61AC12059DC200AB5638 /* PBXBookmark */ = CE6D61AC12059DC200AB5638 /* PBXBookmark */;
+			CE6D61AD12059DC200AB5638 /* PBXBookmark */ = CE6D61AD12059DC200AB5638 /* PBXBookmark */;
+			CE6D61AF12059DC200AB5638 /* PBXBookmark */ = CE6D61AF12059DC200AB5638 /* PBXBookmark */;
+			CE6D61B112059DC200AB5638 /* PBXTextBookmark */ = CE6D61B112059DC200AB5638 /* PBXTextBookmark */;
+			CE6D61B212059DC200AB5638 /* PBXTextBookmark */ = CE6D61B212059DC200AB5638 /* PBXTextBookmark */;
 			CE7173B211A2C68B00D71D08 = CE7173B211A2C68B00D71D08 /* PBXTextBookmark */;
 			CE7173B311A2C68B00D71D08 = CE7173B311A2C68B00D71D08 /* PlistBookmark */;
 			CE79F52911EA224F00468A6C = CE79F52911EA224F00468A6C /* PBXTextBookmark */;
@@ -191,6 +199,68 @@
 		uiCtxt = {
 			sepNavWindowFrame = "{{15, 223}, {1133, 650}}";
 		};
+	};
+	CE6D61A912059DC200AB5638 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = CE81642412043B3D00E89700 /* icon@2x.png */;
+	};
+	CE6D61AA12059DC200AB5638 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = CE81644912043B7200E89700 /* icon.png */;
+	};
+	CE6D61AB12059DC200AB5638 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F27D6B1E11AAEF3800BAC6E6 /* recipe_base.css */;
+		name = "recipe_base.css: 21";
+		rLen = 0;
+		rLoc = 358;
+		rType = 0;
+		vrLen = 605;
+		vrLoc = 0;
+	};
+	CE6D61AC12059DC200AB5638 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = CE81642212043B3D00E89700 /* icon_cart@2x.png */;
+	};
+	CE6D61AD12059DC200AB5638 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = CE6D61AE12059DC200AB5638 /* addToCart@2x.png */;
+	};
+	CE6D61AE12059DC200AB5638 /* addToCart@2x.png */ = {
+		isa = PBXFileReference;
+		name = "addToCart@2x.png";
+		path = "/Users/User/Documents/RecipeShopper/imgs/addToCart@2x.png";
+		sourceTree = "<absolute>";
+	};
+	CE6D61AF12059DC200AB5638 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = CE6D61B012059DC200AB5638 /* addToCart.png */;
+	};
+	CE6D61B012059DC200AB5638 /* addToCart.png */ = {
+		isa = PBXFileReference;
+		name = addToCart.png;
+		path = /Users/User/Documents/RecipeShopper/imgs/addToCart.png;
+		sourceTree = "<absolute>";
+	};
+	CE6D61B112059DC200AB5638 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F27D6B1C11AAEF2900BAC6E6 /* recipe_base.html */;
+		name = "recipe_base.html: 9";
+		rLen = 9;
+		rLoc = 203;
+		rType = 0;
+		vrLen = 1429;
+		vrLoc = 0;
+	};
+	CE6D61B212059DC200AB5638 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F27D6B1C11AAEF2900BAC6E6 /* recipe_base.html */;
+		name = "recipe_base.html: 9";
+		rLen = 0;
+		rLoc = 246;
+		rType = 0;
+		vrLen = 1406;
+		vrLoc = 0;
 	};
 	CE7173B211A2C68B00D71D08 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -657,16 +727,16 @@
 	};
 	F27D6B1C11AAEF2900BAC6E6 /* recipe_base.html */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {980, 1963}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1429}";
+			sepNavIntBoundsRect = "{{0, 0}, {980, 2028}}";
+			sepNavSelRange = "{246, 0}";
+			sepNavVisRange = "{0, 1406}";
 		};
 	};
 	F27D6B1E11AAEF3800BAC6E6 /* recipe_base.css */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {980, 3419}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{1259, 610}";
+			sepNavIntBoundsRect = "{{0, 0}, {980, 2990}}";
+			sepNavSelRange = "{358, 0}";
+			sepNavVisRange = "{0, 605}";
 		};
 	};
 	F293DC2511A5EA61008AA947 /* DatabaseRequestManager.h */ = {
