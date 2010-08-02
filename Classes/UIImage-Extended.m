@@ -14,7 +14,8 @@
 - (UIImage *)resizedImage:(CGSize)newSize
                 transform:(CGAffineTransform)transform
            drawTransposed:(BOOL)transpose
-     interpolationQuality:(CGInterpolationQuality)quality;
+     interpolationQuality:(CGInterpolationQuality)quality
+				 andScale:(CGFloat)inScale;
 - (CGAffineTransform)transformForOrientation:(CGSize)newSize;
 @end
 
@@ -42,7 +43,7 @@
 
 // Returns a rescaled copy of the image, taking into account its orientation
 // The image will be scaled disproportionately if necessary to fit the bounds specified by the parameter
-- (UIImage *)resizedImage:(CGSize)newSize interpolationQuality:(CGInterpolationQuality)quality {
+- (UIImage *)resizedImage:(CGSize)newSize interpolationQuality:(CGInterpolationQuality)quality andScale:(CGFloat)inScale {
     BOOL drawTransposed;
     
     switch (self.imageOrientation) {
@@ -56,11 +57,12 @@
         default:
             drawTransposed = NO;
     }
-    
+
     return [self resizedImage:newSize
                     transform:[self transformForOrientation:newSize]
                drawTransposed:drawTransposed
-         interpolationQuality:quality];
+         interpolationQuality:quality
+					 andScale:inScale];
 }
 
 #pragma mark -
@@ -72,7 +74,7 @@
 - (UIImage *)resizedImage:(CGSize)newSize
                 transform:(CGAffineTransform)transform
            drawTransposed:(BOOL)transpose
-     interpolationQuality:(CGInterpolationQuality)quality {
+     interpolationQuality:(CGInterpolationQuality)quality andScale:(CGFloat) inScale{
     CGRect newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height));
     CGRect transposedRect = CGRectMake(0, 0, newRect.size.height, newRect.size.width);
     CGImageRef imageRef = self.CGImage;
@@ -97,7 +99,7 @@
     
     // Get the resized image from the context and a UIImage
     CGImageRef newImageRef = CGBitmapContextCreateImage(bitmap);
-    UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
+    UIImage *newImage = [UIImage imageWithCGImage:newImageRef scale:inScale orientation:UIImageOrientationUp];
     
     // Clean up
     CGContextRelease(bitmap);

@@ -21,6 +21,7 @@
 	@property (readwrite,copy) NSString *preparationTime;
 	@property (readwrite,copy) NSString *serves;
 	@property (readwrite,copy) UIImage *iconSmall;
+	@property (readwrite,copy) UIImage *iconLarge;
 	@property (readwrite,copy) NSString *iconLargeRaw;
 @end
 
@@ -28,7 +29,7 @@
 
 @synthesize recipeID,recipeName,categoryName,recipeDescription,instructions,
 rating,ratingCount,contributor,cookingTime,preparationTime,serves,
-textIngredients,idProducts,idProductsQuantity,nutritionalInfo,nutritionalInfoPercent,iconSmall,iconLargeRaw;
+textIngredients,idProducts,idProductsQuantity,nutritionalInfo,nutritionalInfoPercent,iconSmall,iconLarge,iconLargeRaw;
 
 - (id)initWithRecipeID: (NSNumber*)inRecipeID andRecipeName:(NSString*)inRecipeName 
 		andCategoryName:(NSString*)inCategoryName andRecipeDescription:(NSString*)inRecipeDescription 
@@ -38,7 +39,7 @@ textIngredients,idProducts,idProductsQuantity,nutritionalInfo,nutritionalInfoPer
 		andServes:(NSString*)inServes andTextIngredients:(NSArray*)inTextIngredients 
 		andIDProducts:(NSArray*)inIDProducts andIDProductsQuantity:(NSArray*)inIDProductsQuantity
 		andNutritionalInfo:(NSArray*)inNutritionalInfo andNutritionalInfoPercent:(NSArray*)inNutritionalInfoPercent 
-		andIconSmall:(UIImage*)inIconSmall andIconLargeRaw:(NSString*)inIconLargeRaw {
+		andIconSmall:(UIImage*)inIconSmall andIconLarge:(UIImage*)inIconLarge andIconLargeRaw:(NSString*)inIconLargeRaw; {
 	
 	if (self = [super init]) {
 		[self setRecipeID:inRecipeID];
@@ -58,6 +59,7 @@ textIngredients,idProducts,idProductsQuantity,nutritionalInfo,nutritionalInfoPer
 		[self setNutritionalInfo:inNutritionalInfo];
 		[self setNutritionalInfoPercent:inNutritionalInfoPercent];
 		[self setIconSmall:inIconSmall];
+		[self setIconLarge:inIconLarge];
 		[self setIconLargeRaw:inIconLargeRaw];
 	}
 	return self;
@@ -90,6 +92,7 @@ textIngredients,idProducts,idProductsQuantity,nutritionalInfo,nutritionalInfoPer
 	[nutritionalInfo release];
 	[nutritionalInfoPercent release];
 	[iconSmall release];
+	[iconLarge release];
 	[iconLargeRaw release];
 	[super dealloc];
 }

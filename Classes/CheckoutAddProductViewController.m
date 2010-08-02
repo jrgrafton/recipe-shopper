@@ -205,7 +205,10 @@
 	[[cell textLabel] setNumberOfLines:4 ];
 	[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:12]];
 	[[cell detailTextLabel] setText:[NSString stringWithFormat:@"£%.2f each", ([[product productPrice] floatValue])]];
-	[[cell imageView] setImage:[product productIcon]];
+	
+	//Super size image and set scale to 2.0 so image looks sexy on retina displays
+	UIImage * img = [[product productIcon] resizedImage:CGSizeMake(150,150) interpolationQuality:kCGInterpolationHigh andScale:2.0];
+	[[cell imageView] setImage: img];
 	
 	// Create the accessoryView for everything to be inserted into
 	UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0,0,95,120)];

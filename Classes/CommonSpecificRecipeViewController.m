@@ -168,7 +168,7 @@
 	templateHtml = [templateHtml stringByReplacingOccurrencesOfString:@"{css}" withString:recipeCssName];
 	
 	//Title
-	templateHtml = [templateHtml stringByReplacingOccurrencesOfString:@"{title}" withString:[recipe recipeName]];
+	templateHtml = [templateHtml stringByReplacingOccurrencesOfString:@"{title}" withString:[[recipe recipeName] stringByReplacingOccurrencesOfString:@"Recipe for " withString:@""]];
 	
 	//Description
 	if ([recipe recipeDescription] != nil) {

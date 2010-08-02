@@ -315,7 +315,8 @@ static sqlite3 *database = nil;
 	NSMutableArray *idProductsQuantity = [NSMutableArray array];
 	NSMutableArray *nutritionalInfo = [NSMutableArray array];			//Possibility of Empty
 	NSMutableArray *nutritionalInfoPercent = [NSMutableArray array];	//Possibility of Empty
-	UIImage *iconSmall;				
+	UIImage *iconSmall;	
+	UIImage *iconLarge;	
 	NSString *iconLargeRaw;				//Base64 enc jpg
 	
 	#ifdef DEBUG
@@ -359,7 +360,9 @@ static sqlite3 *database = nil;
 	//Small icon is more useful as UIImage
 	iconSmall = [UIImage imageWithData: [NSData dataWithBase64EncodedString: iconSmallString]];
 	iconLargeRaw = [NSString stringWithUTF8String: (const char *) sqlite3_column_blob(selectstmt, 11)];
-				 
+	iconLarge = [UIImage imageWithData: [NSData dataWithBase64EncodedString: iconLargeRaw]];
+	//iconLarge = [iconLarge resizedImage:CGSizeMake(66,66) interpolationQuality:kCGInterpolationHigh];		 
+	
     return [[[DBRecipe alloc] initWithRecipeID:recipeID andRecipeName:recipeName
 							  andCategoryName:categoryName andRecipeDescription:recipeDescription
 							  andInstructions:instructions andRating:rating 
@@ -368,7 +371,7 @@ static sqlite3 *database = nil;
 							  andServes:serves andTextIngredients:textIngredients 
 							  andIDProducts:idProducts andIDProductsQuantity:idProductsQuantity
 							  andNutritionalInfo:nutritionalInfo andNutritionalInfoPercent:nutritionalInfoPercent 
-							  andIconSmall:iconSmall andIconLargeRaw:iconLargeRaw] autorelease];
+							  andIconSmall:iconSmall andIconLarge:iconLarge andIconLargeRaw:iconLargeRaw] autorelease];
 }
 
 - (void)fetchExtendedDataForRecipe: (DBRecipe*) recipe {

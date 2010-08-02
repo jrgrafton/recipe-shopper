@@ -13,7 +13,7 @@
 
 // Extend UIImage so that we can copy it rather than assign
 - (id) copyWithZone: (NSZone *) zone;
-- (UIImage *)resizedImage:(CGSize)newSize interpolationQuality:(CGInterpolationQuality)quality;
+- (UIImage *)resizedImage:(CGSize)newSize interpolationQuality:(CGInterpolationQuality)quality andScale:(CGFloat)inScale;
 + (UIImage *)pasteImage:(UIImage *)im1 intoImage:(UIImage *)im2 atOffset:(CGPoint)offset;
 
 @end

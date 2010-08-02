@@ -9,6 +9,7 @@
 #import "RecipeSpecificCategoryViewController.h"
 #import "DataManager.h"
 #import "RecipeShopperAppDelegate.h"
+#import "NSData-Extended.h"
 
 
 @implementation RecipeSpecificCategoryViewController
@@ -83,7 +84,7 @@
 
 - (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath
 {
-    return 60;
+    return 90;
 }
 
 // Customize the appearance of table view cells.
@@ -93,14 +94,26 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
     }
     
     // Set up the cell...
 	DBRecipe *recipeObject = [recipes objectAtIndex:[indexPath row]];
-	[[cell textLabel] setText: [recipeObject recipeName]];
+	[[cell textLabel] setText: [[recipeObject recipeName] stringByReplacingOccurrencesOfString:@"Recipe for " withString:@""]];
 	[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14]];
-	[[cell imageView] setImage: [recipeObject iconSmall]];
+	[[cell textLabel] setNumberOfLines:2];
+	
+	NSString *details = @"";
+	if ([recipeObject serves] != nil) {
+		details = [NSString stringWithFormat:@"Serves: %@",[recipeObject serves]];
+	}
+	[[cell detailTextLabel] setText:details];
+	
+	//Super size image and set scale to 2.0 so image looks sexy on retina displays
+	UIImage * img = [[recipeObject iconLarge] resizedImage:CGSizeMake(150,150) interpolationQuality:kCGInterpolationHigh andScale:2.0];
+	[[cell imageView] setImage: img];
+	
+	//[[cell imageView] setImage: [recipeObject iconLarge]];
 	cell.accessoryType =  UITableViewCellAccessoryDisclosureIndicator;
 	
     return cell;

@@ -472,12 +472,12 @@
 	}
 	
 	// to put the image in the small box, use this code
-	image = [image resizedImage:CGSizeMake(66,66) interpolationQuality:kCGInterpolationHigh];
+	//image = [image resizedImage:CGSizeMake(120,120) interpolationQuality:kCGInterpolationHigh andScale:2.0];
 	//UIImage *finalImage = [UIImage pasteImage:image intoImage:defaultImage atOffset:CGPointMake(2, 2)];
 	//return finalImage;
 	
 	// to leave the images full size, use this code
-	return image;
+	return  image;
 }
 
 - (void)dealloc {
