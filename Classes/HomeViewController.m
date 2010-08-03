@@ -13,6 +13,7 @@
 #import "LogManager.h"
 #import "DBRecipe.h"
 #import "DataManager.h"
+#import "UITableViewCellFactory.h"
 
 @implementation HomeViewController
 
@@ -109,10 +110,7 @@
 	}else {
 		//List of recent recipes
 		DBRecipe *recipeObject = [recipeHistory objectAtIndex:[indexPath row]];
-		[[cell textLabel] setText: [recipeObject recipeName]];
-		[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14]];
-		[[cell imageView] setImage: [recipeObject iconSmall]];
-		cell.accessoryType =  UITableViewCellAccessoryDisclosureIndicator;
+		[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier usingRecipeObject:recipeObject];
 	}
 	
     return cell;
@@ -122,7 +120,7 @@
 	if (indexPath.section == 0) {
 		return 50;
 	}else{
-		return 60;
+		return 90;
 	}
 }
 

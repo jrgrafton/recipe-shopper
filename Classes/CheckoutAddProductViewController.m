@@ -10,6 +10,7 @@
 #import "LogManager.h"
 #import "DataManager.h"
 #import "DBProduct.h"
+#import "UITableViewCellFactory.h"
 
 @interface CheckoutAddProductViewController ()
 //Private class functions
@@ -187,71 +188,18 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"Cell";
-    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
-    }
 	
     // get the product we're displaying ...
     DBProduct *product = [foundProducts objectAtIndex:[indexPath row]];
     
-	// and the count of how many are already in the basket
-	NSInteger productQuantity = [DataManager getCountForProduct:product];
+	NSArray* buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier usingProductObject:product];
 	
-	// Set up the cell...
-	[[cell textLabel] setText:[product productName]];
-	[[cell textLabel] setNumberOfLines:4 ];
-	[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:12]];
-	[[cell detailTextLabel] setText:[NSString stringWithFormat:@"£%.2f each", ([[product productPrice] floatValue])]];
-	
-	//Super size image and set scale to 2.0 so image looks sexy on retina displays
-	UIImage * img = [[product productIcon] resizedImage:CGSizeMake(150,150) interpolationQuality:kCGInterpolationHigh andScale:2.0];
-	[[cell imageView] setImage: img];
-	
-	// Create the accessoryView for everything to be inserted into
-	UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0,0,95,120)];
-	
-	if (productQuantity != 0) {
-		// Minus button
-		UIButton *minusButton = [[UIButton alloc] initWithFrame:CGRectMake(0,38,44,44)];
-		[minusButton setTag:[indexPath row]];
-		[minusButton addTarget:self action:@selector(removeProductFromBasket:) forControlEvents:UIControlEventTouchUpInside];
-		UIImage *minusImage = [UIImage imageNamed:@"button_minus.png"];
-		[minusButton setBackgroundImage:minusImage forState:UIControlStateNormal];
-		
-		[accessoryView addSubview:minusButton];
-		[minusButton release];
+	//Best to leave selector attaching to TableViewClass
+	[[buttons objectAtIndex:0] addTarget:self action:@selector(addProductToBasket:) forControlEvents:UIControlEventTouchUpInside];
+	if ([buttons count] > 1) {
+		[[buttons objectAtIndex:1] addTarget:self action:@selector(removeProductFromBasket:) forControlEvents:UIControlEventTouchUpInside];
 	}
-	
-	// Plus button
-	UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(40,38,44,44)];
-	[plusButton setTag:[indexPath row]];
-	[plusButton addTarget:self action:@selector(addProductToBasket:) forControlEvents:UIControlEventTouchUpInside];
-	UIImage *plusImage = [UIImage imageNamed:@"button_plus.png"];
-	[plusButton setBackgroundImage:plusImage forState:UIControlStateNormal];
-	
-	[accessoryView addSubview:plusButton];
-	
-	if (productQuantity != 0) {
-		// Count label
-		UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(4,80,78,14)];
-		NSMutableString* basketString = [NSString stringWithFormat:@"%d in basket", productQuantity];
-		[countLabel setText:basketString];
-		[countLabel setFont:[UIFont boldSystemFontOfSize:11]];
-		[countLabel setTextAlignment: UITextAlignmentCenter];
-		
-		[accessoryView addSubview:countLabel];
-		[countLabel release];
-	}
-	
-	// Finally add accessory view itself
-	[cell setAccessoryView:accessoryView];
-	
-	// release memory
-	[accessoryView release];
-	[plusButton release];
 	
     return cell;
 }
@@ -264,21 +212,23 @@
 }
 
 - (void) addProductToBasket:(id)sender {
-    NSInteger row = [sender tag];
-    DBProduct* product = [foundProducts objectAtIndex:row];
-	
-    [DataManager increaseCountForProduct:product];
-	
-	[productSearchTableView reloadData];
+    NSInteger productBaseID = [sender tag];
+	for (DBProduct* product in foundProducts) {
+		if ([[product productBaseID] intValue] == productBaseID){
+			[DataManager increaseCountForProduct:product];
+			[productSearchTableView reloadData];
+		}
+	}
 }
 
 - (void) removeProductFromBasket:(id)sender {
-    NSInteger row = [sender tag];
-    DBProduct* product = [foundProducts objectAtIndex:row];
-	
-    [DataManager decreaseCountForProduct:product];
-	
-	[productSearchTableView reloadData];
+    NSInteger productBaseID = [sender tag];
+	for (DBProduct* product in foundProducts) {
+		if ([[product productBaseID] intValue] == productBaseID){
+			[DataManager decreaseCountForProduct:product];
+			[productSearchTableView reloadData];
+		}
+	}
 }
 
 - (void) searchBarSearchButtonClicked:(UISearchBar *)theSearchBar {

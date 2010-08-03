@@ -10,6 +10,7 @@
 #import "DataManager.h"
 #import "RecipeShopperAppDelegate.h"
 #import "NSData-Extended.h"
+#import "UITableViewCellFactory.h"
 
 
 @implementation RecipeSpecificCategoryViewController
@@ -92,29 +93,12 @@
     
     static NSString *CellIdentifier = @"Cell";
     
+	//Try and use cached cell...
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
-    }
-    
+	
     // Set up the cell...
 	DBRecipe *recipeObject = [recipes objectAtIndex:[indexPath row]];
-	[[cell textLabel] setText: [[recipeObject recipeName] stringByReplacingOccurrencesOfString:@"Recipe for " withString:@""]];
-	[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14]];
-	[[cell textLabel] setNumberOfLines:2];
-	
-	NSString *details = @"";
-	if ([recipeObject serves] != nil) {
-		details = [NSString stringWithFormat:@"Serves: %@",[recipeObject serves]];
-	}
-	[[cell detailTextLabel] setText:details];
-	
-	//Super size image and set scale to 2.0 so image looks sexy on retina displays
-	UIImage * img = [[recipeObject iconLarge] resizedImage:CGSizeMake(150,150) interpolationQuality:kCGInterpolationHigh andScale:2.0];
-	[[cell imageView] setImage: img];
-	
-	//[[cell imageView] setImage: [recipeObject iconLarge]];
-	cell.accessoryType =  UITableViewCellAccessoryDisclosureIndicator;
+	[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier usingRecipeObject:recipeObject];
 	
     return cell;
 }

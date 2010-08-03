@@ -21,6 +21,7 @@
 		CE77746911F6611C00003B5D /* APIDeliverySlot.m in Sources */ = {isa = PBXBuildFile; fileRef = CE77746811F6611C00003B5D /* APIDeliverySlot.m */; };
 		CE79F48011EA143900468A6C /* CheckoutAddProductView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */; };
 		CE79F4BF11EA1B7500468A6C /* CheckoutAddProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE79F4BE11EA1B7500468A6C /* CheckoutAddProductViewController.m */; };
+		CE7EAF0D120831DE00A344D6 /* UITableViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7EAF0C120831DE00A344D6 /* UITableViewCellFactory.m */; };
 		CE81642E12043B3D00E89700 /* breakfasts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81641912043B3D00E89700 /* breakfasts@2x.png */; };
 		CE81642F12043B3D00E89700 /* button_minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81641A12043B3D00E89700 /* button_minus@2x.png */; };
 		CE81643012043B3D00E89700 /* button_plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81641B12043B3D00E89700 /* button_plus@2x.png */; };
@@ -136,6 +137,8 @@
 		CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckoutAddProductView.xib; sourceTree = "<group>"; };
 		CE79F4BD11EA1B7500468A6C /* CheckoutAddProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckoutAddProductViewController.h; sourceTree = "<group>"; };
 		CE79F4BE11EA1B7500468A6C /* CheckoutAddProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckoutAddProductViewController.m; sourceTree = "<group>"; };
+		CE7EAF0B120831DE00A344D6 /* UITableViewCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewCellFactory.h; sourceTree = "<group>"; };
+		CE7EAF0C120831DE00A344D6 /* UITableViewCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewCellFactory.m; sourceTree = "<group>"; };
 		CE81641912043B3D00E89700 /* breakfasts@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "breakfasts@2x.png"; sourceTree = "<group>"; };
 		CE81641A12043B3D00E89700 /* button_minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_minus@2x.png"; sourceTree = "<group>"; };
 		CE81641B12043B3D00E89700 /* button_plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_plus@2x.png"; sourceTree = "<group>"; };
@@ -400,6 +403,8 @@
 				F2794D6311B5587A00303B0A /* LoadingView.m */,
 				F27D6AB611AACA6800BAC6E6 /* CommonSpecificRecipeViewController.h */,
 				F27D6AB711AACA6800BAC6E6 /* CommonSpecificRecipeViewController.m */,
+				CE7EAF0B120831DE00A344D6 /* UITableViewCellFactory.h */,
+				CE7EAF0C120831DE00A344D6 /* UITableViewCellFactory.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -799,6 +804,7 @@
 				CE79F4BF11EA1B7500468A6C /* CheckoutAddProductViewController.m in Sources */,
 				CE77739211F6312C00003B5D /* CheckoutChooseDeliveryDateController.m in Sources */,
 				CE77746911F6611C00003B5D /* APIDeliverySlot.m in Sources */,
+				CE7EAF0D120831DE00A344D6 /* UITableViewCellFactory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

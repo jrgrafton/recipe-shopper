@@ -10,6 +10,7 @@
 #import "DataManager.h"
 #import "RecipeShopperAppDelegate.h"
 #import "LogManager.h"
+#import "UITableViewCellFactory.h"
 
 
 @interface CheckoutRecipeBasketViewController ()
@@ -106,13 +107,11 @@
 }
 
 - (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath{
-    return 60;
+    return 90;
 }
 
 // specify the height of your footer section
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    //differ between your sections or if you
-    //have only on section return a static value
     return 76;
 }
 
@@ -136,7 +135,7 @@
 		
 		//set title, font size and font color
 		[button setTitle:@"Create Product List" forState:UIControlStateNormal];
-		[button.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
+		[[button titleLabel] setFont:[UIFont boldSystemFontOfSize:20]];
 		[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 		
 		//set action of the button
@@ -145,7 +144,6 @@
 		
 		//add the button to the view
 		[footerView addSubview:button];
-		
     }
 	
     //return the view for the footer
@@ -164,13 +162,8 @@
     
     // Set up the cell...
 	NSMutableArray *recipeBasket = [DataManager getRecipeBasket];
-	
 	DBRecipe *recipeObject = [recipeBasket objectAtIndex:[indexPath row]];
-	[[cell textLabel] setText: [recipeObject recipeName]];
-	[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14]];
-	[[cell imageView] setImage: [recipeObject iconSmall]];
-	cell.accessoryType =  UITableViewCellAccessoryDisclosureIndicator;
-	
+	[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier usingRecipeObject:recipeObject];
 	
     return cell;
 }
