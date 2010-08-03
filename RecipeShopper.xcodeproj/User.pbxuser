@@ -123,7 +123,7 @@
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
 					20,
-					778,
+					653,
 					20,
 					48,
 					43,
@@ -224,6 +224,13 @@
 			CE265B5812086FBF00D571F0 /* PBXTextBookmark */ = CE265B5812086FBF00D571F0 /* PBXTextBookmark */;
 			CE265B5912086FBF00D571F0 /* PBXTextBookmark */ = CE265B5912086FBF00D571F0 /* PBXTextBookmark */;
 			CE265B5A12086FBF00D571F0 /* PBXTextBookmark */ = CE265B5A12086FBF00D571F0 /* PBXTextBookmark */;
+			CE265B601208757E00D571F0 /* PBXTextBookmark */ = CE265B601208757E00D571F0 /* PBXTextBookmark */;
+			CE265B621208757E00D571F0 /* PBXBookmark */ = CE265B621208757E00D571F0 /* PBXBookmark */;
+			CE265B631208757E00D571F0 /* PBXTextBookmark */ = CE265B631208757E00D571F0 /* PBXTextBookmark */;
+			CE265B671208758000D571F0 /* PBXTextBookmark */ = CE265B671208758000D571F0 /* PBXTextBookmark */;
+			CE265B681208758000D571F0 /* PBXTextBookmark */ = CE265B681208758000D571F0 /* PBXTextBookmark */;
+			CE265B691208758000D571F0 /* PBXTextBookmark */ = CE265B691208758000D571F0 /* PBXTextBookmark */;
+			CE265B6A1208758000D571F0 /* PBXTextBookmark */ = CE265B6A1208758000D571F0 /* PBXTextBookmark */;
 			CE7173B211A2C68B00D71D08 = CE7173B211A2C68B00D71D08 /* PBXTextBookmark */;
 			CE7173B311A2C68B00D71D08 = CE7173B311A2C68B00D71D08 /* PlistBookmark */;
 			CE79F52911EA224F00468A6C = CE79F52911EA224F00468A6C /* PBXTextBookmark */;
@@ -860,6 +867,70 @@
 		vrLen = 1435;
 		vrLoc = 6534;
 	};
+	CE265B601208757E00D571F0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CE7EAF0C120831DE00A344D6 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 35";
+		rLen = 0;
+		rLoc = 1291;
+		rType = 0;
+		vrLen = 683;
+		vrLoc = 3476;
+	};
+	CE265B621208757E00D571F0 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = CE7EAF0B120831DE00A344D6 /* UITableViewCellFactory.h */;
+	};
+	CE265B631208757E00D571F0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CE7EAF0B120831DE00A344D6 /* UITableViewCellFactory.h */;
+		name = "UITableViewCellFactory.h: 18";
+		rLen = 0;
+		rLoc = 483;
+		rType = 0;
+		vrLen = 437;
+		vrLoc = 154;
+	};
+	CE265B671208758000D571F0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F2301E2811C7E0CC00CEA616 /* CheckoutProductBasketViewController.m */;
+		name = "CheckoutProductBasketViewController.m: 246";
+		rLen = 0;
+		rLoc = 7708;
+		rType = 0;
+		vrLen = 1593;
+		vrLoc = 6534;
+	};
+	CE265B681208758000D571F0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F27BE0E311C2821000C6883B /* CheckoutRecipeBasketViewController.m */;
+		name = "CheckoutRecipeBasketViewController.m: 238";
+		rLen = 0;
+		rLoc = 8222;
+		rType = 0;
+		vrLen = 991;
+		vrLoc = 7635;
+	};
+	CE265B691208758000D571F0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CE7EAF0B120831DE00A344D6 /* UITableViewCellFactory.h */;
+		name = "UITableViewCellFactory.h: 18";
+		rLen = 0;
+		rLoc = 483;
+		rType = 0;
+		vrLen = 591;
+		vrLoc = 0;
+	};
+	CE265B6A1208758000D571F0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CE7EAF0B120831DE00A344D6 /* UITableViewCellFactory.h */;
+		name = "UITableViewCellFactory.h: 18";
+		rLen = 0;
+		rLoc = 483;
+		rType = 0;
+		vrLen = 591;
+		vrLoc = 0;
+	};
 	CE7173B211A2C68B00D71D08 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 32CA4F630368D1EE00C91783 /* RecipeShopper_Prefix.pch */;
@@ -983,7 +1054,7 @@
 	};
 	CE7EAF0B120831DE00A344D6 /* UITableViewCellFactory.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1090, 500}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1090, 326}}";
 			sepNavSelRange = "{483, 0}";
 			sepNavVisRange = "{0, 591}";
 		};
@@ -1456,9 +1527,9 @@
 	};
 	F27BE0E311C2821000C6883B /* CheckoutRecipeBasketViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1167, 3744}}";
-			sepNavSelRange = "{5145, 0}";
-			sepNavVisRange = "{4333, 1559}";
+			sepNavIntBoundsRect = "{{0, 0}, {1181, 3432}}";
+			sepNavSelRange = "{8222, 0}";
+			sepNavVisRange = "{7635, 991}";
 		};
 	};
 	F27CCC3B11A9D876000673CD /* NSData-Extended.h */ = {
