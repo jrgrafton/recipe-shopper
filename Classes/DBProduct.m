@@ -9,6 +9,7 @@
 #import "DBProduct.h"
 
 @interface DBProduct ()
+@property (readwrite,copy) NSNumber *productID;
 @property (readwrite,copy) NSNumber *productBaseID;
 @property (readwrite,copy) NSString *productName;
 @property (readwrite,copy) NSString *productPrice;
@@ -19,7 +20,7 @@
 
 @implementation DBProduct
 
-@synthesize productBaseID,productName,productPrice,productIcon,lastUpdated,userAdded;
+@synthesize productID,productBaseID,productName,productPrice,productIcon,lastUpdated,userAdded;
 
 
 - (BOOL)isEqual:(id)anObject{
@@ -33,21 +34,23 @@
 }
 
 -(id) copyWithZone: (NSZone *) zone{
-	DBProduct *productCopy = [[DBProduct allocWithZone:zone] initWithProductID:productBaseID andProductName:productName
+	DBProduct *productCopy = [[DBProduct allocWithZone:zone] initWithProductID:productID andProductBaseID:productBaseID andProductName:productName
 														  andProductPrice:productPrice andProductIcon:productIcon
 														   andLastUpdated:lastUpdated andUserAdded:userAdded];
 	return productCopy;	
 }
 
 - (NSString *)description {
-	return [NSString stringWithFormat:@"Product:\nID=%@\nName=%@\nPrice=%@\nLastUpdated=%@\nUserAdded=%d\n",productBaseID,productName,productPrice,lastUpdated,userAdded];
+	return [NSString stringWithFormat:@"Product:\nID=%@\nBaseID=%@\nName=%@\nPrice=%@\nLastUpdated=%@\nUserAdded=%d\n",productID,productBaseID,productName,productPrice,lastUpdated,userAdded];
 }
 
-- (id)initWithProductID: (NSNumber*)inProductBaseID andProductName:(NSString*)inProductName 
-		andProductPrice:(NSString*)inProductPrice andProductIcon:(UIImage*)inProductIcon 
-		 andLastUpdated:(NSDate*)inLastUpdated andUserAdded:(BOOL)inUserAdded{
+- (id)initWithProductID: (NSNumber*)inProductID andProductBaseID:(NSNumber*)inProductBaseID 
+		 andProductName:(NSString*)inProductName andProductPrice:(NSString*)inProductPrice
+		 andProductIcon:(UIImage*)inProductIcon andLastUpdated:(NSDate*)inLastUpdated
+		   andUserAdded:(BOOL)inUserAdded {
 	
 	if (self = [super init]) {
+		[self setProductID:inProductID];
 		[self setProductBaseID:inProductBaseID];
 		[self setProductName:inProductName];
 		[self setProductPrice:inProductPrice];
@@ -60,6 +63,7 @@
 }
 
 - (void)dealloc {
+	[productID release];
 	[productBaseID release];
 	[productName release];
 	[productPrice release];

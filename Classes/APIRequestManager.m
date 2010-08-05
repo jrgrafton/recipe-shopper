@@ -161,12 +161,16 @@
 }
 
 - (BOOL)addProductBasketToStoreBasket {
+	//First we have to verify the existing online basket is empty
+	[self clearProductBasket];
+	
+	[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewLoadingText:) withObject:@"Adding products to Tesco.com basket" waitUntilDone:TRUE];
 	NSArray *productBasket = [DataManager getProductBasket];
 	
 	for (DBProduct *product in productBasket) {
 		NSInteger productCount = [DataManager getCountForProduct:product];
-		NSNumber *productBaseID = [product productBaseID];
-		NSString *addToBasketRequestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&PRODUCTID=%@&CHANGEQUANTITY=%d&SESSIONKEY=%@",REST_SERVICE_URL,productBaseID,productCount,authenticatedSessionKey];
+		NSNumber *productID = [product productID];
+		NSString *addToBasketRequestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&PRODUCTID=%@&CHANGEQUANTITY=%d&SESSIONKEY=%@",REST_SERVICE_URL,productID,productCount,authenticatedSessionKey];
 		[JSONRequestQueue addObject:addToBasketRequestString];
 	}
 	
@@ -213,6 +217,55 @@
 	[JSONRequestResults removeAllObjects];
 	
 	return TRUE;
+}
+- (void)clearProductBasket {
+	[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewLoadingText:) withObject:@"Emptying Tesco.com basket" waitUntilDone:TRUE];
+	NSArray* currentBasket = [self fetchBasketSummary];
+	
+	for (NSDictionary* item in currentBasket) {
+		NSInteger basketLineQuantity = 0 - [[item valueForKey:@"BasketLineQuantity"] intValue];
+		NSInteger productID = [[item valueForKey:@"ProductId"] intValue];
+		NSString *removeFromBasketRequestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&PRODUCTID=%d&CHANGEQUANTITY=%d&SESSIONKEY=%@",REST_SERVICE_URL,productID,basketLineQuantity,authenticatedSessionKey];
+		[JSONRequestQueue addObject:removeFromBasketRequestString];
+	}
+	
+	//Spawn a thread to process the request queue
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[NSThread detachNewThreadSelector: @selector(processJSONRequestQueue) toTarget:self withObject:nil];
+	[pool release];
+	
+	//Now spin until all requests have been serviced
+	while ([[JSONRequestResults allKeys] count] < [JSONRequestQueue count]) {
+		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewProgressText:) withObject:[NSString stringWithFormat:@"Removing product %d of %d",[[JSONRequestResults allKeys] count] + 1,[JSONRequestQueue count]] waitUntilDone:TRUE];
+		[NSThread sleepForTimeInterval:0.2];
+	}
+	
+	//Finally ensure that both requestQueue and restDictionary are emptied
+	[JSONRequestQueue removeAllObjects];
+	[JSONRequestResults removeAllObjects];
+}
+
+- (NSArray*)fetchBasketSummary {
+	NSString *fetchBasketSummaryRequestString = [NSString stringWithFormat:@"%@?command=LISTBASKETSUMMARY&SESSIONKEY=%@",REST_SERVICE_URL,authenticatedSessionKey];
+	NSDictionary *basketDetails = [self getJSONForRequest:fetchBasketSummaryRequestString];
+	
+	if (basketDetails == nil) {
+	#ifdef DEBUG
+		[LogManager log:@"Error fetching basket content slots (NO JSON RETURNED)" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+	#endif
+		return [NSArray array];
+	}else {
+		NSNumber *statusCode = [basketDetails objectForKey:@"StatusCode"];
+		if ([statusCode intValue] != 0) {
+	#ifdef DEBUG
+			NSString* msg = [NSString stringWithFormat:@"Error fetching basket content (%@)",basketDetails];
+			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+	#endif
+			return [NSArray array];
+		}
+	}
+	
+	return [basketDetails objectForKey:@"BasketLines"];
 }
 
 - (BOOL)loginToStore:(NSString*) email withPassword:(NSString*) password {
@@ -298,7 +351,7 @@
 			}
 			#ifdef DEBUG
 			else{
-				NSString *msg = [NSString stringWithFormat:@"Product with baseid %@ exists in database but not on website",productBaseId];
+				NSString *msg = [NSString stringWithFormat:@"Product exists in database but not on website"];
 				[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
 			}
 			#endif
@@ -347,7 +400,7 @@
 	if (result == nil) {
 		[JSONRequestResults setValue:[NSNull null] forKey:requestString];
 	#ifdef DEBUG
-		NSString* msg = [NSString stringWithFormat:@"Error processing request (NO JSON RETURNED)",productBaseID];
+		NSString* msg = [NSString stringWithFormat:@"Error processing request %@ (NO JSON RETURNED)",requestString];
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
 	#endif
 	}else {
@@ -358,7 +411,7 @@
 	NSNumber *statusCode = [result objectForKey:@"StatusCode"];
 	if ([statusCode intValue] != 0) {
 	#ifdef DEBUG
-		NSString* msg = [NSString stringWithFormat:@"Error processing request %@ (%@)",request,result];
+		NSString* msg = [NSString stringWithFormat:@"Error processing request %@ (%@)",requestString,result];
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
 	#endif
 	}
@@ -424,13 +477,14 @@
 }
 
 -(DBProduct*)buildProductFromInfo:(NSDictionary*)productInfo{
+	NSNumber *productID = [NSNumber numberWithInt:[[productInfo objectForKey:@"ProductId"] intValue]];
 	NSNumber *productBaseID = [NSNumber numberWithInt:[[productInfo objectForKey:@"BaseProductId"] intValue]];
 	NSString *productName = [productInfo objectForKey:@"Name"];
 	NSString *productPrice = [productInfo objectForKey:@"Price"];
 	UIImage *productIcon = [self getImageForProduct:[productInfo objectForKey:@"ImagePath"]];
 	NSDate *lastUpdated = [NSDate date];
 	
-	return [[[DBProduct alloc] initWithProductID:productBaseID andProductName:productName
+	return [[[DBProduct alloc] initWithProductID:productID andProductBaseID: productBaseID andProductName:productName
 								 andProductPrice:productPrice andProductIcon:productIcon
 								  andLastUpdated:lastUpdated andUserAdded:YES] autorelease];
 }

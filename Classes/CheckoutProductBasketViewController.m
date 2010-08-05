@@ -421,7 +421,6 @@
 }
 
 -(void) transmitBasket {
-	[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewLoadingText:) withObject:@"Adding products to Tesco.com basket" waitUntilDone:TRUE];
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	@try {

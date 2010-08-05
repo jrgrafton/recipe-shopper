@@ -20,6 +20,10 @@
 	volatile NSMutableArray *JSONRequestQueue;
 }
 
+//Currently only called locally (so we can clear basket before adding items to it)
+- (NSArray*)fetchBasketSummary;
+- (void)clearProductBasket;
+
 - (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder;
 - (NSArray*)fetchAvailableDeliverySlots;
 - (BOOL)loginToStore:(NSString*) email withPassword:(NSString*) password;

@@ -10,6 +10,7 @@
 
 
 @interface DBProduct : NSObject {
+	NSNumber *productID;
 	NSNumber *productBaseID;
 	NSString *productName;
 	NSString *productPrice;
@@ -18,6 +19,7 @@
 	BOOL userAdded;
 }
 
+@property (readonly,copy) NSNumber *productID;
 @property (readonly,copy) NSNumber *productBaseID;
 @property (readonly,copy) NSString *productName;
 @property (readonly,copy) NSString *productPrice;
@@ -30,7 +32,8 @@
 - (NSUInteger)hash;
 -(id) copyWithZone: (NSZone *) zone;
 
-- (id)initWithProductID: (NSNumber*)inProductBaseID andProductName:(NSString*)inProductName 
-	   andProductPrice:(NSString*)inProductPrice andProductIcon:(UIImage*)inProductIcon 
-		 andLastUpdated:(NSDate*)inLastUpdated andUserAdded:(BOOL)inUserAdded; 
+- (id)initWithProductID: (NSNumber*)inProductID andProductBaseID:(NSNumber*)inProductBaseID 
+		andProductName:(NSString*)inProductName andProductPrice:(NSString*)inProductPrice
+	    andProductIcon:(UIImage*)inProductIcon andLastUpdated:(NSDate*)inLastUpdated
+		andUserAdded:(BOOL)inUserAdded; 
 @end

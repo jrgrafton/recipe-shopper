@@ -107,8 +107,10 @@ static sqlite3 *database = nil;
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
 	}
 	if (result == NULL) {
+		#ifdef DEBUG
 		NSString *msg = [NSString stringWithFormat:@"No userPreference values found to match key %@",key];
 		[LogManager log:msg withLevel:LOG_WARNING fromClass:@"DatabaseRequestManager"];
+		#endif
 	}
 	
 	return result;
@@ -280,12 +282,15 @@ static sqlite3 *database = nil;
 }
 
 -(DBProduct *)buildProductDBObjectFromRow: (sqlite3_stmt *)selectstmt {
+	NSNumber *productID;
 	NSNumber *productBaseID;
 	NSString *productName;
 	NSString *productPrice;
 	UIImage *productIcon;
 	NSDate *lastUpdated;
 	
+	//We dont store productID in DB at this point...
+	productID = [NSNumber numberWithInt:0];
 	productBaseID = [NSNumber numberWithInt: sqlite3_column_int(selectstmt, 0)];
 	productName = [NSString stringWithUTF8String: (const char *)sqlite3_column_text(selectstmt, 1)];
 	productPrice = [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt, 2)];
@@ -293,7 +298,7 @@ static sqlite3 *database = nil;
 	productIcon = [UIImage imageWithData: [NSData dataWithBase64EncodedString: productIconString]];
 	lastUpdated =[NSDate dateWithTimeIntervalSinceNow: sqlite3_column_double(selectstmt, 4)];
 	
-	return [[[DBProduct alloc] initWithProductID:productBaseID andProductName:productName
+	return [[[DBProduct alloc] initWithProductID:productID andProductBaseID: productBaseID andProductName:productName
 							  andProductPrice:productPrice andProductIcon:productIcon
 								 andLastUpdated:lastUpdated andUserAdded:NO] autorelease];
 }
