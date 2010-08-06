@@ -53,7 +53,7 @@
 															blue:0.9568627450980392
 														   alpha:1.0]];
 	
-	self.title = NSLocalizedString(@"Recipe Basket", @"Current recipe basket");
+	self.title = NSLocalizedString(@"Checkout", @"Current recipe basket");
 }
 
 
