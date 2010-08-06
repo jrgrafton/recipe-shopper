@@ -98,10 +98,10 @@
 			[latitudeLongitude addObject:latitude];
 			[latitudeLongitude addObject:longitude];
 		}else{
-		#ifdef DEBUG
+		
 			NSString *msg = [NSString stringWithFormat:@"Unable to find geoloc for address: '%@'.",address];
 			[LogManager log:msg withLevel:LOG_INFO fromClass:@"HTTPRequestManager"];
-		#endif
+		
 		}
 	}
 	
@@ -158,10 +158,10 @@
 	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];  
 	[request setURL:[NSURL URLWithString:requestUrl]];
 	[request setHTTPMethod:@"GET"];
-#ifdef DEBUG
+
 	NSString *msg = [NSString stringWithFormat:@"Sending request: '%@'.",requestUrl];
 	[LogManager log:msg withLevel:LOG_INFO fromClass:@"HTTPRequestManager"];
-#endif
+
 	return [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
 }
 

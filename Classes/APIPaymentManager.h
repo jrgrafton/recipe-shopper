@@ -13,9 +13,10 @@
 
 	@private
 	NSURLConnection *urlConnection;	//Used to do all navigation
+	NSMutableData *receivedData;
 }
 
-- (void)navigateToPaymentPage
+- (void)navigateToPaymentPage;
 
 - (id)init;
 

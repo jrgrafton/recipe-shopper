@@ -8,6 +8,7 @@
 
 #import "ApplicationRequestManager.h"
 #import "DataManager.h"
+#import "LogManager.h"
 
 
 @implementation ApplicationRequestManager
@@ -90,10 +91,7 @@
 
 
 - (void)createProductListFromRecipeBasket {
-	
-	#ifdef DEBUG
-		[LogManager log:@"Creating product list from recipe basket" withLevel:LOG_INFO fromClass:@"ApplicationRequestManager"];
-	#endif
+	[LogManager log:@"Creating product list from recipe basket" withLevel:LOG_INFO fromClass:@"ApplicationRequestManager"];
 	
 	//Ensure we first remove all non user added products from basket
 	if ([productBasket count] > 0){
@@ -141,8 +139,8 @@
 		}
 	}
 	
-	#ifdef DEBUG
+	
 		[LogManager log:@"Successfully created list from recipe basket" withLevel:LOG_INFO fromClass:@"ApplicationRequestManager"];
-	#endif
+	
 }
 @end

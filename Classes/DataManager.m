@@ -12,6 +12,7 @@
 
 #import "DatabaseRequestManager.h"
 #import "APIRequestManager.h"
+#import "APIPaymentManager.h"
 #import "ApplicationRequestManager.h"
 #import "HTTPRequestManager.h"
 #import "LogManager.h"
@@ -21,6 +22,7 @@
 
 static DatabaseRequestManager *databaseRequestManager;
 static APIRequestManager *apiRequestManager;
+static APIPaymentManager *apiPaymentManager;
 static HTTPRequestManager *httpRequestManager;
 static ApplicationRequestManager *applicationRequestManager;
 
@@ -30,37 +32,33 @@ static LocationController *locationController;
 
 + (void)initialiseAll {
 	//Location services
-	#ifdef DEBUG
-		[LogManager log:@"Initialising location controller" withLevel:LOG_INFO fromClass:@"DataManager"];
-	#endif
+	
+	[LogManager log:@"Initialising location controller" withLevel:LOG_INFO fromClass:@"DataManager"];
 	locationController = [[LocationController alloc] init];
 	
 	//Data managers
-	#ifdef DEBUG
-		[LogManager log:@"Initialising request managers" withLevel:LOG_INFO fromClass:@"DataManager"];
-	#endif
-	#ifdef DEBUG
-		[LogManager log:@"Initialising database request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
-	#endif
+	[LogManager log:@"Initialising request managers" withLevel:LOG_INFO fromClass:@"DataManager"];
+	
+	[LogManager log:@"Initialising database request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
 	databaseRequestManager = [[DatabaseRequestManager alloc] init];
-	#ifdef DEBUG
-		[LogManager log:@"Initialising API request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
-	#endif
+	
+	[LogManager log:@"Initialising API request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
 	apiRequestManager = [[APIRequestManager alloc] init];
-	#ifdef DEBUG
-		[LogManager log:@"Initialising HTTP request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
-	#endif
+	
+	[LogManager log:@"Initialising API payment manager" withLevel:LOG_INFO fromClass:@"DataManager"];
+	apiPaymentManager = [[APIPaymentManager alloc] init];
+	
+	[LogManager log:@"Initialising HTTP request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
 	httpRequestManager = [[HTTPRequestManager alloc] init];
-	#ifdef DEBUG
-		[LogManager log:@"Initialising Application request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
-	#endif
+	
+	[LogManager log:@"Initialising Application request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
 	applicationRequestManager = [[ApplicationRequestManager alloc] init];
 }
 
 + (void)deinitialiseAll {
-	#ifdef DEBUG
+	
 		[LogManager log:@"Deinitialising request managers" withLevel:LOG_INFO fromClass:@"DataManager"];
-	#endif
+	
 	[databaseRequestManager release];
 	[apiRequestManager release];
 	[httpRequestManager release];
@@ -146,6 +144,7 @@ static LocationController *locationController;
 	NSNumber *latitude = [NSNumber numberWithDouble:51.448494657351866];
 	NSNumber *longitude = [NSNumber numberWithDouble:-0.118095651268958];
 #endif
+	
 	return [NSArray arrayWithObjects:latitude,longitude,nil];
 }
 
@@ -226,6 +225,11 @@ static LocationController *locationController;
 
 + (NSDate*)verifyOrder:(NSString**)error {
 	return [apiRequestManager verifyOrder:error];
+}
+
+#pragma mark Tesco Payment functions
++ (void)navigateToPaymentPage{
+	return [apiPaymentManager navigateToPaymentPage];
 }
 
 @end

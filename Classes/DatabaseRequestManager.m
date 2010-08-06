@@ -30,9 +30,7 @@ static sqlite3 *database = nil;
 	if (self = [super init]) {
 		[self copyDatabaseIfNeeded];
 		if (sqlite3_open([[self getDBPath] UTF8String], &database) == SQLITE_OK) {
-			#ifdef DEBUG
-				[LogManager log:@"Successfully connected to database" withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
-			#endif
+			[LogManager log:@"Successfully connected to database" withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
 		}else{
 			sqlite3_close(database);
 			[LogManager log:@"Error connecting to database" withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
@@ -48,23 +46,23 @@ static sqlite3 *database = nil;
 	NSString *dbPath = [self getDBPath];
 	BOOL success = [fileManager fileExistsAtPath:dbPath];
 	
+	/*
 	#ifdef DEBUG
-		//Always copy database when in debug mode
-		if (success) {
-			success = [fileManager removeItemAtPath:dbPath error:&error];
-			if (!success){
-				NSString *msg = [NSString stringWithFormat:@"error removing old database: '%@'.",[error localizedDescription]];
-				[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DataManager"];
-			}
-			success = FALSE;
+	//Always copy database when in debug mode
+	if (success) {
+		success = [fileManager removeItemAtPath:dbPath error:&error];
+		if (!success){
+			NSString *msg = [NSString stringWithFormat:@"error removing old database: '%@'.",[error localizedDescription]];
+			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DataManager"];
 		}
-	#endif
+		success = FALSE;
+	}
+	#endif DEBUG*/
 	
 	if(!success) {
-		#ifdef DEBUG
-			NSString *msg = [NSString stringWithFormat:@"Database %@ not found. Initiating copy to %@",databaseName,dbPath];
-			[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
-		#endif
+		NSString *msg = [NSString stringWithFormat:@"Database %@ not found. Initiating copy to %@",databaseName,dbPath];
+		[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
+		
 		NSString *defaultDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:databaseName];
 		success = [fileManager copyItemAtPath:defaultDBPath toPath:dbPath error:&error];
 		
@@ -73,14 +71,13 @@ static sqlite3 *database = nil;
 			[LogManager log:msg withLevel:LOG_INFO fromClass:@"DataManager"];
 		}
 	}else{
-		#ifdef DEBUG
+		
 			NSString *msg = [NSString stringWithFormat:@"Database %@ found at path %@",databaseName,dbPath];
 			[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
-		#endif
+		
 	}
-	#ifdef DEBUG
-		[LogManager log:@"Finished initialisation" withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
-	#endif
+	[LogManager log:@"Finished initialisation" withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
+	
 }
 
 - (NSString*)getDBPath {
@@ -91,26 +88,24 @@ static sqlite3 *database = nil;
 	//First get recipe ID's from 'recipeHistory' table
 	const char *userPreferencesQuery = [[NSString stringWithFormat:@"select value from userPreferences where key = '%@';",key] UTF8String];
 
-	#ifdef DEBUG
-		NSString *msg = [NSString stringWithFormat:@"Executing user preference query %s",userPreferencesQuery];
-		[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
-	#endif
+	NSString *msg = [NSString stringWithFormat:@"Executing user preference query %s",userPreferencesQuery];
+	[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];	
 	
 	sqlite3_stmt *selectstmt;
 	NSString *result = NULL;
 	if(sqlite3_prepare_v2(database, userPreferencesQuery, -1, &selectstmt, NULL) == SQLITE_OK) {
 		if(sqlite3_step(selectstmt) == SQLITE_ROW) {
-			result = [NSString stringWithUTF8String: (const char *)sqlite3_column_text(selectstmt, 0)];	
+			result = [[[NSString alloc] initWithUTF8String: (const char *)sqlite3_column_text(selectstmt, 0)] autorelease];	
 		}
 	}else{
 		NSString *msg = [NSString stringWithFormat:@"Error executing statement %s",userPreferencesQuery];
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
 	}
 	if (result == NULL) {
-		#ifdef DEBUG
+		
 		NSString *msg = [NSString stringWithFormat:@"No userPreference values found to match key %@",key];
 		[LogManager log:msg withLevel:LOG_WARNING fromClass:@"DatabaseRequestManager"];
-		#endif
+		
 	}
 	
 	return result;
@@ -118,10 +113,10 @@ static sqlite3 *database = nil;
 
 - (void)putUserPreference: (NSString*)key andValue:(NSString*)value {
 	const char *userPreferencesQuery = [[NSString stringWithFormat:@"SELECT * FROM userPreferences WHERE key = '%@'",key] UTF8String];
-	#ifdef DEBUG
+	
 		NSString *msg = [NSString stringWithFormat:@"Executing user preference query %s",userPreferencesQuery];
 		[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
-	#endif
+	
 	
 	sqlite3_stmt *updatestmt;
 	if(sqlite3_prepare_v2(database, userPreferencesQuery, -1, &updatestmt, NULL) == SQLITE_OK) {
@@ -137,10 +132,8 @@ static sqlite3 *database = nil;
 
 	if(sqlite3_prepare_v2(database, userPreferencesQuery, -1, &updatestmt, NULL) == SQLITE_OK) {
 		if(SQLITE_DONE == sqlite3_step(updatestmt)){
-		#ifdef DEBUG
 			NSString *msg = [NSString stringWithFormat:@"Successfully inserted user preference using query %s",userPreferencesQuery];
 			[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
-		#endif
 		}
 	
 	}else {
@@ -157,10 +150,9 @@ static sqlite3 *database = nil;
 	sqlite3_stmt *updatestmt;
 	if(sqlite3_prepare_v2(database, recipeHistoryQuery, -1, &updatestmt, NULL) == SQLITE_OK) {
 		if(SQLITE_DONE == sqlite3_step(updatestmt)){
-		#ifdef DEBUG
 			NSString *msg = [NSString stringWithFormat:@"Successfully inserted recipe history using query %s",recipeHistoryQuery];
 			[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
-		#endif
+		
 		}else {
 			NSString *msg = [NSString stringWithFormat:@"Error executing statement %s",recipeHistoryQuery];
 			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
@@ -189,17 +181,14 @@ static sqlite3 *database = nil;
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
 	}
 	if ([recipeIDs count] == 0){
-		#ifdef DEBUG
-				[LogManager log:@"Recipe history table appears empty..." withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
-		#endif
+		[LogManager log:@"Recipe history table appears empty..." withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
 		return [NSArray arrayWithArray:recipes];
 	}
 	sqlite3_reset(selectstmt);
 	
 	//Now fetch recipe items from 'recipes' table
-	#ifdef DEBUG
-		[LogManager log:@"Fetching recipe history" withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
-	#endif
+	[LogManager log:@"Fetching recipe history" withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
+	
 	int i = [recipeIDs count];
 	int j = i - 1;
 	NSString *recipeQuery = @"select * from recipes WHERE ";
@@ -210,11 +199,8 @@ static sqlite3 *database = nil;
 		}
 	}
 	recipeQuery = [NSString stringWithFormat:@"%@%@", recipeQuery, @";"];
-	
-	#ifdef DEBUG
-		NSString *msg = [NSString stringWithFormat:@"Executing recipe query %@",recipeQuery];
-		[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
-	#endif
+	NSString *msg = [NSString stringWithFormat:@"Executing recipe query %@",recipeQuery];
+	[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
 	
 	if(sqlite3_prepare_v2(database, [recipeQuery UTF8String], -1, &selectstmt, NULL) == SQLITE_OK) {
 		while(sqlite3_step(selectstmt) == SQLITE_ROW) {
@@ -262,10 +248,10 @@ static sqlite3 *database = nil;
 	}
 	productQuery = [NSString stringWithFormat:@"%@%@", productQuery, @";"];
 	
-	#ifdef DEBUG
+	
 	NSString *msg = [NSString stringWithFormat:@"Executing product query %@",productQuery];
 	[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
-	#endif
+	
 	
 	sqlite3_stmt *selectstmt;
 	if(sqlite3_prepare_v2(database, [productQuery UTF8String], -1, &selectstmt, NULL) == SQLITE_OK) {
@@ -324,9 +310,9 @@ static sqlite3 *database = nil;
 	UIImage *iconLarge;	
 	NSString *iconLargeRaw;				//Base64 enc jpg
 	
-	#ifdef DEBUG
+	
 		[LogManager log:@"Preparing recipe from row" withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
-	#endif
+	
 
 	recipeID = [NSNumber numberWithInt: sqlite3_column_int(selectstmt, 0)];
 	recipeName = [NSString stringWithUTF8String: (const char *)sqlite3_column_text(selectstmt, 1)];

@@ -53,18 +53,16 @@
 	NSDictionary *verifyOrderDetails = [self getJSONForRequest:verifyOrderString];
 	
 	if (verifyOrderDetails == nil) {
-	#ifdef DEBUG
-		[LogManager log:@"Error verifying order (NO JSON RETURNED)" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];	
-	#endif
+		[LogManager log:@"Error verifying order (NO JSON RETURNED)" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
 		*error = [[[NSString alloc] initWithFormat:@"Tesco API endpoint unreachable"] autorelease];
 		return nil;
 	}else{
 		NSNumber *statusCode = [verifyOrderDetails objectForKey:@"StatusCode"];
 		if ([statusCode intValue] != 0) {
-		#ifdef DEBUG
+		
 			NSString* msg = [NSString stringWithFormat:@"Error verifying order (%@)",verifyOrderDetails];
 			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-		#endif
+		
 			*error = [[[NSString alloc] initWithFormat:@"%@",[verifyOrderDetails objectForKey:@"StatusInfo"]]autorelease];
 			return nil;
 		}else{
@@ -85,18 +83,14 @@
 	NSDictionary *chooseDeliverySlotResponse = [self getJSONForRequest:chooseDeliverySlotString];
 	
 	if (chooseDeliverySlotResponse == nil) {
-	#ifdef DEBUG
 		[LogManager log:@"Error reserving delivery slot (NO JSON RETURNED)" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];	
-	#endif
 		*error = [[[NSString alloc] initWithFormat:@"Tesco API endpoint unreachable"] autorelease];
 		return FALSE;
 	}else{
 		NSNumber *statusCode = [chooseDeliverySlotResponse objectForKey:@"StatusCode"];
 		if ([statusCode intValue] != 0) {
-		#ifdef DEBUG
 			NSString* msg = [NSString stringWithFormat:@"Error reserving delivery slot (%@)",chooseDeliverySlotResponse];
 			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-		#endif
 			*error = [[[NSString alloc] initWithFormat:@"%@",[chooseDeliverySlotResponse objectForKey:@"StatusInfo"]]autorelease];
 			return FALSE;
 		}else{
@@ -112,17 +106,15 @@
 	NSDictionary *deliveryDetails = [self getJSONForRequest:fetchDeliverySlotsRequestString];
 	
 	if (deliveryDetails == nil) {
-	#ifdef DEBUG
 		[LogManager log:@"Error fetching delivery slots (NO JSON RETURNED)" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-	#endif
 		return [NSArray array];
 	}else {
 		NSNumber *statusCode = [deliveryDetails objectForKey:@"StatusCode"];
 		if ([statusCode intValue] != 0) {
-	#ifdef DEBUG
+	
 			NSString* msg = [NSString stringWithFormat:@"Error fetching delivery slots (%@)",deliveryDetails];
 			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-	#endif
+	
 			return [NSArray array];
 		}else{
 			//Request seems to have returned successfully...
@@ -189,25 +181,25 @@
 	for (NSString *key in JSONRequestResults) {
 		id result = [JSONRequestResults valueForKey:key];
 		if (result == [NSNull null]) { //Request could have failed
-			#ifdef DEBUG
+			
 			NSString* msg = [NSString stringWithFormat:@"Error during add product to online basket request [%@] (NO JSON RETURNED)",key];
 			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-			#endif
+			
 			//If even one add to online basket fails we fail the whole process
 			return FALSE;
 		}else {
 			NSNumber *statusCode = [result objectForKey:@"StatusCode"];
 			if ([statusCode intValue] != 0) {
-				#ifdef DEBUG
+				
 				NSString* msg = [NSString stringWithFormat:@"Error during add product to online basket request [%@]",result];
 				[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-				#endif
+				
 				return FALSE;
 			}else {
-				#ifdef DEBUG
+				
 				NSString* msg = [NSString stringWithFormat:@"Successfully addded product to basket [%@]",result];
 				[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
-				#endif
+				
 			}
 		}
 	}
@@ -250,17 +242,17 @@
 	NSDictionary *basketDetails = [self getJSONForRequest:fetchBasketSummaryRequestString];
 	
 	if (basketDetails == nil) {
-	#ifdef DEBUG
+	
 		[LogManager log:@"Error fetching basket content slots (NO JSON RETURNED)" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-	#endif
+	
 		return [NSArray array];
 	}else {
 		NSNumber *statusCode = [basketDetails objectForKey:@"StatusCode"];
 		if ([statusCode intValue] != 0) {
-	#ifdef DEBUG
+	
 			NSString* msg = [NSString stringWithFormat:@"Error fetching basket content (%@)",basketDetails];
 			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-	#endif
+	
 			return [NSArray array];
 		}
 	}
@@ -349,12 +341,12 @@
 				//Have to rebuild product in case price, description etc has changed
 				[filteredProducts addObject: [self buildProductFromInfo:[JSONProducts objectAtIndex:0]]];
 			}
-			#ifdef DEBUG
+			
 			else{
 				NSString *msg = [NSString stringWithFormat:@"Product exists in database but not on website"];
 				[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
 			}
-			#endif
+			
 		}
 	}
 	
@@ -399,10 +391,10 @@
 	
 	if (result == nil) {
 		[JSONRequestResults setValue:[NSNull null] forKey:requestString];
-	#ifdef DEBUG
+	
 		NSString* msg = [NSString stringWithFormat:@"Error processing request %@ (NO JSON RETURNED)",requestString];
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-	#endif
+	
 	}else {
 		[JSONRequestResults setValue:result forKey:requestString];
 	}
@@ -410,10 +402,10 @@
 	
 	NSNumber *statusCode = [result objectForKey:@"StatusCode"];
 	if ([statusCode intValue] != 0) {
-	#ifdef DEBUG
+	
 		NSString* msg = [NSString stringWithFormat:@"Error processing request %@ (%@)",requestString,result];
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-	#endif
+	
 	}
 	currentAsyncRequestCount--;
 	
@@ -440,10 +432,10 @@
 	id results = [parser objectWithString:jsonString allowScalar:TRUE error:&error];
 	
 	if(error != nil){
-#ifdef DEBUG
+
 		NSString *msg = [NSString stringWithFormat:@"error parsing JSON: '%@'.",[error localizedDescription]];
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-#endif
+
 		results = [NSArray array];
 	}
 	
@@ -469,10 +461,10 @@
 	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];  
 	[request setURL:[NSURL URLWithString:requestUrl]];
 	[request setHTTPMethod:@"GET"];
-#ifdef DEBUG
+
 	NSString *msg = [NSString stringWithFormat:@"Sending request: '%@'.",requestUrl];
 	[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
-#endif
+
 	return [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
 }
 
@@ -502,16 +494,16 @@
 	}
 	
 	if ([sessionKey length] == 0){
-#ifdef DEBUG
+
 		NSString* msg = [NSString stringWithFormat:@"Login failed for [%@]/[%@]",email,password];
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-#endif
+
 		return nil;
 	}else{
-#ifdef DEBUG
+
 		NSString* msg = [NSString stringWithFormat:@"Login succeeded for [%@]/[%@] (%@)",email,password,sessionKey];
 		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-#endif
+
 	}
 	
 	return sessionKey;

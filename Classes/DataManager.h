@@ -46,6 +46,9 @@
 + (BOOL)chooseDeliverySlot:(APIDeliverySlot*)deliverySlot returningError:(NSString**)error;
 + (NSDate*)verifyOrder:(NSString**)error;
 
+//Tesco Payment data
++ (void)navigateToPaymentPage;
+
 //Application data
 + (void)addRecipeToBasket: (DBRecipe*)recipe;
 + (void)addProductToBasket: (DBProduct*)product;

@@ -260,7 +260,11 @@
 -(void) chooseDeliverySlot:(APIDeliverySlot*) deliverySlot {
 	NSString *error = nil;
 	
-	if (![DataManager chooseDeliverySlot: deliverySlot returningError: &error]) {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	BOOL deliverySlotError = [DataManager chooseDeliverySlot: deliverySlot returningError: &error];
+	[pool release];
+	
+	if (!deliverySlotError) {
 		[self performSelectorOnMainThread:@selector(chooseDeliverySlotError:) withObject:error waitUntilDone:TRUE];
 	}else {
 		//Verify that entire order is OK before proceeding
@@ -280,7 +284,9 @@
 	[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewLoadingText:) withObject:@"Verifying order..." waitUntilDone:FALSE];
 	
 	NSString *error = nil;
-	NSDate* slotExpireyDate = [DataManager verifyOrder:&error];
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	NSDate* slotExpireyDate = [[DataManager verifyOrder:&error] retain];
+	[pool release];
 	
 	if (error != nil) {
 		[self performSelectorOnMainThread:@selector(verifyOrderError:) withObject:error waitUntilDone:TRUE];
@@ -298,7 +304,7 @@
 }
 
 -(void) transitionToCheckout:(NSDate*) slotExpireyDate {
-	NSLocale *          enUSPOSIXLocale;
+	/*NSLocale *          enUSPOSIXLocale;
 	enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
 	
 	NSDateFormatter *df = [[NSDateFormatter alloc] init];
@@ -311,12 +317,11 @@
 	[apiError release];
 					
 	[df release];
-	[self hideLoadingOverlay];
+	[self hideLoadingOverlay];*/
 	
-	//TRANSITION TO CHECKOUT PAGE - WE ARE READY TO PAY!
-	
-	
-	
+	//Navigate to web payment page
+	[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewLoadingText:) withObject:@"Proceeding to payment screen" waitUntilDone:TRUE];
+	[DataManager navigateToPaymentPage];
 }
 
 -(NSString*) getDaySuffixForDate:(NSDate*) date {
@@ -344,14 +349,7 @@
 	
 	//Concatinate
 	NSString *dateString = [NSString stringWithFormat:@"%@ %@ %@",dayMonthString,timeString,yearString];
-	
 	APIDeliverySlot* slot = [pickerDateSlotReference objectForKey:dateString];
-	
-	if (slot == nil) {
-	#ifdef DEBUG
-		NSLog(@"NULL APIDeliverySlot object for [%@]",dateString);
-	#endif
-	}
 	
 	//Grab referenced APIDeliverySlot object
 	return slot;

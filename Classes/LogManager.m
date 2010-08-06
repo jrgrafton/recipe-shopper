@@ -28,8 +28,10 @@
 			break;
 	}
 	
-	//Output the log string
+	#ifdef DEBUG
+	//Output the log string only in DEBUG mode
 	NSLog(@"[%@]%@ %@",className,levelStr,msg);
+	#endif
 }
 
 @end

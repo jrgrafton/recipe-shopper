@@ -84,10 +84,10 @@
 - (BOOL)webView: (UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
 	NSURL *url = request.URL;
 	NSString *urlString = url.absoluteString;
-#ifdef DEBUG
+
 	NSString *msg = [NSString stringWithFormat:@"Intercepting link ::: %@",urlString];
 	[LogManager log:msg withLevel:LOG_INFO fromClass:@"CommonSpecificRecipeViewController"];
-#endif
+
 	//We wanna add something to the basket :D
 	if ([urlString rangeOfString:@"_addtocart_"].location != NSNotFound){
 		//Add to basket and to history
@@ -132,10 +132,8 @@
 	NSString *templatePath = [self replaceTokensInPage: @"recipe_base" forRecipe:recipe];
 	NSURL *url = [NSURL fileURLWithPath:templatePath];
 	
-	#ifdef DEBUG
-		NSString *msg = [NSString stringWithFormat:@"URL for html file %@",[url absoluteURL]];
-		[LogManager log:msg withLevel:LOG_INFO fromClass:@"CommonSpecificRecipeViewController"];
-	#endif
+	NSString *msg = [NSString stringWithFormat:@"URL for html file %@",[url absoluteURL]];
+	[LogManager log:msg withLevel:LOG_INFO fromClass:@"CommonSpecificRecipeViewController"];
 	
 	NSURLRequest *request = [NSURLRequest requestWithURL:url];
 	[self setRecipeHtmlPage:request];
@@ -151,12 +149,11 @@
 	NSString *recipeHtmlName = [NSString stringWithFormat:@"%@.html",[recipe recipeID]];
 	NSString *recipeCssName = [NSString stringWithFormat:@"%@.css",[recipe recipeID]];
 	
-	#ifndef DEBUG
 	if ([DataManager fileExistsInUserDocuments:recipeHtmlName] && [DataManager fileExistsInUserDocuments:recipeCssName]){
 		//Return the path to the previously processed page
 		return [[DataManager fetchUserDocumentsPath] stringByAppendingPathComponent:recipeHtmlName];
 	}
-	#endif
+	
 	
 	//Load HTML from template process it, then output to Documents dir
 	NSString *templateHtml = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:templatePrefix ofType:@"html"] encoding:NSUTF8StringEncoding error:nil];	
@@ -262,14 +259,12 @@
 	NSString *htmlPath = [[DataManager fetchUserDocumentsPath] stringByAppendingPathComponent:recipeHtmlName];
 	NSString *cssPath = [[DataManager fetchUserDocumentsPath] stringByAppendingPathComponent:recipeCssName];
 	
-	#ifdef DEBUG
-		NSString *msg = [NSString stringWithFormat:@"Writing HTML to file %@", htmlPath];
-		[LogManager log:msg withLevel:LOG_INFO fromClass:@"CommonSpecificRecipeViewController"];
-	
-		msg = [NSString stringWithFormat:@"Writing CSS to file %@", cssPath];
-		[LogManager log:msg withLevel:LOG_INFO fromClass:@"CommonSpecificRecipeViewController"];
-	#endif
+	NSString *msg = [NSString stringWithFormat:@"Writing HTML to file %@", htmlPath];
+	[LogManager log:msg withLevel:LOG_INFO fromClass:@"CommonSpecificRecipeViewController"];
 
+	msg = [NSString stringWithFormat:@"Writing CSS to file %@", cssPath];
+	[LogManager log:msg withLevel:LOG_INFO fromClass:@"CommonSpecificRecipeViewController"];
+	
 	[templateHtml writeToFile:htmlPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
 	[templateCss writeToFile:cssPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
 	
@@ -287,17 +282,14 @@
 	NSString *localImgPath = [[NSBundle mainBundle] pathForResource:@"imgs" ofType:nil];
 	NSString *documentsImgPath = [[DataManager fetchUserDocumentsPath] stringByAppendingPathComponent:@"imgs"];
 	
-	#ifdef DEBUG
-		//Always copy resources in DEBUG mode
-		if ([fileManager fileExistsAtPath:documentsImgPath]){
-			[fileManager removeItemAtPath:documentsImgPath error:nil];
-		}
-	#endif
-	if (![DataManager fileExistsInUserDocuments:@"imgs"]){		
-		#ifdef DEBUG
-			NSString* msg = [NSString stringWithFormat: @"Copying HTML imgs folder from %@ to %@",localImgPath,documentsImgPath];
-			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"CommonSpecificRecipeViewController"];
-		#endif
+	//Always copy resources in DEBUG mode
+	if ([fileManager fileExistsAtPath:documentsImgPath]){
+		[fileManager removeItemAtPath:documentsImgPath error:nil];
+	}
+	
+	if (![DataManager fileExistsInUserDocuments:@"imgs"]){
+		NSString* msg = [NSString stringWithFormat: @"Copying HTML imgs folder from %@ to %@",localImgPath,documentsImgPath];
+		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"CommonSpecificRecipeViewController"];
 		
 		if (![fileManager copyItemAtPath:localImgPath toPath:documentsImgPath error:&error]){
 			NSString *msg = [NSString stringWithFormat:@"error copying html resources: '%@'.",[error localizedDescription]];
