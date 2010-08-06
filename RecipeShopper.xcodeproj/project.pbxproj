@@ -21,6 +21,7 @@
 		CE77746911F6611C00003B5D /* APIDeliverySlot.m in Sources */ = {isa = PBXBuildFile; fileRef = CE77746811F6611C00003B5D /* APIDeliverySlot.m */; };
 		CE79F48011EA143900468A6C /* CheckoutAddProductView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */; };
 		CE79F4BF11EA1B7500468A6C /* CheckoutAddProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE79F4BE11EA1B7500468A6C /* CheckoutAddProductViewController.m */; };
+		CE7B635F120C0BDE00372EB0 /* APIPaymentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7B635E120C0BDE00372EB0 /* APIPaymentManager.m */; };
 		CE7EAF0D120831DE00A344D6 /* UITableViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7EAF0C120831DE00A344D6 /* UITableViewCellFactory.m */; };
 		CE81642E12043B3D00E89700 /* breakfasts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81641912043B3D00E89700 /* breakfasts@2x.png */; };
 		CE81642F12043B3D00E89700 /* button_minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81641A12043B3D00E89700 /* button_minus@2x.png */; };
@@ -137,6 +138,8 @@
 		CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckoutAddProductView.xib; sourceTree = "<group>"; };
 		CE79F4BD11EA1B7500468A6C /* CheckoutAddProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckoutAddProductViewController.h; sourceTree = "<group>"; };
 		CE79F4BE11EA1B7500468A6C /* CheckoutAddProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckoutAddProductViewController.m; sourceTree = "<group>"; };
+		CE7B635D120C0BDE00372EB0 /* APIPaymentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIPaymentManager.h; sourceTree = "<group>"; };
+		CE7B635E120C0BDE00372EB0 /* APIPaymentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIPaymentManager.m; sourceTree = "<group>"; };
 		CE7EAF0B120831DE00A344D6 /* UITableViewCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewCellFactory.h; sourceTree = "<group>"; };
 		CE7EAF0C120831DE00A344D6 /* UITableViewCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewCellFactory.m; sourceTree = "<group>"; };
 		CE81641912043B3D00E89700 /* breakfasts@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "breakfasts@2x.png"; sourceTree = "<group>"; };
@@ -611,6 +614,8 @@
 			children = (
 				F293DC2D11A5EB20008AA947 /* APIRequestManager.h */,
 				F293DC2E11A5EB20008AA947 /* APIRequestManager.m */,
+				CE7B635D120C0BDE00372EB0 /* APIPaymentManager.h */,
+				CE7B635E120C0BDE00372EB0 /* APIPaymentManager.m */,
 				CE77746711F6611C00003B5D /* APIDeliverySlot.h */,
 				CE77746811F6611C00003B5D /* APIDeliverySlot.m */,
 			);
@@ -805,6 +810,7 @@
 				CE77739211F6312C00003B5D /* CheckoutChooseDeliveryDateController.m in Sources */,
 				CE77746911F6611C00003B5D /* APIDeliverySlot.m in Sources */,
 				CE7EAF0D120831DE00A344D6 /* UITableViewCellFactory.m in Sources */,
+				CE7B635F120C0BDE00372EB0 /* APIPaymentManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -5,7 +5,7 @@
 //  Created by Matt Gallagher on 12/04/09.
 //  Copyright Matt Gallagher 2009. All rights reserved.
 //
-//	Enhancements by Asset Enhancing Technologies on 10/05/2010
+//	Enhancements by Assentec Global on 10/05/2010
 //	Copyright AET 2010. All rights reserved.
 // 
 //  Permission is given to use this source code file, free of charge, in any

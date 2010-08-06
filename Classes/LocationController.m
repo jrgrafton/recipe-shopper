@@ -3,7 +3,7 @@
 //  RecipeShopper
 //
 //  Created by James Grafton on 6/1/10.
-//  Copyright 2010 Asset Enhancing Technologies. All rights reserved.
+//  Copyright 2010 Assentec Global. All rights reserved.
 //
 
 #import "LocationController.h"
