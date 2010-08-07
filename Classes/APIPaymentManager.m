@@ -12,7 +12,8 @@
 
 @interface APIPaymentManager ()
 //Private class functions
--(void)loginSuccessful;
+-(NSHTTPCookie*)getCookieForName: (NSString*)name;
+-(void)setCookiesForUrlRequest: (NSMutableURLRequest*)urlRequest withCookieKeys:(NSString*)cookieNameOne, ...;
 @end
 
 static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
@@ -48,7 +49,7 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 	NSData *postData = [postDataString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
 	NSString *postLength = [NSString stringWithFormat:@"%i",[postData length]];
 	
-	//Add cookies for login
+	/*//Add cookies for login
 	NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage]cookies];
 	//Need v and u and t
 	NSString *vCookie = @"";
@@ -65,12 +66,14 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 		}
 		
 	}
-	NSString *cookieString = [NSString stringWithFormat:@"v=%@;u=%@;t=%@;sessionTest=True",vCookie,uCookie,tCookie];
+	NSString *cookieString = [NSString stringWithFormat:@"v=%@;u=%@;t=%@;sessionTest=True",vCookie,uCookie,tCookie];*/
+	/*[tescoLoginRequest setValue:cookieString forHTTPHeaderField:@"Cookie"];*/
+	[self setCookiesForUrlRequest:tescoLoginRequest withCookieKeys:@"v",@"u",@"t",@"sessionTest",nil];
 	
 	[tescoLoginRequest setValue:@"application/x-www-form-urlencoded charset=utf-8" forHTTPHeaderField:@"Content-Type"];
 	[tescoLoginRequest setValue:postLength forHTTPHeaderField:@"Content-Length"];
 	[tescoLoginRequest setValue:@"secure.tesco.com" forHTTPHeaderField:@"Host"];
-	[tescoLoginRequest setValue:cookieString forHTTPHeaderField:@"Cookie"];
+
 	
 	[tescoLoginRequest setHTTPMethod:@"POST"];
 	[tescoLoginRequest setHTTPBody:postData];
@@ -85,11 +88,31 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccessful) name:loginSuccessfulNotification object:self];
 }
 
-- (void)loginSuccessful{
-	NSLog(@"LOGIN SUCCESSFUL GOING TO GROCERY SCREEN");
-	NSURL *groceriesURL = [NSURL URLWithString:@"https://secure.tesco.com/groceries/checkout/"];
-	NSMutableURLRequest *tescoGroceryPageRequest = [NSMutableURLRequest requestWithURL:groceriesURL];
-	urlConnection = [[NSURLConnection alloc] initWithRequest:tescoGroceryPageRequest delegate:self];
+#pragma mark Private helper functions
+-(void)setCookiesForUrlRequest: (NSMutableURLRequest*)urlRequest withCookieKeys:(NSString*)cookieNameOne, ...{
+	va_list args;
+	va_start(args, cookieNameOne);
+	NSString *cookieName;
+	NSMutableString *cookieRequestString = [NSMutableString string];
+	
+	for (cookieName = cookieNameOne; cookieName != nil; cookieName = va_arg(args, NSString*)){
+		NSHTTPCookie* cookie = [self getCookieForName:cookieName];
+		if (cookie != nil) {
+			cookieRequestString = [NSString stringWithFormat:@"%@;%@=%@",cookieRequestString,[cookie name],[cookie value]];
+		}
+	}
+	[urlRequest setValue:cookieRequestString forHTTPHeaderField:@"Cookie"];
+	va_end(args);	
+}
+
+-(NSHTTPCookie*)getCookieForName: (NSString*)name {
+	NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage]cookies];
+	for (NSHTTPCookie *cookie in cookies) {
+		if ([[cookie name] isEqualToString:name]) {
+			return cookie;
+		}
+	}
+	return nil;
 }
 
 #pragma mark NSURLDelegate Methods
@@ -126,14 +149,21 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 	
 	//Need to check if webpage we recieved contains META refresh tag (hmmm...)
 	NSString* regex = @".*?<meta http-equiv=\"[Rr][Ee][Ff][Rr][Ee][Ss][Hh]\".*?[Uu][Rr][Ll]=[\"]{0,1}(.*?)[\"]{0,1}[ ]{0,1}/>.*";
-	NSString* redirectURL = [dataString stringByMatching:regex capture:1];
+	NSString* redirectURLString = [dataString stringByMatching:regex capture:1];
 	
-	if(redirectURL !=nil){
+	if(redirectURLString !=nil){
 		//Honour meta refresh
-		NSURL *redirectURL = [NSURL URLWithString:redirectURL];
+		NSURL *redirectURL = [NSURL URLWithString:redirectURLString];
 		NSMutableURLRequest *redirectRequest = [NSMutableURLRequest requestWithURL:redirectURL];
+		[redirectRequest setValue:@"secure.tesco.com" forHTTPHeaderField:@"Host"];
+		[redirectRequest setHTTPMethod:@"GET"];
 		
-		//Need to figure out full request info for meta refresh
+		//Set all cookies that we are gonna be needing
+		[self setCookiesForUrlRequest:redirectRequest withCookieKeys:@"v",@"u",@"t",@"CustomerId",@"CID",@"BTCCMS",@"UIMode",@"PS",@"SSVars",nil];
+		NSLog(@"Redirect headers: %@",[(redirectRequest) allHTTPHeaderFields]);
+		NSLog(@"Creating redirect request for URL %@",redirectURLString);
+		
+		urlConnection = [[NSURLConnection alloc] initWithRequest:redirectRequest delegate:self];
 	}
 }
 
