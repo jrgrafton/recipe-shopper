@@ -8,6 +8,7 @@
 
 #import "APIPaymentManager.h"
 #import "DataManager.h"
+#import "RegexKitLite.h"
 
 @interface APIPaymentManager ()
 //Private class functions
@@ -93,22 +94,6 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 
 #pragma mark NSURLDelegate Methods
 
-- (NSURLRequest *)connection: (NSURLConnection *)inConnection
-			 willSendRequest: (NSURLRequest *)inRequest
-			redirectResponse: (NSURLResponse *)inRedirectResponse {
-	
-	NSLog(@"REDIRECT");
-	
-    if (inRedirectResponse) {
-        NSMutableURLRequest *r = [[inRequest mutableCopy] autorelease];
-        [r setURL: [inRedirectResponse URL]];
-        //[r setHTTPBody: NSURLRequest];
-        return r;
-    } else {
-        return inRequest;
-    }
-}
-
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     // This method is called when the server has determined that it
@@ -119,9 +104,6 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 	
     // receivedData is an instance variable declared elsewhere.
     [receivedData setLength:0];
-	
-	//Print all header fields
-	NSLog(@"Headers: %@",[((NSHTTPURLResponse*)response) allHeaderFields]);
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
@@ -142,7 +124,17 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
     [receivedData setLength:0];
 	[urlConnection release];
 	
-	NSLog(@"Shared cookies are %@",[[NSHTTPCookieStorage sharedHTTPCookieStorage]cookies]);
+	//Need to check if webpage we recieved contains META refresh tag (hmmm...)
+	NSString* regex = @".*?<meta http-equiv=\"[Rr][Ee][Ff][Rr][Ee][Ss][Hh]\".*?[Uu][Rr][Ll]=[\"]{0,1}(.*?)[\"]{0,1}[ ]{0,1}/>.*";
+	NSString* redirectURL = [dataString stringByMatching:regex capture:1];
+	
+	if(redirectURL !=nil){
+		//Honour meta refresh
+		NSURL *redirectURL = [NSURL URLWithString:redirectURL];
+		NSMutableURLRequest *redirectRequest = [NSMutableURLRequest requestWithURL:redirectURL];
+		
+		//Need to figure out full request info for meta refresh
+	}
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {

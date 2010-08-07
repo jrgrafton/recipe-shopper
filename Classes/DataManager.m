@@ -117,7 +117,7 @@ static LocationController *locationController;
 
 + (BOOL)phoneIsOnline {	
 	//Network availability
-	Reachability *r = [Reachability reachabilityWithHostName:@"techfortesco.com"];
+	Reachability *r = [Reachability reachabilityWithHostName:@"google.com"];
 	NetworkStatus internetStatus = [r currentReachabilityStatus];
 	return ((internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN));
 }

@@ -502,7 +502,7 @@
 	}else{
 
 		NSString* msg = [NSString stringWithFormat:@"Login succeeded for [%@]/[%@] (%@)",email,password,sessionKey];
-		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
+		[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
 
 	}
 	

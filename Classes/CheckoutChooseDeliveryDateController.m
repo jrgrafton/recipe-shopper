@@ -286,13 +286,14 @@
 	NSString *error = nil;
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSDate* slotExpireyDate = [[DataManager verifyOrder:&error] retain];
-	[pool release];
 	
 	if (error != nil) {
+		[error retain];
 		[self performSelectorOnMainThread:@selector(verifyOrderError:) withObject:error waitUntilDone:TRUE];
 	}else {
 		[self performSelectorOnMainThread:@selector(transitionToCheckout:) withObject:slotExpireyDate waitUntilDone:TRUE];
 	}
+	[pool release];
 }
 
 -(void) verifyOrderError:(NSString*) error{
@@ -300,6 +301,7 @@
 	UIAlertView *apiError = [[UIAlertView alloc] initWithTitle: @"Tesco API error" message: error delegate: nil cancelButtonTitle: @"Dismiss" otherButtonTitles: nil];
 	[apiError show];
 	[apiError release];
+	[error release];
 	[self hideLoadingOverlay];
 }
 
