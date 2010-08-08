@@ -23,9 +23,10 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 - (id)init {
 	if (self = [super init]) {
 		//Initialisation code
-		NSURL *tescoUrl = [NSURL URLWithString:@"http://www.tesco.com/superstore/"];
-		NSURLRequest *tescoDotComRequest = [NSURLRequest requestWithURL:tescoUrl];
-		urlConnection = [[NSURLConnection alloc] initWithRequest:tescoDotComRequest delegate:self];
+		NSURL *tescoUrl = [NSURL URLWithString:@"https://secure.tesco.com/groceries/checkout/payment/default.aspx"];
+		NSURLRequest *tescoRequest = [[NSMutableURLRequest requestWithURL:tescoUrl] retain];
+		NSLog(@"Sending %@ request: URL %@ headers [[[%@]]]",[tescoRequest HTTPMethod],[tescoRequest URL],[tescoRequest allHTTPHeaderFields]);
+		urlConnection = [[NSURLConnection alloc] initWithRequest:tescoRequest delegate:self];
 		receivedData = [[NSMutableData data] retain];
 	}
 	return self;
@@ -49,37 +50,16 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 	NSData *postData = [postDataString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
 	NSString *postLength = [NSString stringWithFormat:@"%i",[postData length]];
 	
-	/*//Add cookies for login
-	NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage]cookies];
-	//Need v and u and t
-	NSString *vCookie = @"";
-	NSString *uCookie = @"";
-	NSString *tCookie = @"";
-	
-	for (NSHTTPCookie *cookie in cookies) {
-		if ([[cookie name] isEqualToString:@"v"]) {
-			vCookie = [cookie value];
-		}else if ([[cookie name] isEqualToString:@"u"]) {
-			uCookie = [cookie value];
-		}else if ([[cookie name] isEqualToString:@"t"]) {
-			tCookie = [cookie value];
-		}
-		
-	}
-	NSString *cookieString = [NSString stringWithFormat:@"v=%@;u=%@;t=%@;sessionTest=True",vCookie,uCookie,tCookie];*/
-	/*[tescoLoginRequest setValue:cookieString forHTTPHeaderField:@"Cookie"];*/
 	[self setCookiesForUrlRequest:tescoLoginRequest withCookieKeys:@"v",@"u",@"t",@"sessionTest",nil];
 	
 	[tescoLoginRequest setValue:@"application/x-www-form-urlencoded charset=utf-8" forHTTPHeaderField:@"Content-Type"];
 	[tescoLoginRequest setValue:postLength forHTTPHeaderField:@"Content-Length"];
 	[tescoLoginRequest setValue:@"secure.tesco.com" forHTTPHeaderField:@"Host"];
-
 	
 	[tescoLoginRequest setHTTPMethod:@"POST"];
 	[tescoLoginRequest setHTTPBody:postData];
 	
-	NSLog(@"Request is: %@",postDataString);
-	NSLog(@"Headers: %@",[(tescoLoginRequest) allHTTPHeaderFields]);
+	NSLog(@"Sending POST request: URL %@ headers [[[%@]]] data [[[%@]]]",[tescoLoginRequest URL],[tescoLoginRequest allHTTPHeaderFields],postDataString);
 	
 	urlConnection = [[NSURLConnection alloc] initWithRequest:tescoLoginRequest delegate:self];
 	[pool release];
@@ -117,6 +97,27 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 
 #pragma mark NSURLDelegate Methods
 
+- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse {
+	if (redirectResponse) {
+		request = request;
+		NSLog(@"Redirect response: URL %@ status code %i header fields are [[[%@]]]",[redirectResponse URL],[(NSHTTPURLResponse *)redirectResponse statusCode],[(NSHTTPURLResponse *)redirectResponse allHeaderFields]);
+		
+        NSMutableURLRequest *r = [[request mutableCopy] autorelease]; // clone original request
+        [r setURL: [request URL]];
+		if ([(NSHTTPURLResponse*)redirectResponse statusCode] == 307) {
+			[r setHTTPMethod:@"POST"];
+		}else {
+			[r setHTTPMethod:@"GET"];
+		}
+		[self setCookiesForUrlRequest:r withCookieKeys:@"s",@"v",@"u",@"t",nil];
+		NSLog(@"Will send %@ request: URL %@ header fields are[[[%@]]]",[r HTTPMethod],[r URL],[r allHTTPHeaderFields]);
+        return r;
+    } else {
+        return request;
+    }
+	
+}
+
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     // This method is called when the server has determined that it
@@ -124,6 +125,7 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 	
     // It can be called multiple times, for example in the case of a
     // redirect, so each time we reset the data.
+	NSLog(@"Response: %i header fields are[[[%@]]]",[(NSHTTPURLResponse *)response statusCode],[(NSHTTPURLResponse *)response allHeaderFields]);
 	
     // receivedData is an instance variable declared elsewhere.
     [receivedData setLength:0];
@@ -140,9 +142,7 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 	// do something with the data
     // receivedData is declared as a method instance elsewhere
 	NSString *dataString = [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease];
-	
-    NSLog(@"Succeeded! Received %d bytes of data",[receivedData length]);
-	NSLog(@"%@",dataString);
+    NSLog(@"Succeeded! Received %d bytes of data [[[%@]]]",[receivedData length],dataString);
 	
     [receivedData setLength:0];
 	[urlConnection release];
@@ -154,14 +154,13 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 	if(redirectURLString !=nil){
 		//Honour meta refresh
 		NSURL *redirectURL = [NSURL URLWithString:redirectURLString];
-		NSMutableURLRequest *redirectRequest = [NSMutableURLRequest requestWithURL:redirectURL];
+		NSMutableURLRequest *redirectRequest = [[NSMutableURLRequest requestWithURL:redirectURL] retain];
 		[redirectRequest setValue:@"secure.tesco.com" forHTTPHeaderField:@"Host"];
 		[redirectRequest setHTTPMethod:@"GET"];
 		
 		//Set all cookies that we are gonna be needing
 		[self setCookiesForUrlRequest:redirectRequest withCookieKeys:@"v",@"u",@"t",@"CustomerId",@"CID",@"BTCCMS",@"UIMode",@"PS",@"SSVars",nil];
-		NSLog(@"Redirect headers: %@",[(redirectRequest) allHTTPHeaderFields]);
-		NSLog(@"Creating redirect request for URL %@",redirectURLString);
+		NSLog(@"Sending %@ request: URL %@ headers [[[%@]]]",[redirectRequest HTTPMethod],[redirectRequest URL],[redirectRequest allHTTPHeaderFields]);
 		
 		urlConnection = [[NSURLConnection alloc] initWithRequest:redirectRequest delegate:self];
 	}
@@ -179,7 +178,6 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 }
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[urlConnection release];
     [super dealloc];
 }
