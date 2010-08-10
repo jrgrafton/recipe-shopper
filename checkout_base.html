@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<link href="style.css" media="screen" rel="Stylesheet" type="text/css">
+		<title>Payment Details</title>
+		<script type="text/javascript">
+			var submittedPage=false;
+			
+			function verifyDetails(){
+				alert("verifying details");
+			}
+		</script>
+	</head>
+	<body>
+		<div id="wrapper">
+			<a href="#"><img class="confirmButton" name="topButton" src="imgs/orderConfirm.png" onMouseOver="if(!submittedPage)topButton.src='imgs/orderConfirmOver.png'" onMouseOut="if(!submittedPage)topButton.src='imgs/orderConfirm.png'" onMouseUp="verifyDetails()"></a>
+			<div class ="infoSection" id="summary">
+				<div class="infoSectionHeader"><h2>Order Summary</h2></div>
+				<div class="infoSectionBody">
+					<div class="miniData cf">
+						<dl class="deliveryAddress">
+							<dt>Delivery:</dt>
+							<dd>home,</dd>
+							<dd>SW22AT</dd>
+					 	</dl>
+					 	<p>Saturday 14<sup>th</sup>August between 12:00 - 14:00</p>
+					 	<dl class="miniOrderSummary">
+							<dt title="This is the amount you have saved by selecting the items on promotion" class="highlight">Total Savings:</dt>
+							<dd class="highlight">£0.00</dd>
+							<dt class="help">
+								<strong id="guidePrice-2" class="miniGuidePrice plaintooltip">Guide price:</strong>
+								<span class="smallPrint">(6 items)</span>
+							</dt>
+							<dd><strong>£36.00</strong></dd>
+							<dt>Delivery charge:</dt>
+							<dd>£5.50</dd>
+							<dt><strong>Subtotal:</strong></dt>
+							<dd><strong>£41.50</strong></dd>
+							<dt title="Clubcard points are indicative and are not necessarily accurate">Total Clubcard points:</dt>
+							<dd>82</dd>
+							<dt>Total promotional or eCoupon Clubcard points:</dt>
+							<dd>0</dd>
+					  	</dl>
+					</div>
+				</div>
+			</div>
+			<div class ="infoSection" id="payment">
+				<div class="infoSectionHeader"><h2>Payment Details</h2></div>
+				<div class="infoSectionBody">
+					<div id="acceptableCreditCards">
+						<img class="centerImage" alt="Cards accepted; Visa, MasterCard, America Express, Switch, Delta" src="imgs/acceptableCreditCards.gif"
+						<br />
+						<span class="visaTxt">
+							<img class="centerImage"alt="card securities" src="imgs/cardSecurity.png">
+						</span>
+					</div>
+					<ul>
+						<li class="mandatory">
+							<label for="cardName" class="mandatory">Name on Card:<span class="red">*</span></label>
+							<input id="cardName" maxLength="40" />
+						</li>
+						<li class="mandatory">
+							<label for="cardNumber" class="mandatory">Card Number:<span class="red">*</span></label>
+							<input id="cardNumber" maxLength="20" />
+						</li>
+						<span class="expDate">Expiry date:</span>
+						<ul id="cardExpiryDate">
+							<li class="expDateColumn">
+								<div>
+									<label for="expireMonth-0" class="mandatory">Month:<span class="red">*</span></label>
+									<select id="expireMonth-0" name="expireMonth">
+										<option value="">mm</option>
+										<option value="01">01</option>
+										<option value="02">02</option>
+										<option value="03">03</option>
+										<option value="04">04</option>
+										<option value="05">05</option>
+										<option value="06">06</option>
+										<option value="07">07</option>
+										<option value="08">08</option>
+										<option value="09">09</option>
+										<option value="10">10</option>
+										<option value="11">11</option>
+										<option value="12">12</option>
+									</select> / 
+								</div>
+							</li>
+							<li class="expDateColumn">
+								<div>
+									<label for="expireYear-0" class="mandatory">Year:<span class="red">*</span></label>
+									<select id="expireYear-0" name="expireYear">
+										<option value="">yy</option>
+										<option value="10">10</option>
+										<option value="11">11</option>
+										<option value="12">12</option>
+										<option value="13">13</option>
+										<option value="14">14</option>
+										<option value="15">15</option>
+										<option value="16">16</option>
+										<option value="17">17</option>
+										<option value="18">18</option>
+										<option value="19">19</option>
+										<option value="20">20</option>
+									</select>
+								</div>
+							</li>
+						</ul>
+						<li class="mandatory">
+							<label for="cardIssueNumber" class="mandatory">Issue Number:<span class="red">*</span></label>
+							<input id="cardIssueNumber" maxLength="2" />
+							<span id="switchIssueNumber">(Maestro/Solo only)</span>
+						</li>
+						<li class="mandatory">
+							<label for="cardSecurityCode" class="mandatory">Security Code:<span class="red">*</span></label>
+							<input id="cardSecurityCode" maxLength="4" />
+						</li>
+					</ul>
+					<p class="storeCardDtls">
+						<input type="checkbox" title="" value="yes" id="saveOption-0" />
+						<label class="" for="saveOption-0">Store my card details for next time (these card details will replace those stored in my account section for the site)</label>
+					</p>
+				</div>
+			</div>
+			<div class ="infoSection" id="address">
+				<div class="infoSectionHeader"><h2>Cardholder's Address</h2></div>
+				<div class="infoSectionBody">
+					<p>
+						<span class="contactLbl">
+							<label class=" heading" for="addresses-0">Address nickname:</label>
+							<select name="addresses" id="addresses-0">
+								<option selected="selected" value="5090949">home</option>
+							</select>
+						</span>
+					</p>
+					<div class="cardHdlrAddressDtls">
+						<span class="cardHdlrAddressLbl">Address</span>
+						<div id="paymentBillingAddressWrap">
+							<div class="address">
+								<h3>home</h3>
+								<ul>
+									<li>5 </li>
+										<li>Craster Road</li>
+										<li>London</li>
+										<li>SW2 2AT</li>
+								</ul>
+							</div>
+							<div class="contactDtls">
+								<h3>Contact details</h3>
+								<ul>
+									<li class="mandatory">
+										<label class="mandatory longlabel" for="newDayTel">Telephone number:<span class="red">*</span></label>
+										<input class="shortinput" maxlength="20" value="07749979044" id="newDayTel" />
+									</li>
+									<li class="mandatory">
+										<label class="mandatory longlabel" for="newEveTel">Alt telephone number:<span class="red">*</span></label>
+										<input class="shortinput" maxlength="20" value="07749979044" id="newEveTel" />
+									</li>
+									<li>
+										<label for="newMobTel" class="longlabel">Mobile number:</label>
+										<input class="shortinput" maxlength="20" id="newMobTel" />
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<a href="#"><img class="confirmButton" name="bottomButton" src="imgs/orderConfirm.png" onMouseOver="if(!submittedPage)bottomButton.src='imgs/orderConfirmOver.png'" onMouseOut="if(!submittedPage)bottomButton.src='imgs/orderConfirm.png'" onMouseUp="verifyDetails()"></a>
+		</div>
+	</body>
+</html>

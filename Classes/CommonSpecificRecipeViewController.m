@@ -283,9 +283,11 @@
 	NSString *documentsImgPath = [[DataManager fetchUserDocumentsPath] stringByAppendingPathComponent:@"imgs"];
 	
 	//Always copy resources in DEBUG mode
+	#ifdef DEBUG
 	if ([fileManager fileExistsAtPath:documentsImgPath]){
 		[fileManager removeItemAtPath:documentsImgPath error:nil];
 	}
+	#endif
 	
 	if (![DataManager fileExistsInUserDocuments:@"imgs"]){
 		NSString* msg = [NSString stringWithFormat: @"Copying HTML imgs folder from %@ to %@",localImgPath,documentsImgPath];

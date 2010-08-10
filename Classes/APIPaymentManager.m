@@ -8,6 +8,7 @@
 
 #import "APIPaymentManager.h"
 #import "DataManager.h"
+#import "LogManager.h"
 #import "RegexKitLite.h"
 
 @interface APIPaymentManager ()
@@ -16,8 +17,6 @@
 -(void)setCookiesForUrlRequest: (NSMutableURLRequest*)urlRequest withCookieKeys:(NSString*)cookieNameOne, ...;
 @end
 
-static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
-
 @implementation APIPaymentManager
 
 - (id)init {
@@ -25,7 +24,10 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 		//Initialisation code
 		NSURL *tescoUrl = [NSURL URLWithString:@"https://secure.tesco.com/groceries/checkout/payment/default.aspx"];
 		NSURLRequest *tescoRequest = [[NSMutableURLRequest requestWithURL:tescoUrl] retain];
-		NSLog(@"Sending %@ request: URL %@ headers [[[%@]]]",[tescoRequest HTTPMethod],[tescoRequest URL],[tescoRequest allHTTPHeaderFields]);
+		
+		NSString* msg = [NSString stringWithFormat:@"Sending %@ request: URL %@ headers [[[%@]]]",[tescoRequest HTTPMethod],[tescoRequest URL],[tescoRequest allHTTPHeaderFields]];
+		[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIPaymentManager"];
+
 		urlConnection = [[NSURLConnection alloc] initWithRequest:tescoRequest delegate:self];
 		receivedData = [[NSMutableData data] retain];
 	}
@@ -59,13 +61,11 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 	[tescoLoginRequest setHTTPMethod:@"POST"];
 	[tescoLoginRequest setHTTPBody:postData];
 	
-	NSLog(@"Sending POST request: URL %@ headers [[[%@]]] data [[[%@]]]",[tescoLoginRequest URL],[tescoLoginRequest allHTTPHeaderFields],postDataString);
+	NSString* msg = [NSString stringWithFormat:@"Sending POST request: URL %@ headers [[[%@]]] data [[[%@]]]",[tescoLoginRequest URL],[tescoLoginRequest allHTTPHeaderFields],postDataString];
+	[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIPaymentManager"];
 	
 	urlConnection = [[NSURLConnection alloc] initWithRequest:tescoLoginRequest delegate:self];
 	[pool release];
-	
-	//We want to know when login has succeeded
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccessful) name:loginSuccessfulNotification object:self];
 }
 
 #pragma mark Private helper functions
@@ -100,7 +100,9 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse {
 	if (redirectResponse) {
 		request = request;
-		NSLog(@"Redirect response: URL %@ status code %i header fields are [[[%@]]]",[redirectResponse URL],[(NSHTTPURLResponse *)redirectResponse statusCode],[(NSHTTPURLResponse *)redirectResponse allHeaderFields]);
+
+		NSString* msg = [NSString stringWithFormat:@"Redirect response: URL %@ status code %i header fields are [[[%@]]]",[redirectResponse URL],[(NSHTTPURLResponse *)redirectResponse statusCode],[(NSHTTPURLResponse *)redirectResponse allHeaderFields]];
+		[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIPaymentManager"];
 		
         NSMutableURLRequest *r = [[request mutableCopy] autorelease]; // clone original request
         [r setURL: [request URL]];
@@ -110,7 +112,10 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 			[r setHTTPMethod:@"GET"];
 		}
 		[self setCookiesForUrlRequest:r withCookieKeys:@"s",@"v",@"u",@"t",nil];
-		NSLog(@"Will send %@ request: URL %@ header fields are[[[%@]]]",[r HTTPMethod],[r URL],[r allHTTPHeaderFields]);
+		
+		msg = [NSString stringWithFormat:@"Will send %@ request: URL %@ header fields are[[[%@]]]",[r HTTPMethod],[r URL],[r allHTTPHeaderFields]];
+		[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIPaymentManager"];
+		
         return r;
     } else {
         return request;
@@ -125,7 +130,9 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 	
     // It can be called multiple times, for example in the case of a
     // redirect, so each time we reset the data.
-	NSLog(@"Response: %i header fields are[[[%@]]]",[(NSHTTPURLResponse *)response statusCode],[(NSHTTPURLResponse *)response allHeaderFields]);
+	
+	NSString* msg = [NSString stringWithFormat:@"Response: %i header fields are[[[%@]]]",[(NSHTTPURLResponse *)response statusCode],[(NSHTTPURLResponse *)response allHeaderFields]];
+	[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIPaymentManager"];
 	
     // receivedData is an instance variable declared elsewhere.
     [receivedData setLength:0];
@@ -142,7 +149,9 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 	// do something with the data
     // receivedData is declared as a method instance elsewhere
 	NSString *dataString = [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease];
-    NSLog(@"Succeeded! Received %d bytes of data [[[%@]]]",[receivedData length],dataString);
+	
+	NSString* msg = [NSString stringWithFormat:@"Success! Received %d bytes of data [[[%@]]]",[receivedData length],dataString];
+	[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIPaymentManager"];
 	
     [receivedData setLength:0];
 	[urlConnection release];
@@ -160,7 +169,9 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
 		
 		//Set all cookies that we are gonna be needing
 		[self setCookiesForUrlRequest:redirectRequest withCookieKeys:@"v",@"u",@"t",@"CustomerId",@"CID",@"BTCCMS",@"UIMode",@"PS",@"SSVars",nil];
-		NSLog(@"Sending %@ request: URL %@ headers [[[%@]]]",[redirectRequest HTTPMethod],[redirectRequest URL],[redirectRequest allHTTPHeaderFields]);
+		
+		NSString* msg = [NSString stringWithFormat:@"Sending %@ request: URL %@ headers [[[%@]]]",[redirectRequest HTTPMethod],[redirectRequest URL],[redirectRequest allHTTPHeaderFields]];
+		[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIPaymentManager"];
 		
 		urlConnection = [[NSURLConnection alloc] initWithRequest:redirectRequest delegate:self];
 	}
@@ -173,8 +184,12 @@ static NSString* loginSuccessfulNotification = @"loginSuccessfulNotification";
     // receivedData is declared as a method instance elsewhere
     [receivedData release];
 	
-    // inform the use
-    NSLog(@"Connection failed! Error - %@ %@",[error localizedDescription],[[error userInfo] objectForKey:NSErrorFailingURLStringKey]);
+    // print error
+	NSString* msg = [NSString stringWithFormat:@"Connection failed! Error - %@ %@",[error localizedDescription],[[error userInfo] objectForKey:NSErrorFailingURLStringKey]];
+	[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIPaymentManager"];
+	
+	//Be sure to notify all waiting parties with nil object
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"paymentPageLoaded" object:nil userInfo:nil];
 }
 
 - (void)dealloc {

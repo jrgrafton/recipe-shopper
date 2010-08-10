@@ -22,7 +22,7 @@
 -(void) verifyOrderError:(NSString*) error;
 -(void) chooseDeliverySlot:(APIDeliverySlot*) deliverySlot;
 -(void) chooseDeliverySlotError:(NSString*) error;
--(void) transitionToCheckout:(NSDate*) slotExpireyDate;
+-(void) transitionToCheckout:(NSNotification *) notification;
 @end
 
 @implementation CheckoutChooseDeliveryDateController
@@ -74,6 +74,11 @@
                                   initWithTitle:@"Checkout" style:UIBarButtonItemStyleBordered target:self action:@selector(proceedToCheckoutAction:)];
 	
 	self.navigationItem.rightBarButtonItem = checkoutButton;
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)showLoadingOverlay{
@@ -285,13 +290,19 @@
 	
 	NSString *error = nil;
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	NSDate* slotExpireyDate = [[DataManager verifyOrder:&error] retain];
+	//NSDate* slotExpireyDate = [[DataManager verifyOrder:&error] retain];
+	
+	[DataManager verifyOrder:&error];
 	
 	if (error != nil) {
 		[error retain];
 		[self performSelectorOnMainThread:@selector(verifyOrderError:) withObject:error waitUntilDone:TRUE];
 	}else {
-		[self performSelectorOnMainThread:@selector(transitionToCheckout:) withObject:slotExpireyDate waitUntilDone:TRUE];
+		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewLoadingText:) withObject:@"Proceeding to payment screen" waitUntilDone:TRUE];
+		
+		//Only navigate to payment page when payment page has loaded
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transitionToCheckout:) name:@"paymentPageLoaded" object:nil];
+		[DataManager navigateToPaymentPage];
 	}
 	[pool release];
 }
@@ -305,25 +316,10 @@
 	[self hideLoadingOverlay];
 }
 
--(void) transitionToCheckout:(NSDate*) slotExpireyDate {
-	/*NSLocale *          enUSPOSIXLocale;
-	enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
-	
-	NSDateFormatter *df = [[NSDateFormatter alloc] init];
-	[df setLocale:enUSPOSIXLocale];
-	[df setDateFormat:@"hh:mma"];
-	
-	NSString *msg = [NSString stringWithFormat:@"Order slot reserved until %@",[df stringFromDate:slotExpireyDate]];
-	UIAlertView *apiError = [[UIAlertView alloc] initWithTitle: @"Success" message: msg delegate: nil cancelButtonTitle: @"Proceed" otherButtonTitles: nil];
-	[apiError show];
-	[apiError release];
-					
-	[df release];
-	[self hideLoadingOverlay];*/
-	
+-(void) transitionToCheckout: (NSNotification *)notification {
 	//Navigate to web payment page
-	[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewLoadingText:) withObject:@"Proceeding to payment screen" waitUntilDone:TRUE];
-	[DataManager navigateToPaymentPage];
+	
+	
 }
 
 -(NSString*) getDaySuffixForDate:(NSDate*) date {

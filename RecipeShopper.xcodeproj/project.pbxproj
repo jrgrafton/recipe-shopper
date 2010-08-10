@@ -15,6 +15,11 @@
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* AllViewsNavController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* AllViewsNavController.m */; };
 		CE4826C511ECCF2300937DEF /* icon_product_default.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE4826C411ECCF2300937DEF /* icon_product_default.jpg */; };
+		CE7046BD1211EB9500789D54 /* checkout_base.css in Resources */ = {isa = PBXBuildFile; fileRef = CE7046BB1211EB9500789D54 /* checkout_base.css */; };
+		CE7046BE1211EB9500789D54 /* checkout_base.html in Resources */ = {isa = PBXBuildFile; fileRef = CE7046BC1211EB9500789D54 /* checkout_base.html */; };
+		CE7046C31211EBDD00789D54 /* CheckoutPaymentController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7046C21211EBDD00789D54 /* CheckoutPaymentController.m */; };
+		CE7046C51211EC0700789D54 /* CheckoutPaymentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE7046C41211EC0700789D54 /* CheckoutPaymentView.xib */; };
+		CE7046F21212028A00789D54 /* APIPaymentPageInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7046F11212028A00789D54 /* APIPaymentPageInfo.m */; };
 		CE7173AE11A2C48600D71D08 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7173AD11A2C48600D71D08 /* QuartzCore.framework */; };
 		CE75C716120CE0BD00F8C663 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = CE75C715120CE0BD00F8C663 /* RegexKitLite.m */; };
 		CE77738C11F62DE200003B5D /* CheckoutChooseDeliveryDateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE77738B11F62DE200003B5D /* CheckoutChooseDeliveryDateView.xib */; };
@@ -130,6 +135,13 @@
 		32CA4F630368D1EE00C91783 /* RecipeShopper_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecipeShopper_Prefix.pch; path = ../RecipeShopper_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* RecipeShopper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RecipeShopper-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		CE4826C411ECCF2300937DEF /* icon_product_default.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = icon_product_default.jpg; sourceTree = "<group>"; };
+		CE7046BB1211EB9500789D54 /* checkout_base.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = checkout_base.css; sourceTree = "<group>"; };
+		CE7046BC1211EB9500789D54 /* checkout_base.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = checkout_base.html; sourceTree = "<group>"; };
+		CE7046C11211EBDD00789D54 /* CheckoutPaymentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckoutPaymentController.h; sourceTree = "<group>"; };
+		CE7046C21211EBDD00789D54 /* CheckoutPaymentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckoutPaymentController.m; sourceTree = "<group>"; };
+		CE7046C41211EC0700789D54 /* CheckoutPaymentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckoutPaymentView.xib; sourceTree = "<group>"; };
+		CE7046F01212028A00789D54 /* APIPaymentPageInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIPaymentPageInfo.h; sourceTree = "<group>"; };
+		CE7046F11212028A00789D54 /* APIPaymentPageInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIPaymentPageInfo.m; sourceTree = "<group>"; };
 		CE7173AD11A2C48600D71D08 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		CE75C714120CE0BD00F8C663 /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
 		CE75C715120CE0BD00F8C663 /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
@@ -405,10 +417,10 @@
 			children = (
 				28D7ACF60DDB3853001CB0EB /* AllViewsNavController.h */,
 				28D7ACF70DDB3853001CB0EB /* AllViewsNavController.m */,
-				F2794D6411B5587A00303B0A /* LoadingView.h */,
-				F2794D6311B5587A00303B0A /* LoadingView.m */,
 				F27D6AB611AACA6800BAC6E6 /* CommonSpecificRecipeViewController.h */,
 				F27D6AB711AACA6800BAC6E6 /* CommonSpecificRecipeViewController.m */,
+				F2794D6411B5587A00303B0A /* LoadingView.h */,
+				F2794D6311B5587A00303B0A /* LoadingView.m */,
 				CE7EAF0B120831DE00A344D6 /* UITableViewCellFactory.h */,
 				CE7EAF0C120831DE00A344D6 /* UITableViewCellFactory.m */,
 			);
@@ -451,9 +463,11 @@
 			isa = PBXGroup;
 			children = (
 				F2FFC09311BD5D6B009EBB6F /* imgs */,
-				F26E467D11B00CF1000CA8B1 /* bottom-fade.png */,
+				CE7046BC1211EB9500789D54 /* checkout_base.html */,
+				CE7046BB1211EB9500789D54 /* checkout_base.css */,
 				F27D6B1C11AAEF2900BAC6E6 /* recipe_base.html */,
 				F27D6B1E11AAEF3800BAC6E6 /* recipe_base.css */,
+				F26E467D11B00CF1000CA8B1 /* bottom-fade.png */,
 			);
 			name = HTML;
 			sourceTree = "<group>";
@@ -572,6 +586,8 @@
 				CE79F4BE11EA1B7500468A6C /* CheckoutAddProductViewController.m */,
 				CE77739011F6312C00003B5D /* CheckoutChooseDeliveryDateController.h */,
 				CE77739111F6312C00003B5D /* CheckoutChooseDeliveryDateController.m */,
+				CE7046C11211EBDD00789D54 /* CheckoutPaymentController.h */,
+				CE7046C21211EBDD00789D54 /* CheckoutPaymentController.m */,
 			);
 			name = CheckoutTab;
 			sourceTree = "<group>";
@@ -583,6 +599,7 @@
 				F2301E2911C7E0CC00CEA616 /* CheckoutProductBasketView.xib */,
 				CE79F47F11EA143900468A6C /* CheckoutAddProductView.xib */,
 				CE77738B11F62DE200003B5D /* CheckoutChooseDeliveryDateView.xib */,
+				CE7046C41211EC0700789D54 /* CheckoutPaymentView.xib */,
 			);
 			name = CheckoutTab;
 			sourceTree = "<group>";
@@ -623,6 +640,8 @@
 				CE7B635E120C0BDE00372EB0 /* APIPaymentManager.m */,
 				CE77746711F6611C00003B5D /* APIDeliverySlot.h */,
 				CE77746811F6611C00003B5D /* APIDeliverySlot.m */,
+				CE7046F01212028A00789D54 /* APIPaymentPageInfo.h */,
+				CE7046F11212028A00789D54 /* APIPaymentPageInfo.m */,
 			);
 			name = TescoApi;
 			sourceTree = "<group>";
@@ -769,6 +788,9 @@
 				CE81644112043B3D00E89700 /* starters@2x.png in Resources */,
 				CE81644212043B3D00E89700 /* tesco_header@2x.png in Resources */,
 				CE81644A12043B7200E89700 /* icon.png in Resources */,
+				CE7046BD1211EB9500789D54 /* checkout_base.css in Resources */,
+				CE7046BE1211EB9500789D54 /* checkout_base.html in Resources */,
+				CE7046C51211EC0700789D54 /* CheckoutPaymentView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -817,6 +839,8 @@
 				CE7EAF0D120831DE00A344D6 /* UITableViewCellFactory.m in Sources */,
 				CE7B635F120C0BDE00372EB0 /* APIPaymentManager.m in Sources */,
 				CE75C716120CE0BD00F8C663 /* RegexKitLite.m in Sources */,
+				CE7046C31211EBDD00789D54 /* CheckoutPaymentController.m in Sources */,
+				CE7046F21212028A00789D54 /* APIPaymentPageInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
