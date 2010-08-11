@@ -2,8 +2,8 @@
 //  APIPaymentPageInfo.h
 //  RecipeShopper
 //
-//  Created by User on 8/10/10.
-//  Copyright 2010 Assent Software. All rights reserved.
+//  Created by James Grafton on 8/10/10.
+//  Copyright 2010 Assentec Global. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -22,8 +22,7 @@ AddressInfoMake(NSString* addressAlias, NSArray* addressLines)
 
 @interface APIPaymentPageInfo : NSObject {
 	//Top Panel of our page
-	AddressInfo deliveryAddressAlias;
-	NSString *deliveryAddressPostcode;
+	AddressInfo deliveryAddressInfo;
 	NSString *deliveryDateHTML;
 	NSString *totalSavings;
 	NSString *totalItems;
@@ -42,8 +41,7 @@ AddressInfoMake(NSString* addressAlias, NSArray* addressLines)
 }
 
 
-@property (readonly,assign) struct AddressInfo deliveryAddressAlias;
-@property (readonly,copy) NSString *deliveryAddressPostcode;
+@property (readonly,assign) struct AddressInfo deliveryAddressInfo;
 @property (readonly,copy) NSString *deliveryDateHTML;
 @property (readonly,copy) NSString *totalSavings;
 @property (readonly,copy) NSString *totalItems;
@@ -57,5 +55,11 @@ AddressInfoMake(NSString* addressAlias, NSArray* addressLines)
 @property (readonly,copy) NSString *alternativeTelephoneNumber;
 @property (readonly,copy) NSString *mobileNumber;
 
+- (id)initWithDeliveryAddressInfo: (AddressInfo)inDeliveryAddressInfo andDeliveryDateHTML:(NSString*)inDeliveryDateHTML 
+			andTotalSavings:(NSString*)inTotalSavings andTotalItems:(NSString*)inTotalItems 
+			andDeliveryCharge:(NSString*)inDeliveryCharge andSubtotal:(NSString*)inSubtotal
+			andTotalClubcardPoints:(NSString*)inTotalClubcardPoints andTotalPromotionalPoints:(NSString*)inTotalPromotionalPoints
+			andCardholderAddressAliases:(NSArray*)inCardholderAddressAliases andTelephoneNumber:(NSString*)inTelephoneNumber
+			andAlternativeTelephoneNumber:(NSString*)inAlternativeTelephoneNumber andMobileNumber:(NSString*)inMobileNumber;
 
 @end

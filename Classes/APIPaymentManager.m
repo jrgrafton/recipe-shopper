@@ -30,14 +30,13 @@
 
 		urlConnection = [[NSURLConnection alloc] initWithRequest:tescoRequest delegate:self];
 		receivedData = [[NSMutableData data] retain];
+		toBeNotifiedName = [[NSString alloc] initWithString:@"homePageLoaded"];
 	}
 	return self;
 }
 
 #pragma mark external functions
 - (void)navigateToPaymentPage {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
 	NSString *email = [[DataManager fetchUserPreference:@"login.email"] stringByReplacingOccurrencesOfString:@"@" withString:@"%40"];
 	NSString *password = [DataManager fetchUserPreference:@"login.password"];
 	
@@ -60,12 +59,15 @@
 	
 	[tescoLoginRequest setHTTPMethod:@"POST"];
 	[tescoLoginRequest setHTTPBody:postData];
+	[tescoLoginRequest setTimeoutInterval:5];
 	
 	NSString* msg = [NSString stringWithFormat:@"Sending POST request: URL %@ headers [[[%@]]] data [[[%@]]]",[tescoLoginRequest URL],[tescoLoginRequest allHTTPHeaderFields],postDataString];
 	[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIPaymentManager"];
 	
+	//Set to be notified name
+	toBeNotifiedName = [[NSString alloc] initWithString:@"paymentPageLoaded"];
+	
 	urlConnection = [[NSURLConnection alloc] initWithRequest:tescoLoginRequest delegate:self];
-	[pool release];
 }
 
 #pragma mark Private helper functions
@@ -118,6 +120,7 @@
 		
         return r;
     } else {
+		[LogManager log:@"Will send request with no redirect response" withLevel:LOG_INFO fromClass:@"APIPaymentManager"];
         return request;
     }
 	
@@ -174,7 +177,16 @@
 		[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIPaymentManager"];
 		
 		urlConnection = [[NSURLConnection alloc] initWithRequest:redirectRequest delegate:self];
+		
+		return;
 	}
+	if([toBeNotifiedName isEqualToString:@"paymentPageLoaded"]){
+		//Parse elements out of data string and create APIPaymentPageInfo object
+		
+		
+	}
+	//Notify interested parties that load has completed
+	[[NSNotificationCenter defaultCenter] postNotificationName:toBeNotifiedName object:nil userInfo:nil];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
@@ -189,11 +201,13 @@
 	[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIPaymentManager"];
 	
 	//Be sure to notify all waiting parties with nil object
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"paymentPageLoaded" object:nil userInfo:nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:toBeNotifiedName object:nil userInfo:nil];
+	[toBeNotifiedName release];
 }
 
 - (void)dealloc {
 	[urlConnection release];
+	[toBeNotifiedName release];
     [super dealloc];
 }
 

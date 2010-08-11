@@ -14,6 +14,7 @@
 	@private
 	NSURLConnection *urlConnection;	//Used to do all navigation
 	NSMutableData *receivedData;
+	NSString *toBeNotifiedName;
 }
 
 - (void)navigateToPaymentPage;

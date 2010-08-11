@@ -291,8 +291,8 @@
 	NSString *error = nil;
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	//NSDate* slotExpireyDate = [[DataManager verifyOrder:&error] retain];
-	
 	[DataManager verifyOrder:&error];
+	[pool release];
 	
 	if (error != nil) {
 		[error retain];
@@ -302,9 +302,9 @@
 		
 		//Only navigate to payment page when payment page has loaded
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transitionToCheckout:) name:@"paymentPageLoaded" object:nil];
-		[DataManager navigateToPaymentPage];
+		//Needs to be done on main thread since it launches ASYNC http request
+		[[DataManager class] performSelectorOnMainThread:@selector(navigateToPaymentPage) withObject:nil waitUntilDone:FALSE];
 	}
-	[pool release];
 }
 
 -(void) verifyOrderError:(NSString*) error{
