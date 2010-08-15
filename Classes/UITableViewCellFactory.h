@@ -3,7 +3,7 @@
 //  RecipeShopper
 //
 //  Created by User on 8/3/10.
-//  Copyright 2010 Assentec Global. All rights reserved.
+//  Copyright 2010 Asset Enhancing Technologies. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -14,7 +14,7 @@
 
 }
 
-+ (void)createRecipeTableCell:(UITableViewCell**)cellReference withIdentifier:(NSString*)cellIdentifier usingRecipeObject:(DBRecipe*)recipeObject;
-+ (NSArray*)createProductTableCell:(UITableViewCell**)cellReference withIdentifier:(NSString*)cellIdentifier usingProductObject:(DBProduct*)productObject;
++ (void)createRecipeTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withRecipe:(DBRecipe *)recipe;
++ (NSArray*)createProductTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withProduct:(DBProduct *)product;
 
 @end

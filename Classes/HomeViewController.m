@@ -109,8 +109,7 @@
 		cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	}else {
 		//List of recent recipes
-		DBRecipe *recipeObject = [recipeHistory objectAtIndex:[indexPath row]];
-		[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier usingRecipeObject:recipeObject];
+		[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:[recipeHistory objectAtIndex:[indexPath row]]];
 	}
 	
     return cell;

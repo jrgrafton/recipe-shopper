@@ -468,17 +468,30 @@
 	return [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
 }
 
--(DBProduct*)buildProductFromInfo:(NSDictionary*)productInfo{
-	NSNumber *productID = [NSNumber numberWithInt:[[productInfo objectForKey:@"ProductId"] intValue]];
-	NSNumber *productBaseID = [NSNumber numberWithInt:[[productInfo objectForKey:@"BaseProductId"] intValue]];
+-(DBProduct*)buildProductFromInfo:(NSDictionary*)productInfo {
+	UIImage *productOfferIcon;
+	
+	NSNumber *productID = [NSNumber numberWithInt:[[productInfo objectForKey:@"BaseProductId"] intValue]];
 	NSString *productName = [productInfo objectForKey:@"Name"];
 	NSString *productPrice = [productInfo objectForKey:@"Price"];
+	NSString *productOffer = [productInfo objectForKey:@"OfferPromotion"];
 	UIImage *productIcon = [self getImageForProduct:[productInfo objectForKey:@"ImagePath"]];
+	
+	NSString *productOfferIconUrl = [productInfo objectForKey:@"OfferLabelImagePath"];
+	
+	if ([productOfferIconUrl length] != 0) {
+		//productOfferIcon = [[self getImageForProduct:productOfferIconUrl] resizedImage:CGSizeMake(150,50) interpolationQuality:kCGInterpolationHigh andScale:2.0];
+		productOfferIcon = [[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:productOfferIconUrl]]] autorelease];
+	} else {
+		productOfferIcon = nil;
+	}
+	
 	NSDate *lastUpdated = [NSDate date];
 	
-	return [[[DBProduct alloc] initWithProductID:productID andProductBaseID: productBaseID andProductName:productName
-								 andProductPrice:productPrice andProductIcon:productIcon
-								  andLastUpdated:lastUpdated andUserAdded:YES] autorelease];
+	return [[[DBProduct alloc] initWithProductID:productID andProductName:productName
+								 andProductPrice:productPrice andProductOffer:productOffer
+								  andProductIcon:productIcon andProductOfferIcon:productOfferIcon andLastUpdated:lastUpdated
+									andUserAdded:YES] autorelease];
 }
 
 -(id)getSessionKeyForEmail:(NSString*)email usingPassword:(NSString*)password {

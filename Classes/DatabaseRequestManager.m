@@ -269,24 +269,27 @@ static sqlite3 *database = nil;
 
 -(DBProduct *)buildProductDBObjectFromRow: (sqlite3_stmt *)selectstmt {
 	NSNumber *productID;
-	NSNumber *productBaseID;
 	NSString *productName;
 	NSString *productPrice;
+	NSString *productOffer;
 	UIImage *productIcon;
+	UIImage *productOfferIcon;
 	NSDate *lastUpdated;
 	
-	//We dont store productID in DB at this point...
-	productID = [NSNumber numberWithInt:0];
-	productBaseID = [NSNumber numberWithInt: sqlite3_column_int(selectstmt, 0)];
+	productID = [NSNumber numberWithInt: sqlite3_column_int(selectstmt, 0)];
 	productName = [NSString stringWithUTF8String: (const char *)sqlite3_column_text(selectstmt, 1)];
 	productPrice = [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt, 2)];
-	NSString* productIconString = [NSString stringWithUTF8String: (const char *) sqlite3_column_blob(selectstmt, 3)];
+	productOffer = [NSString stringWithUTF8String: (const char *) sqlite3_column_text(selectstmt, 3)];
+	NSString* productIconString = [NSString stringWithUTF8String: (const char *) sqlite3_column_blob(selectstmt, 4)];
 	productIcon = [UIImage imageWithData: [NSData dataWithBase64EncodedString: productIconString]];
-	lastUpdated =[NSDate dateWithTimeIntervalSinceNow: sqlite3_column_double(selectstmt, 4)];
+	NSString* productOfferIconString = [NSString stringWithUTF8String: (const char *) sqlite3_column_blob(selectstmt, 5)];
+	productOfferIcon = [UIImage imageWithData: [NSData dataWithBase64EncodedString: productOfferIconString]];
+	lastUpdated =[NSDate dateWithTimeIntervalSinceNow: sqlite3_column_double(selectstmt, 6)];
 	
-	return [[[DBProduct alloc] initWithProductID:productID andProductBaseID: productBaseID andProductName:productName
-							  andProductPrice:productPrice andProductIcon:productIcon
-								 andLastUpdated:lastUpdated andUserAdded:NO] autorelease];
+	return [[[DBProduct alloc] initWithProductID:productID andProductName:productName
+								 andProductPrice:productPrice andProductOffer:productOffer
+								  andProductIcon:productIcon andProductOfferIcon:productOfferIcon andLastUpdated:lastUpdated 
+									andUserAdded:NO] autorelease];
 }
 
 - (DBRecipe *)buildRecipeDBObjectFromRow: (sqlite3_stmt *)selectstmt {

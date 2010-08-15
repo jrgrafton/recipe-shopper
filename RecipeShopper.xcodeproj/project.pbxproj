@@ -14,6 +14,7 @@
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* AllViewsNavController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* AllViewsNavController.m */; };
+		3EB262FE12144AC600968A4B /* ProductViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB262FD12144AC600968A4B /* ProductViewCell.xib */; };
 		CE4826C511ECCF2300937DEF /* icon_product_default.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE4826C411ECCF2300937DEF /* icon_product_default.jpg */; };
 		CE7046BD1211EB9500789D54 /* checkout_base.css in Resources */ = {isa = PBXBuildFile; fileRef = CE7046BB1211EB9500789D54 /* checkout_base.css */; };
 		CE7046BE1211EB9500789D54 /* checkout_base.html in Resources */ = {isa = PBXBuildFile; fileRef = CE7046BC1211EB9500789D54 /* checkout_base.html */; };
@@ -133,6 +134,7 @@
 		28D7ACF70DDB3853001CB0EB /* AllViewsNavController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllViewsNavController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ../main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* RecipeShopper_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecipeShopper_Prefix.pch; path = ../RecipeShopper_Prefix.pch; sourceTree = "<group>"; };
+		3EB262FD12144AC600968A4B /* ProductViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductViewCell.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* RecipeShopper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RecipeShopper-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		CE4826C411ECCF2300937DEF /* icon_product_default.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = icon_product_default.jpg; sourceTree = "<group>"; };
 		CE7046BB1211EB9500789D54 /* checkout_base.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = checkout_base.css; sourceTree = "<group>"; };
@@ -660,6 +662,7 @@
 		F2FFC0D011BD61CF009EBB6F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				3EB262FD12144AC600968A4B /* ProductViewCell.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				F27D6AB811AACA6800BAC6E6 /* CommonSpecificRecipeView.xib */,
 			);
@@ -791,6 +794,7 @@
 				CE7046BD1211EB9500789D54 /* checkout_base.css in Resources */,
 				CE7046BE1211EB9500789D54 /* checkout_base.html in Resources */,
 				CE7046C51211EC0700789D54 /* CheckoutPaymentView.xib in Resources */,
+				3EB262FE12144AC600968A4B /* ProductViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

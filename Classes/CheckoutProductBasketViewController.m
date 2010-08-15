@@ -3,7 +3,7 @@
 //  RecipeShopper
 //
 //  Created by James Grafton on 6/15/10.
-//  Copyright 2010 Assentec Global. All rights reserved.
+//  Copyright 2010 Asset Enhancing Technologies. All rights reserved.
 //
 
 #import "CheckoutProductBasketViewController.h"
@@ -125,7 +125,7 @@
 	if (indexPath.section == 0) {
 		return 50;
 	}else{
-		return 96;
+		return 120;
 	}
 }
 
@@ -185,16 +185,17 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *CellIdentifier = @"Cell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
-    }
-    
+	UITableViewCell *cell;
 	
 	if(indexPath.section == 0) {
+		static NSString *BasketDetailsCellIdentifier = @"BasketDetailsCell";
+
+		cell = [tableView dequeueReusableCellWithIdentifier:BasketDetailsCellIdentifier];
+		
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:BasketDetailsCellIdentifier] autorelease];
+		}
+		
 		if ([indexPath row] == 0) {
 			//Ensure we dont show an image
 			[[cell imageView] setImage: nil];
@@ -216,7 +217,7 @@
 			[cell setAccessoryView:accessoryView];
 			[accessoryView release];
 			[accLabel release];
-		}else {
+		} else {
 			//Ensure we dont show an image
 			[[cell imageView] setImage: nil];
 			
@@ -239,15 +240,15 @@
 			[accLabel release];
 		}
 	} else if (indexPath.section == 1) {
-		// get the product basket
-		NSArray *productBasket = [DataManager getProductBasket];
-
-		// get the product we're displaying from the product basket
-		DBProduct *product = [productBasket objectAtIndex:[indexPath row]];
-		NSArray* buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier usingProductObject:product];
+		static NSString *ProductBasketCellIdentifier = @"ProductBasketCell";
 		
-		//Best to leave selector attaching to TableViewClass
+		cell = [tableView dequeueReusableCellWithIdentifier:ProductBasketCellIdentifier];
+		
+		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:ProductBasketCellIdentifier withProduct:[[DataManager getProductBasket] objectAtIndex:[indexPath row]]];
+		
+		// best to leave selector attaching to TableViewClass
 		[[buttons objectAtIndex:0] addTarget:self action:@selector(addProductToBasket:) forControlEvents:UIControlEventTouchUpInside];
+		
 		if ([buttons count] > 1) {
 			[[buttons objectAtIndex:1] addTarget:self action:@selector(removeProductFromBasket:) forControlEvents:UIControlEventTouchUpInside];
 		}
@@ -284,11 +285,11 @@
 #pragma mark Additional Instance Functions
 
 - (void) addProductToBasket:(id)sender {
-    NSInteger productBaseID = [sender tag];
+    NSInteger productID = [sender tag];
 	NSArray *productBasket = [DataManager getProductBasket];
 	
 	for (DBProduct *product in productBasket) {
-		if ([[product productBaseID] intValue] == productBaseID) {
+		if ([[product productID] intValue] == productID) {
 			[DataManager increaseCountForProduct:product];
 		}
 	}
@@ -297,11 +298,11 @@
 }
 
 - (void) removeProductFromBasket:(id)sender {
-    NSInteger productBaseID = [sender tag];
+    NSInteger productID = [sender tag];
 	NSArray *productBasket = [DataManager getProductBasket];
 	
 	for (DBProduct *product in productBasket) {
-		if ([[product productBaseID] intValue] == productBaseID) {
+		if ([[product productID] intValue] == productID) {
 			[DataManager decreaseCountForProduct:product];
 		}
 	}

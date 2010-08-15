@@ -97,8 +97,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	
     // Set up the cell...
-	DBRecipe *recipeObject = [recipes objectAtIndex:[indexPath row]];
-	[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier usingRecipeObject:recipeObject];
+	[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:[recipes objectAtIndex:[indexPath row]]];
 	
     return cell;
 }

@@ -137,7 +137,7 @@
 }
 
 - (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath{
-	return 96;
+	return 120;
 }
 
 // specify the height of your footer section
@@ -186,17 +186,16 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    	
+	static NSString *cellIdentifier = @"AddProductCell";
 	
-    // get the product we're displaying ...
-    DBProduct *product = [foundProducts objectAtIndex:[indexPath row]];
-    
-	NSArray* buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier usingProductObject:product];
-	
-	//Best to leave selector attaching to TableViewClass
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+
+	NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:cellIdentifier withProduct:[foundProducts objectAtIndex:[indexPath row]]];
+		
+	// best to leave selector attaching to TableViewClass
 	[[buttons objectAtIndex:0] addTarget:self action:@selector(addProductToBasket:) forControlEvents:UIControlEventTouchUpInside];
+	
 	if ([buttons count] > 1) {
 		[[buttons objectAtIndex:1] addTarget:self action:@selector(removeProductFromBasket:) forControlEvents:UIControlEventTouchUpInside];
 	}
@@ -212,9 +211,10 @@
 }
 
 - (void) addProductToBasket:(id)sender {
-    NSInteger productBaseID = [sender tag];
-	for (DBProduct* product in foundProducts) {
-		if ([[product productBaseID] intValue] == productBaseID){
+    NSInteger productID = [sender tag];
+	
+	for (DBProduct *product in foundProducts) {
+		if ([[product productID] intValue] == productID){
 			[DataManager increaseCountForProduct:product];
 			[productSearchTableView reloadData];
 		}
@@ -222,9 +222,10 @@
 }
 
 - (void) removeProductFromBasket:(id)sender {
-    NSInteger productBaseID = [sender tag];
-	for (DBProduct* product in foundProducts) {
-		if ([[product productBaseID] intValue] == productBaseID){
+    NSInteger productID = [sender tag];
+
+	for (DBProduct *product in foundProducts) {
+		if ([[product productID] intValue] == productID){
 			[DataManager decreaseCountForProduct:product];
 			[productSearchTableView reloadData];
 		}

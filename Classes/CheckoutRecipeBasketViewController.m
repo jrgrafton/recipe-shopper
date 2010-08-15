@@ -3,7 +3,7 @@
 //  RecipeShopper
 //
 //  Created by James Grafton on 6/11/10.
-//  Copyright 2010 Assentec Global. All rights reserved.
+//  Copyright 2010 Asset Enhancing Technologies. All rights reserved.
 //
 
 #import "CheckoutRecipeBasketViewController.h"
@@ -53,7 +53,7 @@
 															blue:0.9568627450980392
 														   alpha:1.0]];
 	
-	self.title = NSLocalizedString(@"Recipe Basket", @"Current recipe basket");
+	self.title = NSLocalizedString(@"Checkout", @"Current recipe basket");
 }
 
 
@@ -162,8 +162,8 @@
     
     // Set up the cell...
 	NSMutableArray *recipeBasket = [DataManager getRecipeBasket];
-	DBRecipe *recipeObject = [recipeBasket objectAtIndex:[indexPath row]];
-	[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier usingRecipeObject:recipeObject];
+	DBRecipe *recipe = [recipeBasket objectAtIndex:[indexPath row]];
+	[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe];
 	
     return cell;
 }
