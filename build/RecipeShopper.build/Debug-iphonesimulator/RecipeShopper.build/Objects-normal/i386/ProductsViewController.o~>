@@ -1,0 +1,6 @@
+/Users/sbarnett/Desktop/Shopper/Classes/ProductsViewController.m:24: error: no declaration of property 'products' found in the interface
+/Users/sbarnett/Desktop/Shopper/Classes/ProductsViewController.m: In function '-[ProductsViewController loadProductsForShelf:]':
+/Users/sbarnett/Desktop/Shopper/Classes/ProductsViewController.m:42: warning: 'ProductsViewController' may not respond to '-setProducts:'
+/Users/sbarnett/Desktop/Shopper/Classes/ProductsViewController.m:42: warning: (Messages without a matching method signature
+/Users/sbarnett/Desktop/Shopper/Classes/ProductsViewController.m:42: warning: will be assumed to return 'id' and accept
+/Users/sbarnett/Desktop/Shopper/Classes/ProductsViewController.m:42: warning: '...' as arguments.)

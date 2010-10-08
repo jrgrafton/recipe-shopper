@@ -1,0 +1,2 @@
+/Users/sbarnett/Desktop/Shopper/Classes/../UITableViewCellFactory.m:116: warning: incomplete implementation of class 'UITableViewCellFactory'
+/Users/sbarnett/Desktop/Shopper/Classes/../UITableViewCellFactory.m:116: warning: method definition for '+createRecipeTableCell:withIdentifier:withRecipe:andQuantity:' not found

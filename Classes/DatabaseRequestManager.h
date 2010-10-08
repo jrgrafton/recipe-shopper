@@ -1,27 +1,24 @@
 //
-//  DatabaseManager.h
+//  DatabaseRequestManager.h
 //  RecipeShopper
 //
-//  Created by James Grafton on 5/20/10.
-//  Copyright 2010 Assentec Global. All rights reserved.
+//  Created by Simon Barnett on 06/09/2010.
+//  Copyright 2010 Assentec. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "DBRecipe.h"
-
+#import "Recipe.h"
 
 @interface DatabaseRequestManager : NSObject {
 
 }
 
-- (NSArray*) fetchLastPurchasedRecipes: (NSInteger)count;
-- (NSArray*)fetchProductsFromIDs: (NSArray*) productIDs;
-- (NSString*) fetchUserPreference: (NSString*) key;
-- (void)putUserPreference: (NSString*)key andValue:(NSString*) value;
-- (void)putRecipeHistory: (NSNumber*)recipeID;
-- (NSArray*)fetchAllRecipesInCategory: (NSString*) category;
-- (void)fetchExtendedDataForRecipe: (DBRecipe*) recipe;
-
 - (id)init;
+- (NSString *)getUserPreference:(NSString *)prefName;
+- (void)setUserPreference:(NSString *)prefName andValue:(NSString *)prefValue;
+- (NSArray *)getAllRecipesInCategory:(NSString *)categoryName;
+- (void)fetchExtendedDataForRecipe:(Recipe *)recipe;
+- (void)addRecipeToHistory:(NSNumber *)recipeID;
+- (NSArray *)createProductsFromProductBaseIDs:(NSDictionary *)productBaseIDList;
 
 @end

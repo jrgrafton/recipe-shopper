@@ -2,26 +2,20 @@
 //  RecipeShopperAppDelegate.h
 //  RecipeShopper
 //
-//  Created by James Grafton on 5/6/10.
-//  Copyright Assentec Global 2010. All rights reserved.
+//  Created by Simon Barnett on 05/09/2010.
+//  Copyright Assentec 2010. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@class AllViewsNavController;
-
 @interface RecipeShopperAppDelegate : NSObject <UIApplicationDelegate> {
-    UIWindow *window;
-	IBOutlet UITabBarController *rootController;
-	IBOutlet AllViewsNavController *homeViewNavController;
-	IBOutlet AllViewsNavController *recipeCategoryViewNavController;
-	IBOutlet AllViewsNavController *checkoutViewNavController;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet UITabBarController *rootController;
-@property (nonatomic, retain) IBOutlet AllViewsNavController *homeViewNavController;
-@property (nonatomic, retain) IBOutlet AllViewsNavController *recipeCategoryViewNavController;
-@property (nonatomic, retain) IBOutlet AllViewsNavController *checkoutViewNavController;
+@property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
+@property (nonatomic, retain) IBOutlet UINavigationController *recipeBookViewController;
+@property (nonatomic, retain) IBOutlet UINavigationController *recipeBasketViewController;
+@property (nonatomic, retain) IBOutlet UINavigationController *onlineShopViewController;
+@property (nonatomic, retain) IBOutlet UINavigationController *onlineBasketViewController;
 
 @end

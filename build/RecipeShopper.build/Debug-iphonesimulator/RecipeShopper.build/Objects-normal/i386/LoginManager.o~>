@@ -1,0 +1,5 @@
+/Users/sbarnett/Desktop/Shopper/Classes/LoginManager.m: In function '-[LoginManager requestLoginToStore]':
+/Users/sbarnett/Desktop/Shopper/Classes/LoginManager.m:17: warning: 'DataManager' may not respond to '+phoneIsOnline'
+/Users/sbarnett/Desktop/Shopper/Classes/LoginManager.m:17: warning: (Messages without a matching method signature
+/Users/sbarnett/Desktop/Shopper/Classes/LoginManager.m:17: warning: will be assumed to return 'id' and accept
+/Users/sbarnett/Desktop/Shopper/Classes/LoginManager.m:17: warning: '...' as arguments.)

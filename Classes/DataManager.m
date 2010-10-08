@@ -2,234 +2,280 @@
 //  DataManager.m
 //  RecipeShopper
 //
-//  Created by James Grafton on 5/20/10.
-//  Copyright 2010 Assentec Global. All rights reserved.
+//  Created by Simon Barnett on 21/09/2010.
+//  Copyright (c) 2010 Assentec. All rights reserved.
 //
 
-#import <CoreLocation/CoreLocation.h>
-
 #import "DataManager.h"
-
 #import "DatabaseRequestManager.h"
+#import "RecipeBasketManager.h"
+#import "ProductBasketManager.h"
 #import "APIRequestManager.h"
-#import "APIPaymentManager.h"
-#import "ApplicationRequestManager.h"
-#import "HTTPRequestManager.h"
-#import "LogManager.h"
+#import "LoginManager.h"
 #import "Reachability.h"
-#import "LocationController.h"
-#import "LoadingView.h"
+#import "OverlayViewController.h"
+
+@interface DataManager()
+
++ (void)updateOnlineBasket:(NSArray *)productDetails;
+
+@end
 
 static DatabaseRequestManager *databaseRequestManager;
+static RecipeBasketManager *recipeBasketManager;
+static ProductBasketManager *productBasketManager;
 static APIRequestManager *apiRequestManager;
-static APIPaymentManager *apiPaymentManager;
-static HTTPRequestManager *httpRequestManager;
-static ApplicationRequestManager *applicationRequestManager;
-
-static LocationController *locationController;
+static LoginManager *loginManager;
+static OverlayViewController *overlayViewController;
 
 @implementation DataManager
 
 + (void)initialiseAll {
-	//Location services
-	
-	[LogManager log:@"Initialising location controller" withLevel:LOG_INFO fromClass:@"DataManager"];
-	locationController = [[LocationController alloc] init];
-	
-	//Data managers
-	[LogManager log:@"Initialising request managers" withLevel:LOG_INFO fromClass:@"DataManager"];
-	
-	[LogManager log:@"Initialising database request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
+    /* initialise the database */
 	databaseRequestManager = [[DatabaseRequestManager alloc] init];
 	
-	[LogManager log:@"Initialising API request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
+	/* initialise the recipe basket */
+	recipeBasketManager = [[RecipeBasketManager alloc] init];
+	
+	/* initialise the product basket */
+	productBasketManager = [[ProductBasketManager alloc] init];
+	
+	/* initialise the Tesco API */
 	apiRequestManager = [[APIRequestManager alloc] init];
 	
-	[LogManager log:@"Initialising API payment manager" withLevel:LOG_INFO fromClass:@"DataManager"];
-	apiPaymentManager = [[APIPaymentManager alloc] init];
+	/* initialise the login manager */
+	loginManager = [[LoginManager alloc] init];
 	
-	[LogManager log:@"Initialising HTTP request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
-	httpRequestManager = [[HTTPRequestManager alloc] init];
-	
-	[LogManager log:@"Initialising Application request manager" withLevel:LOG_INFO fromClass:@"DataManager"];
-	applicationRequestManager = [[ApplicationRequestManager alloc] init];
+	/* initialise the overlay view */
+	overlayViewController = [[OverlayViewController alloc] initWithNibName:@"OverlayViewController" bundle:[NSBundle mainBundle]];
 }
 
-+ (void)deinitialiseAll {
-	
-		[LogManager log:@"Deinitialising request managers" withLevel:LOG_INFO fromClass:@"DataManager"];
-	
++ (void)uninitialiseAll {
 	[databaseRequestManager release];
-	[apiRequestManager release];
-	[httpRequestManager release];
-	[applicationRequestManager release];
+	[recipeBasketManager release];
+	[productBasketManager release];
+    [apiRequestManager release];
+	[loginManager release];
+	[overlayViewController release];
 }
 
-#pragma mark Database Functions
-+ (NSArray*)fetchLastPurchasedRecipes: (NSInteger)count {
-	return [databaseRequestManager fetchLastPurchasedRecipes:count];
-}
-
-+ (NSString*)fetchUserPreference: (NSString*) key {
-	return [databaseRequestManager fetchUserPreference:key];
-}
-
-+ (NSArray*)fetchProductsFromIDs: (NSArray*) productIDs{
-	if ([DataManager phoneIsOnline]) {
-		//Verify that all these products are still available if we are online
-		return [apiRequestManager getFilteredProductList:productIDs];
-	}
-	
-	return [databaseRequestManager fetchProductsFromIDs:productIDs];
-}
-
-+ (void)putUserPreference: (NSString*)key andValue:(NSString*) value {
-	[databaseRequestManager putUserPreference: key andValue:value];
-}
-
-+ (void)putRecipeHistory: (NSNumber*)recipeID {
-	[databaseRequestManager putRecipeHistory: recipeID];
-}
-
-+ (NSArray*)fetchAllRecipesInCategory: (NSString*) category {
-	return [databaseRequestManager fetchAllRecipesInCategory:category];
-}
-
-+ (void)fetchExtendedDataForRecipe: (DBRecipe*) recipe {
-	[databaseRequestManager fetchExtendedDataForRecipe:recipe];
-}
-
-#pragma mark SDK Functions
-+ (NSString*)fetchUserDocumentsPath {
-	//Search for standard documents using NSSearchPathForDirectoriesInDomains
-	//First Param = Searching the documents directory
-	//Second Param = Searching the Users directory and not the System
-	//Expand any tildes and identify home directories.
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory , NSUserDomainMask, YES);
-	return [paths objectAtIndex:0];
-}
-
-+ (BOOL)fileExistsInUserDocuments: (NSString*) fileName {
-	NSString *processedPath = [[DataManager fetchUserDocumentsPath] stringByAppendingPathComponent:fileName];
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	return [fileManager fileExistsAtPath:processedPath];
-}
-
-+ (BOOL)phoneIsOnline {	
-	//Network availability
-	Reachability *r = [Reachability reachabilityWithHostName:@"google.com"];
-	NetworkStatus internetStatus = [r currentReachabilityStatus];
++ (BOOL)phoneIsOnline {
+	NetworkStatus internetStatus = [[Reachability reachabilityWithHostName:@"google.com"] currentReachabilityStatus];
 	return ((internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN));
 }
 
-+ (NSArray*)getCurrentLatitudeLongitude{
-	//Try 10 times to get current location
-	int MAX_LOCATION_WAITS = 10;
-	int locationWaits = 0;
-	while (![locationController locationKnown]) {
-		[NSThread sleepForTimeInterval:1.0f];
-		locationWaits+=1;
-		if (locationWaits > MAX_LOCATION_WAITS) {
-			return nil;
-		}
++ (void)addNumRecipesObserver:(id)observer {
+	[recipeBasketManager addObserver:observer forKeyPath:@"numRecipes" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
+}
+
++ (void)updateBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity {
+	/* update this product in the product basket */
+	[productBasketManager updateProductBasketQuantity:product byQuantity:quantity];
+	
+	/* if we're logged in, update this product in the online basket too (but in a separate thread so we don't hold up processing */
+	if ([apiRequestManager loggedIn] == YES) {
+		NSMutableArray *productDetails = [NSMutableArray arrayWithCapacity:2];
+		[productDetails addObject:[product productID]];
+		[productDetails addObject:quantity];
+		[NSThread detachNewThreadSelector:@selector(updateOnlineBasket:) toTarget:self withObject:productDetails];
 	}
+}
+
++ (void)updateOnlineBasket:(NSArray *)productDetails {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-#ifndef DEBUG
-	CLLocation *location = [locationController currentLocation];
-	CLLocationCoordinate2D myLocation = [location coordinate];
-	NSNumber *latitude = [NSNumber numberWithDouble: myLocation.latitude];
-	NSNumber *longitude = [NSNumber numberWithDouble: myLocation.longitude];
-#else
-	//BRIXTON HOUSE :D
-	NSNumber *latitude = [NSNumber numberWithDouble:51.448494657351866];
-	NSNumber *longitude = [NSNumber numberWithDouble:-0.118095651268958];
-#endif
+	NSString *productID = [productDetails objectAtIndex:0];
+	NSNumber *quantity = [productDetails objectAtIndex:1];
+	[apiRequestManager updateOnlineBasketQuantity:productID byQuantity:quantity];
 	
-	return [NSArray arrayWithObjects:latitude,longitude,nil];
+	[pool release];
 }
 
-+ (NSArray*)fetchClosestStoresToGeolocation: (NSArray*)latitudeLongitude andReturnUpToThisMany:(NSInteger) count{
-	return [httpRequestManager fetchClosestStoresToGeolocation:latitudeLongitude andReturnUpToThisMany:count];
+#pragma mark -
+#pragma mark Database Manager calls
+
++ (NSArray *)getAllRecipesInCategory:(NSString *)categoryName {
+    return [databaseRequestManager getAllRecipesInCategory:categoryName];
 }
 
-+ (NSArray*)fetchGeolocationFromAddress: (NSString*)address{
-	return [httpRequestManager fetchGeolocationFromAddress: (NSString*)address];
++ (void)fetchExtendedDataForRecipe:(Recipe *)recipe {
+	[databaseRequestManager fetchExtendedDataForRecipe:recipe];
 }
 
-
-
-#pragma mark Application Functions
-+ (void)addRecipeToBasket: (DBRecipe*)recipe {
-	[applicationRequestManager addRecipeToBasket:recipe];
++ (void)setUserPreference:(NSString *)prefName prefValue:(NSString *)prefValue {
+	[databaseRequestManager setUserPreference:prefName andValue:prefValue];
 }
 
-+ (void)addProductToBasket: (DBProduct*)product {
-	[applicationRequestManager addProductToBasket:product];
++ (NSString *)getUserPreference:(NSString *)prefName {
+	return [databaseRequestManager getUserPreference:prefName];
 }
 
-+ (void)removeProductFromBasket: (DBProduct*)product{
-	[applicationRequestManager removeProductFromBasket:product];	
+#pragma mark -
+#pragma mark API Manager calls
+
++ (BOOL)loggedIn {
+	return [apiRequestManager loggedIn];
 }
 
-+ (NSMutableArray*)getRecipeBasket {
-	return [applicationRequestManager recipeBasket];
-}
-
-+ (NSArray*)getProductBasket {
-	return [applicationRequestManager getProductBasket];
-}
-
-+ (NSInteger)getCountForProduct: (DBProduct*)product {
-	return [applicationRequestManager getCountForProduct:product];
-}
-
-+ (void)decreaseCountForProduct: (DBProduct*)product {
-	[applicationRequestManager decreaseCountForProduct:product];
-}
-
-+ (void)increaseCountForProduct: (DBProduct*)product {
-	[applicationRequestManager increaseCountForProduct:product];
-}
-
-+ (NSInteger)getTotalProductCount {
-	return [applicationRequestManager getTotalProductCount];
-}
-
-+ (CGFloat)getTotalProductBasketCost {
-	return [applicationRequestManager getTotalProductBasketCost];
-}
-
-+ (void)createProductListFromRecipeBasket {
-	[applicationRequestManager createProductListFromRecipeBasket];
-}
-
-#pragma mark API functions
-+ (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder {
-	return [apiRequestManager fetchProductsMatchingSearchTerm: searchTerm onThisPage: pageNumber andGiveMePageCount: pageCountHolder];
-}
-+ (NSArray*)fetchAvailableDeliverySlots{
-	return [apiRequestManager fetchAvailableDeliverySlots];
-}
-
-+ (BOOL)loginToStore:(NSString*) email withPassword:(NSString*) password{
++ (BOOL)loginToStore:(NSString *)email withPassword:(NSString *)password {
 	return [apiRequestManager loginToStore:email withPassword:password];
 }
 
-+ (BOOL)addProductBasketToStoreBasket{
-	return [apiRequestManager addProductBasketToStoreBasket];
++ (void)addProductBasketToOnlineBasket {
+	[apiRequestManager addProductBasketToOnlineBasket];
 }
 
-+ (BOOL)chooseDeliverySlot:(APIDeliverySlot*)deliverySlot returningError:(NSString**)error{
-	return [apiRequestManager chooseDeliverySlot:deliverySlot returningError:error];
++ (NSDictionary *)getOnlineBasketDetails {
+	return [apiRequestManager getOnlineBasketDetails];
 }
 
-+ (NSDate*)verifyOrder:(NSString**)error {
-	return [apiRequestManager verifyOrder:error];
++ (NSArray *)getDepartments {
+	return [apiRequestManager getDepartments];
 }
 
-#pragma mark Tesco Payment functions
-+ (void)navigateToPaymentPage{
-	return [apiPaymentManager navigateToPaymentPage];
++ (NSArray *)getAislesForDepartment:(NSString *)department {
+	return [apiRequestManager getAislesForDepartment:department];
+}
+
++ (NSArray *)getShelvesForAisle:(NSString *)aisle {
+	return [apiRequestManager getShelvesForAisle:aisle];
+}
+
++ (NSArray *)getProductsForShelf:(NSString *)shelf {
+	return [apiRequestManager getProductsForShelf:shelf];
+}
+
++ (NSDictionary *)getDeliveryDates {
+	return [apiRequestManager getDeliveryDates];
+}
+
++ (NSArray *)searchForProducts:(NSString *)searchTerm onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder {
+	return [apiRequestManager searchForProducts:searchTerm onPage:page totalPageCountHolder:totalPageCountHolder];
+}
+
++ (void)chooseDeliverySlot:(NSString *)deliverySlotID {
+	[apiRequestManager chooseDeliverySlot:deliverySlotID];
+}
+
+#pragma mark -
+#pragma mark Recipe Basket calls
+
++ (NSArray *)getRecipeBasket {
+	return [recipeBasketManager recipeBasket];
+}
+
++ (NSInteger)getRecipeBasketCount {
+    return [[recipeBasketManager recipeBasket] count];
+}
+
++ (Recipe *)getRecipeFromBasket:(NSUInteger)recipeIndex {
+    return [[recipeBasketManager recipeBasket] objectAtIndex:recipeIndex];
+}
+
++ (void)addRecipeToBasket:(Recipe *)recipe {
+	[recipeBasketManager addRecipeToBasket:recipe];
+	[databaseRequestManager addRecipeToHistory:[recipe recipeID]];
+	
+	NSArray *products;
+	
+	if ([DataManager phoneIsOnline]) {
+		/* phone is online and we have recipes in the basket so create the products using the online store */
+		products = [apiRequestManager createProductsFromProductBaseIDs:[recipe recipeProducts]];
+	} else {
+		/* phone is offline but we have recipes in basket, so create the products using the database */
+		products = [databaseRequestManager createProductsFromProductBaseIDs:[recipe recipeProducts]];
+	}
+	
+	for (Product *product in products) {
+		NSNumber *quantity = [[recipe recipeProducts] objectForKey:[NSString stringWithFormat:@"%@", [product productBaseID]]];
+		[DataManager updateBasketQuantity:product byQuantity:quantity];
+	}
+}
+
++ (void)removeRecipeFromBasket:(Recipe *)recipe {
+    [recipeBasketManager removeRecipeFromBasket:recipe];
+		
+	NSArray *products;
+	
+	if ([DataManager phoneIsOnline]) {
+		/* phone is online and we have recipes in the basket so create the products using the online store */
+		products = [apiRequestManager createProductsFromProductBaseIDs:[recipe recipeProducts]];
+	} else {
+		/* phone is offline but we have recipes in basket, so create the products using the database */
+		products = [databaseRequestManager createProductsFromProductBaseIDs:[recipe recipeProducts]];
+	}
+	
+	for (Product *product in products) {
+		NSNumber *quantity = [[recipe recipeProducts] objectForKey:[NSString stringWithFormat:@"%@", [product productBaseID]]];
+		[DataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:(0 - [quantity intValue])]];
+	}	
+}
+
++ (void)emptyRecipeBasket {
+	[recipeBasketManager emptyRecipeBasket];
+}
+
+#pragma mark -
+#pragma mark Product Basket calls
+
++ (NSDictionary *)getProductBasket {
+	return [productBasketManager productBasket];
+}
+
++ (NSInteger)getDistinctProductCount {
+	return [[[productBasketManager productBasket] allKeys] count];
+}
+
++ (NSInteger)getTotalProductCount {
+	int totalProductCount = 0;
+	
+	for (NSNumber *quantity in [[productBasketManager productBasket] allValues]) {
+		totalProductCount += [quantity intValue];
+	}
+    
+	return totalProductCount;
+}
+
++ (Product *)getProductFromBasket:(NSUInteger)productIndex {
+	return [[[productBasketManager productBasket] allKeys] objectAtIndex:productIndex];
+}
+
++ (NSNumber *)getProductQuantityFromBasket:(Product *)product {
+	return [[productBasketManager productBasket] objectForKey:product];
+}
+
++ (NSDictionary *)getRecipesInProductBasket {
+	return [productBasketManager recipesInProductBasket];
+}
+
++ (void)emptyProductBasket {
+	[productBasketManager emptyProductBasket];
+}
+
+#pragma mark -
+#pragma mark Login manager calls
+
++ (void)requestLoginToStore {
+	[loginManager requestLoginToStore];
+}
+
+#pragma mark -
+#pragma mark Overlay View calls
+
++ (void)showOverlayView {
+	[overlayViewController showOverlayView];
+}
+
++ (void)hideOverlayView {
+	[overlayViewController hideOverlayView];
+}
+
++ (void)hideActivityIndicator {
+	[overlayViewController hideActivityIndicator];
+}
+
++ (void)setOverlayLabelText:(NSString *)text {
+	[overlayViewController performSelectorOnMainThread:@selector(setOverlayLabelText:) withObject:text waitUntilDone:YES];
 }
 
 @end

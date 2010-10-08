@@ -1,453 +1,508 @@
 //
-//  RequestManager.m
+//  APIRequestManager.m
 //  RecipeShopper
 //
-//  Created by James Grafton on 5/20/10.
-//  Copyright 2010 Assentec Global. All rights reserved.
+//  Created by Simon Barnett on 10/09/2010.
+//  Copyright 2010 Assentec. All rights reserved.
 //
 
 #import "APIRequestManager.h"
 #import "JSON.h"
+#import "Product.h"
 #import "LogManager.h"
+#import "DeliverySlot.h"
 #import "DataManager.h"
-#import "DBProduct.h"
-#import "UIImage-Extended.h"
 
 #define DEVELOPER_KEY @"xIvRaeGkY6OavPL1XtX9"
 #define APPLICATION_KEY @"CA1A9E0437CBE399E890"
 #define REST_SERVICE_URL @"https://secure.techfortesco.com/groceryapi_b1/restservice.aspx"
-
-#define PRODUCT_SEARCH_REQUEST_STRING(searchTerm,sessionKey,pageNumber) @"http://www.techfortesco.com/groceryapi_b1/restservice.aspx?command=PRODUCTSEARCH&searchtext=" #searchTerm "&page=" #pageNumber "&sessionkey=" #sessionKey ""
-
 #define MAX_ASYNC_REQUESTS 15
 
-@interface APIRequestManager ()
-//Private class functions
--(void)processJSONRequestQueue;
--(void)processSingleJSONRequest:(NSString*) requestString;
--(NSData *)httpGetRequest:(NSString*)requestUrl;
--(NSString *)urlEncodeValue:(NSString *)string;
--(id)getJSONForRequest:(NSString*)requestString;
--(DBProduct*)buildProductFromInfo:(NSDictionary*)productInfo;
--(UIImage*)getImageForProduct:(NSString*)iconUrl;
--(id)getSessionKeyForEmail:(NSString*)email usingPassword:(NSString*)password;
+@interface APIRequestManager()
+
+- (BOOL)apiRequest:(NSString *)requestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error;
+- (BOOL)emptyOnlineBasket;
+- (BOOL)login:(NSString *)email withPassword:(NSString *)password;
+- (void)processRequestQueue:(NSArray *)requestQueue;
+- (void)processSingleRequest:(NSString *)requestString;
+- (NSString *)urlEncodeValue:(NSString *)requestString;
+- (Product *)createProductFromJSON:(NSDictionary *)productJSON;
+
 @end
 
 @implementation APIRequestManager
 
+@synthesize loggedIn;
+
 - (id)init {
 	if (self = [super init]) {
-		//Initialisation code
 		currentAsyncRequestCount = 0;
-		JSONRequestQueue = [[NSMutableArray alloc] init];
-		JSONRequestResults = [[NSMutableDictionary alloc] init];
+		requestResults = [[NSMutableDictionary alloc] init];
+		departments = [[NSMutableDictionary alloc] init];
+		aisles = [[NSMutableDictionary alloc] init];
+		shelves = [[NSMutableDictionary alloc] init];
+		
+		sessionKey = @"";
+		
+		if (sessionKey == @"") {
+			/* create an anonymous session key */
+			if ([self login:@"" withPassword:@""] == YES) {
+				[LogManager log:[NSString stringWithFormat:@"Created anonymous login with session key: %@", sessionKey] withLevel:LOG_INFO fromClass:[[self class] description]];
+			} else {
+				[LogManager log:[NSString stringWithFormat:@"Failed to create anonymous login"] withLevel:LOG_ERROR fromClass:[[self class] description]];
+			}
+		}
+		
+		[self setLoggedIn:NO];
 	}
+	
 	return self;
 }
 
-#pragma mark -
-#pragma mark public functions
-
-- (NSDate*)verifyOrder:(NSString**)error {
-	NSString *verifyOrderString = [NSString stringWithFormat:@"%@?command=READYFORCHECKOUT&SESSIONKEY=%@",REST_SERVICE_URL,authenticatedSessionKey];
-	NSDictionary *verifyOrderDetails = [self getJSONForRequest:verifyOrderString];
-	
-	if (verifyOrderDetails == nil) {
-		[LogManager log:@"Error verifying order (NO JSON RETURNED)" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-		*error = [[[NSString alloc] initWithFormat:@"Tesco API endpoint unreachable"] autorelease];
-		return nil;
-	}else{
-		NSNumber *statusCode = [verifyOrderDetails objectForKey:@"StatusCode"];
-		if ([statusCode intValue] != 0) {
-		
-			NSString* msg = [NSString stringWithFormat:@"Error verifying order (%@)",verifyOrderDetails];
-			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-		
-			*error = [[[NSString alloc] initWithFormat:@"%@",[verifyOrderDetails objectForKey:@"StatusInfo"]]autorelease];
-			return nil;
-		}else{
-			NSLocale *          enUSPOSIXLocale;
-			enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
-			
-			NSDateFormatter *df = [[[NSDateFormatter alloc] init] autorelease];
-			[df setLocale:enUSPOSIXLocale];
-			[df setDateFormat:@"yyyy-MM-dd HH:mm"];
-			
-			return [df dateFromString:[verifyOrderDetails objectForKey:@"DeliverySlotReservationExpires"]];
-		}
-	}
+- (BOOL)loginToStore:(NSString *)email withPassword:(NSString *)password {
+	[self setLoggedIn:[self login:email withPassword:password]];
+	return [self loggedIn];
 }
 
-- (BOOL)chooseDeliverySlot:(APIDeliverySlot*)deliverySlot returningError:(NSString**)error {
-	NSString *chooseDeliverySlotString = [NSString stringWithFormat:@"%@?command=CHOOSEDELIVERYSLOT&DELIVERYSLOTID=%@&SESSIONKEY=%@",REST_SERVICE_URL,[deliverySlot deliverySlotID],authenticatedSessionKey];
-	NSDictionary *chooseDeliverySlotResponse = [self getJSONForRequest:chooseDeliverySlotString];
-	
-	if (chooseDeliverySlotResponse == nil) {
-		[LogManager log:@"Error reserving delivery slot (NO JSON RETURNED)" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];	
-		*error = [[[NSString alloc] initWithFormat:@"Tesco API endpoint unreachable"] autorelease];
-		return FALSE;
-	}else{
-		NSNumber *statusCode = [chooseDeliverySlotResponse objectForKey:@"StatusCode"];
-		if ([statusCode intValue] != 0) {
-			NSString* msg = [NSString stringWithFormat:@"Error reserving delivery slot (%@)",chooseDeliverySlotResponse];
-			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-			*error = [[[NSString alloc] initWithFormat:@"%@",[chooseDeliverySlotResponse objectForKey:@"StatusInfo"]]autorelease];
-			return FALSE;
-		}else{
-			return TRUE;
-		}
-	}
-}
-
-- (NSArray*)fetchAvailableDeliverySlots {
-	NSMutableArray *availableDeliverySlots = [NSMutableArray array];
-	
-	NSString *fetchDeliverySlotsRequestString = [NSString stringWithFormat:@"%@?command=LISTDELIVERYSLOTS&SESSIONKEY=%@",REST_SERVICE_URL,authenticatedSessionKey];
-	NSDictionary *deliveryDetails = [self getJSONForRequest:fetchDeliverySlotsRequestString];
-	
-	if (deliveryDetails == nil) {
-		[LogManager log:@"Error fetching delivery slots (NO JSON RETURNED)" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-		return [NSArray array];
-	}else {
-		NSNumber *statusCode = [deliveryDetails objectForKey:@"StatusCode"];
-		if ([statusCode intValue] != 0) {
-	
-			NSString* msg = [NSString stringWithFormat:@"Error fetching delivery slots (%@)",deliveryDetails];
-			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-	
-			return [NSArray array];
-		}else{
-			//Request seems to have returned successfully...
-			NSLocale *          enUSPOSIXLocale;
-			enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
-			
-			NSArray *JSONDeliveryDates = [deliveryDetails objectForKey:@"DeliverySlots"];
-			NSDateFormatter *df = [[NSDateFormatter alloc] init];
-			[df setLocale:enUSPOSIXLocale];
-			[df setDateFormat:@"yyyy-MM-dd HH:mm"];
-			
-			NSInteger index = 0;
-			for (NSDictionary *JSONDeliveryDate in JSONDeliveryDates) {
-				NSString *deliverySlotID = [NSString stringWithFormat:@"%@",[JSONDeliveryDate objectForKey:@"DeliverySlotId"]];
-				NSString *deliverySlotBranchNumber = [NSString stringWithFormat:@"%@",[JSONDeliveryDate objectForKey:@"BranchNumber"]];
-				NSDate *deliverySlotStartDate = [df dateFromString:[JSONDeliveryDate objectForKey:@"SlotDateTimeStart"]];
-				NSDate *deliverySlotEndDate = [df dateFromString:[JSONDeliveryDate objectForKey:@"SlotDateTimeEnd"]];
-				NSString *deliverySlotCost = [JSONDeliveryDate objectForKey:@"ServiceCharge"];
-				
-				APIDeliverySlot * apiDeliverySlot = [[[APIDeliverySlot alloc] initWithDeliverySlotID:deliverySlotID 
-																		andDeliverySlotBranchNumber:deliverySlotBranchNumber 
-																		andDeliverySlotStartDate:deliverySlotStartDate 
-																	    andDeliverySlotEndDate:deliverySlotEndDate 
-																		andDeliverySlotCost:deliverySlotCost] autorelease];
-				
-				[availableDeliverySlots addObject:apiDeliverySlot];
-				index++;
-			}
-			[df release];
-		}
-	}
-	
-	//Ensure returned array is sorted
-	[availableDeliverySlots sortUsingSelector:@selector(compareByDeliverySlotStart:)];	
-	return availableDeliverySlots;
-}
-
-- (BOOL)addProductBasketToStoreBasket {
-	//First we have to verify the existing online basket is empty
-	[self clearProductBasket];
-	
-	[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewLoadingText:) withObject:@"Adding products to Tesco.com basket" waitUntilDone:TRUE];
-	NSArray *productBasket = [DataManager getProductBasket];
-	
-	for (DBProduct *product in productBasket) {
-		NSInteger productCount = [DataManager getCountForProduct:product];
-		NSNumber *productID = [product productID];
-		NSString *addToBasketRequestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&PRODUCTID=%@&CHANGEQUANTITY=%d&SESSIONKEY=%@",REST_SERVICE_URL,productID,productCount,authenticatedSessionKey];
-		[JSONRequestQueue addObject:addToBasketRequestString];
-	}
-	
-	//Spawn a thread to process the request queue
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[NSThread detachNewThreadSelector: @selector(processJSONRequestQueue) toTarget:self withObject:nil];
-	[pool release];
-	
-	//Now spin until all requests have been serviced
-	while ([[JSONRequestResults allKeys] count] < [JSONRequestQueue count]) {
-		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewProgressText:) withObject:[NSString stringWithFormat:@"Adding product %d of %d",[[JSONRequestResults allKeys] count] + 1,[JSONRequestQueue count]] waitUntilDone:TRUE];
-		[NSThread sleepForTimeInterval:0.2];
-	}
-	
-	//All requests have returned, now interate through populating filteredProducts array
-	for (NSString *key in JSONRequestResults) {
-		id result = [JSONRequestResults valueForKey:key];
-		if (result == [NSNull null]) { //Request could have failed
-			
-			NSString* msg = [NSString stringWithFormat:@"Error during add product to online basket request [%@] (NO JSON RETURNED)",key];
-			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-			
-			//If even one add to online basket fails we fail the whole process
-			return FALSE;
-		}else {
-			NSNumber *statusCode = [result objectForKey:@"StatusCode"];
-			if ([statusCode intValue] != 0) {
-				
-				NSString* msg = [NSString stringWithFormat:@"Error during add product to online basket request [%@]",result];
-				[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-				
-				return FALSE;
-			}else {
-				
-				NSString* msg = [NSString stringWithFormat:@"Successfully addded product to basket [%@]",result];
-				[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
-				
-			}
-		}
-	}
-	
-	//Finally ensure that both requestQueue and restDictionary are emptied
-	[JSONRequestQueue removeAllObjects];
-	[JSONRequestResults removeAllObjects];
-	
-	return TRUE;
-}
-- (void)clearProductBasket {
-	[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewLoadingText:) withObject:@"Emptying Tesco.com basket" waitUntilDone:TRUE];
-	NSArray* currentBasket = [self fetchBasketSummary];
-	
-	for (NSDictionary* item in currentBasket) {
-		NSInteger basketLineQuantity = 0 - [[item valueForKey:@"BasketLineQuantity"] intValue];
-		NSInteger productID = [[item valueForKey:@"ProductId"] intValue];
-		NSString *removeFromBasketRequestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&PRODUCTID=%d&CHANGEQUANTITY=%d&SESSIONKEY=%@",REST_SERVICE_URL,productID,basketLineQuantity,authenticatedSessionKey];
-		[JSONRequestQueue addObject:removeFromBasketRequestString];
-	}
-	
-	//Spawn a thread to process the request queue
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[NSThread detachNewThreadSelector: @selector(processJSONRequestQueue) toTarget:self withObject:nil];
-	[pool release];
-	
-	//Now spin until all requests have been serviced
-	while ([[JSONRequestResults allKeys] count] < [JSONRequestQueue count]) {
-		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewProgressText:) withObject:[NSString stringWithFormat:@"Removing product %d of %d",[[JSONRequestResults allKeys] count] + 1,[JSONRequestQueue count]] waitUntilDone:TRUE];
-		[NSThread sleepForTimeInterval:0.2];
-	}
-	
-	//Finally ensure that both requestQueue and restDictionary are emptied
-	[JSONRequestQueue removeAllObjects];
-	[JSONRequestResults removeAllObjects];
-}
-
-- (NSArray*)fetchBasketSummary {
-	NSString *fetchBasketSummaryRequestString = [NSString stringWithFormat:@"%@?command=LISTBASKETSUMMARY&SESSIONKEY=%@",REST_SERVICE_URL,authenticatedSessionKey];
-	NSDictionary *basketDetails = [self getJSONForRequest:fetchBasketSummaryRequestString];
-	
-	if (basketDetails == nil) {
-	
-		[LogManager log:@"Error fetching basket content slots (NO JSON RETURNED)" withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-	
-		return [NSArray array];
-	}else {
-		NSNumber *statusCode = [basketDetails objectForKey:@"StatusCode"];
-		if ([statusCode intValue] != 0) {
-	
-			NSString* msg = [NSString stringWithFormat:@"Error fetching basket content (%@)",basketDetails];
-			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-	
-			return [NSArray array];
-		}
-	}
-	
-	return [basketDetails objectForKey:@"BasketLines"];
-}
-
-- (BOOL)loginToStore:(NSString*) email withPassword:(NSString*) password {
-	if ([email length] == 0 || [password length] == 0) {
-		return FALSE;
-	}
-	authenticatedSessionKey = [[self getSessionKeyForEmail:email usingPassword:password] retain];
-	authenticatedTime = [NSDate date];
-	
-	return authenticatedSessionKey != nil;
-}
-
-- (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder{
+/*
+ * Takes a list of product Base IDs, finds them in the online store and adds them to an array
+ */
+- (NSArray *)createProductsFromProductBaseIDs:(NSDictionary *)productBaseIDList {
 	NSMutableArray *products = [NSMutableArray array];
+	NSMutableArray *requestQueue = [[NSMutableArray alloc] init];
 	
-	NSString* sessionKey = [self getSessionKeyForEmail:@"" usingPassword:@""];
-	
-	if (sessionKey == nil) {
-		return products;
+	for (NSString *productBaseID in [productBaseIDList allKeys]) {
+		NSString *requestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&sessionkey=%@", REST_SERVICE_URL, productBaseID, sessionKey];
+		[requestQueue addObject:requestString];
 	}
 	
-	//Now we have session key try doing search...
-	NSString *productSearchRequestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&page=%d&sessionkey=%@",REST_SERVICE_URL,searchTerm,pageNumber,sessionKey];
-	NSDictionary *productSearchResult = [self getJSONForRequest:productSearchRequestString];
+	/* spawn a thread to process the request queue */
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[NSThread detachNewThreadSelector: @selector(processRequestQueue:) toTarget:self withObject:requestQueue];
+	[pool release];
 	
-	if (pageCountHolder != nil){
-		*pageCountHolder = [[productSearchResult objectForKey:@"TotalPageCount"] intValue];
+	/* now spin until all requests have been serviced */
+	while ([[requestResults allKeys] count] < [requestQueue count]) {
+		[NSThread sleepForTimeInterval:0.2];
 	}
 	
-	NSArray *JSONProducts = [productSearchResult objectForKey:@"Products"];
+	/* all requests have returned, now iterate through, populating products array */
+	for (NSString *result in requestResults) {
+		id apiResult = [requestResults objectForKey:result];
+		
+		if (apiResult == [NSNull null]) {
+			/* API request for search must have failed */
+			/* CREATE A DUMMY PRODUCT FOR THIS ONE */
+		} else {
+			NSString *totalProducts = [apiResult objectForKey:@"TotalProductCount"];
+			
+			if ([totalProducts intValue] == 0) {
+				/* couldn't find the product ID in the online store, so just create a dummy product */
+				//[products addObject:[self createDummyProduct:[apiResult objectForKey:@"StatusInfo"]]];
+			} else {
+				/* assume its a single product, so we want the first (and only) one */
+				[products addObject:[self createProductFromJSON:[[apiResult objectForKey:@"Products"] objectAtIndex:0]]];
+			}
+		}
+	}
 	
-	NSInteger index = 1;
-	NSInteger totalSize = [JSONProducts count];
-	for (NSDictionary *JSONProduct in JSONProducts) {
-		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewProgressText:) withObject:[NSString stringWithFormat:@"Fetching info for product %d of %d",index,totalSize] waitUntilDone:FALSE];
-		[products addObject:[self buildProductFromInfo:JSONProduct]];
-		index++;
+	/* finally ensure that both requestQueue and requestResults are emptied */
+	[requestQueue removeAllObjects];
+	[requestResults removeAllObjects];
+	
+	[requestQueue release];
+	
+	return products;
+}
+
+- (NSArray *)getDepartments {
+	NSDictionary *apiResults;
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTPRODUCTCATEGORIES&sessionkey=%@", REST_SERVICE_URL, sessionKey];
+	NSString *error;
+	
+	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error] == YES) {
+		for (NSDictionary *department in [apiResults objectForKey:@"Departments"]) {
+			[departments setObject:[department objectForKey:@"Aisles"] forKey:[department objectForKey:@"Name"]];
+			
+			for (NSDictionary *aisle in [department objectForKey:@"Aisles"]) {
+				[aisles setObject:[aisle objectForKey:@"Shelves"] forKey:[aisle objectForKey:@"Name"]];
+				
+				for (NSDictionary *shelf in [aisle objectForKey:@"Shelves"]) {
+					[shelves setObject:[shelf objectForKey:@"Id"] forKey:[shelf objectForKey:@"Name"]];
+				}
+			}
+		}
+	}
+	
+	return [departments allKeys];
+}
+
+- (NSArray *)getAislesForDepartment:(NSString *)department {
+	NSMutableArray *aisleNames = [NSMutableArray array];
+	
+	for (NSDictionary *aisle in [departments objectForKey:department]) {
+		[aisleNames addObject:[aisle objectForKey:@"Name"]];
+	}
+	
+	return aisleNames;
+}
+
+- (NSArray *)getShelvesForAisle:(NSString *)aisle {
+	NSMutableArray *shelfNames = [NSMutableArray array];
+	
+	for (NSDictionary *shelf in [aisles objectForKey:aisle]) {
+		[shelfNames addObject:[shelf objectForKey:@"Name"]];
+	}
+	
+	return shelfNames;
+}
+
+- (NSArray *)getProductsForShelf:(NSString *)shelf {
+	NSMutableArray *products = [NSMutableArray array];
+	NSDictionary *apiResults;
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTPRODUCTSBYCATEGORY&category=%@&sessionkey=%@", REST_SERVICE_URL, [shelves objectForKey:shelf], sessionKey];
+	NSString *error;
+	
+	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error] == YES) {
+		for (NSDictionary *productInfo in [apiResults objectForKey:@"Products"]) {
+			[products addObject:[self createProductFromJSON:productInfo]];
+		}
 	}
 	
 	return products;
 }
 
-
-- (NSArray*)getFilteredProductList:(NSArray*)productIdList{
-	NSString* sessionKey = [self getSessionKeyForEmail:@"" usingPassword:@""];
+/*
+ * Adds all of the products that are currently in the internal basket to 
+ * the online basket by adding each "CHANGEBASKET" request to a queue and kicking
+ * off each request in a separate thread.
+ * If any requests fail for any reason, we fail the whole process
+ */
+- (BOOL)addProductBasketToOnlineBasket {
+	/* assume success unless we hear otherwise */
+	BOOL productBasketAddedOK = YES;
+	NSMutableArray *requestQueue = [[NSMutableArray alloc] init];
 	
-	//If API is down just return original list
-	if (sessionKey == nil) {
-		return productIdList;
-	}
+	/* first, empty the store basket by removing all products */
+	[DataManager setOverlayLabelText:@"Emptying online basket ..."];
 	
-	//Now we have session key try doing search...
-	NSMutableArray *filteredProducts = [NSMutableArray array];
-	
-	for (NSNumber *productBaseId in productIdList) {
-		//Add all our requests to queue
-		NSString *productSearchRequestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&sessionkey=%@",REST_SERVICE_URL,productBaseId,sessionKey];
-		[JSONRequestQueue addObject:productSearchRequestString];
-	}
-	
-	//Spawn a thread to process the request queue
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[NSThread detachNewThreadSelector: @selector(processJSONRequestQueue) toTarget:self withObject:nil];
-	[pool release];
-	
-	//Now spin until all requests have been serviced
-	while ([[JSONRequestResults allKeys] count] < [JSONRequestQueue count]) {
-		[[LoadingView class] performSelectorOnMainThread:@selector(updateCurrentLoadingViewProgressText:) withObject:[NSString stringWithFormat:@"Verifying product %d of %d",[[JSONRequestResults allKeys] count] + 1,[JSONRequestQueue count]] waitUntilDone:TRUE];
+	if ([self emptyOnlineBasket] == YES) {
+		/* now add all of the products in our local basket to the store basket */
+		NSDictionary *productBasket = [DataManager getProductBasket];
+		NSEnumerator *productsEnumerator = [productBasket keyEnumerator];
+		Product *product;
 		
-		//Would be better done with MUTEX locks if we had the time
-		[NSThread sleepForTimeInterval:0.2];
+		[DataManager setOverlayLabelText:@"Adding products to online basket ..."];
+		
+		while ((product = [productsEnumerator nextObject])) {
+			NSString *requestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&productid=%@&changequantity=%@&sessionkey=%@", REST_SERVICE_URL, [product productID], [productBasket objectForKey:product], sessionKey];
+			[requestQueue addObject:requestString];
+		}
+		
+		/* spawn a thread to process the request queue */
+		[NSThread detachNewThreadSelector:@selector(processRequestQueue:) toTarget:self withObject:requestQueue];
+		
+		/* now spin until all requests have been serviced */
+		while ([[requestResults allKeys] count] < [requestQueue count]) {
+			[NSThread sleepForTimeInterval:0.2];
+		}
+		
+		/* all requests have returned, now iterate through checking to see if any of them failed */
+		for (NSString *result in requestResults) {
+			if ([requestResults objectForKey:result] == [NSNull null]) {
+				/* when one fails, we fail the whole thing */
+				productBasketAddedOK = NO;
+			}
+		}
+		
+		/* finally ensure that both requestQueue and restDictionary are emptied */
+		[requestQueue removeAllObjects];
+		[requestResults removeAllObjects];
+	} else {
+		/* API request failed */
+		productBasketAddedOK = NO;
 	}
 	
-	//All requests have returned, now interate through populating filteredProducts array
-	for (NSString *key in JSONRequestResults) {
-		id result = [JSONRequestResults valueForKey:key];
-		if (result != [NSNull null]) { //Request could have failed
-			//Assume its a dict object if its not null
-			NSArray *JSONProducts = [result objectForKey:@"Products"];
-			if ([JSONProducts count] != 0) {
-				//Have to rebuild product in case price, description etc has changed
-				[filteredProducts addObject: [self buildProductFromInfo:[JSONProducts objectAtIndex:0]]];
-			}
+	[requestQueue release];
+	
+	return productBasketAddedOK;
+}
+
+- (NSDictionary *)getOnlineBasketDetails {
+	NSMutableDictionary *onlineBasketDetails = [NSMutableDictionary dictionary];
+	NSDictionary *apiResults;
+	NSString *error;
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKET&sessionkey=%@", REST_SERVICE_URL, sessionKey];
+	
+	[DataManager setOverlayLabelText:@"Updating online basket ..."];
+	
+	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error] == YES) {
+		[onlineBasketDetails setObject:[apiResults objectForKey:@"BasketGuidePrice"] forKey:@"BasketPrice"];
+		[onlineBasketDetails setObject:[apiResults objectForKey:@"BasketGuideMultiBuySavings"] forKey:@"BasketSavings"];
+	}
+	
+	return onlineBasketDetails;
+}
+
+- (BOOL)updateOnlineBasketQuantity:(NSString *)productID byQuantity:(NSNumber *)quantity {
+	BOOL basketAlteredOK = NO;
+	NSDictionary *apiResults;
+	NSString *error;
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&productid=%@&changequantity=%@&sessionkey=%@", REST_SERVICE_URL, productID, quantity, sessionKey];
+	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error];
+	
+	if (apiRequestOK == TRUE) {
+		basketAlteredOK = YES;
+	}
+	
+	return basketAlteredOK;
+}
+
+/*
+ * Gets a list of available delivery slots and their price
+ */
+- (NSDictionary *)getDeliveryDates {
+	NSMutableDictionary *deliveryDates = [[NSMutableDictionary alloc] init];
+	NSDictionary *apiResults;
+	NSString *error;
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTDELIVERYSLOTS&sessionkey=%@", REST_SERVICE_URL, sessionKey];
+		
+	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error] == YES) {
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setLocale:[[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease]];
+		[dateFormatter setDateFormat:@"yyyy-MM-dd"];
+		
+		NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+		[timeFormatter setLocale:[[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease]];
+		[timeFormatter setDateFormat:@"HH:mm"];
+		 
+		NSEnumerator *deliverySlotEnumerator = [[apiResults objectForKey:@"DeliverySlots"] objectEnumerator];
+		NSDictionary *deliverySlotInfo;
+		
+		while ((deliverySlotInfo = [deliverySlotEnumerator nextObject])) {
+			NSString *deliverySlotID = [NSString stringWithFormat:@"%@", [deliverySlotInfo objectForKey:@"DeliverySlotId"]];
+			NSString *deliverySlotBranchNumber = [NSString stringWithFormat:@"%@", [deliverySlotInfo objectForKey:@"BranchNumber"]];
 			
-			else{
-				NSString *msg = [NSString stringWithFormat:@"Product exists in database but not on website"];
-				[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
-			}
+			NSArray *deliverySlotStartDetails = [[deliverySlotInfo objectForKey:@"SlotDateTimeStart"] componentsSeparatedByString:@" "];
+			NSDate *deliverySlotDate = [dateFormatter dateFromString:[deliverySlotStartDetails objectAtIndex:0]];
+			NSDate *deliverySlotStartTime = [timeFormatter dateFromString:[deliverySlotStartDetails objectAtIndex:1]];
 			
+			NSArray *deliverySlotEndDetails = [[deliverySlotInfo objectForKey:@"SlotDateTimeEnd"] componentsSeparatedByString:@" "];
+			NSDate *deliverySlotEndTime = [timeFormatter dateFromString:[deliverySlotEndDetails objectAtIndex:1]];			
+
+			NSString *deliverySlotCost = [deliverySlotInfo objectForKey:@"ServiceCharge"];
+			
+			DeliverySlot *deliverySlot = [[[DeliverySlot alloc] initWithDeliverySlotID:deliverySlotID 
+														   andDeliverySlotBranchNumber:deliverySlotBranchNumber 
+															  andDeliverySlotDate:deliverySlotDate
+															  andDeliverySlotStartTime:deliverySlotStartTime
+																andDeliverySlotEndTime:deliverySlotEndTime 
+																   andDeliverySlotCost:deliverySlotCost] autorelease];
+			
+			if ([deliveryDates objectForKey:deliverySlotDate] == nil) {
+				/* create a dictionary of times and delivery slots and add the current combination */
+				NSMutableDictionary *deliveryTimeToSlot = [[NSMutableDictionary alloc] init];
+				[deliveryTimeToSlot setObject:deliverySlot forKey:deliverySlotStartTime];
+				
+				/* add this delivery date (and corresponding time/slot array) to the delivery dates */
+				[deliveryDates setObject:deliveryTimeToSlot forKey:deliverySlotDate];
+			} else {
+				/* this delivery date is already in the list so just add this delivery time to its time/slots array */
+				[[deliveryDates objectForKey:deliverySlotDate] setObject:deliverySlot forKey:deliverySlotStartTime];
+			}
+		}
+		
+		[dateFormatter release];
+		[timeFormatter release];
+	}
+	
+	return deliveryDates;
+}
+
+/*
+ * Searches for a particular string in the online store
+ */
+- (NSArray *)searchForProducts:(NSString *)searchTerm onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder {
+	NSMutableArray *products = [NSMutableArray array];
+	NSDictionary *apiResults;
+	NSString *error;
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&page=%d&sessionkey=%@", REST_SERVICE_URL, searchTerm, page, sessionKey];
+	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error];
+	
+	if (apiRequestOK == TRUE) {
+		NSEnumerator *productsEnumerator = [[apiResults objectForKey:@"Products"] objectEnumerator];
+		NSDictionary *productInfo;
+		
+		*totalPageCountHolder = [[apiResults objectForKey:@"TotalPageCount"] intValue];
+		
+		while ((productInfo = [productsEnumerator nextObject])) {
+			[products addObject:[self createProductFromJSON:productInfo]];
 		}
 	}
 	
-	//Finally ensure that both requestQueue and restDictionary are emptied
-	[JSONRequestQueue removeAllObjects];
-	[JSONRequestResults removeAllObjects];
-	
-	return filteredProducts;
+	return products;
+}
+
+- (void)chooseDeliverySlot:(NSString *)deliverySlotID {
+	NSDictionary *apiResults;
+	NSString *error;
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=CHOOSEDELIVERYSLOT&deliveryslotid=%@&sessionkey=%@", REST_SERVICE_URL, deliverySlotID, sessionKey];
+	[self apiRequest:requestString returningApiResults:&apiResults returningError:&error];
 }
 
 #pragma mark -
 #pragma mark private functions
 
+- (BOOL)apiRequest:(NSString *)requestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error {
+	BOOL apiReqOK = YES;
+	
+	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];  
+	[request setURL:[NSURL URLWithString:[self urlEncodeValue:requestString]]];
+	[request setHTTPMethod:@"GET"];
+	
+	[LogManager log:[NSString stringWithFormat:@"Sending request: '%@'", requestString] withLevel:LOG_INFO fromClass:[[self class] description]];
+	
+	/* send the GET request */
+	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+	
+	if (data == nil) {
+		[LogManager log:@"Request fetched no/invalid results" withLevel:LOG_INFO fromClass:[[self class] description]];
+		apiReqOK = NO;
+	} else {	
+		NSMutableString *jsonString = [NSMutableString stringWithFormat:@"%@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]];
+		
+		/* parse the JSON results */
+		SBJSON *parser = [[SBJSON alloc] init];
+		NSError *jsonError = nil;
+		NSDictionary *jsonResults = [parser objectWithString:jsonString error:&jsonError];
+		[parser release];
+		
+		if (jsonResults == nil) {
+			[LogManager log:[NSString stringWithFormat:@"Error retrieving JSON results: %@", [jsonError localizedDescription]] withLevel:LOG_ERROR fromClass:[[self class] description]];
+			*error = [[[NSString alloc] initWithFormat:@"Tesco API endpoint unreachable"] autorelease];
+			apiReqOK = NO;
+		} else {
+			NSNumber *statusCode = [jsonResults objectForKey:@"StatusCode"];
+			
+			if ([statusCode intValue] != 0) {
+				[LogManager log:[NSString stringWithFormat:@"API error: '%@'", jsonResults] withLevel:LOG_ERROR fromClass:[[self class] description]];
+				*error = [[[NSString alloc] initWithFormat:@"%@", [jsonResults objectForKey:@"StatusInfo"]] autorelease];
+				apiReqOK = NO;
+			} else {
+				*apiResults = jsonResults;
+			}
+		}
+	}
+	
+	return apiReqOK;
+}
 
--(void)processJSONRequestQueue {
+/*
+ * Logs the user in to the Tesco store using email and password
+ */
+- (BOOL)login:(NSString *)email withPassword:(NSString *)password {
+	BOOL loggedInSuccessfully = NO;
+	NSDictionary *apiResults;
+	NSString *error;
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=LOGIN&email=%@&password=%@&developerkey=%@&applicationkey=%@", REST_SERVICE_URL, email, password, DEVELOPER_KEY, APPLICATION_KEY];
+	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error];
+	
+	if (apiRequestOK == TRUE) {
+		[sessionKey = [apiResults objectForKey:@"SessionKey"] retain];
+		loggedInSuccessfully = YES;
+	}
+	
+	return loggedInSuccessfully;
+}
+
+- (BOOL)emptyOnlineBasket {
+	BOOL onlineBasketEmptiedOK = YES;
+	NSDictionary *apiResults;
+	NSString *error;
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKETSUMMARY&sessionkey=%@", REST_SERVICE_URL, sessionKey];
+	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error];
+	NSMutableArray *requestQueue = [[NSMutableArray alloc] init];
+	
+	if (apiRequestOK == TRUE) {
+		for (NSDictionary *product in [apiResults objectForKey:@"BasketLines"]) {
+			NSString *productID = [product objectForKey:@"ProductId"];
+			NSInteger quantity = 0 - [[product objectForKey:@"BasketLineQuantity"] intValue];
+			NSString *requestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&productid=%@&changequantity=%d&sessionkey=%@", REST_SERVICE_URL, productID, quantity, sessionKey];
+			[requestQueue addObject:requestString];
+		}
+		
+		/* spawn a thread to process the request queue */
+		[NSThread detachNewThreadSelector: @selector(processRequestQueue:) toTarget:self withObject:requestQueue];
+		
+		/* now spin until all requests have been serviced */
+		while ([[requestResults allKeys] count] < [requestQueue count]) {
+			[NSThread sleepForTimeInterval:0.2];
+		}
+		
+		/* finally ensure that both requestQueue and requestResults are emptied */
+		[requestQueue removeAllObjects];
+		[requestResults removeAllObjects];
+	} else {
+		onlineBasketEmptiedOK = NO;
+	}
+	
+	[requestQueue release];
+	
+	return onlineBasketEmptiedOK;
+}
+
+/*
+ * Sends each API request in the queue to its own thread to be processed
+ */
+- (void)processRequestQueue:(NSArray *)requestQueue {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	for (NSInteger index = 0; index < [JSONRequestQueue count]; index++) {
-		NSString *JSONRequest = [JSONRequestQueue objectAtIndex: index];
-		if (currentAsyncRequestCount < MAX_ASYNC_REQUESTS){
+	for (NSInteger index = 0; index < [requestQueue count]; index++) {
+		NSString *request = [requestQueue objectAtIndex:index];
+		
+		if (currentAsyncRequestCount < MAX_ASYNC_REQUESTS) {
 			currentAsyncRequestCount++;
-			[NSThread detachNewThreadSelector: @selector(processSingleJSONRequest:) toTarget:self withObject:JSONRequest];
-		}else {
+			[NSThread detachNewThreadSelector:@selector(processSingleRequest:) toTarget:self withObject:request];
+		} else {
 			//Better done with MUTEX locks if we had the time
 			[NSThread sleepForTimeInterval:0.5];
-			index--; //Reset index
+			index--;
 		}
 	}
 	
 	[pool release];
 }
 
--(void)processSingleJSONRequest:(NSString*) requestString{
-	//Need pool surrounding URL request since we are in thread
+/*
+ * Processes a single API request at a time, setting the value of the 
+ * result in an array for checking later
+ */
+- (void)processSingleRequest:(NSString *)requestString {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	//Retain request string since we are operating in new thread
+	/* retain request string since we are operating in new thread */
 	[requestString retain];
 	
-	//Perform actual request
-	NSDictionary *result = [self getJSONForRequest:requestString];
+	NSDictionary *apiResults;
+	NSString *error;
 	
-	if (result == nil) {
-		[JSONRequestResults setValue:[NSNull null] forKey:requestString];
-	
-		NSString* msg = [NSString stringWithFormat:@"Error processing request %@ (NO JSON RETURNED)",requestString];
-		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-	
-	}else {
-		[JSONRequestResults setValue:result forKey:requestString];
+	if ([self apiRequest:requestString returningApiResults: &apiResults returningError:&error] == YES) {
+		[requestResults setValue:apiResults forKey:requestString];
+	} else {
+		[requestResults setValue:[NSNull null] forKey:requestString];
 	}
-
 	
-	NSNumber *statusCode = [result objectForKey:@"StatusCode"];
-	if ([statusCode intValue] != 0) {
-	
-		NSString* msg = [NSString stringWithFormat:@"Error processing request %@ (%@)",requestString,result];
-		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-	
-	}
 	currentAsyncRequestCount--;
 	
-	//Release request string
 	[requestString release];
-	
-	//Release pool
 	[pool release];
 }
 
--(id)getJSONForRequest:(NSString*)requestString{
-	NSData *data = [self httpGetRequest:requestString];	
-	NSString *dataString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-	
-	if([dataString length] == 0){
-		[LogManager log:@"Request fetched no/invalid results" withLevel:LOG_INFO fromClass:@"APIRequestManager"];
-		return [NSArray array];
-	}
-	
-	NSMutableString* jsonString = [NSMutableString stringWithFormat:@"%@", dataString];
-	
-	SBJSON *parser = [[SBJSON alloc] init];
-	NSError *error = nil;
-	id results = [parser objectWithString:jsonString allowScalar:TRUE error:&error];
-	
-	if(error != nil){
-
-		NSString *msg = [NSString stringWithFormat:@"error parsing JSON: '%@'.",[error localizedDescription]];
-		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-
-		results = [NSArray array];
-	}
-	
-	//Always release alloc'd objects
-	[parser release];
-	
-	return results;
-}
-
--(NSString *) urlEncodeValue:(NSString*)requestString{
-	CFStringRef urlString = CFURLCreateStringByAddingPercentEscapes(
-																	NULL,
+/*
+ * Encodes a URL
+ */
+- (NSString *)urlEncodeValue:(NSString *)requestString {
+	CFStringRef urlString = CFURLCreateStringByAddingPercentEscapes(NULL,
 																	(CFStringRef)requestString,
 																	NULL,
 																	(CFStringRef)@"!*'\"();@+$,%#[]% ",
@@ -455,94 +510,34 @@
     return [(NSString *)urlString autorelease];
 }
 
--(NSData*)httpGetRequest:(NSString*)requestUrl {
-	//Ensure its fully URL encoded
-	requestUrl = [self urlEncodeValue:requestUrl];
-	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];  
-	[request setURL:[NSURL URLWithString:requestUrl]];
-	[request setHTTPMethod:@"GET"];
-
-	NSString *msg = [NSString stringWithFormat:@"Sending request: '%@'.",requestUrl];
-	[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
-
-	return [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-}
-
--(DBProduct*)buildProductFromInfo:(NSDictionary*)productInfo {
-	UIImage *productOfferIcon;
+/*
+ * Creates a product from the JSON info
+ */
+- (Product *)createProductFromJSON:(NSDictionary *)productJSON {
+	NSNumber *productBaseID = [NSNumber numberWithInt:[[productJSON objectForKey:@"BaseProductId"] intValue]];
+	NSNumber *productID = [NSNumber numberWithInt:[[productJSON objectForKey:@"ProductId"] intValue]];
+	NSString *productName = [productJSON objectForKey:@"Name"];
+	NSString *productPrice = [productJSON objectForKey:@"Price"];
+	NSString *productOffer = [productJSON objectForKey:@"OfferPromotion"];
 	
-	NSNumber *productID = [NSNumber numberWithInt:[[productInfo objectForKey:@"BaseProductId"] intValue]];
-	NSString *productName = [productInfo objectForKey:@"Name"];
-	NSString *productPrice = [productInfo objectForKey:@"Price"];
-	NSString *productOffer = [productInfo objectForKey:@"OfferPromotion"];
-	UIImage *productIcon = [self getImageForProduct:[productInfo objectForKey:@"ImagePath"]];
+	UIImage *productImage = [[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[productJSON objectForKey:@"ImagePath"]]]] autorelease];
 	
-	NSString *productOfferIconUrl = [productInfo objectForKey:@"OfferLabelImagePath"];
+	if (productImage == nil) {
+		productImage = [UIImage imageNamed:@"icon_product_default.jpg"];
+	}
 	
-	if ([productOfferIconUrl length] != 0) {
-		//productOfferIcon = [[self getImageForProduct:productOfferIconUrl] resizedImage:CGSizeMake(150,50) interpolationQuality:kCGInterpolationHigh andScale:2.0];
-		productOfferIcon = [[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:productOfferIconUrl]]] autorelease];
+	NSString *productOfferImageUrl = [productJSON objectForKey:@"OfferLabelImagePath"];
+	UIImage *productOfferImage;
+	
+	if ([productOfferImageUrl length] != 0) {
+		productOfferImage = [[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:productOfferImageUrl]]] autorelease];
 	} else {
-		productOfferIcon = nil;
+		productOfferImage = nil;
 	}
 	
-	NSDate *lastUpdated = [NSDate date];
-	
-	return [[[DBProduct alloc] initWithProductID:productID andProductName:productName
-								 andProductPrice:productPrice andProductOffer:productOffer
-								  andProductIcon:productIcon andProductOfferIcon:productOfferIcon andLastUpdated:lastUpdated
-									andUserAdded:YES] autorelease];
-}
-
--(id)getSessionKeyForEmail:(NSString*)email usingPassword:(NSString*)password {
-	NSString *loginRequestString = [NSString stringWithFormat:@"%@?command=LOGIN&email=%@&password=%@&developerkey=%@&applicationkey=%@",REST_SERVICE_URL,email,password,DEVELOPER_KEY,APPLICATION_KEY];
-	
-	//Perform anonymous login
-	NSDictionary *loginDetails = [self getJSONForRequest:loginRequestString];
-	NSString *sessionKey = @"";
-	
-	//Get Session key
-	if (loginDetails != nil) {
-		sessionKey = [loginDetails objectForKey:@"SessionKey"];
-	}
-	
-	if ([sessionKey length] == 0){
-
-		NSString* msg = [NSString stringWithFormat:@"Login failed for [%@]/[%@]",email,password];
-		[LogManager log:msg withLevel:LOG_ERROR fromClass:@"APIRequestManager"];
-
-		return nil;
-	}else{
-
-		NSString* msg = [NSString stringWithFormat:@"Login succeeded for [%@]/[%@] (%@)",email,password,sessionKey];
-		[LogManager log:msg withLevel:LOG_INFO fromClass:@"APIRequestManager"];
-
-	}
-	
-	return sessionKey;
-}
-
--(UIImage*) getImageForProduct:(NSString*)iconUrl{
-	UIImage *image = [[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]] autorelease];
-	UIImage *defaultImage = [UIImage imageNamed:@"icon_product_default.jpg"];
-	
-	if (image == nil){
-		return defaultImage;
-	}
-	
-	// to put the image in the small box, use this code
-	//image = [image resizedImage:CGSizeMake(120,120) interpolationQuality:kCGInterpolationHigh andScale:2.0];
-	//UIImage *finalImage = [UIImage pasteImage:image intoImage:defaultImage atOffset:CGPointMake(2, 2)];
-	//return finalImage;
-	
-	// to leave the images full size, use this code
-	return  image;
-}
-
-- (void)dealloc {
-	[JSONRequestQueue release];
-	[JSONRequestResults release];	
-    [super dealloc];
+	return [[[Product alloc] initWithProductBaseID:productBaseID andProductID:productID andProductName:productName
+							   andProductPrice:productPrice andProductOffer:productOffer
+							   andProductImage:productImage andProductOfferImage:productOfferImage] autorelease];
 }
 
 @end

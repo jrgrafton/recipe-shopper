@@ -1,0 +1,9 @@
+/Users/sbarnett/Desktop/Shopper/Classes/DataManager.m: In function '+[DataManager addProductToOnlineBasket:byQuantity:]':
+/Users/sbarnett/Desktop/Shopper/Classes/DataManager.m:166: warning: 'APIRequestManager' may not respond to '-addProductToOnlineBasket:byQuantity:'
+/Users/sbarnett/Desktop/Shopper/Classes/DataManager.m:166: warning: (Messages without a matching method signature
+/Users/sbarnett/Desktop/Shopper/Classes/DataManager.m:166: warning: will be assumed to return 'id' and accept
+/Users/sbarnett/Desktop/Shopper/Classes/DataManager.m:166: warning: '...' as arguments.)
+/Users/sbarnett/Desktop/Shopper/Classes/DataManager.m: At top level:
+/Users/sbarnett/Desktop/Shopper/Classes/DataManager.m:292: warning: incomplete implementation of class 'DataManager'
+/Users/sbarnett/Desktop/Shopper/Classes/DataManager.m:292: warning: method definition for '+updateOnlineBasket:byQuantity:' not found
+/Users/sbarnett/Desktop/Shopper/Classes/DataManager.m:292: warning: method definition for '+addRecipeProductsToBasket' not found

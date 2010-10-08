@@ -1,37 +1,39 @@
 //
-//  RequestManager.h
+//  APIRequestManager.h
 //  RecipeShopper
 //
-//  Created by James Grafton on 5/20/10.
-//  Copyright 2010 Assentec Global. All rights reserved.
+//  Created by Simon Barnett on 10/09/2010.
+//  Copyright 2010 Assentec. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "APIDeliverySlot.h"
-#import "LoadingView.h"
 
 @interface APIRequestManager : NSObject {
-
-	@private
-	NSString *authenticatedSessionKey;
-	NSDate *authenticatedTime;
+	
 	volatile NSInteger currentAsyncRequestCount;
-	volatile NSMutableDictionary *JSONRequestResults;
-	volatile NSMutableArray *JSONRequestQueue;
+	volatile NSMutableDictionary *requestResults;
+@private NSString *sessionKey;
+@private BOOL loggedIn;
+@private NSMutableDictionary *departments;
+@private NSMutableDictionary *aisles;
+@private NSMutableDictionary *shelves;
+
 }
 
-//Currently only called locally (so we can clear basket before adding items to it)
-- (NSArray*)fetchBasketSummary;
-- (void)clearProductBasket;
-
-- (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder;
-- (NSArray*)fetchAvailableDeliverySlots;
-- (BOOL)loginToStore:(NSString*) email withPassword:(NSString*) password;
-- (NSArray*)getFilteredProductList:(NSArray*)productIdList;
-- (BOOL)addProductBasketToStoreBasket;
-- (BOOL)chooseDeliverySlot:(APIDeliverySlot*)deliverySlot returningError:(NSString**)error;
-- (NSDate*)verifyOrder:(NSString**)error;
+@property (nonatomic) BOOL loggedIn;
 
 - (id)init;
+- (NSArray *)createProductsFromProductBaseIDs:(NSDictionary *)productBaseIdList;
+- (BOOL)loginToStore:(NSString *)email withPassword:(NSString *)password;
+- (NSArray *)getDepartments;
+- (NSArray *)getAislesForDepartment:(NSString *)department;
+- (NSArray *)getShelvesForAisle:(NSString *)aisle;
+- (NSArray *)getProductsForShelf:(NSString *)shelf;
+- (BOOL)addProductBasketToOnlineBasket;
+- (NSDictionary *)getOnlineBasketDetails;
+- (BOOL)updateOnlineBasketQuantity:(NSString *)productID byQuantity:(NSNumber *)quantity;
+- (NSDictionary *)getDeliveryDates;
+- (NSArray *)searchForProducts:(NSString *)searchTerm onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder;
+- (void)chooseDeliverySlot:(NSString *)deliverySlotID;
 
 @end

@@ -2,8 +2,8 @@
 //  LogManager.h
 //  RecipeShopper
 //
-//  Created by James Grafton on 5/21/10.
-//  Copyright 2010 Assentec Global. All rights reserved.
+//  Created by Simon Barnett on 11/09/2010.
+//  Copyright 2010 Assentec. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -17,10 +17,11 @@ typedef enum LogLevel
 	LOG_ERROR
 } LogLevel;
 
+
 @interface LogManager : NSObject {
 
 }
 
-+ (void)log: (NSString*) msg withLevel:(LogLevel)level fromClass:(NSString*) className;
++ (void)log:(NSString *)msg withLevel:(LogLevel)level fromClass:(NSString *)className;
 
 @end

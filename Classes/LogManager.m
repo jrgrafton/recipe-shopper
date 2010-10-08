@@ -2,17 +2,17 @@
 //  LogManager.m
 //  RecipeShopper
 //
-//  Created by James Grafton on 5/21/10.
-//  Copyright 2010 Assentec Global. All rights reserved.
+//  Created by Simon Barnett on 11/09/2010.
+//  Copyright 2010 Assentec. All rights reserved.
 //
 
 #import "LogManager.h"
 
 @implementation LogManager
 
-+ (void)log: (NSString*) msg withLevel:(LogLevel)level fromClass:(NSString*) className {
-	//Log level string
++ (void)log:(NSString *)msg withLevel:(LogLevel)level fromClass:(NSString *)className {
 	NSString* levelStr = @"";
+	
 	switch (level) {
 		case LOG_INFO:
 			levelStr = @"Info:";
@@ -28,10 +28,9 @@
 			break;
 	}
 	
-	#ifdef DEBUG
-	//Output the log string only in DEBUG mode
-	NSLog(@"[%@]%@ %@",className,levelStr,msg);
-	#endif
+#ifdef DEBUG
+	NSLog(@"[%@]%@ %@", className, levelStr, msg);
+#endif
 }
 
 @end

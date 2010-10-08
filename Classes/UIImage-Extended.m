@@ -11,38 +11,21 @@
 
 // Private helper methods
 @interface UIImage ()
-- (UIImage *)resizedImage:(CGSize)newSize
-                transform:(CGAffineTransform)transform
-           drawTransposed:(BOOL)transpose
-     interpolationQuality:(CGInterpolationQuality)quality
-				 andScale:(CGFloat)inScale;
+- (UIImage *)resizedImage:(CGSize)newSize transform:(CGAffineTransform)transform drawTransposed:(BOOL)transpose interpolationQuality:(CGInterpolationQuality)quality andScale:(CGFloat)inScale;
 - (CGAffineTransform)transformForOrientation:(CGSize)newSize;
 @end
 
 @implementation UIImage (UIImageExtended)
 
-- (id) copyWithZone: (NSZone *) zone
+- (id)copyWithZone:(NSZone *)zone
 {
-    return [[UIImage allocWithZone: zone] initWithCGImage: self.CGImage];
+    return [[UIImage allocWithZone:zone] initWithCGImage:self.CGImage];
 }
 
-+ (UIImage *)pasteImage:(UIImage *)im1 intoImage:(UIImage *)im2 atOffset:(CGPoint)offset
-{
-	//Paste one image into another at an offset
-	CGSize size = CGSizeMake(im2.size.height, im2.size.width);
-	UIGraphicsBeginImageContext(size);
-	
-	[im2 drawAtPoint:CGPointMake(0, 0)];
-	[im1 drawAtPoint:offset];
-	
-	UIImage* finalImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-	
-	return finalImage;
-}
-
-// Returns a rescaled copy of the image, taking into account its orientation
-// The image will be scaled disproportionately if necessary to fit the bounds specified by the parameter
+/* 
+ Returns a rescaled copy of the image, taking into account its orientation.
+ The image will be scaled disproportionately if necessary to fit the bounds specified by the parameter
+ */
 - (UIImage *)resizedImage:(CGSize)newSize interpolationQuality:(CGInterpolationQuality)quality andScale:(CGFloat)inScale {
     BOOL drawTransposed;
     
@@ -58,23 +41,18 @@
             drawTransposed = NO;
     }
 
-    return [self resizedImage:newSize
-                    transform:[self transformForOrientation:newSize]
-               drawTransposed:drawTransposed
-         interpolationQuality:quality
-					 andScale:inScale];
+    return [self resizedImage:newSize transform:[self transformForOrientation:newSize] drawTransposed:drawTransposed interpolationQuality:quality andScale:inScale];
 }
 
 #pragma mark -
 #pragma mark Private helper methods
 
-// Returns a copy of the image that has been transformed using the given affine transform and scaled to the new size
-// The new image's orientation will be UIImageOrientationUp, regardless of the current image's orientation
-// If the new size is not integral, it will be rounded up
-- (UIImage *)resizedImage:(CGSize)newSize
-                transform:(CGAffineTransform)transform
-           drawTransposed:(BOOL)transpose
-     interpolationQuality:(CGInterpolationQuality)quality andScale:(CGFloat) inScale{
+/*
+ Returns a copy of the image that has been transformed using the given affine transform and scaled to the new size
+ The new image's orientation will be UIImageOrientationUp, regardless of the current image's orientation
+ If the new size is not integral, it will be rounded up
+ */
+- (UIImage *)resizedImage:(CGSize)newSize transform:(CGAffineTransform)transform drawTransposed:(BOOL)transpose interpolationQuality:(CGInterpolationQuality)quality andScale:(CGFloat)inScale {
     CGRect newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height));
     CGRect transposedRect = CGRectMake(0, 0, newRect.size.height, newRect.size.width);
     CGImageRef imageRef = self.CGImage;

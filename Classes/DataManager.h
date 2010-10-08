@@ -2,68 +2,68 @@
 //  DataManager.h
 //  RecipeShopper
 //
-//  Created by James Grafton on 5/20/10.
-//  Copyright 2010 Assentec Global. All rights reserved.
+//  Created by Simon Barnett on 21/09/2010.
+//  Copyright (c) 2010 Assentec. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreLocation/CoreLocation.h>
-#import "DBRecipe.h"
-#import "DBProduct.h"
-#import "APIDeliverySlot.h"
-#import "LoadingView.h"
+#import "Recipe.h"
+#import "Product.h"
 
-@interface DataManager : NSObject <CLLocationManagerDelegate>{
-	
-}
+@interface DataManager : NSObject <UIAlertViewDelegate>
 
-//Publicly available data aquisition
-
-//DB data
-+ (NSArray*)fetchLastPurchasedRecipes: (NSInteger) count;
-+ (NSString*)fetchUserPreference: (NSString*) key;
-+ (NSArray*)fetchProductsFromIDs: (NSArray*) productIDs;
-+ (void)putUserPreference: (NSString*)key andValue:(NSString*) value;
-+ (void)putRecipeHistory: (NSNumber*)recipeID;
-+ (NSArray*)fetchAllRecipesInCategory: (NSString*) category; //Will get enough data to display in tableview
-+ (void)fetchExtendedDataForRecipe: (DBRecipe*) recipe;	//Will populate recipe for all info needed for HTML view
-
-//iPhone SDK data
-+ (BOOL)fileExistsInUserDocuments: (NSString*) fileName;
-+ (BOOL)phoneIsOnline;
-+ (NSArray*)getCurrentLatitudeLongitude;
-+ (NSString*)fetchUserDocumentsPath;
-
-//HTTP data
-+ (NSArray*)fetchGeolocationFromAddress: (NSString*)address;
-+ (NSArray*)fetchClosestStoresToGeolocation: (NSArray*)latitudeLongitude andReturnUpToThisMany:(NSInteger) count;
-
-//Tesco API data
-+ (NSArray*)fetchProductsMatchingSearchTerm: (NSString*)searchTerm onThisPage:(NSInteger) pageNumber andGiveMePageCount:(NSInteger*) pageCountHolder;
-+ (NSArray*)fetchAvailableDeliverySlots;
-+ (BOOL)loginToStore:(NSString*) username withPassword:(NSString*) password;
-+ (BOOL)addProductBasketToStoreBasket;
-+ (BOOL)chooseDeliverySlot:(APIDeliverySlot*)deliverySlot returningError:(NSString**)error;
-+ (NSDate*)verifyOrder:(NSString**)error;
-
-//Tesco Payment data
-+ (void)navigateToPaymentPage;
-
-//Application data
-+ (void)addRecipeToBasket: (DBRecipe*)recipe;
-+ (void)addProductToBasket: (DBProduct*)product;
-+ (void)removeProductFromBasket: (DBProduct*)product;
-+ (NSMutableArray*)getRecipeBasket;
-+ (NSArray*)getProductBasket;
-+ (void)decreaseCountForProduct: (DBProduct*)product;
-+ (void)increaseCountForProduct: (DBProduct*)product;
-+ (NSInteger)getCountForProduct: (DBProduct*)product;
-+ (NSInteger)getTotalProductCount;
-+ (CGFloat)getTotalProductBasketCost;
-+ (void)createProductListFromRecipeBasket;
-
-//Initialisation and deinitialisation procedures
 + (void)initialiseAll;
-+ (void)deinitialiseAll;
++ (void)uninitialiseAll;
+
++ (BOOL)phoneIsOnline;
+
++ (void)addNumRecipesObserver:(id)observer;
+
++ (void)updateBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity;
+
+/* database manager calls */
++ (NSArray *)getAllRecipesInCategory:(NSString *)categoryName;
++ (void)fetchExtendedDataForRecipe:(Recipe *)recipe;
++ (void)setUserPreference:(NSString *)prefName prefValue:(NSString *)prefValue;
++ (NSString *)getUserPreference:(NSString *)prefName;
+
+/* api manager calls */
++ (BOOL)loggedIn;
++ (BOOL)loginToStore:(NSString *)email withPassword:(NSString *)password;
++ (void)addProductBasketToOnlineBasket;
++ (NSDictionary *)getOnlineBasketDetails;
++ (NSArray *)getDepartments;
++ (NSArray *)getAislesForDepartment:(NSString *)department;
++ (NSArray *)getShelvesForAisle:(NSString *)aisle;
++ (NSArray *)getProductsForShelf:(NSString *)shelf;
++ (NSDictionary *)getDeliveryDates;
++ (NSArray *)searchForProducts:(NSString *)searchTerm onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder;
++ (void)chooseDeliverySlot:(NSString *)deliverySlotID;
+
+/* recipe basket manager calls */
++ (NSArray *)getRecipeBasket;
++ (NSInteger)getRecipeBasketCount;
++ (Recipe *)getRecipeFromBasket:(NSUInteger)recipeIndex;
++ (void)addRecipeToBasket:(Recipe *)recipe;
++ (void)removeRecipeFromBasket:(Recipe *)recipe;
++ (void)emptyRecipeBasket;
+
+/* product basket manager calls */
++ (NSDictionary *)getProductBasket;
++ (NSInteger)getDistinctProductCount;
++ (NSInteger)getTotalProductCount;
++ (Product *)getProductFromBasket:(NSUInteger)productIndex;
++ (NSNumber *)getProductQuantityFromBasket:(Product *)product;
++ (NSDictionary *)getRecipesInProductBasket;
++ (void)emptyProductBasket;
+
+/* login manager calls */
++ (void)requestLoginToStore;
+
+/* overlay view calls */
++ (void)showOverlayView;
++ (void)hideOverlayView;
++ (void)hideActivityIndicator;
++ (void)setOverlayLabelText:(NSString *)text;
 
 @end

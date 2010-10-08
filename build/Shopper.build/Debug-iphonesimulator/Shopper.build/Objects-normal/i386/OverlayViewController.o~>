@@ -1,0 +1,3 @@
+/Users/sbarnett/Desktop/Shopper/Classes/OverlayViewController.m:14: error: no declaration of property 'overlayLabel' found in the interface
+/Users/sbarnett/Desktop/Shopper/Classes/OverlayViewController.m: In function '-[OverlayViewController touchesBegan:withEvent:]':
+/Users/sbarnett/Desktop/Shopper/Classes/OverlayViewController.m:37: warning: unused variable 'appDelegate'
