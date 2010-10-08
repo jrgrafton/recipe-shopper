@@ -1,3 +1,0 @@
-/Users/sbarnett/Desktop/Shopper/Classes/../UITableViewCellFactory.m: In function '+[UITableViewCellFactory createRecipeTableCell:withIdentifier:withRecipe:andQuantity:]':
-/Users/sbarnett/Desktop/Shopper/Classes/../UITableViewCellFactory.m:28: warning: conflicting types for '+(void)createRecipeTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withRecipe:(Recipe *)recipe andQuantity:(NSNumber *)quantity'
-/Users/sbarnett/Desktop/Shopper/Classes/../UITableViewCellFactory.h:18: warning: previous declaration of '+(NSArray *)createRecipeTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withRecipe:(Recipe *)recipe andQuantity:(NSNumber *)quantity'

@@ -1,6 +1,0 @@
-/Users/sbarnett/Desktop/Shopper/Classes/OverlayView.m: In function '-[OverlayView showView:withText:]':
-/Users/sbarnett/Desktop/Shopper/Classes/OverlayView.m:25: warning: incompatible Objective-C types initializing 'struct UIView *', expected 'struct UIViewController *'
-/Users/sbarnett/Desktop/Shopper/Classes/OverlayView.m:27: warning: 'UIView' may not respond to '-view'
-/Users/sbarnett/Desktop/Shopper/Classes/OverlayView.m:27: warning: (Messages without a matching method signature
-/Users/sbarnett/Desktop/Shopper/Classes/OverlayView.m:27: warning: will be assumed to return 'id' and accept
-/Users/sbarnett/Desktop/Shopper/Classes/OverlayView.m:27: warning: '...' as arguments.)

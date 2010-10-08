@@ -1,9 +1,0 @@
-/Users/sbarnett/Desktop/Shopper/Classes/ProductBasketManager.m:14: error: no declaration of property 'recipesInProductBasket' found in the interface
-/Users/sbarnett/Desktop/Shopper/Classes/ProductBasketManager.m: In function '-[ProductBasketManager init]':
-/Users/sbarnett/Desktop/Shopper/Classes/ProductBasketManager.m:20: error: 'recipesInProductBasket' undeclared (first use in this function)
-/Users/sbarnett/Desktop/Shopper/Classes/ProductBasketManager.m:20: error: (Each undeclared identifier is reported only once
-/Users/sbarnett/Desktop/Shopper/Classes/ProductBasketManager.m:20: error: for each function it appears in.)
-/Users/sbarnett/Desktop/Shopper/Classes/ProductBasketManager.m: At top level:
-/Users/sbarnett/Desktop/Shopper/Classes/ProductBasketManager.m:31: error: expected ')' before 'Recipe'
-/Users/sbarnett/Desktop/Shopper/Classes/ProductBasketManager.m: In function '-[ProductBasketManager addedRecipeToProductBasket:withQuantity:]':
-/Users/sbarnett/Desktop/Shopper/Classes/ProductBasketManager.m:32: error: 'recipesInProductBasket' undeclared (first use in this function)
