@@ -9,18 +9,17 @@
 #import <Foundation/Foundation.h>
 
 @interface APIRequestManager : NSObject {
-	
 	volatile NSInteger currentAsyncRequestCount;
 	volatile NSMutableDictionary *requestResults;
 @private NSString *sessionKey;
-@private BOOL loggedIn;
 @private NSMutableDictionary *departments;
 @private NSMutableDictionary *aisles;
 @private NSMutableDictionary *shelves;
-
 }
 
+@property (nonatomic) BOOL offlineMode;
 @property (nonatomic) BOOL loggedIn;
+@property (nonatomic, retain) NSString *customerName;
 
 - (id)init;
 - (NSArray *)createProductsFromProductBaseIDs:(NSDictionary *)productBaseIdList;
@@ -29,9 +28,9 @@
 - (NSArray *)getAislesForDepartment:(NSString *)department;
 - (NSArray *)getShelvesForAisle:(NSString *)aisle;
 - (NSArray *)getProductsForShelf:(NSString *)shelf;
-- (BOOL)addProductBasketToOnlineBasket;
-- (NSDictionary *)getOnlineBasketDetails;
-- (BOOL)updateOnlineBasketQuantity:(NSString *)productID byQuantity:(NSNumber *)quantity;
+- (BOOL)addProductBasketToBasket;
+- (NSDictionary *)getBasketDetails;
+- (BOOL)updateBasketQuantity:(NSString *)productID byQuantity:(NSNumber *)quantity;
 - (NSDictionary *)getDeliveryDates;
 - (NSArray *)searchForProducts:(NSString *)searchTerm onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder;
 - (void)chooseDeliverySlot:(NSString *)deliverySlotID;

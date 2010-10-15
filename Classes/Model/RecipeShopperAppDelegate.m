@@ -15,7 +15,7 @@
 @synthesize tabBarController;
 @synthesize homeViewController;
 @synthesize onlineShopViewController;
-@synthesize onlineBasketViewController;
+@synthesize checkoutViewController;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -24,6 +24,7 @@
     [DataManager initialiseAll];
     	
 	[DataManager addShoppingListProductsObserver:self];
+	[DataManager addBasketProductsObserver:self];
 	
     /* add the tab bar controller's view to the window and display */
     [window addSubview:tabBarController.view];
@@ -41,7 +42,15 @@
 		if ([shoppingListProducts intValue] == 0) {
 			[[tabBarController.tabBar.items objectAtIndex:1] setBadgeValue:NULL];
 		}
-    }
+    } else if ([keyPath isEqual:@"basketProducts"]) {
+		NSNumber *basketProducts = [change objectForKey:NSKeyValueChangeNewKey];
+		
+		[[tabBarController.tabBar.items objectAtIndex:3] setBadgeValue:[NSString stringWithFormat:@"%d", [basketProducts intValue]]];
+		
+		if ([basketProducts intValue] == 0) {
+			[[tabBarController.tabBar.items objectAtIndex:3] setBadgeValue:NULL];
+		}
+    }	
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -91,7 +100,7 @@
 - (void)dealloc {
 	[homeViewController release];
 	[onlineShopViewController release];
-	[onlineBasketViewController release];
+	[checkoutViewController release];
     [tabBarController release];
     [window release];
     [super dealloc];

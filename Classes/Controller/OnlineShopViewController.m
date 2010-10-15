@@ -66,6 +66,7 @@
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
 	/* add the overlay view */
 	[DataManager showOverlayView:onlineShopView];
+	[DataManager setOverlayViewOffset:[onlineShopView contentOffset]];
 	[DataManager hideActivityIndicator];
 	[searchBar setShowsCancelButton:YES animated:YES];
 	[onlineShopView setScrollEnabled:NO];
@@ -136,6 +137,20 @@
 	/* transition to aisles view */
 	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 	[[appDelegate onlineShopViewController] pushViewController:self.aislesViewController animated:YES];
+}
+
+#pragma mark -
+#pragma mark Tab Bar Controller delegate
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+	if ([DataManager offlineMode] == YES) {
+		UIAlertView *offlineAlert = [[UIAlertView alloc] initWithTitle:@"Offline mode" message:@"Feature unavailable in offline mode" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[offlineAlert show];
+		[offlineAlert release];
+		return NO;
+	}
+	
+	return YES;
 }
 
 - (void)didReceiveMemoryWarning {

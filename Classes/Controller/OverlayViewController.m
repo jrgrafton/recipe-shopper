@@ -7,7 +7,6 @@
 //
 
 #import "OverlayViewController.h"
-#import "RecipeShopperAppDelegate.h"
 
 @implementation OverlayViewController
 
@@ -39,11 +38,6 @@
 
 - (void)setOverlayLabelText:(NSString *)text {
 	[overlayLabel setText:text];
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-	//[[appDelegate onlineShopViewController] overlayViewTouched];
 }
 
 - (void)didReceiveMemoryWarning {

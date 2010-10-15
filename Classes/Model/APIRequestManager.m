@@ -21,7 +21,7 @@
 @interface APIRequestManager()
 
 - (BOOL)apiRequest:(NSString *)requestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error;
-- (BOOL)emptyOnlineBasket;
+- (BOOL)emptyBasket;
 - (BOOL)login:(NSString *)email withPassword:(NSString *)password;
 - (void)processRequestQueue:(NSArray *)requestQueue;
 - (void)processSingleRequest:(NSString *)requestString;
@@ -32,7 +32,9 @@
 
 @implementation APIRequestManager
 
+@synthesize offlineMode;
 @synthesize loggedIn;
+@synthesize customerName;
 
 - (id)init {
 	if (self = [super init]) {
@@ -178,7 +180,7 @@
  * off each request in a separate thread.
  * If any requests fail for any reason, we fail the whole process
  */
-- (BOOL)addProductBasketToOnlineBasket {
+- (BOOL)addProductBasketToBasket {
 	/* assume success unless we hear otherwise */
 	BOOL productBasketAddedOK = YES;
 	NSMutableArray *requestQueue = [[NSMutableArray alloc] init];
@@ -186,7 +188,7 @@
 	/* first, empty the store basket by removing all products */
 	[DataManager setOverlayLabelText:@"Emptying online basket ..."];
 	
-	if ([self emptyOnlineBasket] == YES) {
+	if ([self emptyBasket] == YES) {
 		/* now add all of the products in our local basket to the store basket */
 		NSDictionary *productBasket = [DataManager getProductBasket];
 		NSEnumerator *productsEnumerator = [productBasket keyEnumerator];
@@ -228,8 +230,8 @@
 	return productBasketAddedOK;
 }
 
-- (NSDictionary *)getOnlineBasketDetails {
-	NSMutableDictionary *onlineBasketDetails = [NSMutableDictionary dictionary];
+- (NSDictionary *)getBasketDetails {
+	NSMutableDictionary *basketDetails = [NSMutableDictionary dictionary];
 	NSDictionary *apiResults;
 	NSString *error;
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKET&sessionkey=%@", REST_SERVICE_URL, sessionKey];
@@ -237,14 +239,14 @@
 	[DataManager setOverlayLabelText:@"Updating online basket ..."];
 	
 	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error] == YES) {
-		[onlineBasketDetails setObject:[apiResults objectForKey:@"BasketGuidePrice"] forKey:@"BasketPrice"];
-		[onlineBasketDetails setObject:[apiResults objectForKey:@"BasketGuideMultiBuySavings"] forKey:@"BasketSavings"];
+		[basketDetails setObject:[apiResults objectForKey:@"BasketGuidePrice"] forKey:@"BasketPrice"];
+		[basketDetails setObject:[apiResults objectForKey:@"BasketGuideMultiBuySavings"] forKey:@"BasketSavings"];
 	}
 	
-	return onlineBasketDetails;
+	return basketDetails;
 }
 
-- (BOOL)updateOnlineBasketQuantity:(NSString *)productID byQuantity:(NSNumber *)quantity {
+- (BOOL)updateBasketQuantity:(NSString *)productID byQuantity:(NSNumber *)quantity {
 	BOOL basketAlteredOK = NO;
 	NSDictionary *apiResults;
 	NSString *error;
@@ -409,14 +411,15 @@
 	
 	if (apiRequestOK == TRUE) {
 		[sessionKey = [apiResults objectForKey:@"SessionKey"] retain];
+		[self setCustomerName:[apiResults objectForKey:@"CustomerName"]];
 		loggedInSuccessfully = YES;
 	}
 	
 	return loggedInSuccessfully;
 }
 
-- (BOOL)emptyOnlineBasket {
-	BOOL onlineBasketEmptiedOK = YES;
+- (BOOL)emptyBasket {
+	BOOL basketEmptiedOK = YES;
 	NSDictionary *apiResults;
 	NSString *error;
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKETSUMMARY&sessionkey=%@", REST_SERVICE_URL, sessionKey];
@@ -443,12 +446,12 @@
 		[requestQueue removeAllObjects];
 		[requestResults removeAllObjects];
 	} else {
-		onlineBasketEmptiedOK = NO;
+		basketEmptiedOK = NO;
 	}
 	
 	[requestQueue release];
 	
-	return onlineBasketEmptiedOK;
+	return basketEmptiedOK;
 }
 
 /*

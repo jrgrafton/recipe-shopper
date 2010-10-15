@@ -91,12 +91,14 @@
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setDateFormat:@"EEEE MMMM d"];
 		deliveryInfoDetails = [dateFormatter stringFromDate:[selectedDeliverySlot deliverySlotDate]];
+		[dateFormatter release];
 	} else if ([indexPath row] == 1) {
 		deliveryInfoType = @"Delivery Time";
 		NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
 		[timeFormatter setTimeStyle:NSDateFormatterShortStyle];
 		NSString *deliveryStart = [timeFormatter stringFromDate:[selectedDeliverySlot deliverySlotStartTime]];
 		NSString *deliveryEnd = [timeFormatter stringFromDate:[selectedDeliverySlot deliverySlotEndTime]];
+		[timeFormatter release];
 		deliveryInfoDetails = [NSString stringWithFormat:@"%@ - %@", deliveryStart, deliveryEnd];
 	} else if ([indexPath row] == 2) {
 		deliveryInfoType = @"Delivery Cost";

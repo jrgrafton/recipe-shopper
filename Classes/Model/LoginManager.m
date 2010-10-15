@@ -12,6 +12,8 @@
 
 @implementation LoginManager
 
+@synthesize loginName;
+
 - (void)requestLoginToStore {
 	if ([DataManager loggedIn] == NO) {
 		if ([DataManager phoneIsOnline]) {
@@ -108,8 +110,11 @@
 		[DataManager setUserPreference:@"login.email" prefValue:[details objectAtIndex:0]];
 		[DataManager setUserPreference:@"login.password" prefValue:[details objectAtIndex:1]];
 		
+		/* save the login name so we can display it on the home page */
+		[self setLoginName:[details objectAtIndex:0]];
+		
 		/* add any products which may be in the product basket to the online basket now */
-		[DataManager addProductBasketToOnlineBasket];
+		[DataManager addProductBasketToBasket];
 		
 		[DataManager hideOverlayView];
 		

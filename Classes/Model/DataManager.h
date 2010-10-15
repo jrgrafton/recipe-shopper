@@ -10,14 +10,12 @@
 #import "Recipe.h"
 #import "Product.h"
 
-@interface DataManager : NSObject <UIAlertViewDelegate>
+@interface DataManager : NSObject
 
 + (void)initialiseAll;
 + (void)uninitialiseAll;
 
 + (BOOL)phoneIsOnline;
-
-+ (void)addShoppingListProductsObserver:(id)observer;
 
 + (void)updateBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity;
 
@@ -29,10 +27,12 @@
 + (NSArray *)getRecentRecipes;
 
 /* api manager calls */
++ (BOOL)offlineMode;
++ (void)setOfflineMode:(BOOL)offlineMode;
 + (BOOL)loggedIn;
 + (BOOL)loginToStore:(NSString *)email withPassword:(NSString *)password;
-+ (void)addProductBasketToOnlineBasket;
-+ (NSDictionary *)getOnlineBasketDetails;
++ (void)addProductBasketToBasket;
++ (NSDictionary *)getBasketDetails;
 + (NSArray *)getDepartments;
 + (NSArray *)getAislesForDepartment:(NSString *)department;
 + (NSArray *)getShelvesForAisle:(NSString *)aisle;
@@ -40,6 +40,7 @@
 + (NSDictionary *)getDeliveryDates;
 + (NSArray *)searchForProducts:(NSString *)searchTerm onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder;
 + (void)chooseDeliverySlot:(NSString *)deliverySlotID;
++ (NSString *)getCustomerName;
 
 /* recipe basket manager calls */
 + (NSArray *)getRecipeBasket;
@@ -50,6 +51,8 @@
 + (void)emptyRecipeBasket;
 
 /* product basket manager calls */
++ (void)addShoppingListProductsObserver:(id)observer;
++ (void)addBasketProductsObserver:(id)observer;
 + (NSDictionary *)getProductBasket;
 + (NSString *)getProductBasketPrice;
 + (NSInteger)getDistinctProductCount;

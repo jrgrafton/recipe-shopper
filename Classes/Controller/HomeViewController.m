@@ -8,12 +8,37 @@
 
 #import "HomeViewController.h"
 #import "RecipeShopperAppDelegate.h"
+#import "DataManager.h"
 
 @implementation HomeViewController
 
 @synthesize recipeBasketViewController;
 @synthesize recipeHistoryViewController;
 @synthesize recipeCategoryViewController;
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	
+	[DataManager setOfflineMode:NO];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	if ([DataManager loggedIn] == YES) {
+		[greetingLabel setText:[NSString stringWithFormat:@"Hello %@", [DataManager getCustomerName]]];
+	} else {
+		[greetingLabel setText:@"Not logged in"];
+	}
+}
+
+- (IBAction)offlineModeValueChanged:(id)sender {
+	if (offlineModeSwitch.on) {
+		[DataManager setOfflineMode:YES];
+	} else {
+		[DataManager setOfflineMode:NO];
+	}
+}
 
 - (IBAction)transitionToRecipeBasketView:(id)sender {
 	if (recipeBasketViewController == nil) {

@@ -29,6 +29,7 @@
 	
 	[[self navigationItem] setTitle:aisle];
 	
+	[shelves removeAllObjects];
 	[shelves addObjectsFromArray:[DataManager getShelvesForAisle:aisle]];
 	[shelvesView reloadData];
 }

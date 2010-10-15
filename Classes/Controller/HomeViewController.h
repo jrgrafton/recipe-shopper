@@ -12,13 +12,15 @@
 #import "RecipeCategoryViewController.h"
 
 @interface HomeViewController : UIViewController {
-
+	IBOutlet UILabel *greetingLabel;
+	IBOutlet UISwitch *offlineModeSwitch;
 }
 
 @property (nonatomic, retain) RecipeBasketViewController *recipeBasketViewController;
 @property (nonatomic, retain) RecipeHistoryViewController *recipeHistoryViewController;
 @property (nonatomic, retain) RecipeCategoryViewController *recipeCategoryViewController;
 
+- (IBAction)offlineModeValueChanged:(id)sender;
 - (IBAction)transitionToRecipeBasketView:(id)sender;
 - (IBAction)transitionToRecipeHistoryView:(id)sender;
 - (IBAction)transitionToRecipeCategoryView:(id)sender;

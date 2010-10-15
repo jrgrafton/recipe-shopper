@@ -13,6 +13,8 @@
 
 }
 
+@property (nonatomic, retain) NSString *loginName;
+
 - (void)requestLoginToStore;
 
 @end

@@ -29,6 +29,7 @@
 	
 	[[self navigationItem] setTitle:department];
 	
+	[aisles removeAllObjects];
 	[aisles addObjectsFromArray:[DataManager getAislesForDepartment:department]];
 	[aislesView reloadData];
 }

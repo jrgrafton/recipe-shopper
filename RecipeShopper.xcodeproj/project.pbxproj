@@ -20,10 +20,9 @@
 		3EB5D5051268AB29009A80E0 /* HomeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4EF1268AB29009A80E0 /* HomeView.xib */; };
 		3EB5D5061268AB29009A80E0 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F01268AB29009A80E0 /* MainWindow.xib */; };
 		3EB5D5071268AB29009A80E0 /* MoreSearchResultsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F11268AB29009A80E0 /* MoreSearchResultsCell.xib */; };
-		3EB5D5081268AB29009A80E0 /* OnlineBasketView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F21268AB29009A80E0 /* OnlineBasketView.xib */; };
+		3EB5D5081268AB29009A80E0 /* CheckoutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F21268AB29009A80E0 /* CheckoutView.xib */; };
 		3EB5D5091268AB29009A80E0 /* OnlineShopView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F31268AB29009A80E0 /* OnlineShopView.xib */; };
 		3EB5D50A1268AB29009A80E0 /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F41268AB29009A80E0 /* OverlayView.xib */; };
-		3EB5D50B1268AB29009A80E0 /* OverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F51268AB29009A80E0 /* OverlayViewController.xib */; };
 		3EB5D50C1268AB29009A80E0 /* ProductsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F61268AB29009A80E0 /* ProductsView.xib */; };
 		3EB5D50D1268AB29009A80E0 /* ProductViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F71268AB29009A80E0 /* ProductViewCell.xib */; };
 		3EB5D50E1268AB29009A80E0 /* RecipeBasketView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F81268AB29009A80E0 /* RecipeBasketView.xib */; };
@@ -38,7 +37,7 @@
 		3EB5D5371268AB3D009A80E0 /* AislesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5181268AB3D009A80E0 /* AislesViewController.m */; };
 		3EB5D5381268AB3D009A80E0 /* DeliverySlotsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D51A1268AB3D009A80E0 /* DeliverySlotsViewController.m */; };
 		3EB5D5391268AB3D009A80E0 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D51C1268AB3D009A80E0 /* HomeViewController.m */; };
-		3EB5D53A1268AB3D009A80E0 /* OnlineBasketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D51E1268AB3D009A80E0 /* OnlineBasketViewController.m */; };
+		3EB5D53A1268AB3D009A80E0 /* CheckoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D51E1268AB3D009A80E0 /* CheckoutViewController.m */; };
 		3EB5D53B1268AB3D009A80E0 /* OnlineShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5201268AB3D009A80E0 /* OnlineShopViewController.m */; };
 		3EB5D53C1268AB3D009A80E0 /* OverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5221268AB3D009A80E0 /* OverlayViewController.m */; };
 		3EB5D53D1268AB3D009A80E0 /* ProductsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5241268AB3D009A80E0 /* ProductsViewController.m */; };
@@ -144,10 +143,9 @@
 		3EB5D4EF1268AB29009A80E0 /* HomeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = HomeView.xib; path = View/HomeView.xib; sourceTree = "<group>"; };
 		3EB5D4F01268AB29009A80E0 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = View/MainWindow.xib; sourceTree = "<group>"; };
 		3EB5D4F11268AB29009A80E0 /* MoreSearchResultsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MoreSearchResultsCell.xib; path = View/MoreSearchResultsCell.xib; sourceTree = "<group>"; };
-		3EB5D4F21268AB29009A80E0 /* OnlineBasketView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = OnlineBasketView.xib; path = View/OnlineBasketView.xib; sourceTree = "<group>"; };
+		3EB5D4F21268AB29009A80E0 /* CheckoutView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CheckoutView.xib; path = View/CheckoutView.xib; sourceTree = "<group>"; };
 		3EB5D4F31268AB29009A80E0 /* OnlineShopView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = OnlineShopView.xib; path = View/OnlineShopView.xib; sourceTree = "<group>"; };
 		3EB5D4F41268AB29009A80E0 /* OverlayView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = OverlayView.xib; path = View/OverlayView.xib; sourceTree = "<group>"; };
-		3EB5D4F51268AB29009A80E0 /* OverlayViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = OverlayViewController.xib; path = View/OverlayViewController.xib; sourceTree = "<group>"; };
 		3EB5D4F61268AB29009A80E0 /* ProductsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ProductsView.xib; path = View/ProductsView.xib; sourceTree = "<group>"; };
 		3EB5D4F71268AB29009A80E0 /* ProductViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ProductViewCell.xib; path = View/ProductViewCell.xib; sourceTree = "<group>"; };
 		3EB5D4F81268AB29009A80E0 /* RecipeBasketView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeBasketView.xib; path = View/RecipeBasketView.xib; sourceTree = "<group>"; };
@@ -165,8 +163,8 @@
 		3EB5D51A1268AB3D009A80E0 /* DeliverySlotsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DeliverySlotsViewController.m; path = Controller/DeliverySlotsViewController.m; sourceTree = "<group>"; };
 		3EB5D51B1268AB3D009A80E0 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeViewController.h; path = Controller/HomeViewController.h; sourceTree = "<group>"; };
 		3EB5D51C1268AB3D009A80E0 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeViewController.m; path = Controller/HomeViewController.m; sourceTree = "<group>"; };
-		3EB5D51D1268AB3D009A80E0 /* OnlineBasketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OnlineBasketViewController.h; path = Controller/OnlineBasketViewController.h; sourceTree = "<group>"; };
-		3EB5D51E1268AB3D009A80E0 /* OnlineBasketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OnlineBasketViewController.m; path = Controller/OnlineBasketViewController.m; sourceTree = "<group>"; };
+		3EB5D51D1268AB3D009A80E0 /* CheckoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CheckoutViewController.h; path = Controller/CheckoutViewController.h; sourceTree = "<group>"; };
+		3EB5D51E1268AB3D009A80E0 /* CheckoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CheckoutViewController.m; path = Controller/CheckoutViewController.m; sourceTree = "<group>"; };
 		3EB5D51F1268AB3D009A80E0 /* OnlineShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OnlineShopViewController.h; path = Controller/OnlineShopViewController.h; sourceTree = "<group>"; };
 		3EB5D5201268AB3D009A80E0 /* OnlineShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OnlineShopViewController.m; path = Controller/OnlineShopViewController.m; sourceTree = "<group>"; };
 		3EB5D5211268AB3D009A80E0 /* OverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OverlayViewController.h; path = Controller/OverlayViewController.h; sourceTree = "<group>"; };
@@ -410,16 +408,15 @@
 			isa = PBXGroup;
 			children = (
 				3EB5D4EB1268AB29009A80E0 /* AislesView.xib */,
+				3EB5D4F21268AB29009A80E0 /* CheckoutView.xib */,
 				3EB5D4EC1268AB29009A80E0 /* DeliveryInfoCell.xib */,
 				3EB5D4ED1268AB29009A80E0 /* DeliverySlotsView.xib */,
 				3EB5D4EE1268AB29009A80E0 /* DepartmentCell.xib */,
 				3EB5D4EF1268AB29009A80E0 /* HomeView.xib */,
 				3EB5D4F01268AB29009A80E0 /* MainWindow.xib */,
 				3EB5D4F11268AB29009A80E0 /* MoreSearchResultsCell.xib */,
-				3EB5D4F21268AB29009A80E0 /* OnlineBasketView.xib */,
 				3EB5D4F31268AB29009A80E0 /* OnlineShopView.xib */,
 				3EB5D4F41268AB29009A80E0 /* OverlayView.xib */,
-				3EB5D4F51268AB29009A80E0 /* OverlayViewController.xib */,
 				3EB5D4F61268AB29009A80E0 /* ProductsView.xib */,
 				3EB5D4F71268AB29009A80E0 /* ProductViewCell.xib */,
 				3EB5D4F81268AB29009A80E0 /* RecipeBasketView.xib */,
@@ -440,12 +437,12 @@
 			children = (
 				3EB5D5171268AB3D009A80E0 /* AislesViewController.h */,
 				3EB5D5181268AB3D009A80E0 /* AislesViewController.m */,
+				3EB5D51D1268AB3D009A80E0 /* CheckoutViewController.h */,
+				3EB5D51E1268AB3D009A80E0 /* CheckoutViewController.m */,
 				3EB5D5191268AB3D009A80E0 /* DeliverySlotsViewController.h */,
 				3EB5D51A1268AB3D009A80E0 /* DeliverySlotsViewController.m */,
 				3EB5D51B1268AB3D009A80E0 /* HomeViewController.h */,
 				3EB5D51C1268AB3D009A80E0 /* HomeViewController.m */,
-				3EB5D51D1268AB3D009A80E0 /* OnlineBasketViewController.h */,
-				3EB5D51E1268AB3D009A80E0 /* OnlineBasketViewController.m */,
 				3EB5D51F1268AB3D009A80E0 /* OnlineShopViewController.h */,
 				3EB5D5201268AB3D009A80E0 /* OnlineShopViewController.m */,
 				3EB5D5211268AB3D009A80E0 /* OverlayViewController.h */,
@@ -657,10 +654,9 @@
 				3EB5D5051268AB29009A80E0 /* HomeView.xib in Resources */,
 				3EB5D5061268AB29009A80E0 /* MainWindow.xib in Resources */,
 				3EB5D5071268AB29009A80E0 /* MoreSearchResultsCell.xib in Resources */,
-				3EB5D5081268AB29009A80E0 /* OnlineBasketView.xib in Resources */,
+				3EB5D5081268AB29009A80E0 /* CheckoutView.xib in Resources */,
 				3EB5D5091268AB29009A80E0 /* OnlineShopView.xib in Resources */,
 				3EB5D50A1268AB29009A80E0 /* OverlayView.xib in Resources */,
-				3EB5D50B1268AB29009A80E0 /* OverlayViewController.xib in Resources */,
 				3EB5D50C1268AB29009A80E0 /* ProductsView.xib in Resources */,
 				3EB5D50D1268AB29009A80E0 /* ProductViewCell.xib in Resources */,
 				3EB5D50E1268AB29009A80E0 /* RecipeBasketView.xib in Resources */,
@@ -740,7 +736,7 @@
 				3EB5D5371268AB3D009A80E0 /* AislesViewController.m in Sources */,
 				3EB5D5381268AB3D009A80E0 /* DeliverySlotsViewController.m in Sources */,
 				3EB5D5391268AB3D009A80E0 /* HomeViewController.m in Sources */,
-				3EB5D53A1268AB3D009A80E0 /* OnlineBasketViewController.m in Sources */,
+				3EB5D53A1268AB3D009A80E0 /* CheckoutViewController.m in Sources */,
 				3EB5D53B1268AB3D009A80E0 /* OnlineShopViewController.m in Sources */,
 				3EB5D53C1268AB3D009A80E0 /* OverlayViewController.m in Sources */,
 				3EB5D53D1268AB3D009A80E0 /* ProductsViewController.m in Sources */,

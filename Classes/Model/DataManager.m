@@ -17,7 +17,7 @@
 
 @interface DataManager()
 
-+ (void)updateOnlineBasket:(NSArray *)productDetails;
++ (void)updateBasket:(NSArray *)productDetails;
 
 @end
 
@@ -47,7 +47,7 @@ static OverlayViewController *overlayViewController;
 	loginManager = [[LoginManager alloc] init];
 	
 	/* initialise the overlay view */
-	overlayViewController = [[OverlayViewController alloc] initWithNibName:@"OverlayViewController" bundle:[NSBundle mainBundle]];
+	overlayViewController = [[OverlayViewController alloc] initWithNibName:@"OverlayView" bundle:[NSBundle mainBundle]];
 }
 
 + (void)uninitialiseAll {
@@ -64,10 +64,6 @@ static OverlayViewController *overlayViewController;
 	return ((internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN));
 }
 
-+ (void)addShoppingListProductsObserver:(id)observer {
-	[productBasketManager addObserver:observer forKeyPath:@"shoppingListProducts" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
-}
-
 + (void)updateBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity {
 	/* update this product in the product basket */
 	[productBasketManager updateProductBasketQuantity:product byQuantity:quantity];
@@ -81,12 +77,12 @@ static OverlayViewController *overlayViewController;
 	}
 }
 
-+ (void)updateOnlineBasket:(NSArray *)productDetails {
++ (void)updateBasket:(NSArray *)productDetails {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	NSString *productID = [productDetails objectAtIndex:0];
 	NSNumber *quantity = [productDetails objectAtIndex:1];
-	[apiRequestManager updateOnlineBasketQuantity:productID byQuantity:quantity];
+	[apiRequestManager updateBasketQuantity:productID byQuantity:quantity];
 	
 	[pool release];
 }
@@ -117,6 +113,14 @@ static OverlayViewController *overlayViewController;
 #pragma mark -
 #pragma mark API Manager calls
 
++ (BOOL)offlineMode {
+	return [apiRequestManager offlineMode];
+}
+
++ (void)setOfflineMode:(BOOL)offlineMode {
+	[apiRequestManager setOfflineMode:offlineMode];
+}
+
 + (BOOL)loggedIn {
 	return [apiRequestManager loggedIn];
 }
@@ -125,12 +129,12 @@ static OverlayViewController *overlayViewController;
 	return [apiRequestManager loginToStore:email withPassword:password];
 }
 
-+ (void)addProductBasketToOnlineBasket {
-	[apiRequestManager addProductBasketToOnlineBasket];
++ (void)addProductBasketToBasket {
+	[apiRequestManager addProductBasketToBasket];
 }
 
-+ (NSDictionary *)getOnlineBasketDetails {
-	return [apiRequestManager getOnlineBasketDetails];
++ (NSDictionary *)getBasketDetails {
+	return [apiRequestManager getBasketDetails];
 }
 
 + (NSArray *)getDepartments {
@@ -159,6 +163,10 @@ static OverlayViewController *overlayViewController;
 
 + (void)chooseDeliverySlot:(NSString *)deliverySlotID {
 	[apiRequestManager chooseDeliverySlot:deliverySlotID];
+}
+
++ (NSString *)getCustomerName {
+	return [apiRequestManager customerName];
 }
 
 #pragma mark -
@@ -221,6 +229,14 @@ static OverlayViewController *overlayViewController;
 
 #pragma mark -
 #pragma mark Product Basket calls
+
++ (void)addShoppingListProductsObserver:(id)observer {
+	[productBasketManager addObserver:observer forKeyPath:@"shoppingListProducts" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
+}
+
++ (void)addBasketProductsObserver:(id)observer {
+	[productBasketManager addObserver:observer forKeyPath:@"basketProducts" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
+}
 
 + (NSDictionary *)getProductBasket {
 	return [productBasketManager productBasket];
