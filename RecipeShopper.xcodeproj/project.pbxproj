@@ -7,240 +7,286 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1D3623260D0F684500981E51 /* RecipeShopperAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* RecipeShopperAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
-		28216C970DB411BC00E5133A /* RecipeCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28216C960DB411BC00E5133A /* RecipeCategoryViewController.m */; };
-		282CCBFE0DB6C98000C4EA27 /* RecipeBasketView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282CCBFD0DB6C98000C4EA27 /* RecipeBasketView.xib */; };
-		2840D7CE1179279E00D7F93C /* RecipeCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2840D7CD1179279E00D7F93C /* RecipeCategoryView.xib */; };
 		288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
-		28AD73880D9D96C1002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD73870D9D96C1002E5188 /* MainWindow.xib */; };
-		3E22B6F312560A4200223CC3 /* recipeshopper.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 3E22B6F212560A4200223CC3 /* recipeshopper.sqlite */; };
-		3E22B89212560FD200223CC3 /* imgs in Resources */ = {isa = PBXBuildFile; fileRef = 3E22B87112560FD200223CC3 /* imgs */; };
-		3E22BA03125A32CD00223CC3 /* button_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E22BA02125A32CD00223CC3 /* button_green.png */; };
-		3E22CCC0124963E00007FF5E /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E22CCBF124963E00007FF5E /* DataManager.m */; };
-		3E347C1912363D51009E0214 /* NSData-Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E347C1812363D51009E0214 /* NSData-Extended.m */; };
-		3E347C201236408D009E0214 /* Recipe.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E347C1F1236408D009E0214 /* Recipe.m */; };
-		3E347C7512364A58009E0214 /* UIImage-Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E347C7412364A58009E0214 /* UIImage-Extended.m */; };
-		3E347C89123655D2009E0214 /* Product.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E347C88123655D2009E0214 /* Product.m */; };
-		3E347E691236B5B9009E0214 /* recipe_base.html in Resources */ = {isa = PBXBuildFile; fileRef = 3E347E671236B5B9009E0214 /* recipe_base.html */; };
-		3E347E6A1236B5B9009E0214 /* recipe_base.css in Resources */ = {isa = PBXBuildFile; fileRef = 3E347E681236B5B9009E0214 /* recipe_base.css */; };
-		3E34804F1236FB50009E0214 /* tesco_header.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E34804E1236FB50009E0214 /* tesco_header.png */; };
-		3E3480891237A8EA009E0214 /* RecipeBasketManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E3480881237A8EA009E0214 /* RecipeBasketManager.m */; };
-		3E3481A0123A6432009E0214 /* APIRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E34819F123A6432009E0214 /* APIRequestManager.m */; };
-		3E3481B4123A67CB009E0214 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E3481A5123A67CB009E0214 /* NSObject+SBJSON.m */; };
-		3E3481B5123A67CB009E0214 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E3481A7123A67CB009E0214 /* NSString+SBJSON.m */; };
-		3E3481B6123A67CB009E0214 /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E3481A9123A67CB009E0214 /* SBJSON.m */; };
-		3E3481B7123A67CB009E0214 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E3481AB123A67CB009E0214 /* SBJsonBase.m */; };
-		3E3481B8123A67CB009E0214 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E3481AD123A67CB009E0214 /* SBJsonParser.m */; };
-		3E3481B9123A67CB009E0214 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E3481AF123A67CB009E0214 /* SBJsonWriter.m */; };
-		3E3481FB123A8862009E0214 /* ShoppingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E3481F9123A8862009E0214 /* ShoppingListViewController.m */; };
-		3E3481FC123A8862009E0214 /* ShoppingListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E3481FA123A8862009E0214 /* ShoppingListView.xib */; };
 		3E34822D123A8E58009E0214 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E34822C123A8E58009E0214 /* QuartzCore.framework */; };
-		3E5B8916123B95530070527A /* LogManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B8915123B95530070527A /* LogManager.m */; };
-		3EAF0601124B6B6700BAF6CD /* LoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAF0600124B6B6700BAF6CD /* LoginManager.m */; };
-		3EAF0682124CD89400BAF6CD /* baby_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EAF0678124CD89400BAF6CD /* baby_icon.png */; };
-		3EAF0683124CD89400BAF6CD /* bakery_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EAF0679124CD89400BAF6CD /* bakery_icon.png */; };
-		3EAF0684124CD89400BAF6CD /* cupboard_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EAF067A124CD89400BAF6CD /* cupboard_icon.png */; };
-		3EAF0685124CD89400BAF6CD /* drinks_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EAF067B124CD89400BAF6CD /* drinks_icon.png */; };
-		3EAF0686124CD89400BAF6CD /* fresh_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EAF067C124CD89400BAF6CD /* fresh_icon.png */; };
-		3EAF0687124CD89400BAF6CD /* frozen_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EAF067D124CD89400BAF6CD /* frozen_icon.png */; };
-		3EAF0688124CD89400BAF6CD /* health_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EAF067E124CD89400BAF6CD /* health_icon.png */; };
-		3EAF0689124CD89400BAF6CD /* home_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EAF067F124CD89400BAF6CD /* home_icon.png */; };
-		3EAF068A124CD89400BAF6CD /* household_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EAF0680124CD89400BAF6CD /* household_icon.png */; };
-		3EAF068B124CD89400BAF6CD /* pets_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EAF0681124CD89400BAF6CD /* pets_icon.png */; };
-		3EAF0702124CE5CC00BAF6CD /* DepartmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EAF0701124CE5CC00BAF6CD /* DepartmentCell.xib */; };
-		3EAF0750124CF37F00BAF6CD /* icon_shopping.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EAF074F124CF37F00BAF6CD /* icon_shopping.png */; };
-		3EB5CFB8125F1D26009A80E0 /* MoreSearchResultsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5CFB7125F1D26009A80E0 /* MoreSearchResultsCell.xib */; };
-		3EB5CFC7125F1EE9009A80E0 /* download@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5CFC6125F1EE9009A80E0 /* download@2x.png */; };
-		3EB80C7A1233F91100F74165 /* breakfasts.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80C6D1233F91100F74165 /* breakfasts.png */; };
-		3EB80C7B1233F91100F74165 /* cakesBiscuits.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80C6E1233F91100F74165 /* cakesBiscuits.png */; };
-		3EB80C7C1233F91100F74165 /* desserts.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80C6F1233F91100F74165 /* desserts.png */; };
-		3EB80C7D1233F91100F74165 /* dinners.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80C701233F91100F74165 /* dinners.png */; };
-		3EB80C7E1233F91100F74165 /* drinks.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80C711233F91100F74165 /* drinks.png */; };
-		3EB80C7F1233F91100F74165 /* lunches.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80C721233F91100F74165 /* lunches.png */; };
-		3EB80C801233F91100F74165 /* mains.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80C731233F91100F74165 /* mains.png */; };
-		3EB80C811233F91100F74165 /* partyFood.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80C741233F91100F74165 /* partyFood.png */; };
-		3EB80C821233F91100F74165 /* salads.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80C751233F91100F74165 /* salads.png */; };
-		3EB80C831233F91100F74165 /* sauces.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80C761233F91100F74165 /* sauces.png */; };
-		3EB80C841233F91100F74165 /* snacksSides.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80C771233F91100F74165 /* snacksSides.png */; };
-		3EB80C851233F91100F74165 /* soups.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80C781233F91100F74165 /* soups.png */; };
-		3EB80C861233F91100F74165 /* starters.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80C791233F91100F74165 /* starters.png */; };
-		3EB80CB81234074500F74165 /* icon_book.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80CB71234074500F74165 /* icon_book.png */; };
-		3EB80CC712340B8800F74165 /* icon_cart.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80CC612340B8800F74165 /* icon_cart.png */; };
-		3EB80CD112340C4300F74165 /* RecipeBasketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB80CD012340C4300F74165 /* RecipeBasketViewController.m */; };
-		3EB80DEA123424E200F74165 /* RecipeListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB80DE8123424E200F74165 /* RecipeListViewController.m */; };
-		3EB80DEB123424E200F74165 /* RecipeListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80DE9123424E200F74165 /* RecipeListView.xib */; };
-		3EB80E111234446100F74165 /* RecipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB80E0F1234446100F74165 /* RecipeViewController.m */; };
-		3EB80E121234446100F74165 /* RecipeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80E101234446100F74165 /* RecipeView.xib */; };
-		3EB80E17123446B900F74165 /* bottom-fade.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80E16123446B900F74165 /* bottom-fade.png */; };
-		3EB80E2E1234482100F74165 /* UITableViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB80E2D1234482100F74165 /* UITableViewCellFactory.m */; };
-		3EB80E4012344D5000F74165 /* button_minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80E3E12344D5000F74165 /* button_minus@2x.png */; };
-		3EB80E4112344D5000F74165 /* button_plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB80E3F12344D5000F74165 /* button_plus@2x.png */; };
-		3EB80E4712357D3000F74165 /* DatabaseRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB80E4612357D3000F74165 /* DatabaseRequestManager.m */; };
+		3E892BE11268B26500A512B5 /* imgs in Resources */ = {isa = PBXBuildFile; fileRef = 3E892BCA1268B26500A512B5 /* imgs */; };
+		3EB5D5011268AB29009A80E0 /* AislesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4EB1268AB29009A80E0 /* AislesView.xib */; };
+		3EB5D5021268AB29009A80E0 /* DeliveryInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4EC1268AB29009A80E0 /* DeliveryInfoCell.xib */; };
+		3EB5D5031268AB29009A80E0 /* DeliverySlotsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4ED1268AB29009A80E0 /* DeliverySlotsView.xib */; };
+		3EB5D5041268AB29009A80E0 /* DepartmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4EE1268AB29009A80E0 /* DepartmentCell.xib */; };
+		3EB5D5051268AB29009A80E0 /* HomeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4EF1268AB29009A80E0 /* HomeView.xib */; };
+		3EB5D5061268AB29009A80E0 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F01268AB29009A80E0 /* MainWindow.xib */; };
+		3EB5D5071268AB29009A80E0 /* MoreSearchResultsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F11268AB29009A80E0 /* MoreSearchResultsCell.xib */; };
+		3EB5D5081268AB29009A80E0 /* OnlineBasketView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F21268AB29009A80E0 /* OnlineBasketView.xib */; };
+		3EB5D5091268AB29009A80E0 /* OnlineShopView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F31268AB29009A80E0 /* OnlineShopView.xib */; };
+		3EB5D50A1268AB29009A80E0 /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F41268AB29009A80E0 /* OverlayView.xib */; };
+		3EB5D50B1268AB29009A80E0 /* OverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F51268AB29009A80E0 /* OverlayViewController.xib */; };
+		3EB5D50C1268AB29009A80E0 /* ProductsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F61268AB29009A80E0 /* ProductsView.xib */; };
+		3EB5D50D1268AB29009A80E0 /* ProductViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F71268AB29009A80E0 /* ProductViewCell.xib */; };
+		3EB5D50E1268AB29009A80E0 /* RecipeBasketView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F81268AB29009A80E0 /* RecipeBasketView.xib */; };
+		3EB5D50F1268AB29009A80E0 /* RecipeCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F91268AB29009A80E0 /* RecipeCategoryView.xib */; };
+		3EB5D5101268AB29009A80E0 /* RecipeHistoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FA1268AB29009A80E0 /* RecipeHistoryView.xib */; };
+		3EB5D5111268AB29009A80E0 /* RecipeListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FB1268AB29009A80E0 /* RecipeListView.xib */; };
+		3EB5D5121268AB29009A80E0 /* RecipeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FC1268AB29009A80E0 /* RecipeView.xib */; };
+		3EB5D5131268AB29009A80E0 /* RecipeViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FD1268AB29009A80E0 /* RecipeViewCell.xib */; };
+		3EB5D5141268AB29009A80E0 /* SearchResultsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FE1268AB29009A80E0 /* SearchResultsView.xib */; };
+		3EB5D5151268AB29009A80E0 /* ShelvesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FF1268AB29009A80E0 /* ShelvesView.xib */; };
+		3EB5D5161268AB29009A80E0 /* ShoppingListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D5001268AB29009A80E0 /* ShoppingListView.xib */; };
+		3EB5D5371268AB3D009A80E0 /* AislesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5181268AB3D009A80E0 /* AislesViewController.m */; };
+		3EB5D5381268AB3D009A80E0 /* DeliverySlotsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D51A1268AB3D009A80E0 /* DeliverySlotsViewController.m */; };
+		3EB5D5391268AB3D009A80E0 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D51C1268AB3D009A80E0 /* HomeViewController.m */; };
+		3EB5D53A1268AB3D009A80E0 /* OnlineBasketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D51E1268AB3D009A80E0 /* OnlineBasketViewController.m */; };
+		3EB5D53B1268AB3D009A80E0 /* OnlineShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5201268AB3D009A80E0 /* OnlineShopViewController.m */; };
+		3EB5D53C1268AB3D009A80E0 /* OverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5221268AB3D009A80E0 /* OverlayViewController.m */; };
+		3EB5D53D1268AB3D009A80E0 /* ProductsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5241268AB3D009A80E0 /* ProductsViewController.m */; };
+		3EB5D53E1268AB3D009A80E0 /* RecipeBasketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */; };
+		3EB5D53F1268AB3D009A80E0 /* RecipeCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5281268AB3D009A80E0 /* RecipeCategoryViewController.m */; };
+		3EB5D5401268AB3D009A80E0 /* RecipeHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */; };
+		3EB5D5411268AB3D009A80E0 /* RecipeListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D52C1268AB3D009A80E0 /* RecipeListViewController.m */; };
+		3EB5D5421268AB3D009A80E0 /* RecipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D52E1268AB3D009A80E0 /* RecipeViewController.m */; };
+		3EB5D5431268AB3D009A80E0 /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5301268AB3D009A80E0 /* SearchResultsViewController.m */; };
+		3EB5D5441268AB3D009A80E0 /* ShelvesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5321268AB3D009A80E0 /* ShelvesViewController.m */; };
+		3EB5D5451268AB3D009A80E0 /* ShoppingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */; };
+		3EB5D5461268AB3D009A80E0 /* UITableViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */; };
+		3EB5D5711268AB4C009A80E0 /* APIRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5481268AB4C009A80E0 /* APIRequestManager.m */; };
+		3EB5D5721268AB4C009A80E0 /* DatabaseRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D54A1268AB4C009A80E0 /* DatabaseRequestManager.m */; };
+		3EB5D5731268AB4C009A80E0 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */; };
+		3EB5D5741268AB4C009A80E0 /* DeliverySlot.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D54E1268AB4C009A80E0 /* DeliverySlot.m */; };
+		3EB5D5751268AB4C009A80E0 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5521268AB4C009A80E0 /* NSObject+SBJSON.m */; };
+		3EB5D5761268AB4C009A80E0 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5541268AB4C009A80E0 /* NSString+SBJSON.m */; };
+		3EB5D5771268AB4C009A80E0 /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5561268AB4C009A80E0 /* SBJSON.m */; };
+		3EB5D5781268AB4C009A80E0 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5581268AB4C009A80E0 /* SBJsonBase.m */; };
+		3EB5D5791268AB4C009A80E0 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D55A1268AB4C009A80E0 /* SBJsonParser.m */; };
+		3EB5D57A1268AB4C009A80E0 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D55C1268AB4C009A80E0 /* SBJsonWriter.m */; };
+		3EB5D57B1268AB4C009A80E0 /* LoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D55E1268AB4C009A80E0 /* LoginManager.m */; };
+		3EB5D57C1268AB4C009A80E0 /* LogManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5601268AB4C009A80E0 /* LogManager.m */; };
+		3EB5D57D1268AB4C009A80E0 /* NSData-Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5621268AB4C009A80E0 /* NSData-Extended.m */; };
+		3EB5D57E1268AB4C009A80E0 /* Product.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5641268AB4C009A80E0 /* Product.m */; };
+		3EB5D57F1268AB4C009A80E0 /* ProductBasketManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5661268AB4C009A80E0 /* ProductBasketManager.m */; };
+		3EB5D5801268AB4C009A80E0 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5681268AB4C009A80E0 /* Reachability.m */; };
+		3EB5D5811268AB4C009A80E0 /* Recipe.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D56A1268AB4C009A80E0 /* Recipe.m */; };
+		3EB5D5821268AB4C009A80E0 /* RecipeBasketManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D56C1268AB4C009A80E0 /* RecipeBasketManager.m */; };
+		3EB5D5831268AB4C009A80E0 /* RecipeShopperAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D56E1268AB4C009A80E0 /* RecipeShopperAppDelegate.m */; };
+		3EB5D5841268AB4C009A80E0 /* UIImage-Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5701268AB4C009A80E0 /* UIImage-Extended.m */; };
+		3EB5D6701268ABA9009A80E0 /* recipeshopper.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D66F1268ABA9009A80E0 /* recipeshopper.sqlite */; };
+		3EB5D6AD1268ABBB009A80E0 /* recipe_base.css in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6721268ABBB009A80E0 /* recipe_base.css */; };
+		3EB5D6AE1268ABBB009A80E0 /* recipe_base.html in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6731268ABBB009A80E0 /* recipe_base.html */; };
+		3EB5D6B01268ABBB009A80E0 /* bottom-fade.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6781268ABBB009A80E0 /* bottom-fade.png */; };
+		3EB5D6B11268ABBB009A80E0 /* button_minus.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6791268ABBB009A80E0 /* button_minus.png */; };
+		3EB5D6B21268ABBB009A80E0 /* button_minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D67A1268ABBB009A80E0 /* button_minus@2x.png */; };
+		3EB5D6B31268ABBB009A80E0 /* button_plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D67B1268ABBB009A80E0 /* button_plus.png */; };
+		3EB5D6B41268ABBB009A80E0 /* button_plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D67C1268ABBB009A80E0 /* button_plus@2x.png */; };
+		3EB5D6B51268ABBB009A80E0 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D67D1268ABBB009A80E0 /* Default.png */; };
+		3EB5D6B61268ABBB009A80E0 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D67E1268ABBB009A80E0 /* Default@2x.png */; };
+		3EB5D6B71268ABBB009A80E0 /* download@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D67F1268ABBB009A80E0 /* download@2x.png */; };
+		3EB5D6B81268ABBB009A80E0 /* tesco_header.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6801268ABBB009A80E0 /* tesco_header.png */; };
+		3EB5D6B91268ABBB009A80E0 /* breakfasts.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6821268ABBB009A80E0 /* breakfasts.png */; };
+		3EB5D6BA1268ABBB009A80E0 /* breakfasts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6831268ABBB009A80E0 /* breakfasts@2x.png */; };
+		3EB5D6BB1268ABBB009A80E0 /* cakesBiscuits.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6841268ABBB009A80E0 /* cakesBiscuits.png */; };
+		3EB5D6BC1268ABBB009A80E0 /* cakesBiscuits@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6851268ABBB009A80E0 /* cakesBiscuits@2x.png */; };
+		3EB5D6BD1268ABBB009A80E0 /* desserts.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6861268ABBB009A80E0 /* desserts.png */; };
+		3EB5D6BE1268ABBB009A80E0 /* desserts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6871268ABBB009A80E0 /* desserts@2x.png */; };
+		3EB5D6BF1268ABBB009A80E0 /* dinners.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6881268ABBB009A80E0 /* dinners.png */; };
+		3EB5D6C01268ABBB009A80E0 /* dinners@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6891268ABBB009A80E0 /* dinners@2x.png */; };
+		3EB5D6C11268ABBB009A80E0 /* drinks.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D68A1268ABBB009A80E0 /* drinks.png */; };
+		3EB5D6C21268ABBB009A80E0 /* drinks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D68B1268ABBB009A80E0 /* drinks@2x.png */; };
+		3EB5D6C31268ABBB009A80E0 /* lunches.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D68C1268ABBB009A80E0 /* lunches.png */; };
+		3EB5D6C41268ABBB009A80E0 /* lunches@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D68D1268ABBB009A80E0 /* lunches@2x.png */; };
+		3EB5D6C51268ABBB009A80E0 /* mains.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D68E1268ABBB009A80E0 /* mains.png */; };
+		3EB5D6C61268ABBB009A80E0 /* mains@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D68F1268ABBB009A80E0 /* mains@2x.png */; };
+		3EB5D6C71268ABBB009A80E0 /* partyFood.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6901268ABBB009A80E0 /* partyFood.png */; };
+		3EB5D6C81268ABBB009A80E0 /* partyFood@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6911268ABBB009A80E0 /* partyFood@2x.png */; };
+		3EB5D6C91268ABBB009A80E0 /* salads.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6921268ABBB009A80E0 /* salads.png */; };
+		3EB5D6CA1268ABBB009A80E0 /* salads@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6931268ABBB009A80E0 /* salads@2x.png */; };
+		3EB5D6CB1268ABBB009A80E0 /* sauces.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6941268ABBB009A80E0 /* sauces.png */; };
+		3EB5D6CC1268ABBB009A80E0 /* sauces@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6951268ABBB009A80E0 /* sauces@2x.png */; };
+		3EB5D6CD1268ABBB009A80E0 /* snacksSides.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6961268ABBB009A80E0 /* snacksSides.png */; };
+		3EB5D6CE1268ABBB009A80E0 /* snacksSides@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6971268ABBB009A80E0 /* snacksSides@2x.png */; };
+		3EB5D6CF1268ABBB009A80E0 /* soups.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6981268ABBB009A80E0 /* soups.png */; };
+		3EB5D6D01268ABBB009A80E0 /* soups@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6991268ABBB009A80E0 /* soups@2x.png */; };
+		3EB5D6D11268ABBB009A80E0 /* starters.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D69A1268ABBB009A80E0 /* starters.png */; };
+		3EB5D6D21268ABBB009A80E0 /* starters@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D69B1268ABBB009A80E0 /* starters@2x.png */; };
+		3EB5D6D31268ABBB009A80E0 /* baby_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D69D1268ABBB009A80E0 /* baby_icon.png */; };
+		3EB5D6D41268ABBB009A80E0 /* bakery_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D69E1268ABBB009A80E0 /* bakery_icon.png */; };
+		3EB5D6D51268ABBB009A80E0 /* cupboard_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D69F1268ABBB009A80E0 /* cupboard_icon.png */; };
+		3EB5D6D61268ABBB009A80E0 /* drinks_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6A01268ABBB009A80E0 /* drinks_icon.png */; };
+		3EB5D6D71268ABBB009A80E0 /* fresh_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6A11268ABBB009A80E0 /* fresh_icon.png */; };
+		3EB5D6D81268ABBB009A80E0 /* frozen_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6A21268ABBB009A80E0 /* frozen_icon.png */; };
+		3EB5D6D91268ABBB009A80E0 /* health_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6A31268ABBB009A80E0 /* health_icon.png */; };
+		3EB5D6DA1268ABBB009A80E0 /* home_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6A41268ABBB009A80E0 /* home_icon.png */; };
+		3EB5D6DB1268ABBB009A80E0 /* household_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6A51268ABBB009A80E0 /* household_icon.png */; };
+		3EB5D6DC1268ABBB009A80E0 /* pets_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6A61268ABBB009A80E0 /* pets_icon.png */; };
+		3EB5D6DD1268ABBB009A80E0 /* icon_cart.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6A81268ABBB009A80E0 /* icon_cart.png */; };
+		3EB5D6DE1268ABBB009A80E0 /* icon_cart@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6A91268ABBB009A80E0 /* icon_cart@2x.png */; };
+		3EB5D6DF1268ABBB009A80E0 /* icon_home.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6AA1268ABBB009A80E0 /* icon_home.png */; };
+		3EB5D6E01268ABBB009A80E0 /* icon_shopping.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6AB1268ABBB009A80E0 /* icon_shopping.png */; };
+		3EB5D6E11268ABBB009A80E0 /* todo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6AC1268ABBB009A80E0 /* todo.png */; };
 		3EB80E4C1235A50F00F74165 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB80E4B1235A50F00F74165 /* libsqlite3.0.dylib */; };
-		3EB99D6A124E17CA0093EBF1 /* RecipeViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB99D69124E17CA0093EBF1 /* RecipeViewCell.xib */; };
-		3EB9A129124FC0A70093EBF1 /* OverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB9A128124FC0A70093EBF1 /* OverlayViewController.xib */; };
-		3EB9A2461250A2790093EBF1 /* DeliveryInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB9A2451250A2790093EBF1 /* DeliveryInfoCell.xib */; };
-		3EFBE0BA123CF0B4008B7DC2 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EFBE0B9123CF0B4008B7DC2 /* Reachability.m */; };
 		3EFBE0EC123CF117008B7DC2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EFBE0EB123CF117008B7DC2 /* SystemConfiguration.framework */; };
-		3EFBE174123D494D008B7DC2 /* ProductViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBE173123D494D008B7DC2 /* ProductViewCell.xib */; };
-		3EFBE196123D4F40008B7DC2 /* OnlineShopView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBE195123D4F40008B7DC2 /* OnlineShopView.xib */; };
-		3EFBE19C123D5121008B7DC2 /* OnlineShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EFBE19B123D5121008B7DC2 /* OnlineShopViewController.m */; };
-		3EFBE1C5123D576F008B7DC2 /* ShelvesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EFBE1C3123D576F008B7DC2 /* ShelvesViewController.m */; };
-		3EFBE1C6123D576F008B7DC2 /* ShelvesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBE1C4123D576F008B7DC2 /* ShelvesView.xib */; };
-		3EFBE1EF123D611A008B7DC2 /* AislesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EFBE1ED123D611A008B7DC2 /* AislesViewController.m */; };
-		3EFBE1F0123D611A008B7DC2 /* AislesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBE1EE123D611A008B7DC2 /* AislesView.xib */; };
-		3EFBE37D123E4D2E008B7DC2 /* ProductsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EFBE37B123E4D2E008B7DC2 /* ProductsViewController.m */; };
-		3EFBE37E123E4D2E008B7DC2 /* ProductsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBE37C123E4D2E008B7DC2 /* ProductsView.xib */; };
-		3EFBE3EA123E815B008B7DC2 /* OnlineBasketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EFBE3E9123E815B008B7DC2 /* OnlineBasketViewController.m */; };
-		3EFBE3EC123E8203008B7DC2 /* OnlineBasketView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBE3EB123E8203008B7DC2 /* OnlineBasketView.xib */; };
-		3EFBE5F4123FE9D8008B7DC2 /* ProductBasketManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EFBE5F3123FE9D8008B7DC2 /* ProductBasketManager.m */; };
-		3EFBEBA11243F887008B7DC2 /* DeliverySlot.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EFBEBA01243F887008B7DC2 /* DeliverySlot.m */; };
-		3EFBEBA91243FBBE008B7DC2 /* DeliverySlotsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EFBEBA71243FBBE008B7DC2 /* DeliverySlotsViewController.m */; };
-		3EFBEBAA1243FBBE008B7DC2 /* DeliverySlotsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBEBA81243FBBE008B7DC2 /* DeliverySlotsView.xib */; };
-		3EFBEE591247A188008B7DC2 /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EFBEE571247A188008B7DC2 /* SearchResultsViewController.m */; };
-		3EFBEE5A1247A188008B7DC2 /* SearchResultsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBEE581247A188008B7DC2 /* SearchResultsView.xib */; };
-		3EFBEEA41247AA5D008B7DC2 /* OverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EFBEEA21247AA5D008B7DC2 /* OverlayViewController.m */; };
-		3EFBEEA51247AA5D008B7DC2 /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBEEA31247AA5D008B7DC2 /* OverlayView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D3623240D0F684500981E51 /* RecipeShopperAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecipeShopperAppDelegate.h; sourceTree = "<group>"; };
-		1D3623250D0F684500981E51 /* RecipeShopperAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecipeShopperAppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* RecipeShopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecipeShopper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		28216C950DB411BC00E5133A /* RecipeCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecipeCategoryViewController.h; sourceTree = "<group>"; };
-		28216C960DB411BC00E5133A /* RecipeCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecipeCategoryViewController.m; sourceTree = "<group>"; };
-		282CCBFD0DB6C98000C4EA27 /* RecipeBasketView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeBasketView.xib; path = ../RecipeBasketView.xib; sourceTree = "<group>"; };
-		2840D7CD1179279E00D7F93C /* RecipeCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeCategoryView.xib; path = ../RecipeCategoryView.xib; sourceTree = "<group>"; };
 		288765070DF74369002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		28A0AB4B0D9B1048005BE974 /* RecipeShopper_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecipeShopper_Prefix.pch; sourceTree = "<group>"; };
-		28AD73870D9D96C1002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = ../MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		3E22B6F212560A4200223CC3 /* recipeshopper.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = recipeshopper.sqlite; sourceTree = "<group>"; };
-		3E22B87112560FD200223CC3 /* imgs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = imgs; sourceTree = "<group>"; };
-		3E22BA02125A32CD00223CC3 /* button_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_green.png; sourceTree = "<group>"; };
-		3E22CCBE124963E00007FF5E /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
-		3E22CCBF124963E00007FF5E /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
-		3E347C1712363D51009E0214 /* NSData-Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData-Extended.h"; sourceTree = "<group>"; };
-		3E347C1812363D51009E0214 /* NSData-Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData-Extended.m"; sourceTree = "<group>"; };
-		3E347C1E1236408D009E0214 /* Recipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Recipe.h; sourceTree = "<group>"; };
-		3E347C1F1236408D009E0214 /* Recipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Recipe.m; sourceTree = "<group>"; };
-		3E347C7312364A58009E0214 /* UIImage-Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage-Extended.h"; sourceTree = "<group>"; };
-		3E347C7412364A58009E0214 /* UIImage-Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage-Extended.m"; sourceTree = "<group>"; };
-		3E347C87123655D2009E0214 /* Product.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Product.h; sourceTree = "<group>"; };
-		3E347C88123655D2009E0214 /* Product.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Product.m; sourceTree = "<group>"; };
-		3E347E671236B5B9009E0214 /* recipe_base.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = recipe_base.html; sourceTree = "<group>"; };
-		3E347E681236B5B9009E0214 /* recipe_base.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = recipe_base.css; sourceTree = "<group>"; };
-		3E34804E1236FB50009E0214 /* tesco_header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tesco_header.png; sourceTree = "<group>"; };
-		3E3480871237A8EA009E0214 /* RecipeBasketManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecipeBasketManager.h; sourceTree = "<group>"; };
-		3E3480881237A8EA009E0214 /* RecipeBasketManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecipeBasketManager.m; sourceTree = "<group>"; };
-		3E34819E123A6432009E0214 /* APIRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIRequestManager.h; sourceTree = "<group>"; };
-		3E34819F123A6432009E0214 /* APIRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIRequestManager.m; sourceTree = "<group>"; };
-		3E3481A3123A67CB009E0214 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
-		3E3481A4123A67CB009E0214 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
-		3E3481A5123A67CB009E0214 /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
-		3E3481A6123A67CB009E0214 /* NSString+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
-		3E3481A7123A67CB009E0214 /* NSString+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SBJSON.m"; sourceTree = "<group>"; };
-		3E3481A8123A67CB009E0214 /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
-		3E3481A9123A67CB009E0214 /* SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJSON.m; sourceTree = "<group>"; };
-		3E3481AA123A67CB009E0214 /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
-		3E3481AB123A67CB009E0214 /* SBJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonBase.m; sourceTree = "<group>"; };
-		3E3481AC123A67CB009E0214 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
-		3E3481AD123A67CB009E0214 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
-		3E3481AE123A67CB009E0214 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
-		3E3481AF123A67CB009E0214 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
-		3E3481F8123A8862009E0214 /* ShoppingListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShoppingListViewController.h; sourceTree = "<group>"; };
-		3E3481F9123A8862009E0214 /* ShoppingListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShoppingListViewController.m; sourceTree = "<group>"; };
-		3E3481FA123A8862009E0214 /* ShoppingListView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShoppingListView.xib; sourceTree = "<group>"; };
 		3E34822C123A8E58009E0214 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		3E5B8914123B95530070527A /* LogManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogManager.h; sourceTree = "<group>"; };
-		3E5B8915123B95530070527A /* LogManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogManager.m; sourceTree = "<group>"; };
-		3EAF05FF124B6B6700BAF6CD /* LoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginManager.h; sourceTree = "<group>"; };
-		3EAF0600124B6B6700BAF6CD /* LoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginManager.m; sourceTree = "<group>"; };
-		3EAF0678124CD89400BAF6CD /* baby_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = baby_icon.png; sourceTree = "<group>"; };
-		3EAF0679124CD89400BAF6CD /* bakery_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bakery_icon.png; sourceTree = "<group>"; };
-		3EAF067A124CD89400BAF6CD /* cupboard_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cupboard_icon.png; sourceTree = "<group>"; };
-		3EAF067B124CD89400BAF6CD /* drinks_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drinks_icon.png; sourceTree = "<group>"; };
-		3EAF067C124CD89400BAF6CD /* fresh_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fresh_icon.png; sourceTree = "<group>"; };
-		3EAF067D124CD89400BAF6CD /* frozen_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frozen_icon.png; sourceTree = "<group>"; };
-		3EAF067E124CD89400BAF6CD /* health_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = health_icon.png; sourceTree = "<group>"; };
-		3EAF067F124CD89400BAF6CD /* home_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_icon.png; sourceTree = "<group>"; };
-		3EAF0680124CD89400BAF6CD /* household_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = household_icon.png; sourceTree = "<group>"; };
-		3EAF0681124CD89400BAF6CD /* pets_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pets_icon.png; sourceTree = "<group>"; };
-		3EAF0701124CE5CC00BAF6CD /* DepartmentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DepartmentCell.xib; path = ../DepartmentCell.xib; sourceTree = "<group>"; };
-		3EAF074F124CF37F00BAF6CD /* icon_shopping.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shopping.png; sourceTree = "<group>"; };
-		3EB5CFB7125F1D26009A80E0 /* MoreSearchResultsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MoreSearchResultsCell.xib; path = ../MoreSearchResultsCell.xib; sourceTree = "<group>"; };
-		3EB5CFC6125F1EE9009A80E0 /* download@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "download@2x.png"; sourceTree = "<group>"; };
-		3EB80C6D1233F91100F74165 /* breakfasts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = breakfasts.png; sourceTree = "<group>"; };
-		3EB80C6E1233F91100F74165 /* cakesBiscuits.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cakesBiscuits.png; sourceTree = "<group>"; };
-		3EB80C6F1233F91100F74165 /* desserts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = desserts.png; sourceTree = "<group>"; };
-		3EB80C701233F91100F74165 /* dinners.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dinners.png; sourceTree = "<group>"; };
-		3EB80C711233F91100F74165 /* drinks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drinks.png; sourceTree = "<group>"; };
-		3EB80C721233F91100F74165 /* lunches.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lunches.png; sourceTree = "<group>"; };
-		3EB80C731233F91100F74165 /* mains.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mains.png; sourceTree = "<group>"; };
-		3EB80C741233F91100F74165 /* partyFood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = partyFood.png; sourceTree = "<group>"; };
-		3EB80C751233F91100F74165 /* salads.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = salads.png; sourceTree = "<group>"; };
-		3EB80C761233F91100F74165 /* sauces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sauces.png; sourceTree = "<group>"; };
-		3EB80C771233F91100F74165 /* snacksSides.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snacksSides.png; sourceTree = "<group>"; };
-		3EB80C781233F91100F74165 /* soups.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = soups.png; sourceTree = "<group>"; };
-		3EB80C791233F91100F74165 /* starters.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = starters.png; sourceTree = "<group>"; };
-		3EB80CB71234074500F74165 /* icon_book.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_book.png; sourceTree = "<group>"; };
-		3EB80CC612340B8800F74165 /* icon_cart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_cart.png; sourceTree = "<group>"; };
-		3EB80CCF12340C4300F74165 /* RecipeBasketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecipeBasketViewController.h; sourceTree = "<group>"; };
-		3EB80CD012340C4300F74165 /* RecipeBasketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecipeBasketViewController.m; sourceTree = "<group>"; };
-		3EB80DE7123424E200F74165 /* RecipeListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecipeListViewController.h; sourceTree = "<group>"; };
-		3EB80DE8123424E200F74165 /* RecipeListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecipeListViewController.m; sourceTree = "<group>"; };
-		3EB80DE9123424E200F74165 /* RecipeListView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeListView.xib; sourceTree = "<group>"; };
-		3EB80E0E1234446100F74165 /* RecipeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecipeViewController.h; sourceTree = "<group>"; };
-		3EB80E0F1234446100F74165 /* RecipeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecipeViewController.m; sourceTree = "<group>"; };
-		3EB80E101234446100F74165 /* RecipeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeView.xib; sourceTree = "<group>"; };
-		3EB80E16123446B900F74165 /* bottom-fade.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bottom-fade.png"; sourceTree = "<group>"; };
-		3EB80E2C1234482100F74165 /* UITableViewCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UITableViewCellFactory.h; path = ../UITableViewCellFactory.h; sourceTree = "<group>"; };
-		3EB80E2D1234482100F74165 /* UITableViewCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UITableViewCellFactory.m; path = ../UITableViewCellFactory.m; sourceTree = "<group>"; };
-		3EB80E3E12344D5000F74165 /* button_minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_minus@2x.png"; sourceTree = "<group>"; };
-		3EB80E3F12344D5000F74165 /* button_plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_plus@2x.png"; sourceTree = "<group>"; };
-		3EB80E4512357D3000F74165 /* DatabaseRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseRequestManager.h; sourceTree = "<group>"; };
-		3EB80E4612357D3000F74165 /* DatabaseRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseRequestManager.m; sourceTree = "<group>"; };
+		3E892BCA1268B26500A512B5 /* imgs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = imgs; sourceTree = "<group>"; };
+		3EB5D4EB1268AB29009A80E0 /* AislesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AislesView.xib; path = View/AislesView.xib; sourceTree = "<group>"; };
+		3EB5D4EC1268AB29009A80E0 /* DeliveryInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DeliveryInfoCell.xib; path = View/DeliveryInfoCell.xib; sourceTree = "<group>"; };
+		3EB5D4ED1268AB29009A80E0 /* DeliverySlotsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DeliverySlotsView.xib; path = View/DeliverySlotsView.xib; sourceTree = "<group>"; };
+		3EB5D4EE1268AB29009A80E0 /* DepartmentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DepartmentCell.xib; path = View/DepartmentCell.xib; sourceTree = "<group>"; };
+		3EB5D4EF1268AB29009A80E0 /* HomeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = HomeView.xib; path = View/HomeView.xib; sourceTree = "<group>"; };
+		3EB5D4F01268AB29009A80E0 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = View/MainWindow.xib; sourceTree = "<group>"; };
+		3EB5D4F11268AB29009A80E0 /* MoreSearchResultsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MoreSearchResultsCell.xib; path = View/MoreSearchResultsCell.xib; sourceTree = "<group>"; };
+		3EB5D4F21268AB29009A80E0 /* OnlineBasketView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = OnlineBasketView.xib; path = View/OnlineBasketView.xib; sourceTree = "<group>"; };
+		3EB5D4F31268AB29009A80E0 /* OnlineShopView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = OnlineShopView.xib; path = View/OnlineShopView.xib; sourceTree = "<group>"; };
+		3EB5D4F41268AB29009A80E0 /* OverlayView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = OverlayView.xib; path = View/OverlayView.xib; sourceTree = "<group>"; };
+		3EB5D4F51268AB29009A80E0 /* OverlayViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = OverlayViewController.xib; path = View/OverlayViewController.xib; sourceTree = "<group>"; };
+		3EB5D4F61268AB29009A80E0 /* ProductsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ProductsView.xib; path = View/ProductsView.xib; sourceTree = "<group>"; };
+		3EB5D4F71268AB29009A80E0 /* ProductViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ProductViewCell.xib; path = View/ProductViewCell.xib; sourceTree = "<group>"; };
+		3EB5D4F81268AB29009A80E0 /* RecipeBasketView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeBasketView.xib; path = View/RecipeBasketView.xib; sourceTree = "<group>"; };
+		3EB5D4F91268AB29009A80E0 /* RecipeCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeCategoryView.xib; path = View/RecipeCategoryView.xib; sourceTree = "<group>"; };
+		3EB5D4FA1268AB29009A80E0 /* RecipeHistoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeHistoryView.xib; path = View/RecipeHistoryView.xib; sourceTree = "<group>"; };
+		3EB5D4FB1268AB29009A80E0 /* RecipeListView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeListView.xib; path = View/RecipeListView.xib; sourceTree = "<group>"; };
+		3EB5D4FC1268AB29009A80E0 /* RecipeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeView.xib; path = View/RecipeView.xib; sourceTree = "<group>"; };
+		3EB5D4FD1268AB29009A80E0 /* RecipeViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeViewCell.xib; path = View/RecipeViewCell.xib; sourceTree = "<group>"; };
+		3EB5D4FE1268AB29009A80E0 /* SearchResultsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SearchResultsView.xib; path = View/SearchResultsView.xib; sourceTree = "<group>"; };
+		3EB5D4FF1268AB29009A80E0 /* ShelvesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ShelvesView.xib; path = View/ShelvesView.xib; sourceTree = "<group>"; };
+		3EB5D5001268AB29009A80E0 /* ShoppingListView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ShoppingListView.xib; path = View/ShoppingListView.xib; sourceTree = "<group>"; };
+		3EB5D5171268AB3D009A80E0 /* AislesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AislesViewController.h; path = Controller/AislesViewController.h; sourceTree = "<group>"; };
+		3EB5D5181268AB3D009A80E0 /* AislesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AislesViewController.m; path = Controller/AislesViewController.m; sourceTree = "<group>"; };
+		3EB5D5191268AB3D009A80E0 /* DeliverySlotsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeliverySlotsViewController.h; path = Controller/DeliverySlotsViewController.h; sourceTree = "<group>"; };
+		3EB5D51A1268AB3D009A80E0 /* DeliverySlotsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DeliverySlotsViewController.m; path = Controller/DeliverySlotsViewController.m; sourceTree = "<group>"; };
+		3EB5D51B1268AB3D009A80E0 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeViewController.h; path = Controller/HomeViewController.h; sourceTree = "<group>"; };
+		3EB5D51C1268AB3D009A80E0 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeViewController.m; path = Controller/HomeViewController.m; sourceTree = "<group>"; };
+		3EB5D51D1268AB3D009A80E0 /* OnlineBasketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OnlineBasketViewController.h; path = Controller/OnlineBasketViewController.h; sourceTree = "<group>"; };
+		3EB5D51E1268AB3D009A80E0 /* OnlineBasketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OnlineBasketViewController.m; path = Controller/OnlineBasketViewController.m; sourceTree = "<group>"; };
+		3EB5D51F1268AB3D009A80E0 /* OnlineShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OnlineShopViewController.h; path = Controller/OnlineShopViewController.h; sourceTree = "<group>"; };
+		3EB5D5201268AB3D009A80E0 /* OnlineShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OnlineShopViewController.m; path = Controller/OnlineShopViewController.m; sourceTree = "<group>"; };
+		3EB5D5211268AB3D009A80E0 /* OverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OverlayViewController.h; path = Controller/OverlayViewController.h; sourceTree = "<group>"; };
+		3EB5D5221268AB3D009A80E0 /* OverlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OverlayViewController.m; path = Controller/OverlayViewController.m; sourceTree = "<group>"; };
+		3EB5D5231268AB3D009A80E0 /* ProductsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProductsViewController.h; path = Controller/ProductsViewController.h; sourceTree = "<group>"; };
+		3EB5D5241268AB3D009A80E0 /* ProductsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProductsViewController.m; path = Controller/ProductsViewController.m; sourceTree = "<group>"; };
+		3EB5D5251268AB3D009A80E0 /* RecipeBasketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecipeBasketViewController.h; path = Controller/RecipeBasketViewController.h; sourceTree = "<group>"; };
+		3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecipeBasketViewController.m; path = Controller/RecipeBasketViewController.m; sourceTree = "<group>"; };
+		3EB5D5271268AB3D009A80E0 /* RecipeCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecipeCategoryViewController.h; path = Controller/RecipeCategoryViewController.h; sourceTree = "<group>"; };
+		3EB5D5281268AB3D009A80E0 /* RecipeCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecipeCategoryViewController.m; path = Controller/RecipeCategoryViewController.m; sourceTree = "<group>"; };
+		3EB5D5291268AB3D009A80E0 /* RecipeHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecipeHistoryViewController.h; path = Controller/RecipeHistoryViewController.h; sourceTree = "<group>"; };
+		3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecipeHistoryViewController.m; path = Controller/RecipeHistoryViewController.m; sourceTree = "<group>"; };
+		3EB5D52B1268AB3D009A80E0 /* RecipeListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecipeListViewController.h; path = Controller/RecipeListViewController.h; sourceTree = "<group>"; };
+		3EB5D52C1268AB3D009A80E0 /* RecipeListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecipeListViewController.m; path = Controller/RecipeListViewController.m; sourceTree = "<group>"; };
+		3EB5D52D1268AB3D009A80E0 /* RecipeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecipeViewController.h; path = Controller/RecipeViewController.h; sourceTree = "<group>"; };
+		3EB5D52E1268AB3D009A80E0 /* RecipeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecipeViewController.m; path = Controller/RecipeViewController.m; sourceTree = "<group>"; };
+		3EB5D52F1268AB3D009A80E0 /* SearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchResultsViewController.h; path = Controller/SearchResultsViewController.h; sourceTree = "<group>"; };
+		3EB5D5301268AB3D009A80E0 /* SearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchResultsViewController.m; path = Controller/SearchResultsViewController.m; sourceTree = "<group>"; };
+		3EB5D5311268AB3D009A80E0 /* ShelvesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShelvesViewController.h; path = Controller/ShelvesViewController.h; sourceTree = "<group>"; };
+		3EB5D5321268AB3D009A80E0 /* ShelvesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShelvesViewController.m; path = Controller/ShelvesViewController.m; sourceTree = "<group>"; };
+		3EB5D5331268AB3D009A80E0 /* ShoppingListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShoppingListViewController.h; path = Controller/ShoppingListViewController.h; sourceTree = "<group>"; };
+		3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShoppingListViewController.m; path = Controller/ShoppingListViewController.m; sourceTree = "<group>"; };
+		3EB5D5351268AB3D009A80E0 /* UITableViewCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UITableViewCellFactory.h; path = Controller/UITableViewCellFactory.h; sourceTree = "<group>"; };
+		3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UITableViewCellFactory.m; path = Controller/UITableViewCellFactory.m; sourceTree = "<group>"; };
+		3EB5D5471268AB4C009A80E0 /* APIRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APIRequestManager.h; path = Model/APIRequestManager.h; sourceTree = "<group>"; };
+		3EB5D5481268AB4C009A80E0 /* APIRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APIRequestManager.m; path = Model/APIRequestManager.m; sourceTree = "<group>"; };
+		3EB5D5491268AB4C009A80E0 /* DatabaseRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DatabaseRequestManager.h; path = Model/DatabaseRequestManager.h; sourceTree = "<group>"; };
+		3EB5D54A1268AB4C009A80E0 /* DatabaseRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DatabaseRequestManager.m; path = Model/DatabaseRequestManager.m; sourceTree = "<group>"; };
+		3EB5D54B1268AB4C009A80E0 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataManager.h; path = Model/DataManager.h; sourceTree = "<group>"; };
+		3EB5D54C1268AB4C009A80E0 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataManager.m; path = Model/DataManager.m; sourceTree = "<group>"; };
+		3EB5D54D1268AB4C009A80E0 /* DeliverySlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeliverySlot.h; path = Model/DeliverySlot.h; sourceTree = "<group>"; };
+		3EB5D54E1268AB4C009A80E0 /* DeliverySlot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DeliverySlot.m; path = Model/DeliverySlot.m; sourceTree = "<group>"; };
+		3EB5D5501268AB4C009A80E0 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
+		3EB5D5511268AB4C009A80E0 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
+		3EB5D5521268AB4C009A80E0 /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
+		3EB5D5531268AB4C009A80E0 /* NSString+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
+		3EB5D5541268AB4C009A80E0 /* NSString+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SBJSON.m"; sourceTree = "<group>"; };
+		3EB5D5551268AB4C009A80E0 /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
+		3EB5D5561268AB4C009A80E0 /* SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJSON.m; sourceTree = "<group>"; };
+		3EB5D5571268AB4C009A80E0 /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
+		3EB5D5581268AB4C009A80E0 /* SBJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonBase.m; sourceTree = "<group>"; };
+		3EB5D5591268AB4C009A80E0 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
+		3EB5D55A1268AB4C009A80E0 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
+		3EB5D55B1268AB4C009A80E0 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
+		3EB5D55C1268AB4C009A80E0 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		3EB5D55D1268AB4C009A80E0 /* LoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginManager.h; path = Model/LoginManager.h; sourceTree = "<group>"; };
+		3EB5D55E1268AB4C009A80E0 /* LoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginManager.m; path = Model/LoginManager.m; sourceTree = "<group>"; };
+		3EB5D55F1268AB4C009A80E0 /* LogManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogManager.h; path = Model/LogManager.h; sourceTree = "<group>"; };
+		3EB5D5601268AB4C009A80E0 /* LogManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogManager.m; path = Model/LogManager.m; sourceTree = "<group>"; };
+		3EB5D5611268AB4C009A80E0 /* NSData-Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData-Extended.h"; path = "Model/NSData-Extended.h"; sourceTree = "<group>"; };
+		3EB5D5621268AB4C009A80E0 /* NSData-Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData-Extended.m"; path = "Model/NSData-Extended.m"; sourceTree = "<group>"; };
+		3EB5D5631268AB4C009A80E0 /* Product.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Product.h; path = Model/Product.h; sourceTree = "<group>"; };
+		3EB5D5641268AB4C009A80E0 /* Product.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Product.m; path = Model/Product.m; sourceTree = "<group>"; };
+		3EB5D5651268AB4C009A80E0 /* ProductBasketManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProductBasketManager.h; path = Model/ProductBasketManager.h; sourceTree = "<group>"; };
+		3EB5D5661268AB4C009A80E0 /* ProductBasketManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProductBasketManager.m; path = Model/ProductBasketManager.m; sourceTree = "<group>"; };
+		3EB5D5671268AB4C009A80E0 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Model/Reachability.h; sourceTree = "<group>"; };
+		3EB5D5681268AB4C009A80E0 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Model/Reachability.m; sourceTree = "<group>"; };
+		3EB5D5691268AB4C009A80E0 /* Recipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Recipe.h; path = Model/Recipe.h; sourceTree = "<group>"; };
+		3EB5D56A1268AB4C009A80E0 /* Recipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Recipe.m; path = Model/Recipe.m; sourceTree = "<group>"; };
+		3EB5D56B1268AB4C009A80E0 /* RecipeBasketManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecipeBasketManager.h; path = Model/RecipeBasketManager.h; sourceTree = "<group>"; };
+		3EB5D56C1268AB4C009A80E0 /* RecipeBasketManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecipeBasketManager.m; path = Model/RecipeBasketManager.m; sourceTree = "<group>"; };
+		3EB5D56D1268AB4C009A80E0 /* RecipeShopperAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecipeShopperAppDelegate.h; path = Model/RecipeShopperAppDelegate.h; sourceTree = "<group>"; };
+		3EB5D56E1268AB4C009A80E0 /* RecipeShopperAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecipeShopperAppDelegate.m; path = Model/RecipeShopperAppDelegate.m; sourceTree = "<group>"; };
+		3EB5D56F1268AB4C009A80E0 /* UIImage-Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage-Extended.h"; path = "Model/UIImage-Extended.h"; sourceTree = "<group>"; };
+		3EB5D5701268AB4C009A80E0 /* UIImage-Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage-Extended.m"; path = "Model/UIImage-Extended.m"; sourceTree = "<group>"; };
+		3EB5D66F1268ABA9009A80E0 /* recipeshopper.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = recipeshopper.sqlite; sourceTree = "<group>"; };
+		3EB5D6721268ABBB009A80E0 /* recipe_base.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = recipe_base.css; sourceTree = "<group>"; };
+		3EB5D6731268ABBB009A80E0 /* recipe_base.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = recipe_base.html; sourceTree = "<group>"; };
+		3EB5D6781268ABBB009A80E0 /* bottom-fade.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bottom-fade.png"; sourceTree = "<group>"; };
+		3EB5D6791268ABBB009A80E0 /* button_minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_minus.png; sourceTree = "<group>"; };
+		3EB5D67A1268ABBB009A80E0 /* button_minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_minus@2x.png"; sourceTree = "<group>"; };
+		3EB5D67B1268ABBB009A80E0 /* button_plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_plus.png; sourceTree = "<group>"; };
+		3EB5D67C1268ABBB009A80E0 /* button_plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_plus@2x.png"; sourceTree = "<group>"; };
+		3EB5D67D1268ABBB009A80E0 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		3EB5D67E1268ABBB009A80E0 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		3EB5D67F1268ABBB009A80E0 /* download@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "download@2x.png"; sourceTree = "<group>"; };
+		3EB5D6801268ABBB009A80E0 /* tesco_header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tesco_header.png; sourceTree = "<group>"; };
+		3EB5D6821268ABBB009A80E0 /* breakfasts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = breakfasts.png; sourceTree = "<group>"; };
+		3EB5D6831268ABBB009A80E0 /* breakfasts@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "breakfasts@2x.png"; sourceTree = "<group>"; };
+		3EB5D6841268ABBB009A80E0 /* cakesBiscuits.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cakesBiscuits.png; sourceTree = "<group>"; };
+		3EB5D6851268ABBB009A80E0 /* cakesBiscuits@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cakesBiscuits@2x.png"; sourceTree = "<group>"; };
+		3EB5D6861268ABBB009A80E0 /* desserts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = desserts.png; sourceTree = "<group>"; };
+		3EB5D6871268ABBB009A80E0 /* desserts@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "desserts@2x.png"; sourceTree = "<group>"; };
+		3EB5D6881268ABBB009A80E0 /* dinners.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dinners.png; sourceTree = "<group>"; };
+		3EB5D6891268ABBB009A80E0 /* dinners@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dinners@2x.png"; sourceTree = "<group>"; };
+		3EB5D68A1268ABBB009A80E0 /* drinks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drinks.png; sourceTree = "<group>"; };
+		3EB5D68B1268ABBB009A80E0 /* drinks@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "drinks@2x.png"; sourceTree = "<group>"; };
+		3EB5D68C1268ABBB009A80E0 /* lunches.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lunches.png; sourceTree = "<group>"; };
+		3EB5D68D1268ABBB009A80E0 /* lunches@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lunches@2x.png"; sourceTree = "<group>"; };
+		3EB5D68E1268ABBB009A80E0 /* mains.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mains.png; sourceTree = "<group>"; };
+		3EB5D68F1268ABBB009A80E0 /* mains@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mains@2x.png"; sourceTree = "<group>"; };
+		3EB5D6901268ABBB009A80E0 /* partyFood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = partyFood.png; sourceTree = "<group>"; };
+		3EB5D6911268ABBB009A80E0 /* partyFood@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "partyFood@2x.png"; sourceTree = "<group>"; };
+		3EB5D6921268ABBB009A80E0 /* salads.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = salads.png; sourceTree = "<group>"; };
+		3EB5D6931268ABBB009A80E0 /* salads@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "salads@2x.png"; sourceTree = "<group>"; };
+		3EB5D6941268ABBB009A80E0 /* sauces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sauces.png; sourceTree = "<group>"; };
+		3EB5D6951268ABBB009A80E0 /* sauces@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sauces@2x.png"; sourceTree = "<group>"; };
+		3EB5D6961268ABBB009A80E0 /* snacksSides.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snacksSides.png; sourceTree = "<group>"; };
+		3EB5D6971268ABBB009A80E0 /* snacksSides@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snacksSides@2x.png"; sourceTree = "<group>"; };
+		3EB5D6981268ABBB009A80E0 /* soups.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = soups.png; sourceTree = "<group>"; };
+		3EB5D6991268ABBB009A80E0 /* soups@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "soups@2x.png"; sourceTree = "<group>"; };
+		3EB5D69A1268ABBB009A80E0 /* starters.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = starters.png; sourceTree = "<group>"; };
+		3EB5D69B1268ABBB009A80E0 /* starters@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "starters@2x.png"; sourceTree = "<group>"; };
+		3EB5D69D1268ABBB009A80E0 /* baby_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = baby_icon.png; sourceTree = "<group>"; };
+		3EB5D69E1268ABBB009A80E0 /* bakery_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bakery_icon.png; sourceTree = "<group>"; };
+		3EB5D69F1268ABBB009A80E0 /* cupboard_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cupboard_icon.png; sourceTree = "<group>"; };
+		3EB5D6A01268ABBB009A80E0 /* drinks_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drinks_icon.png; sourceTree = "<group>"; };
+		3EB5D6A11268ABBB009A80E0 /* fresh_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fresh_icon.png; sourceTree = "<group>"; };
+		3EB5D6A21268ABBB009A80E0 /* frozen_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frozen_icon.png; sourceTree = "<group>"; };
+		3EB5D6A31268ABBB009A80E0 /* health_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = health_icon.png; sourceTree = "<group>"; };
+		3EB5D6A41268ABBB009A80E0 /* home_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_icon.png; sourceTree = "<group>"; };
+		3EB5D6A51268ABBB009A80E0 /* household_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = household_icon.png; sourceTree = "<group>"; };
+		3EB5D6A61268ABBB009A80E0 /* pets_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pets_icon.png; sourceTree = "<group>"; };
+		3EB5D6A81268ABBB009A80E0 /* icon_cart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_cart.png; sourceTree = "<group>"; };
+		3EB5D6A91268ABBB009A80E0 /* icon_cart@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_cart@2x.png"; sourceTree = "<group>"; };
+		3EB5D6AA1268ABBB009A80E0 /* icon_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_home.png; sourceTree = "<group>"; };
+		3EB5D6AB1268ABBB009A80E0 /* icon_shopping.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shopping.png; sourceTree = "<group>"; };
+		3EB5D6AC1268ABBB009A80E0 /* todo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = todo.png; sourceTree = "<group>"; };
 		3EB80E4B1235A50F00F74165 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
-		3EB99D69124E17CA0093EBF1 /* RecipeViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeViewCell.xib; path = ../RecipeViewCell.xib; sourceTree = "<group>"; };
-		3EB9A128124FC0A70093EBF1 /* OverlayViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = OverlayViewController.xib; path = ../OverlayViewController.xib; sourceTree = "<group>"; };
-		3EB9A2451250A2790093EBF1 /* DeliveryInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DeliveryInfoCell.xib; path = ../DeliveryInfoCell.xib; sourceTree = "<group>"; };
-		3EFBE0B8123CF0B4008B7DC2 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		3EFBE0B9123CF0B4008B7DC2 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		3EFBE0EB123CF117008B7DC2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		3EFBE173123D494D008B7DC2 /* ProductViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ProductViewCell.xib; path = ../ProductViewCell.xib; sourceTree = "<group>"; };
-		3EFBE195123D4F40008B7DC2 /* OnlineShopView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = OnlineShopView.xib; path = ../OnlineShopView.xib; sourceTree = "<group>"; };
-		3EFBE19A123D5121008B7DC2 /* OnlineShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnlineShopViewController.h; sourceTree = "<group>"; };
-		3EFBE19B123D5121008B7DC2 /* OnlineShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnlineShopViewController.m; sourceTree = "<group>"; };
-		3EFBE1C2123D576F008B7DC2 /* ShelvesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShelvesViewController.h; sourceTree = "<group>"; };
-		3EFBE1C3123D576F008B7DC2 /* ShelvesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShelvesViewController.m; sourceTree = "<group>"; };
-		3EFBE1C4123D576F008B7DC2 /* ShelvesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShelvesView.xib; sourceTree = "<group>"; };
-		3EFBE1EC123D611A008B7DC2 /* AislesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AislesViewController.h; sourceTree = "<group>"; };
-		3EFBE1ED123D611A008B7DC2 /* AislesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AislesViewController.m; sourceTree = "<group>"; };
-		3EFBE1EE123D611A008B7DC2 /* AislesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AislesView.xib; sourceTree = "<group>"; };
-		3EFBE37A123E4D2E008B7DC2 /* ProductsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductsViewController.h; sourceTree = "<group>"; };
-		3EFBE37B123E4D2E008B7DC2 /* ProductsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductsViewController.m; sourceTree = "<group>"; };
-		3EFBE37C123E4D2E008B7DC2 /* ProductsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductsView.xib; sourceTree = "<group>"; };
-		3EFBE3E8123E815B008B7DC2 /* OnlineBasketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnlineBasketViewController.h; sourceTree = "<group>"; };
-		3EFBE3E9123E815B008B7DC2 /* OnlineBasketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnlineBasketViewController.m; sourceTree = "<group>"; };
-		3EFBE3EB123E8203008B7DC2 /* OnlineBasketView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = OnlineBasketView.xib; path = ../OnlineBasketView.xib; sourceTree = "<group>"; };
-		3EFBE5F2123FE9D8008B7DC2 /* ProductBasketManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductBasketManager.h; sourceTree = "<group>"; };
-		3EFBE5F3123FE9D8008B7DC2 /* ProductBasketManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductBasketManager.m; sourceTree = "<group>"; };
-		3EFBEB9F1243F887008B7DC2 /* DeliverySlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeliverySlot.h; sourceTree = "<group>"; };
-		3EFBEBA01243F887008B7DC2 /* DeliverySlot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeliverySlot.m; sourceTree = "<group>"; };
-		3EFBEBA61243FBBE008B7DC2 /* DeliverySlotsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeliverySlotsViewController.h; sourceTree = "<group>"; };
-		3EFBEBA71243FBBE008B7DC2 /* DeliverySlotsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeliverySlotsViewController.m; sourceTree = "<group>"; };
-		3EFBEBA81243FBBE008B7DC2 /* DeliverySlotsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeliverySlotsView.xib; sourceTree = "<group>"; };
-		3EFBEE561247A188008B7DC2 /* SearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsViewController.h; sourceTree = "<group>"; };
-		3EFBEE571247A188008B7DC2 /* SearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsViewController.m; sourceTree = "<group>"; };
-		3EFBEE581247A188008B7DC2 /* SearchResultsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultsView.xib; sourceTree = "<group>"; };
-		3EFBEEA11247AA5D008B7DC2 /* OverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayViewController.h; sourceTree = "<group>"; };
-		3EFBEEA21247AA5D008B7DC2 /* OverlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayViewController.m; sourceTree = "<group>"; };
-		3EFBEEA31247AA5D008B7DC2 /* OverlayView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverlayView.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* RecipeShopper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RecipeShopper-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -303,14 +349,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3E22BA02125A32CD00223CC3 /* button_green.png */,
-				3E22B87112560FD200223CC3 /* imgs */,
-				3E22B6F212560A4200223CC3 /* recipeshopper.sqlite */,
-				3E34804E1236FB50009E0214 /* tesco_header.png */,
-				3E347E671236B5B9009E0214 /* recipe_base.html */,
-				3E347E681236B5B9009E0214 /* recipe_base.css */,
-				3EB80CF712340F7C00F74165 /* Icons */,
-				3EB80C881233F91400F74165 /* Recipe Category Images */,
+				3EB5D6711268ABBB009A80E0 /* html */,
+				3EB5D6741268ABBB009A80E0 /* images */,
+				3EB5D66E1268ABA9009A80E0 /* database */,
 				8D1107310486CEB800E47090 /* RecipeShopper-Info.plist */,
 			);
 			name = Resources;
@@ -329,83 +370,38 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		3E3481A1123A67CB009E0214 /* HTTP */ = {
-			isa = PBXGroup;
-			children = (
-				3E3481A2123A67CB009E0214 /* JSON */,
-			);
-			name = HTTP;
-			sourceTree = "<group>";
-		};
-		3E3481A2123A67CB009E0214 /* JSON */ = {
-			isa = PBXGroup;
-			children = (
-				3E3481A3123A67CB009E0214 /* JSON.h */,
-				3E3481A4123A67CB009E0214 /* NSObject+SBJSON.h */,
-				3E3481A5123A67CB009E0214 /* NSObject+SBJSON.m */,
-				3E3481A6123A67CB009E0214 /* NSString+SBJSON.h */,
-				3E3481A7123A67CB009E0214 /* NSString+SBJSON.m */,
-				3E3481A8123A67CB009E0214 /* SBJSON.h */,
-				3E3481A9123A67CB009E0214 /* SBJSON.m */,
-				3E3481AA123A67CB009E0214 /* SBJsonBase.h */,
-				3E3481AB123A67CB009E0214 /* SBJsonBase.m */,
-				3E3481AC123A67CB009E0214 /* SBJsonParser.h */,
-				3E3481AD123A67CB009E0214 /* SBJsonParser.m */,
-				3E3481AE123A67CB009E0214 /* SBJsonWriter.h */,
-				3E3481AF123A67CB009E0214 /* SBJsonWriter.m */,
-			);
-			path = JSON;
-			sourceTree = "<group>";
-		};
-		3EAF0676124CD86B00BAF6CD /* Department Images */ = {
-			isa = PBXGroup;
-			children = (
-				3EAF0678124CD89400BAF6CD /* baby_icon.png */,
-				3EAF0679124CD89400BAF6CD /* bakery_icon.png */,
-				3EAF067A124CD89400BAF6CD /* cupboard_icon.png */,
-				3EAF067B124CD89400BAF6CD /* drinks_icon.png */,
-				3EAF067C124CD89400BAF6CD /* fresh_icon.png */,
-				3EAF067D124CD89400BAF6CD /* frozen_icon.png */,
-				3EAF067E124CD89400BAF6CD /* health_icon.png */,
-				3EAF067F124CD89400BAF6CD /* home_icon.png */,
-				3EAF0680124CD89400BAF6CD /* household_icon.png */,
-				3EAF0681124CD89400BAF6CD /* pets_icon.png */,
-			);
-			name = "Department Images";
-			sourceTree = "<group>";
-		};
 		3EB5D0C3125F79E0009A80E0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				3E3481A1123A67CB009E0214 /* HTTP */,
-				3E347C7312364A58009E0214 /* UIImage-Extended.h */,
-				3E347C7412364A58009E0214 /* UIImage-Extended.m */,
-				3E347C1712363D51009E0214 /* NSData-Extended.h */,
-				3E347C1812363D51009E0214 /* NSData-Extended.m */,
-				1D3623240D0F684500981E51 /* RecipeShopperAppDelegate.h */,
-				1D3623250D0F684500981E51 /* RecipeShopperAppDelegate.m */,
-				3EAF05FF124B6B6700BAF6CD /* LoginManager.h */,
-				3EAF0600124B6B6700BAF6CD /* LoginManager.m */,
-				3EFBE0B8123CF0B4008B7DC2 /* Reachability.h */,
-				3EFBE0B9123CF0B4008B7DC2 /* Reachability.m */,
-				3E347C1E1236408D009E0214 /* Recipe.h */,
-				3E347C1F1236408D009E0214 /* Recipe.m */,
-				3EB80E4512357D3000F74165 /* DatabaseRequestManager.h */,
-				3EB80E4612357D3000F74165 /* DatabaseRequestManager.m */,
-				3E347C87123655D2009E0214 /* Product.h */,
-				3E347C88123655D2009E0214 /* Product.m */,
-				3E3480871237A8EA009E0214 /* RecipeBasketManager.h */,
-				3E3480881237A8EA009E0214 /* RecipeBasketManager.m */,
-				3E34819E123A6432009E0214 /* APIRequestManager.h */,
-				3E34819F123A6432009E0214 /* APIRequestManager.m */,
-				3E5B8914123B95530070527A /* LogManager.h */,
-				3E5B8915123B95530070527A /* LogManager.m */,
-				3EFBE5F2123FE9D8008B7DC2 /* ProductBasketManager.h */,
-				3EFBE5F3123FE9D8008B7DC2 /* ProductBasketManager.m */,
-				3EFBEB9F1243F887008B7DC2 /* DeliverySlot.h */,
-				3EFBEBA01243F887008B7DC2 /* DeliverySlot.m */,
-				3E22CCBE124963E00007FF5E /* DataManager.h */,
-				3E22CCBF124963E00007FF5E /* DataManager.m */,
+				3EB5D5471268AB4C009A80E0 /* APIRequestManager.h */,
+				3EB5D5481268AB4C009A80E0 /* APIRequestManager.m */,
+				3EB5D5491268AB4C009A80E0 /* DatabaseRequestManager.h */,
+				3EB5D54A1268AB4C009A80E0 /* DatabaseRequestManager.m */,
+				3EB5D54B1268AB4C009A80E0 /* DataManager.h */,
+				3EB5D54C1268AB4C009A80E0 /* DataManager.m */,
+				3EB5D54D1268AB4C009A80E0 /* DeliverySlot.h */,
+				3EB5D54E1268AB4C009A80E0 /* DeliverySlot.m */,
+				3EB5D54F1268AB4C009A80E0 /* JSON */,
+				3EB5D55D1268AB4C009A80E0 /* LoginManager.h */,
+				3EB5D55E1268AB4C009A80E0 /* LoginManager.m */,
+				3EB5D55F1268AB4C009A80E0 /* LogManager.h */,
+				3EB5D5601268AB4C009A80E0 /* LogManager.m */,
+				3EB5D5611268AB4C009A80E0 /* NSData-Extended.h */,
+				3EB5D5621268AB4C009A80E0 /* NSData-Extended.m */,
+				3EB5D5631268AB4C009A80E0 /* Product.h */,
+				3EB5D5641268AB4C009A80E0 /* Product.m */,
+				3EB5D5651268AB4C009A80E0 /* ProductBasketManager.h */,
+				3EB5D5661268AB4C009A80E0 /* ProductBasketManager.m */,
+				3EB5D5671268AB4C009A80E0 /* Reachability.h */,
+				3EB5D5681268AB4C009A80E0 /* Reachability.m */,
+				3EB5D5691268AB4C009A80E0 /* Recipe.h */,
+				3EB5D56A1268AB4C009A80E0 /* Recipe.m */,
+				3EB5D56B1268AB4C009A80E0 /* RecipeBasketManager.h */,
+				3EB5D56C1268AB4C009A80E0 /* RecipeBasketManager.m */,
+				3EB5D56D1268AB4C009A80E0 /* RecipeShopperAppDelegate.h */,
+				3EB5D56E1268AB4C009A80E0 /* RecipeShopperAppDelegate.m */,
+				3EB5D56F1268AB4C009A80E0 /* UIImage-Extended.h */,
+				3EB5D5701268AB4C009A80E0 /* UIImage-Extended.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -413,26 +409,28 @@
 		3EB5D0C4125F79F5009A80E0 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				3EFBE1EE123D611A008B7DC2 /* AislesView.xib */,
-				3EFBE173123D494D008B7DC2 /* ProductViewCell.xib */,
-				28AD73870D9D96C1002E5188 /* MainWindow.xib */,
-				2840D7CD1179279E00D7F93C /* RecipeCategoryView.xib */,
-				3EB80DE9123424E200F74165 /* RecipeListView.xib */,
-				3EB80E101234446100F74165 /* RecipeView.xib */,
-				282CCBFD0DB6C98000C4EA27 /* RecipeBasketView.xib */,
-				3E3481FA123A8862009E0214 /* ShoppingListView.xib */,
-				3EFBE195123D4F40008B7DC2 /* OnlineShopView.xib */,
-				3EFBE1C4123D576F008B7DC2 /* ShelvesView.xib */,
-				3EFBE37C123E4D2E008B7DC2 /* ProductsView.xib */,
-				3EFBE3EB123E8203008B7DC2 /* OnlineBasketView.xib */,
-				3EFBEBA81243FBBE008B7DC2 /* DeliverySlotsView.xib */,
-				3EFBEE581247A188008B7DC2 /* SearchResultsView.xib */,
-				3EFBEEA31247AA5D008B7DC2 /* OverlayView.xib */,
-				3EAF0701124CE5CC00BAF6CD /* DepartmentCell.xib */,
-				3EB99D69124E17CA0093EBF1 /* RecipeViewCell.xib */,
-				3EB9A128124FC0A70093EBF1 /* OverlayViewController.xib */,
-				3EB9A2451250A2790093EBF1 /* DeliveryInfoCell.xib */,
-				3EB5CFB7125F1D26009A80E0 /* MoreSearchResultsCell.xib */,
+				3EB5D4EB1268AB29009A80E0 /* AislesView.xib */,
+				3EB5D4EC1268AB29009A80E0 /* DeliveryInfoCell.xib */,
+				3EB5D4ED1268AB29009A80E0 /* DeliverySlotsView.xib */,
+				3EB5D4EE1268AB29009A80E0 /* DepartmentCell.xib */,
+				3EB5D4EF1268AB29009A80E0 /* HomeView.xib */,
+				3EB5D4F01268AB29009A80E0 /* MainWindow.xib */,
+				3EB5D4F11268AB29009A80E0 /* MoreSearchResultsCell.xib */,
+				3EB5D4F21268AB29009A80E0 /* OnlineBasketView.xib */,
+				3EB5D4F31268AB29009A80E0 /* OnlineShopView.xib */,
+				3EB5D4F41268AB29009A80E0 /* OverlayView.xib */,
+				3EB5D4F51268AB29009A80E0 /* OverlayViewController.xib */,
+				3EB5D4F61268AB29009A80E0 /* ProductsView.xib */,
+				3EB5D4F71268AB29009A80E0 /* ProductViewCell.xib */,
+				3EB5D4F81268AB29009A80E0 /* RecipeBasketView.xib */,
+				3EB5D4F91268AB29009A80E0 /* RecipeCategoryView.xib */,
+				3EB5D4FA1268AB29009A80E0 /* RecipeHistoryView.xib */,
+				3EB5D4FB1268AB29009A80E0 /* RecipeListView.xib */,
+				3EB5D4FC1268AB29009A80E0 /* RecipeView.xib */,
+				3EB5D4FD1268AB29009A80E0 /* RecipeViewCell.xib */,
+				3EB5D4FE1268AB29009A80E0 /* SearchResultsView.xib */,
+				3EB5D4FF1268AB29009A80E0 /* ShelvesView.xib */,
+				3EB5D5001268AB29009A80E0 /* ShoppingListView.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -440,71 +438,168 @@
 		3EB5D0C5125F79FF009A80E0 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				3EB80DE7123424E200F74165 /* RecipeListViewController.h */,
-				3EB80DE8123424E200F74165 /* RecipeListViewController.m */,
-				28216C950DB411BC00E5133A /* RecipeCategoryViewController.h */,
-				28216C960DB411BC00E5133A /* RecipeCategoryViewController.m */,
-				3EB80CCF12340C4300F74165 /* RecipeBasketViewController.h */,
-				3EB80CD012340C4300F74165 /* RecipeBasketViewController.m */,
-				3EB80E0E1234446100F74165 /* RecipeViewController.h */,
-				3EB80E0F1234446100F74165 /* RecipeViewController.m */,
-				3EB80E2C1234482100F74165 /* UITableViewCellFactory.h */,
-				3EB80E2D1234482100F74165 /* UITableViewCellFactory.m */,
-				3E3481F8123A8862009E0214 /* ShoppingListViewController.h */,
-				3E3481F9123A8862009E0214 /* ShoppingListViewController.m */,
-				3EFBE19A123D5121008B7DC2 /* OnlineShopViewController.h */,
-				3EFBE19B123D5121008B7DC2 /* OnlineShopViewController.m */,
-				3EFBE1EC123D611A008B7DC2 /* AislesViewController.h */,
-				3EFBE1ED123D611A008B7DC2 /* AislesViewController.m */,
-				3EFBE1C2123D576F008B7DC2 /* ShelvesViewController.h */,
-				3EFBE1C3123D576F008B7DC2 /* ShelvesViewController.m */,
-				3EFBE37A123E4D2E008B7DC2 /* ProductsViewController.h */,
-				3EFBE37B123E4D2E008B7DC2 /* ProductsViewController.m */,
-				3EFBE3E8123E815B008B7DC2 /* OnlineBasketViewController.h */,
-				3EFBE3E9123E815B008B7DC2 /* OnlineBasketViewController.m */,
-				3EFBEBA61243FBBE008B7DC2 /* DeliverySlotsViewController.h */,
-				3EFBEBA71243FBBE008B7DC2 /* DeliverySlotsViewController.m */,
-				3EFBEE561247A188008B7DC2 /* SearchResultsViewController.h */,
-				3EFBEE571247A188008B7DC2 /* SearchResultsViewController.m */,
-				3EFBEEA11247AA5D008B7DC2 /* OverlayViewController.h */,
-				3EFBEEA21247AA5D008B7DC2 /* OverlayViewController.m */,
+				3EB5D5171268AB3D009A80E0 /* AislesViewController.h */,
+				3EB5D5181268AB3D009A80E0 /* AislesViewController.m */,
+				3EB5D5191268AB3D009A80E0 /* DeliverySlotsViewController.h */,
+				3EB5D51A1268AB3D009A80E0 /* DeliverySlotsViewController.m */,
+				3EB5D51B1268AB3D009A80E0 /* HomeViewController.h */,
+				3EB5D51C1268AB3D009A80E0 /* HomeViewController.m */,
+				3EB5D51D1268AB3D009A80E0 /* OnlineBasketViewController.h */,
+				3EB5D51E1268AB3D009A80E0 /* OnlineBasketViewController.m */,
+				3EB5D51F1268AB3D009A80E0 /* OnlineShopViewController.h */,
+				3EB5D5201268AB3D009A80E0 /* OnlineShopViewController.m */,
+				3EB5D5211268AB3D009A80E0 /* OverlayViewController.h */,
+				3EB5D5221268AB3D009A80E0 /* OverlayViewController.m */,
+				3EB5D5231268AB3D009A80E0 /* ProductsViewController.h */,
+				3EB5D5241268AB3D009A80E0 /* ProductsViewController.m */,
+				3EB5D5251268AB3D009A80E0 /* RecipeBasketViewController.h */,
+				3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */,
+				3EB5D5271268AB3D009A80E0 /* RecipeCategoryViewController.h */,
+				3EB5D5281268AB3D009A80E0 /* RecipeCategoryViewController.m */,
+				3EB5D5291268AB3D009A80E0 /* RecipeHistoryViewController.h */,
+				3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */,
+				3EB5D52B1268AB3D009A80E0 /* RecipeListViewController.h */,
+				3EB5D52C1268AB3D009A80E0 /* RecipeListViewController.m */,
+				3EB5D52D1268AB3D009A80E0 /* RecipeViewController.h */,
+				3EB5D52E1268AB3D009A80E0 /* RecipeViewController.m */,
+				3EB5D52F1268AB3D009A80E0 /* SearchResultsViewController.h */,
+				3EB5D5301268AB3D009A80E0 /* SearchResultsViewController.m */,
+				3EB5D5311268AB3D009A80E0 /* ShelvesViewController.h */,
+				3EB5D5321268AB3D009A80E0 /* ShelvesViewController.m */,
+				3EB5D5331268AB3D009A80E0 /* ShoppingListViewController.h */,
+				3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */,
+				3EB5D5351268AB3D009A80E0 /* UITableViewCellFactory.h */,
+				3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
 		};
-		3EB80C881233F91400F74165 /* Recipe Category Images */ = {
+		3EB5D54F1268AB4C009A80E0 /* JSON */ = {
 			isa = PBXGroup;
 			children = (
-				3EB80C6D1233F91100F74165 /* breakfasts.png */,
-				3EB80C6E1233F91100F74165 /* cakesBiscuits.png */,
-				3EB80C6F1233F91100F74165 /* desserts.png */,
-				3EB80C701233F91100F74165 /* dinners.png */,
-				3EB80C711233F91100F74165 /* drinks.png */,
-				3EB80C721233F91100F74165 /* lunches.png */,
-				3EB80C731233F91100F74165 /* mains.png */,
-				3EB80C741233F91100F74165 /* partyFood.png */,
-				3EB80C751233F91100F74165 /* salads.png */,
-				3EB80C761233F91100F74165 /* sauces.png */,
-				3EB80C771233F91100F74165 /* snacksSides.png */,
-				3EB80C781233F91100F74165 /* soups.png */,
-				3EB80C791233F91100F74165 /* starters.png */,
+				3EB5D5501268AB4C009A80E0 /* JSON.h */,
+				3EB5D5511268AB4C009A80E0 /* NSObject+SBJSON.h */,
+				3EB5D5521268AB4C009A80E0 /* NSObject+SBJSON.m */,
+				3EB5D5531268AB4C009A80E0 /* NSString+SBJSON.h */,
+				3EB5D5541268AB4C009A80E0 /* NSString+SBJSON.m */,
+				3EB5D5551268AB4C009A80E0 /* SBJSON.h */,
+				3EB5D5561268AB4C009A80E0 /* SBJSON.m */,
+				3EB5D5571268AB4C009A80E0 /* SBJsonBase.h */,
+				3EB5D5581268AB4C009A80E0 /* SBJsonBase.m */,
+				3EB5D5591268AB4C009A80E0 /* SBJsonParser.h */,
+				3EB5D55A1268AB4C009A80E0 /* SBJsonParser.m */,
+				3EB5D55B1268AB4C009A80E0 /* SBJsonWriter.h */,
+				3EB5D55C1268AB4C009A80E0 /* SBJsonWriter.m */,
 			);
-			name = "Recipe Category Images";
+			name = JSON;
+			path = Model/JSON;
 			sourceTree = "<group>";
 		};
-		3EB80CF712340F7C00F74165 /* Icons */ = {
+		3EB5D66E1268ABA9009A80E0 /* database */ = {
 			isa = PBXGroup;
 			children = (
-				3EB5CFC6125F1EE9009A80E0 /* download@2x.png */,
-				3EAF074F124CF37F00BAF6CD /* icon_shopping.png */,
-				3EAF0676124CD86B00BAF6CD /* Department Images */,
-				3EB80CC612340B8800F74165 /* icon_cart.png */,
-				3EB80E3E12344D5000F74165 /* button_minus@2x.png */,
-				3EB80E3F12344D5000F74165 /* button_plus@2x.png */,
-				3EB80E16123446B900F74165 /* bottom-fade.png */,
-				3EB80CB71234074500F74165 /* icon_book.png */,
+				3EB5D66F1268ABA9009A80E0 /* recipeshopper.sqlite */,
 			);
-			name = Icons;
+			path = database;
+			sourceTree = "<group>";
+		};
+		3EB5D6711268ABBB009A80E0 /* html */ = {
+			isa = PBXGroup;
+			children = (
+				3EB5D6721268ABBB009A80E0 /* recipe_base.css */,
+				3EB5D6731268ABBB009A80E0 /* recipe_base.html */,
+			);
+			path = html;
+			sourceTree = "<group>";
+		};
+		3EB5D6741268ABBB009A80E0 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				3E892BCA1268B26500A512B5 /* imgs */,
+				3EB5D6771268ABBB009A80E0 /* Misc */,
+				3EB5D6811268ABBB009A80E0 /* Recipe Categories */,
+				3EB5D69C1268ABBB009A80E0 /* Shopping */,
+				3EB5D6A71268ABBB009A80E0 /* Tab Bar */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		3EB5D6771268ABBB009A80E0 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				3EB5D6781268ABBB009A80E0 /* bottom-fade.png */,
+				3EB5D6791268ABBB009A80E0 /* button_minus.png */,
+				3EB5D67A1268ABBB009A80E0 /* button_minus@2x.png */,
+				3EB5D67B1268ABBB009A80E0 /* button_plus.png */,
+				3EB5D67C1268ABBB009A80E0 /* button_plus@2x.png */,
+				3EB5D67D1268ABBB009A80E0 /* Default.png */,
+				3EB5D67E1268ABBB009A80E0 /* Default@2x.png */,
+				3EB5D67F1268ABBB009A80E0 /* download@2x.png */,
+				3EB5D6801268ABBB009A80E0 /* tesco_header.png */,
+			);
+			path = Misc;
+			sourceTree = "<group>";
+		};
+		3EB5D6811268ABBB009A80E0 /* Recipe Categories */ = {
+			isa = PBXGroup;
+			children = (
+				3EB5D6821268ABBB009A80E0 /* breakfasts.png */,
+				3EB5D6831268ABBB009A80E0 /* breakfasts@2x.png */,
+				3EB5D6841268ABBB009A80E0 /* cakesBiscuits.png */,
+				3EB5D6851268ABBB009A80E0 /* cakesBiscuits@2x.png */,
+				3EB5D6861268ABBB009A80E0 /* desserts.png */,
+				3EB5D6871268ABBB009A80E0 /* desserts@2x.png */,
+				3EB5D6881268ABBB009A80E0 /* dinners.png */,
+				3EB5D6891268ABBB009A80E0 /* dinners@2x.png */,
+				3EB5D68A1268ABBB009A80E0 /* drinks.png */,
+				3EB5D68B1268ABBB009A80E0 /* drinks@2x.png */,
+				3EB5D68C1268ABBB009A80E0 /* lunches.png */,
+				3EB5D68D1268ABBB009A80E0 /* lunches@2x.png */,
+				3EB5D68E1268ABBB009A80E0 /* mains.png */,
+				3EB5D68F1268ABBB009A80E0 /* mains@2x.png */,
+				3EB5D6901268ABBB009A80E0 /* partyFood.png */,
+				3EB5D6911268ABBB009A80E0 /* partyFood@2x.png */,
+				3EB5D6921268ABBB009A80E0 /* salads.png */,
+				3EB5D6931268ABBB009A80E0 /* salads@2x.png */,
+				3EB5D6941268ABBB009A80E0 /* sauces.png */,
+				3EB5D6951268ABBB009A80E0 /* sauces@2x.png */,
+				3EB5D6961268ABBB009A80E0 /* snacksSides.png */,
+				3EB5D6971268ABBB009A80E0 /* snacksSides@2x.png */,
+				3EB5D6981268ABBB009A80E0 /* soups.png */,
+				3EB5D6991268ABBB009A80E0 /* soups@2x.png */,
+				3EB5D69A1268ABBB009A80E0 /* starters.png */,
+				3EB5D69B1268ABBB009A80E0 /* starters@2x.png */,
+			);
+			path = "Recipe Categories";
+			sourceTree = "<group>";
+		};
+		3EB5D69C1268ABBB009A80E0 /* Shopping */ = {
+			isa = PBXGroup;
+			children = (
+				3EB5D69D1268ABBB009A80E0 /* baby_icon.png */,
+				3EB5D69E1268ABBB009A80E0 /* bakery_icon.png */,
+				3EB5D69F1268ABBB009A80E0 /* cupboard_icon.png */,
+				3EB5D6A01268ABBB009A80E0 /* drinks_icon.png */,
+				3EB5D6A11268ABBB009A80E0 /* fresh_icon.png */,
+				3EB5D6A21268ABBB009A80E0 /* frozen_icon.png */,
+				3EB5D6A31268ABBB009A80E0 /* health_icon.png */,
+				3EB5D6A41268ABBB009A80E0 /* home_icon.png */,
+				3EB5D6A51268ABBB009A80E0 /* household_icon.png */,
+				3EB5D6A61268ABBB009A80E0 /* pets_icon.png */,
+			);
+			path = Shopping;
+			sourceTree = "<group>";
+		};
+		3EB5D6A71268ABBB009A80E0 /* Tab Bar */ = {
+			isa = PBXGroup;
+			children = (
+				3EB5D6A81268ABBB009A80E0 /* icon_cart.png */,
+				3EB5D6A91268ABBB009A80E0 /* icon_cart@2x.png */,
+				3EB5D6AA1268ABBB009A80E0 /* icon_home.png */,
+				3EB5D6AB1268ABBB009A80E0 /* icon_shopping.png */,
+				3EB5D6AC1268ABBB009A80E0 /* todo.png */,
+			);
+			path = "Tab Bar";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -555,62 +650,82 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28AD73880D9D96C1002E5188 /* MainWindow.xib in Resources */,
-				282CCBFE0DB6C98000C4EA27 /* RecipeBasketView.xib in Resources */,
-				2840D7CE1179279E00D7F93C /* RecipeCategoryView.xib in Resources */,
-				3EB80C7A1233F91100F74165 /* breakfasts.png in Resources */,
-				3EB80C7B1233F91100F74165 /* cakesBiscuits.png in Resources */,
-				3EB80C7C1233F91100F74165 /* desserts.png in Resources */,
-				3EB80C7D1233F91100F74165 /* dinners.png in Resources */,
-				3EB80C7E1233F91100F74165 /* drinks.png in Resources */,
-				3EB80C7F1233F91100F74165 /* lunches.png in Resources */,
-				3EB80C801233F91100F74165 /* mains.png in Resources */,
-				3EB80C811233F91100F74165 /* partyFood.png in Resources */,
-				3EB80C821233F91100F74165 /* salads.png in Resources */,
-				3EB80C831233F91100F74165 /* sauces.png in Resources */,
-				3EB80C841233F91100F74165 /* snacksSides.png in Resources */,
-				3EB80C851233F91100F74165 /* soups.png in Resources */,
-				3EB80C861233F91100F74165 /* starters.png in Resources */,
-				3EB80CB81234074500F74165 /* icon_book.png in Resources */,
-				3EB80CC712340B8800F74165 /* icon_cart.png in Resources */,
-				3EB80DEB123424E200F74165 /* RecipeListView.xib in Resources */,
-				3EB80E121234446100F74165 /* RecipeView.xib in Resources */,
-				3EB80E17123446B900F74165 /* bottom-fade.png in Resources */,
-				3EB80E4012344D5000F74165 /* button_minus@2x.png in Resources */,
-				3EB80E4112344D5000F74165 /* button_plus@2x.png in Resources */,
-				3E347E691236B5B9009E0214 /* recipe_base.html in Resources */,
-				3E347E6A1236B5B9009E0214 /* recipe_base.css in Resources */,
-				3E34804F1236FB50009E0214 /* tesco_header.png in Resources */,
-				3E3481FC123A8862009E0214 /* ShoppingListView.xib in Resources */,
-				3EFBE174123D494D008B7DC2 /* ProductViewCell.xib in Resources */,
-				3EFBE196123D4F40008B7DC2 /* OnlineShopView.xib in Resources */,
-				3EFBE1C6123D576F008B7DC2 /* ShelvesView.xib in Resources */,
-				3EFBE1F0123D611A008B7DC2 /* AislesView.xib in Resources */,
-				3EFBE37E123E4D2E008B7DC2 /* ProductsView.xib in Resources */,
-				3EFBE3EC123E8203008B7DC2 /* OnlineBasketView.xib in Resources */,
-				3EFBEBAA1243FBBE008B7DC2 /* DeliverySlotsView.xib in Resources */,
-				3EFBEE5A1247A188008B7DC2 /* SearchResultsView.xib in Resources */,
-				3EFBEEA51247AA5D008B7DC2 /* OverlayView.xib in Resources */,
-				3EAF0682124CD89400BAF6CD /* baby_icon.png in Resources */,
-				3EAF0683124CD89400BAF6CD /* bakery_icon.png in Resources */,
-				3EAF0684124CD89400BAF6CD /* cupboard_icon.png in Resources */,
-				3EAF0685124CD89400BAF6CD /* drinks_icon.png in Resources */,
-				3EAF0686124CD89400BAF6CD /* fresh_icon.png in Resources */,
-				3EAF0687124CD89400BAF6CD /* frozen_icon.png in Resources */,
-				3EAF0688124CD89400BAF6CD /* health_icon.png in Resources */,
-				3EAF0689124CD89400BAF6CD /* home_icon.png in Resources */,
-				3EAF068A124CD89400BAF6CD /* household_icon.png in Resources */,
-				3EAF068B124CD89400BAF6CD /* pets_icon.png in Resources */,
-				3EAF0702124CE5CC00BAF6CD /* DepartmentCell.xib in Resources */,
-				3EAF0750124CF37F00BAF6CD /* icon_shopping.png in Resources */,
-				3EB99D6A124E17CA0093EBF1 /* RecipeViewCell.xib in Resources */,
-				3EB9A129124FC0A70093EBF1 /* OverlayViewController.xib in Resources */,
-				3EB9A2461250A2790093EBF1 /* DeliveryInfoCell.xib in Resources */,
-				3E22B6F312560A4200223CC3 /* recipeshopper.sqlite in Resources */,
-				3E22B89212560FD200223CC3 /* imgs in Resources */,
-				3E22BA03125A32CD00223CC3 /* button_green.png in Resources */,
-				3EB5CFB8125F1D26009A80E0 /* MoreSearchResultsCell.xib in Resources */,
-				3EB5CFC7125F1EE9009A80E0 /* download@2x.png in Resources */,
+				3EB5D5011268AB29009A80E0 /* AislesView.xib in Resources */,
+				3EB5D5021268AB29009A80E0 /* DeliveryInfoCell.xib in Resources */,
+				3EB5D5031268AB29009A80E0 /* DeliverySlotsView.xib in Resources */,
+				3EB5D5041268AB29009A80E0 /* DepartmentCell.xib in Resources */,
+				3EB5D5051268AB29009A80E0 /* HomeView.xib in Resources */,
+				3EB5D5061268AB29009A80E0 /* MainWindow.xib in Resources */,
+				3EB5D5071268AB29009A80E0 /* MoreSearchResultsCell.xib in Resources */,
+				3EB5D5081268AB29009A80E0 /* OnlineBasketView.xib in Resources */,
+				3EB5D5091268AB29009A80E0 /* OnlineShopView.xib in Resources */,
+				3EB5D50A1268AB29009A80E0 /* OverlayView.xib in Resources */,
+				3EB5D50B1268AB29009A80E0 /* OverlayViewController.xib in Resources */,
+				3EB5D50C1268AB29009A80E0 /* ProductsView.xib in Resources */,
+				3EB5D50D1268AB29009A80E0 /* ProductViewCell.xib in Resources */,
+				3EB5D50E1268AB29009A80E0 /* RecipeBasketView.xib in Resources */,
+				3EB5D50F1268AB29009A80E0 /* RecipeCategoryView.xib in Resources */,
+				3EB5D5101268AB29009A80E0 /* RecipeHistoryView.xib in Resources */,
+				3EB5D5111268AB29009A80E0 /* RecipeListView.xib in Resources */,
+				3EB5D5121268AB29009A80E0 /* RecipeView.xib in Resources */,
+				3EB5D5131268AB29009A80E0 /* RecipeViewCell.xib in Resources */,
+				3EB5D5141268AB29009A80E0 /* SearchResultsView.xib in Resources */,
+				3EB5D5151268AB29009A80E0 /* ShelvesView.xib in Resources */,
+				3EB5D5161268AB29009A80E0 /* ShoppingListView.xib in Resources */,
+				3EB5D6701268ABA9009A80E0 /* recipeshopper.sqlite in Resources */,
+				3EB5D6AD1268ABBB009A80E0 /* recipe_base.css in Resources */,
+				3EB5D6AE1268ABBB009A80E0 /* recipe_base.html in Resources */,
+				3EB5D6B01268ABBB009A80E0 /* bottom-fade.png in Resources */,
+				3EB5D6B11268ABBB009A80E0 /* button_minus.png in Resources */,
+				3EB5D6B21268ABBB009A80E0 /* button_minus@2x.png in Resources */,
+				3EB5D6B31268ABBB009A80E0 /* button_plus.png in Resources */,
+				3EB5D6B41268ABBB009A80E0 /* button_plus@2x.png in Resources */,
+				3EB5D6B51268ABBB009A80E0 /* Default.png in Resources */,
+				3EB5D6B61268ABBB009A80E0 /* Default@2x.png in Resources */,
+				3EB5D6B71268ABBB009A80E0 /* download@2x.png in Resources */,
+				3EB5D6B81268ABBB009A80E0 /* tesco_header.png in Resources */,
+				3EB5D6B91268ABBB009A80E0 /* breakfasts.png in Resources */,
+				3EB5D6BA1268ABBB009A80E0 /* breakfasts@2x.png in Resources */,
+				3EB5D6BB1268ABBB009A80E0 /* cakesBiscuits.png in Resources */,
+				3EB5D6BC1268ABBB009A80E0 /* cakesBiscuits@2x.png in Resources */,
+				3EB5D6BD1268ABBB009A80E0 /* desserts.png in Resources */,
+				3EB5D6BE1268ABBB009A80E0 /* desserts@2x.png in Resources */,
+				3EB5D6BF1268ABBB009A80E0 /* dinners.png in Resources */,
+				3EB5D6C01268ABBB009A80E0 /* dinners@2x.png in Resources */,
+				3EB5D6C11268ABBB009A80E0 /* drinks.png in Resources */,
+				3EB5D6C21268ABBB009A80E0 /* drinks@2x.png in Resources */,
+				3EB5D6C31268ABBB009A80E0 /* lunches.png in Resources */,
+				3EB5D6C41268ABBB009A80E0 /* lunches@2x.png in Resources */,
+				3EB5D6C51268ABBB009A80E0 /* mains.png in Resources */,
+				3EB5D6C61268ABBB009A80E0 /* mains@2x.png in Resources */,
+				3EB5D6C71268ABBB009A80E0 /* partyFood.png in Resources */,
+				3EB5D6C81268ABBB009A80E0 /* partyFood@2x.png in Resources */,
+				3EB5D6C91268ABBB009A80E0 /* salads.png in Resources */,
+				3EB5D6CA1268ABBB009A80E0 /* salads@2x.png in Resources */,
+				3EB5D6CB1268ABBB009A80E0 /* sauces.png in Resources */,
+				3EB5D6CC1268ABBB009A80E0 /* sauces@2x.png in Resources */,
+				3EB5D6CD1268ABBB009A80E0 /* snacksSides.png in Resources */,
+				3EB5D6CE1268ABBB009A80E0 /* snacksSides@2x.png in Resources */,
+				3EB5D6CF1268ABBB009A80E0 /* soups.png in Resources */,
+				3EB5D6D01268ABBB009A80E0 /* soups@2x.png in Resources */,
+				3EB5D6D11268ABBB009A80E0 /* starters.png in Resources */,
+				3EB5D6D21268ABBB009A80E0 /* starters@2x.png in Resources */,
+				3EB5D6D31268ABBB009A80E0 /* baby_icon.png in Resources */,
+				3EB5D6D41268ABBB009A80E0 /* bakery_icon.png in Resources */,
+				3EB5D6D51268ABBB009A80E0 /* cupboard_icon.png in Resources */,
+				3EB5D6D61268ABBB009A80E0 /* drinks_icon.png in Resources */,
+				3EB5D6D71268ABBB009A80E0 /* fresh_icon.png in Resources */,
+				3EB5D6D81268ABBB009A80E0 /* frozen_icon.png in Resources */,
+				3EB5D6D91268ABBB009A80E0 /* health_icon.png in Resources */,
+				3EB5D6DA1268ABBB009A80E0 /* home_icon.png in Resources */,
+				3EB5D6DB1268ABBB009A80E0 /* household_icon.png in Resources */,
+				3EB5D6DC1268ABBB009A80E0 /* pets_icon.png in Resources */,
+				3EB5D6DD1268ABBB009A80E0 /* icon_cart.png in Resources */,
+				3EB5D6DE1268ABBB009A80E0 /* icon_cart@2x.png in Resources */,
+				3EB5D6DF1268ABBB009A80E0 /* icon_home.png in Resources */,
+				3EB5D6E01268ABBB009A80E0 /* icon_shopping.png in Resources */,
+				3EB5D6E11268ABBB009A80E0 /* todo.png in Resources */,
+				3E892BE11268B26500A512B5 /* imgs in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -622,40 +737,42 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
-				1D3623260D0F684500981E51 /* RecipeShopperAppDelegate.m in Sources */,
-				28216C970DB411BC00E5133A /* RecipeCategoryViewController.m in Sources */,
-				3EB80CD112340C4300F74165 /* RecipeBasketViewController.m in Sources */,
-				3EB80DEA123424E200F74165 /* RecipeListViewController.m in Sources */,
-				3EB80E111234446100F74165 /* RecipeViewController.m in Sources */,
-				3EB80E2E1234482100F74165 /* UITableViewCellFactory.m in Sources */,
-				3EB80E4712357D3000F74165 /* DatabaseRequestManager.m in Sources */,
-				3E347C1912363D51009E0214 /* NSData-Extended.m in Sources */,
-				3E347C201236408D009E0214 /* Recipe.m in Sources */,
-				3E347C7512364A58009E0214 /* UIImage-Extended.m in Sources */,
-				3E347C89123655D2009E0214 /* Product.m in Sources */,
-				3E3480891237A8EA009E0214 /* RecipeBasketManager.m in Sources */,
-				3E3481A0123A6432009E0214 /* APIRequestManager.m in Sources */,
-				3E3481B4123A67CB009E0214 /* NSObject+SBJSON.m in Sources */,
-				3E3481B5123A67CB009E0214 /* NSString+SBJSON.m in Sources */,
-				3E3481B6123A67CB009E0214 /* SBJSON.m in Sources */,
-				3E3481B7123A67CB009E0214 /* SBJsonBase.m in Sources */,
-				3E3481B8123A67CB009E0214 /* SBJsonParser.m in Sources */,
-				3E3481B9123A67CB009E0214 /* SBJsonWriter.m in Sources */,
-				3E3481FB123A8862009E0214 /* ShoppingListViewController.m in Sources */,
-				3E5B8916123B95530070527A /* LogManager.m in Sources */,
-				3EFBE0BA123CF0B4008B7DC2 /* Reachability.m in Sources */,
-				3EFBE19C123D5121008B7DC2 /* OnlineShopViewController.m in Sources */,
-				3EFBE1C5123D576F008B7DC2 /* ShelvesViewController.m in Sources */,
-				3EFBE1EF123D611A008B7DC2 /* AislesViewController.m in Sources */,
-				3EFBE37D123E4D2E008B7DC2 /* ProductsViewController.m in Sources */,
-				3EFBE3EA123E815B008B7DC2 /* OnlineBasketViewController.m in Sources */,
-				3EFBE5F4123FE9D8008B7DC2 /* ProductBasketManager.m in Sources */,
-				3EFBEBA11243F887008B7DC2 /* DeliverySlot.m in Sources */,
-				3EFBEBA91243FBBE008B7DC2 /* DeliverySlotsViewController.m in Sources */,
-				3EFBEE591247A188008B7DC2 /* SearchResultsViewController.m in Sources */,
-				3EFBEEA41247AA5D008B7DC2 /* OverlayViewController.m in Sources */,
-				3E22CCC0124963E00007FF5E /* DataManager.m in Sources */,
-				3EAF0601124B6B6700BAF6CD /* LoginManager.m in Sources */,
+				3EB5D5371268AB3D009A80E0 /* AislesViewController.m in Sources */,
+				3EB5D5381268AB3D009A80E0 /* DeliverySlotsViewController.m in Sources */,
+				3EB5D5391268AB3D009A80E0 /* HomeViewController.m in Sources */,
+				3EB5D53A1268AB3D009A80E0 /* OnlineBasketViewController.m in Sources */,
+				3EB5D53B1268AB3D009A80E0 /* OnlineShopViewController.m in Sources */,
+				3EB5D53C1268AB3D009A80E0 /* OverlayViewController.m in Sources */,
+				3EB5D53D1268AB3D009A80E0 /* ProductsViewController.m in Sources */,
+				3EB5D53E1268AB3D009A80E0 /* RecipeBasketViewController.m in Sources */,
+				3EB5D53F1268AB3D009A80E0 /* RecipeCategoryViewController.m in Sources */,
+				3EB5D5401268AB3D009A80E0 /* RecipeHistoryViewController.m in Sources */,
+				3EB5D5411268AB3D009A80E0 /* RecipeListViewController.m in Sources */,
+				3EB5D5421268AB3D009A80E0 /* RecipeViewController.m in Sources */,
+				3EB5D5431268AB3D009A80E0 /* SearchResultsViewController.m in Sources */,
+				3EB5D5441268AB3D009A80E0 /* ShelvesViewController.m in Sources */,
+				3EB5D5451268AB3D009A80E0 /* ShoppingListViewController.m in Sources */,
+				3EB5D5461268AB3D009A80E0 /* UITableViewCellFactory.m in Sources */,
+				3EB5D5711268AB4C009A80E0 /* APIRequestManager.m in Sources */,
+				3EB5D5721268AB4C009A80E0 /* DatabaseRequestManager.m in Sources */,
+				3EB5D5731268AB4C009A80E0 /* DataManager.m in Sources */,
+				3EB5D5741268AB4C009A80E0 /* DeliverySlot.m in Sources */,
+				3EB5D5751268AB4C009A80E0 /* NSObject+SBJSON.m in Sources */,
+				3EB5D5761268AB4C009A80E0 /* NSString+SBJSON.m in Sources */,
+				3EB5D5771268AB4C009A80E0 /* SBJSON.m in Sources */,
+				3EB5D5781268AB4C009A80E0 /* SBJsonBase.m in Sources */,
+				3EB5D5791268AB4C009A80E0 /* SBJsonParser.m in Sources */,
+				3EB5D57A1268AB4C009A80E0 /* SBJsonWriter.m in Sources */,
+				3EB5D57B1268AB4C009A80E0 /* LoginManager.m in Sources */,
+				3EB5D57C1268AB4C009A80E0 /* LogManager.m in Sources */,
+				3EB5D57D1268AB4C009A80E0 /* NSData-Extended.m in Sources */,
+				3EB5D57E1268AB4C009A80E0 /* Product.m in Sources */,
+				3EB5D57F1268AB4C009A80E0 /* ProductBasketManager.m in Sources */,
+				3EB5D5801268AB4C009A80E0 /* Reachability.m in Sources */,
+				3EB5D5811268AB4C009A80E0 /* Recipe.m in Sources */,
+				3EB5D5821268AB4C009A80E0 /* RecipeBasketManager.m in Sources */,
+				3EB5D5831268AB4C009A80E0 /* RecipeShopperAppDelegate.m in Sources */,
+				3EB5D5841268AB4C009A80E0 /* UIImage-Extended.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
