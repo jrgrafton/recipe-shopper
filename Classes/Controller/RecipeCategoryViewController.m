@@ -54,7 +54,7 @@
 	[recipeListViewController.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
 	
 	/* transition to new view */
-	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[[appDelegate homeViewController] pushViewController:self.recipeListViewController animated:YES];
 }
 

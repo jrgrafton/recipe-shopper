@@ -28,7 +28,7 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 	/* transition to recipe view when webview has finished loading */
-	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[[appDelegate homeViewController] pushViewController:[self recipeViewController] animated:YES];
 }
 

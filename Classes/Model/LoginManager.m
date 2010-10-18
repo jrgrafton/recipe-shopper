@@ -90,7 +90,7 @@
 		[details addObject:emailText];
 		[details addObject:passwordText];
 		
-		RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+		RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
 		[DataManager showOverlayView:[[[appDelegate tabBarController] selectedViewController] view]];
 		
 		[NSThread detachNewThreadSelector:@selector(loginToStore:) toTarget:self withObject:details];
@@ -119,7 +119,7 @@
 		[DataManager hideOverlayView];
 		
 		/* transition to the online basket view */
-		RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+		RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
 		UITabBarController *tabBarController = [appDelegate tabBarController];
 		[tabBarController setSelectedViewController:[tabBarController.viewControllers objectAtIndex:3]];
 	}

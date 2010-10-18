@@ -88,6 +88,23 @@
 }
 
 #pragma mark -
+#pragma mark Tab Bar Controller delegate
+
+- (BOOL)tabBarController:(UITabBarController *)theTabBarController shouldSelectViewController:(UIViewController *)viewController {
+	if (([DataManager offlineMode] == YES) && ((viewController == [theTabBarController.viewControllers objectAtIndex:2]) || (viewController == [theTabBarController.viewControllers objectAtIndex:3]))) {
+		UIAlertView *offlineAlert = [[UIAlertView alloc] initWithTitle:@"Offline mode" message:@"Feature unavailable in offline mode" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[offlineAlert show];
+		[offlineAlert release];
+		return NO;
+	} else if (([DataManager loggedIn] == NO) && (viewController == [theTabBarController.viewControllers objectAtIndex:3])) {
+		[DataManager requestLoginToStore];
+		return NO;
+	}
+	
+	return YES;
+}
+
+#pragma mark -
 #pragma mark Memory management
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {

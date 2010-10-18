@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "DeliverySlotsViewController.h"
 
-@interface CheckoutViewController : UITableViewController <UITabBarControllerDelegate> {
+@interface CheckoutViewController : UITableViewController {
 	IBOutlet UITableView *basketView;
 @private BOOL waitingForAPI;
 }

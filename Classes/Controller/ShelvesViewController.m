@@ -81,7 +81,7 @@
 	[shelvesView deselectRowAtIndexPath:indexPath animated:YES];
 	
 	/* transition to products view */
-	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[[appDelegate onlineShopViewController] pushViewController:self.productsViewController animated:YES];
 }
 

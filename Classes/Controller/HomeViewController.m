@@ -48,7 +48,7 @@
 	}
 	
 	/* transition to recipe basket view */
-	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[[appDelegate homeViewController] pushViewController:self.recipeBasketViewController animated:YES];
 }
 
@@ -60,7 +60,7 @@
 	}
 	
 	/* transition to recipe category view */
-	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[[appDelegate homeViewController] pushViewController:self.recipeHistoryViewController animated:YES];
 }
 
@@ -72,7 +72,7 @@
 	}
 	
 	/* transition to recipe category view */
-	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[[appDelegate homeViewController] pushViewController:self.recipeCategoryViewController animated:YES];
 }
 

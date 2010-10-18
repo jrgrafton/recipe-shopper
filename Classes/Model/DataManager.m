@@ -60,8 +60,12 @@ static OverlayViewController *overlayViewController;
 }
 
 + (BOOL)phoneIsOnline {
-	NetworkStatus internetStatus = [[Reachability reachabilityWithHostName:@"google.com"] currentReachabilityStatus];
-	return ((internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN));
+	if ([self offlineMode] == YES) {
+		return NO;
+	} else {
+		NetworkStatus internetStatus = [[Reachability reachabilityWithHostName:@"google.com"] currentReachabilityStatus];
+		return ((internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN));
+	}
 }
 
 + (void)updateBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity {
@@ -73,7 +77,7 @@ static OverlayViewController *overlayViewController;
 		NSMutableArray *productDetails = [NSMutableArray arrayWithCapacity:2];
 		[productDetails addObject:[product productID]];
 		[productDetails addObject:quantity];
-		[NSThread detachNewThreadSelector:@selector(updateOnlineBasket:) toTarget:self withObject:productDetails];
+		[NSThread detachNewThreadSelector:@selector(updateBasket:) toTarget:self withObject:productDetails];
 	}
 }
 

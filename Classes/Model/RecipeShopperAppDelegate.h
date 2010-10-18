@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RecipeShopperAppDelegate : NSObject <UIApplicationDelegate> {
+@interface RecipeShopperAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate> {
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;

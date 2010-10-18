@@ -56,7 +56,7 @@
 	[deliverySlotsViewController loadDeliveryDates];
 	
 	/* transition to delivery slot view */
-	RecipeShopperAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[[appDelegate checkoutViewController] pushViewController:self.deliverySlotsViewController animated:YES];
 }
 
@@ -177,23 +177,6 @@
 	}
 	
 	return cell;	
-}
-
-#pragma mark -
-#pragma mark Tab Bar Controller delegate
-
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-	if ([DataManager offlineMode] == YES) {
-		UIAlertView *offlineAlert = [[UIAlertView alloc] initWithTitle:@"Offline mode" message:@"Feature unavailable in offline mode" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[offlineAlert show];
-		[offlineAlert release];
-		return NO;
-	} else if (([DataManager loggedIn] == NO) && (viewController == [tabBarController.viewControllers objectAtIndex:3])) {
-		[DataManager requestLoginToStore];
-		return NO;
-	}
-	
-	return YES;
 }
 
 #pragma mark -

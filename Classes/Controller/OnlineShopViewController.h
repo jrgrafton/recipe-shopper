@@ -10,7 +10,7 @@
 #import "AislesViewController.h"
 #import "SearchResultsViewController.h"
 
-@interface OnlineShopViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UITabBarControllerDelegate> {
+@interface OnlineShopViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate> {
 	IBOutlet UISearchBar *searchBarView;
 	IBOutlet UITableView *onlineShopView;
 @private NSArray *departments;
