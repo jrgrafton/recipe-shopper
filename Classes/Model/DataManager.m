@@ -165,8 +165,8 @@ static OverlayViewController *overlayViewController;
 	return [apiRequestManager searchForProducts:searchTerm onPage:page totalPageCountHolder:totalPageCountHolder];
 }
 
-+ (void)chooseDeliverySlot:(NSString *)deliverySlotID {
-	[apiRequestManager chooseDeliverySlot:deliverySlotID];
++ (void)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error {
+	[apiRequestManager chooseDeliverySlot:deliverySlotID returningError:error];
 }
 
 + (NSString *)getCustomerName {

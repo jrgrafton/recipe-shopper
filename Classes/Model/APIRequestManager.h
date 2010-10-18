@@ -33,6 +33,6 @@
 - (BOOL)updateBasketQuantity:(NSString *)productID byQuantity:(NSNumber *)quantity;
 - (NSDictionary *)getDeliveryDates;
 - (NSArray *)searchForProducts:(NSString *)searchTerm onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder;
-- (void)chooseDeliverySlot:(NSString *)deliverySlotID;
+- (void)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error;
 
 @end

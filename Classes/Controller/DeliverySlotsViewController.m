@@ -8,6 +8,7 @@
 
 #import "DeliverySlotsViewController.h"
 #import "DataManager.h"
+#import "LogManager.h"
 
 #define DELIVERY_INFO_TYPE_TAG 1
 #define DELIVERY_INFO_DETAILS_TAG 2
@@ -16,6 +17,7 @@
 
 - (void)reloadDeliveryInfo;
 - (void)transitionToCheckout:(id)sender;
+- (void)verifyDeliverySlot;
 
 @end
 
@@ -52,7 +54,25 @@
 }
 
 - (void)transitionToCheckout:(id)sender {
-	[DataManager chooseDeliverySlot:[selectedDeliverySlot deliverySlotID]];
+	[DataManager showOverlayView:[[self view] window]];
+	[DataManager setOverlayLabelText:@"Booking delivery slot"];
+	[DataManager showActivityIndicator];
+	
+	[NSThread detachNewThreadSelector:@selector(verifyDeliverySlot) toTarget:self withObject:nil];
+}
+
+#pragma mark -
+#pragma mark UIAlertView responders
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if ([[alertView title] isEqualToString:@"Success"]) {
+		//User wishes to proceed to payment screen
+		NSURL *url = [NSURL URLWithString:@"http://www.tesco.com/groceries/checkout/default.aspx?ui=iphone"];
+		
+		if (![[UIApplication sharedApplication] openURL:url]){
+			[LogManager log:@"Unable to open Tesco.com payment page" withLevel:LOG_ERROR fromClass:@"DeliverySlotsViewController"];
+		}
+	}
 }
 
 #pragma mark -
@@ -208,6 +228,27 @@
 	 
 	/* reload the delivery info */
 	[deliveryInfoView reloadData];
+}
+
+- (void)verifyDeliverySlot {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	NSString* error = NULL;
+	[DataManager chooseDeliverySlot:[selectedDeliverySlot deliverySlotID] returningError:&error];
+	
+	[DataManager hideOverlayView];
+	
+	if(error == NULL){
+		UIAlertView *successAlert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"You will now be transferred to Tesco.com for payment processing." delegate:self cancelButtonTitle:@"Proceed" otherButtonTitles:nil];
+		[successAlert show];
+		[successAlert release];
+	}else {
+		UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:error delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+		[errorAlert show];
+		[errorAlert release];
+	}
+	
+	[pool release];
 }
 
 #pragma mark -

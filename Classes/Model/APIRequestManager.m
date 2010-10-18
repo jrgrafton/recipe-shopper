@@ -345,11 +345,10 @@
 	return products;
 }
 
-- (void)chooseDeliverySlot:(NSString *)deliverySlotID {
+- (void)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error {
 	NSDictionary *apiResults;
-	NSString *error;
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=CHOOSEDELIVERYSLOT&deliveryslotid=%@&sessionkey=%@", REST_SERVICE_URL, deliverySlotID, sessionKey];
-	[self apiRequest:requestString returningApiResults:&apiResults returningError:&error];
+	[self apiRequest:requestString returningApiResults:&apiResults returningError:error];
 }
 
 #pragma mark -

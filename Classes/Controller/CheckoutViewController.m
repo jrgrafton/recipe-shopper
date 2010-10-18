@@ -16,6 +16,7 @@
 
 - (void)addProductButtonClicked:(id)sender;
 - (void)addProductButtonClicked:(id)sender;
+- (void)loadDeliveryDates;
 
 @end
 
@@ -39,7 +40,7 @@
 	[basketView setContentOffset:CGPointMake(0, 0) animated:NO];
 	
 	/* show the overlay view */
-	[DataManager showOverlayView:basketView];
+	[DataManager showOverlayView:[[self view] window]];
 	
 	/* update the online basket details */
 	[NSThread detachNewThreadSelector:@selector(updateBasketDetails) toTarget:self withObject:nil];
@@ -53,7 +54,15 @@
 	}
 	
 	/* load the delivery slots into the delivery slot view before we transition */
+	[DataManager showOverlayView:[[self view] window]];
+	[DataManager setOverlayLabelText:@"Loading delivery slots"];
+	[NSThread detachNewThreadSelector:@selector(loadDeliveryDates) toTarget:self withObject:nil];
+	
+}
+
+- (void)loadDeliveryDates {
 	[deliverySlotsViewController loadDeliveryDates];
+	[DataManager hideOverlayView];
 	
 	/* transition to delivery slot view */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];

@@ -91,7 +91,7 @@
 		[details addObject:passwordText];
 		
 		RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
-		[DataManager showOverlayView:[[[appDelegate tabBarController] selectedViewController] view]];
+		[DataManager showOverlayView:[[[[appDelegate tabBarController] selectedViewController] view]window]];
 		
 		[NSThread detachNewThreadSelector:@selector(loginToStore:) toTarget:self withObject:details];
 	} else if ([[alertView title] isEqualToString:@""] && [alertView cancelButtonIndex] != buttonIndex) {

@@ -371,6 +371,7 @@
 		3EB5D0C3125F79E0009A80E0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3EB5D54F1268AB4C009A80E0 /* JSON */,
 				3EB5D5471268AB4C009A80E0 /* APIRequestManager.h */,
 				3EB5D5481268AB4C009A80E0 /* APIRequestManager.m */,
 				3EB5D5491268AB4C009A80E0 /* DatabaseRequestManager.h */,
@@ -379,7 +380,6 @@
 				3EB5D54C1268AB4C009A80E0 /* DataManager.m */,
 				3EB5D54D1268AB4C009A80E0 /* DeliverySlot.h */,
 				3EB5D54E1268AB4C009A80E0 /* DeliverySlot.m */,
-				3EB5D54F1268AB4C009A80E0 /* JSON */,
 				3EB5D55D1268AB4C009A80E0 /* LoginManager.h */,
 				3EB5D55E1268AB4C009A80E0 /* LoginManager.m */,
 				3EB5D55F1268AB4C009A80E0 /* LogManager.h */,

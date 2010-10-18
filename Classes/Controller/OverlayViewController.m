@@ -14,7 +14,7 @@
 
 - (void)showOverlayView:(UIView *)superView {
 	[superView addSubview:[self view]];
-	[self setOverlayViewOffset:CGPointMake(0.0, 0.0)];
+	[self setOverlayViewOffset:CGPointMake(0.0, 20.0)];
 	[self setOverlayLabelText:@""];
 }
 

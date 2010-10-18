@@ -39,7 +39,7 @@
 + (NSArray *)getProductsForShelf:(NSString *)shelf;
 + (NSDictionary *)getDeliveryDates;
 + (NSArray *)searchForProducts:(NSString *)searchTerm onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder;
-+ (void)chooseDeliverySlot:(NSString *)deliverySlotID;
++ (void)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error;
 + (NSString *)getCustomerName;
 
 /* recipe basket manager calls */
