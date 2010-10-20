@@ -88,6 +88,9 @@ static OverlayViewController *overlayViewController;
 	NSNumber *quantity = [productDetails objectAtIndex:1];
 	[apiRequestManager updateBasketQuantity:productID byQuantity:quantity];
 	
+	/* inform the checkout page that we've updated the quantity in the online basket as the basket price may have changed */
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"BasketChanged" object:self];
+	
 	[pool release];
 }
 
@@ -133,6 +136,10 @@ static OverlayViewController *overlayViewController;
 	return [apiRequestManager loginToStore:email withPassword:password];
 }
 
++ (void)logoutOfStore {
+	[apiRequestManager logoutOfStore];
+}
+
 + (void)addProductBasketToBasket {
 	[apiRequestManager addProductBasketToBasket];
 }
@@ -165,8 +172,8 @@ static OverlayViewController *overlayViewController;
 	return [apiRequestManager searchForProducts:searchTerm onPage:page totalPageCountHolder:totalPageCountHolder];
 }
 
-+ (void)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error {
-	[apiRequestManager chooseDeliverySlot:deliverySlotID returningError:error];
++ (BOOL)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error {
+	return [apiRequestManager chooseDeliverySlot:deliverySlotID returningError:error];
 }
 
 + (NSString *)getCustomerName {

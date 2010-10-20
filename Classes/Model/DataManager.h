@@ -31,6 +31,7 @@
 + (void)setOfflineMode:(BOOL)offlineMode;
 + (BOOL)loggedIn;
 + (BOOL)loginToStore:(NSString *)email withPassword:(NSString *)password;
++ (void)logoutOfStore;
 + (void)addProductBasketToBasket;
 + (NSDictionary *)getBasketDetails;
 + (NSArray *)getDepartments;
@@ -39,7 +40,7 @@
 + (NSArray *)getProductsForShelf:(NSString *)shelf;
 + (NSDictionary *)getDeliveryDates;
 + (NSArray *)searchForProducts:(NSString *)searchTerm onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder;
-+ (void)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error;
++ (BOOL)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error;
 + (NSString *)getCustomerName;
 
 /* recipe basket manager calls */

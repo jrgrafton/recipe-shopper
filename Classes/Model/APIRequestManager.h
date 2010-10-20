@@ -24,6 +24,7 @@
 - (id)init;
 - (NSArray *)createProductsFromProductBaseIDs:(NSDictionary *)productBaseIdList;
 - (BOOL)loginToStore:(NSString *)email withPassword:(NSString *)password;
+- (void)logoutOfStore;
 - (NSArray *)getDepartments;
 - (NSArray *)getAislesForDepartment:(NSString *)department;
 - (NSArray *)getShelvesForAisle:(NSString *)aisle;
@@ -33,6 +34,6 @@
 - (BOOL)updateBasketQuantity:(NSString *)productID byQuantity:(NSNumber *)quantity;
 - (NSDictionary *)getDeliveryDates;
 - (NSArray *)searchForProducts:(NSString *)searchTerm onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder;
-- (void)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error;
+- (BOOL)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error;
 
 @end

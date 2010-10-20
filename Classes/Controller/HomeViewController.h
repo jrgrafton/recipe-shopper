@@ -11,8 +11,11 @@
 #import "RecipeHistoryViewController.h"
 #import "RecipeCategoryViewController.h"
 
-@interface HomeViewController : UIViewController {
+@interface HomeViewController : UIViewController <UIWebViewDelegate> {
+	IBOutlet UIButton *loginButton;
+	IBOutlet UIWebView *webView;
 	IBOutlet UILabel *greetingLabel;
+	IBOutlet UIButton *logoutButton;
 	IBOutlet UISwitch *offlineModeSwitch;
 }
 
@@ -20,9 +23,11 @@
 @property (nonatomic, retain) RecipeHistoryViewController *recipeHistoryViewController;
 @property (nonatomic, retain) RecipeCategoryViewController *recipeCategoryViewController;
 
-- (IBAction)offlineModeValueChanged:(id)sender;
+- (IBAction)login:(id)sender;
+- (IBAction)logout:(id)sender;
+- (IBAction)transitionToRecipeCategoryView:(id)sender;
 - (IBAction)transitionToRecipeBasketView:(id)sender;
 - (IBAction)transitionToRecipeHistoryView:(id)sender;
-- (IBAction)transitionToRecipeCategoryView:(id)sender;
+- (IBAction)offlineModeValueChanged:(id)sender;
 
 @end

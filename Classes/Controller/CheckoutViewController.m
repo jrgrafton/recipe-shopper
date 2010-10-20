@@ -20,6 +20,10 @@
 
 @end
 
+#define CELL_TITLE_TAG 1
+#define CELL_INFO_TAG 2
+#define CELL_ACTIVITY_INDICATOR_TAG 3
+
 @implementation CheckoutViewController
 
 @synthesize deliverySlotsViewController;
@@ -28,6 +32,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	
+	/* add this object as an observer of the change basket method so we can update the basket details when they change */
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateBasketDetails) name:@"BasketChanged" object:nil];
 	
 	/* prevent the rows from being selected */
 	[basketView setAllowsSelection:NO];
@@ -61,12 +68,16 @@
 }
 
 - (void)loadDeliveryDates {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
 	[deliverySlotsViewController loadDeliveryDates];
 	[DataManager hideOverlayView];
 	
 	/* transition to delivery slot view */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[[appDelegate checkoutViewController] pushViewController:self.deliverySlotsViewController animated:YES];
+	
+	[pool release];
 }
 
 #pragma mark -
@@ -101,72 +112,46 @@
 	
 	if (indexPath.section == 0) {
 		/* this is the basket summary section */
-		static NSString *BasketDetailsCellIdentifier = @"BasketSummaryCell";
+		static NSString *CellIdentifier = @"BasketSummaryCell";
 		
-		cell = [tableView dequeueReusableCellWithIdentifier:BasketDetailsCellIdentifier];
+		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
+		/* create a cell for this row's info */
 		if (cell == nil) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:BasketDetailsCellIdentifier] autorelease];
+			/* load the basket view cell nib */
+			NSArray *bundle = [[NSBundle mainBundle] loadNibNamed:@"BasketViewCell" owner:self options:nil];
+			
+			for (id viewElement in bundle) {
+				if ([viewElement isKindOfClass:[UITableViewCell class]])
+					cell = (UITableViewCell *)viewElement;
+			}
 		}
+
+		UILabel *titleLabel = (UILabel *)[cell viewWithTag:CELL_TITLE_TAG];
+		UILabel *infoLabel = (UILabel *)[cell viewWithTag:CELL_INFO_TAG];
+		UIActivityIndicatorView *activityIndicator = (UIActivityIndicatorView *)[cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
 		
 		if ([indexPath row] == 0) {
-			/* ensure we dont show an image */
-			[[cell imageView] setImage:nil];
-			
-			/* total number of items in basket */
-			[[cell textLabel] setText: @"Number Of Items"];
-			[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14]];
-			[[cell detailTextLabel] setText:@""];
-			
-			UILabel *numItemsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
-			[numItemsLabel setText:[NSString stringWithFormat:@"%d", [DataManager getTotalProductCount]]];
-			[numItemsLabel setTextAlignment: UITextAlignmentRight];
-			
-			UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 70, 40)];
-			[accessoryView addSubview:numItemsLabel];
-			[cell setAccessoryView:accessoryView];
-			[accessoryView release];
-			[numItemsLabel release];
+			[titleLabel setText:@"Number Of Items"];
+			[infoLabel setText:[NSString stringWithFormat:@"%d", [DataManager getTotalProductCount]]];
 		} else if ([indexPath row] == 1) {
-			[[cell imageView] setImage:nil];
-			
-			[[cell textLabel] setText:@"Total Cost"];
-			[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14]];
-			[[cell detailTextLabel] setText:@""];
-			
-			UILabel *totalCostLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 70, 40)];
-			[totalCostLabel setText:[NSString stringWithFormat:@"£%.2f", [[self basketPrice] floatValue]]];
-			[totalCostLabel setTextAlignment: UITextAlignmentRight];
+			[titleLabel setText:@"Total Cost"];
+			[infoLabel setText:[NSString stringWithFormat:@"£%.2f", [[self basketPrice] floatValue]]];
 			
 			if (waitingForAPI == YES) {
-				[totalCostLabel setTextColor:[UIColor redColor]];
+				[activityIndicator startAnimating];
+			} else {
+				[activityIndicator stopAnimating];
 			}
-			
-			UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 40)];
-			[accessoryView addSubview:totalCostLabel];
-			[cell setAccessoryView:accessoryView];
-			[accessoryView release];
-			[totalCostLabel release];
 		} else {
-			[[cell imageView] setImage:nil];
-			
-			[[cell textLabel] setText:@"MultiBuy Savings"];
-			[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14]];
-			[[cell detailTextLabel] setText:@""];
-			
-			UILabel *totalSavingsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 70, 40)];
-			[totalSavingsLabel setText:[NSString stringWithFormat:@"£%.2f", [[self basketSavings] floatValue]]];
-			[totalSavingsLabel setTextAlignment: UITextAlignmentRight];
+			[titleLabel setText:@"MultiBuy Savings"];
+			[infoLabel setText:[NSString stringWithFormat:@"£%.2f", [[self basketSavings] floatValue]]];
 			
 			if (waitingForAPI == YES) {
-				[totalSavingsLabel setTextColor:[UIColor redColor]];
+				[activityIndicator startAnimating];
+			} else {
+				[activityIndicator stopAnimating];
 			}
-			
-			UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 40)];
-			[accessoryView addSubview:totalSavingsLabel];
-			[cell setAccessoryView:accessoryView];
-			[accessoryView release];
-			[totalSavingsLabel release];
 		}
 	} else if (indexPath.section == 1) {
 		/* this is the basket itself */
@@ -267,7 +252,7 @@
 	
 	/* reload the basket details section to show the new values */
 	waitingForAPI = NO;
-	[basketView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+	[basketView reloadData];
 	
 	[DataManager hideOverlayView];
 	

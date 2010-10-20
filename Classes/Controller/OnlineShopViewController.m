@@ -53,8 +53,11 @@
 	[DataManager hideOverlayView];
 	[searchResultsViewController setSearchTerm:[searchBar text]];
 	
-	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[[appDelegate onlineShopViewController] pushViewController:self.searchResultsViewController animated:YES];
+	[DataManager showOverlayView:[[self view] window]];
+	[DataManager setOverlayLabelText:[NSString stringWithFormat:@"Searching for %@", [searchBar text]]];
+	[DataManager showActivityIndicator];
+	
+	[NSThread detachNewThreadSelector:@selector(searchForProducts) toTarget:self withObject:nil];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
@@ -64,7 +67,6 @@
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-	/* add the overlay view */
 	[DataManager showOverlayView:onlineShopView];
 	[DataManager setOverlayViewOffset:[onlineShopView contentOffset]];
 	[DataManager hideActivityIndicator];
@@ -137,6 +139,20 @@
 	/* transition to aisles view */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[[appDelegate onlineShopViewController] pushViewController:self.aislesViewController animated:YES];
+}
+
+#pragma mark -
+#pragma mark Private methods
+
+- (void)searchForProducts {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	[searchResultsViewController newSearch];
+	
+	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
+	[[appDelegate onlineShopViewController] pushViewController:self.searchResultsViewController animated:YES];
+	
+	[pool release];
 }
 
 - (void)didReceiveMemoryWarning {

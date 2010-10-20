@@ -98,10 +98,21 @@
 		return NO;
 	} else if (([DataManager loggedIn] == NO) && (viewController == [theTabBarController.viewControllers objectAtIndex:3])) {
 		[DataManager requestLoginToStore];
+		
+		/* add ourselves as an observer for logged in messages so we can transition when the user has logged in */
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transitionToCheckout) name:@"LoggedIn" object:nil];
+		
+		/* and make sure we don't transition yet */
 		return NO;
 	}
 	
 	return YES;
+}
+
+- (void)transitionToCheckout {
+	/* transition to the online basket view */
+	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
+	[[appDelegate tabBarController] setSelectedViewController:[tabBarController.viewControllers objectAtIndex:3]];
 }
 
 #pragma mark -

@@ -21,26 +21,16 @@
 @implementation SearchResultsViewController
 
 @synthesize searchTerm;
-	
-- (void)viewDidLoad {
-	[super viewDidLoad];
-	
-	searchResults = [[NSMutableArray alloc] init];
-}
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-	
+- (void)newSearch {
+	searchResults = [[NSMutableArray alloc] init];
 	currentPage = 1;
 	[searchResults removeAllObjects];
 	[searchBarView setText:searchTerm];
 	
 	[[self navigationItem] setTitle:searchTerm];
 	
-	[DataManager showOverlayView:searchResultsView];
-	[DataManager setOverlayLabelText:[NSString stringWithFormat:@"Searching for %@", searchTerm]];
-	[DataManager showActivityIndicator];
-	[NSThread detachNewThreadSelector:@selector(searchForProducts) toTarget:self withObject:nil];
+	[self searchForProducts];
 }
 
 #pragma mark -
@@ -55,7 +45,7 @@
 	[searchResults removeAllObjects];
 	[self setSearchTerm:[searchBar text]];
 	
-	[DataManager showOverlayView:searchResultsView];
+	[DataManager showOverlayView:[[self view] window]];
 	[DataManager setOverlayLabelText:[NSString stringWithFormat:@"Searching for %@", searchTerm]];
 	[DataManager showActivityIndicator];
 	[NSThread detachNewThreadSelector:@selector(searchForProducts) toTarget:self withObject:nil];
@@ -91,8 +81,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (currentPage >= totalPageCount) {
 		return [searchResults count];
-	} else {
+	} else if ([searchResults count] != 0) {
 		return [searchResults count] + 1;
+	} else {
+		return 0;
 	}
 }
 
@@ -152,6 +144,13 @@
 	
 	NSArray *results = [DataManager searchForProducts:[self searchTerm] onPage:currentPage totalPageCountHolder:&totalPageCount];
 	[searchResults addObjectsFromArray:results];
+	
+	if ([searchResults count] == 0) {
+		/* just pop up a window to say so */
+		UIAlertView *noResultsAlert = [[UIAlertView alloc] initWithTitle:@"Search results" message:[NSString stringWithFormat:@"No results found for '%@'", searchTerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[noResultsAlert show];
+		[noResultsAlert release];
+	}
 	
 	if (currentPage == 1) {
 		/* scroll the search results to the top */

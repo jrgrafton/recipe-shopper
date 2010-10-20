@@ -66,6 +66,17 @@
 	return [self loggedIn];
 }
 
+- (void)logoutOfStore {
+	/* go back to using an anonymous session key */
+	if ([self login:@"" withPassword:@""] == YES) {
+		[LogManager log:[NSString stringWithFormat:@"Created anonymous login with session key: %@", sessionKey] withLevel:LOG_INFO fromClass:[[self class] description]];
+	} else {
+		[LogManager log:[NSString stringWithFormat:@"Failed to create anonymous login"] withLevel:LOG_ERROR fromClass:[[self class] description]];
+	}
+	
+	[self setLoggedIn:NO];
+}
+
 /*
  * Takes a list of product Base IDs, finds them in the online store and adds them to an array
  */
@@ -345,10 +356,21 @@
 	return products;
 }
 
-- (void)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error {
+- (BOOL)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error {
 	NSDictionary *apiResults;
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=CHOOSEDELIVERYSLOT&deliveryslotid=%@&sessionkey=%@", REST_SERVICE_URL, deliverySlotID, sessionKey];
-	[self apiRequest:requestString returningApiResults:&apiResults returningError:error];
+
+	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:error] == YES) {
+		if ([DataManager getTotalProductCount] < 5) {
+			*error = @"Fewer than 5 items in the basket";
+			return NO;
+		} else {
+			requestString = [NSString stringWithFormat:@"%@?command=READYFORCHECKOUT&sessionkey=%@", REST_SERVICE_URL, sessionKey];
+			return [self apiRequest:requestString returningApiResults:&apiResults returningError:error];
+		}
+	} else {
+		return NO;
+	}
 }
 
 #pragma mark -

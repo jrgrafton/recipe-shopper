@@ -13,6 +13,7 @@
 		288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
 		3E34822D123A8E58009E0214 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E34822C123A8E58009E0214 /* QuartzCore.framework */; };
 		3E892BE11268B26500A512B5 /* imgs in Resources */ = {isa = PBXBuildFile; fileRef = 3E892BCA1268B26500A512B5 /* imgs */; };
+		3EAD8E86126FB1D000B72B67 /* BasketViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EAD8E85126FB1D000B72B67 /* BasketViewCell.xib */; };
 		3EB5D5011268AB29009A80E0 /* AislesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4EB1268AB29009A80E0 /* AislesView.xib */; };
 		3EB5D5021268AB29009A80E0 /* DeliveryInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4EC1268AB29009A80E0 /* DeliveryInfoCell.xib */; };
 		3EB5D5031268AB29009A80E0 /* DeliverySlotsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4ED1268AB29009A80E0 /* DeliverySlotsView.xib */; };
@@ -136,6 +137,7 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3E34822C123A8E58009E0214 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3E892BCA1268B26500A512B5 /* imgs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = imgs; sourceTree = "<group>"; };
+		3EAD8E85126FB1D000B72B67 /* BasketViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = BasketViewCell.xib; path = View/BasketViewCell.xib; sourceTree = "<group>"; };
 		3EB5D4EB1268AB29009A80E0 /* AislesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AislesView.xib; path = View/AislesView.xib; sourceTree = "<group>"; };
 		3EB5D4EC1268AB29009A80E0 /* DeliveryInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DeliveryInfoCell.xib; path = View/DeliveryInfoCell.xib; sourceTree = "<group>"; };
 		3EB5D4ED1268AB29009A80E0 /* DeliverySlotsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DeliverySlotsView.xib; path = View/DeliverySlotsView.xib; sourceTree = "<group>"; };
@@ -408,6 +410,7 @@
 			isa = PBXGroup;
 			children = (
 				3EB5D4EB1268AB29009A80E0 /* AislesView.xib */,
+				3EAD8E85126FB1D000B72B67 /* BasketViewCell.xib */,
 				3EB5D4F21268AB29009A80E0 /* CheckoutView.xib */,
 				3EB5D4EC1268AB29009A80E0 /* DeliveryInfoCell.xib */,
 				3EB5D4ED1268AB29009A80E0 /* DeliverySlotsView.xib */,
@@ -723,6 +726,7 @@
 				3EB5D6E01268ABBB009A80E0 /* icon_shopping.png in Resources */,
 				3EB5D6E11268ABBB009A80E0 /* todo.png in Resources */,
 				3E892BE11268B26500A512B5 /* imgs in Resources */,
+				3EAD8E86126FB1D000B72B67 /* BasketViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

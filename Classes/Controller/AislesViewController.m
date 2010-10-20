@@ -31,6 +31,14 @@
 	
 	[aisles removeAllObjects];
 	[aisles addObjectsFromArray:[DataManager getAislesForDepartment:department]];
+	
+	if ([aisles count] == 0) {
+		/* just pop up a window to say so */
+		UIAlertView *noResultsAlert = [[UIAlertView alloc] initWithTitle:@"Online Shop" message:[NSString stringWithFormat:@"No results found for '%@'", department] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[noResultsAlert show];
+		[noResultsAlert release];
+	}
+	
 	[aislesView reloadData];
 }
 

@@ -67,7 +67,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if ([[alertView title] isEqualToString:@"Success"]) {
 		//User wishes to proceed to payment screen
-		NSURL *url = [NSURL URLWithString:@"http://www.tesco.com/groceries/checkout/default.aspx?ui=iphone"];
+		NSURL *url = [NSURL URLWithString:@"http://www.tesco.com/groceries/checkout/default.aspx?ui=nokia"];
 		
 		if (![[UIApplication sharedApplication] openURL:url]){
 			[LogManager log:@"Unable to open Tesco.com payment page" withLevel:LOG_ERROR fromClass:@"DeliverySlotsViewController"];
@@ -222,8 +222,10 @@
 - (void)reloadDeliveryInfo {
 	NSString *selectedDate = [sortedDeliveryDatesArray objectAtIndex:[deliverySlotPickerView selectedRowInComponent:0]];
 	NSDictionary *deliveryTimeToSlot = [deliveryDates objectForKey:selectedDate];
+	NSMutableArray *sortedDeliveryTimesArray = [NSMutableArray arrayWithArray:[deliveryTimeToSlot allKeys]];
+	[sortedDeliveryTimesArray sortUsingSelector:@selector(compare:)];
 	
-	NSDate *selectedTime = [[deliveryTimeToSlot allKeys] objectAtIndex:[deliverySlotPickerView selectedRowInComponent:1]];
+	NSDate *selectedTime = [sortedDeliveryTimesArray objectAtIndex:[deliverySlotPickerView selectedRowInComponent:1]];
 	selectedDeliverySlot = [deliveryTimeToSlot objectForKey:selectedTime];
 	 
 	/* reload the delivery info */
@@ -234,19 +236,17 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	NSString* error = NULL;
-	[DataManager chooseDeliverySlot:[selectedDeliverySlot deliverySlotID] returningError:&error];
-	
-	[DataManager hideOverlayView];
-	
-	if(error == NULL){
-		UIAlertView *successAlert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"You will now be transferred to Tesco.com for payment processing." delegate:self cancelButtonTitle:@"Proceed" otherButtonTitles:nil];
+	if ([DataManager chooseDeliverySlot:[selectedDeliverySlot deliverySlotID] returningError:&error] == YES) {
+		UIAlertView *successAlert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"You will now be transferred to Tesco.com for payment processing" delegate:self cancelButtonTitle:@"Proceed" otherButtonTitles:nil];
 		[successAlert show];
 		[successAlert release];
-	}else {
+	} else {
 		UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:error delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
 		[errorAlert show];
 		[errorAlert release];
 	}
+			
+	[DataManager hideOverlayView];
 	
 	[pool release];
 }

@@ -38,8 +38,8 @@
 	[[self navigationItem] setTitle:shelf];
 	
 	[products removeAllObjects];
-	[DataManager showOverlayView:productsView];
-	[DataManager setOverlayViewOffset:[productsView contentOffset]];
+	[DataManager showOverlayView:[[self view] window]];
+	//[DataManager setOverlayViewOffset:[productsView contentOffset]];
 	[DataManager setOverlayLabelText:[NSString stringWithFormat:@"Downloading %@", shelf]];
 	[DataManager showActivityIndicator];
 	[NSThread detachNewThreadSelector:@selector(loadProducts) toTarget:self withObject:nil];
@@ -89,6 +89,13 @@
 	
 	/* scroll the products to the top */
 	[productsView setContentOffset:CGPointMake(0, 0) animated:NO];
+	
+	if ([products count] == 0) {
+		/* just pop up a window to say so */
+		UIAlertView *noResultsAlert = [[UIAlertView alloc] initWithTitle:@"Online Shop" message:[NSString stringWithFormat:@"No results found for '%@'", shelf] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[noResultsAlert show];
+		[noResultsAlert release];
+	}
 	
 	[productsView reloadData];
 	[DataManager hideOverlayView];

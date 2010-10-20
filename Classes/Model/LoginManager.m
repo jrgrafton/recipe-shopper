@@ -91,7 +91,7 @@
 		[details addObject:passwordText];
 		
 		RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
-		[DataManager showOverlayView:[[[[appDelegate tabBarController] selectedViewController] view]window]];
+		[DataManager showOverlayView:[[[[appDelegate tabBarController] selectedViewController] view] window]];
 		
 		[NSThread detachNewThreadSelector:@selector(loginToStore:) toTarget:self withObject:details];
 	} else if ([[alertView title] isEqualToString:@""] && [alertView cancelButtonIndex] != buttonIndex) {
@@ -118,10 +118,8 @@
 		
 		[DataManager hideOverlayView];
 		
-		/* transition to the online basket view */
-		RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
-		UITabBarController *tabBarController = [appDelegate tabBarController];
-		[tabBarController setSelectedViewController:[tabBarController.viewControllers objectAtIndex:3]];
+		/* inform any observers that the user has logged in */
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"LoggedIn" object:self];
 	}
 	
 	[pool release];

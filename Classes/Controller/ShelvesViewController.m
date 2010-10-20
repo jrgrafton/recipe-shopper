@@ -31,6 +31,14 @@
 	
 	[shelves removeAllObjects];
 	[shelves addObjectsFromArray:[DataManager getShelvesForAisle:aisle]];
+	
+	if ([shelves count] == 0) {
+		/* just pop up a window to say so */
+		UIAlertView *noResultsAlert = [[UIAlertView alloc] initWithTitle:@"Online Shop" message:[NSString stringWithFormat:@"No results found for '%@'", aisle] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[noResultsAlert show];
+		[noResultsAlert release];
+	}
+	
 	[shelvesView reloadData];
 }
 

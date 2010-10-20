@@ -18,4 +18,6 @@
 
 @property (nonatomic, retain) NSString *searchTerm;
 
+- (void)newSearch;
+
 @end
