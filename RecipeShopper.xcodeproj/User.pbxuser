@@ -440,7 +440,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1030, 1560}}";
 			sepNavSelRange = "{2394, 0}";
-			sepNavVisRange = "{1739, 1247}";
+			sepNavVisRange = "{1739, 1375}";
 		};
 	};
 	3EB5D52B1268AB3D009A80E0 /* RecipeListViewController.h */ = {
@@ -454,7 +454,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {852, 1625}}";
 			sepNavSelRange = "{2401, 0}";
-			sepNavVisRange = "{2146, 373}";
+			sepNavVisRange = "{2146, 396}";
 			sepNavWindowFrame = "{{15, 223}, {1133, 650}}";
 		};
 	};
@@ -1343,6 +1343,20 @@
 		rType = 0;
 		vrLen = 1106;
 		vrLoc = 567;
+	};
+	CE81C9621271E4EB00D8A725 /* test.png */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = image.png;
+		name = test.png;
+		path = /Users/User/Documents/RecipeShopper/images/Misc/test.png;
+		sourceTree = "<absolute>";
+	};
+	CE81C97E1271EBEE00D8A725 /* test@2x.png */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = image.png;
+		name = "test@2x.png";
+		path = "/Users/User/Documents/RecipeShopper/images/Misc/test@2x.png";
+		sourceTree = "<absolute>";
 	};
 	CE81C99C1271FA5400D8A725 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
