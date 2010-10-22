@@ -39,7 +39,7 @@
 			</object>
 			<object class="IBUITableViewCell" id="585218602">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">292</int>
+				<int key="NSvFlags">293</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIView" id="758559205">
@@ -59,7 +59,7 @@
 							<object class="IBUILabel" id="244946662">
 								<reference key="NSNextResponder" ref="758559205"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{88, 5}, {192, 46}}</string>
+								<string key="NSFrame">{{88, -6}, {192, 46}}</string>
 								<reference key="NSSuperview" ref="758559205"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -85,7 +85,7 @@
 							<object class="IBUILabel" id="64934049">
 								<reference key="NSNextResponder" ref="758559205"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{88, 59}, {192, 21}}</string>
+								<string key="NSFrame">{{88, 48}, {192, 21}}</string>
 								<reference key="NSSuperview" ref="758559205"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -100,8 +100,8 @@
 									<int key="NSfFlags">16</int>
 								</object>
 								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MC41MzMzMzMzMzMzIDAuNTMzMzMzMzMzMyAwLjUzMzMzMzMzMzMAA</bytes>
 								</object>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -125,10 +125,11 @@
 				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
-					<bytes key="NSRGB">MSAxIDEAA</bytes>
+					<bytes key="NSRGB">MC44IDAuOCAwLjgAA</bytes>
 				</object>
+				<bool key="IBUIOpaque">NO</bool>
+				<int key="IBUIContentMode">4</int>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-				<int key="IBUISeparatorStyle">1</int>
 				<int key="IBUIAccessoryType">1</int>
 				<reference key="IBUIContentView" ref="758559205"/>
 				<string key="IBUIReuseIdentifier">RecipeViewCell</string>
@@ -164,8 +165,8 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="1029534567"/>
-							<reference ref="244946662"/>
 							<reference ref="64934049"/>
+							<reference ref="244946662"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -195,15 +196,19 @@
 					<string>3.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
+					<string>5.IBViewBoundsToFrameTransform</string>
 					<string>9.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>UIResponder</string>
-					<string>{{554, 258}, {300, 85}}</string>
+					<string>{{416, 354}, {300, 85}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABCsAAAwlAAAA</bytes>
+					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
@@ -223,7 +228,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">9</int>
+			<int key="maxID">10</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -407,7 +412,7 @@
 			<integer value="3100" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<string key="IBDocument.LastKnownRelativeProjectPath">RecipeShopper.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../../RecipeShopper.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<string key="IBCocoaTouchPluginVersion">123</string>
 	</data>

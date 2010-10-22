@@ -76,7 +76,7 @@
     
     /* create a cell for this row's recipe */
 	Recipe *recipe = [recipes objectAtIndex:[indexPath row]];
-	[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe];
+	[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:FALSE];
     
     return cell;	
 }

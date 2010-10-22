@@ -25,13 +25,19 @@
 #define COUNT_TAG 10
 #define PLUS_BUTTON_TAG 11
 
-+ (void)createRecipeTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withRecipe:(Recipe *)recipe {
++ (void)createRecipeTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withRecipe:(Recipe *)recipe isHeader:(BOOL)isHeader {
 	UILabel *label;
 	UIImageView *image;
 	
 	if (*cellReference == nil) {
 		/* load the recipe view cell nib */
-        NSArray *bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeViewCell" owner:self options:nil];
+        NSArray *bundle;
+		
+		if (isHeader) {
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeViewCellHeader" owner:self options:nil];
+		}else{
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeViewCell" owner:self options:nil];
+		}
 		
         for (id viewElement in bundle) {
 			if ([viewElement isKindOfClass:[UITableViewCell class]])

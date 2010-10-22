@@ -30,12 +30,12 @@
 		
 		NSString *documentsImgPath = [userDocsPath stringByAppendingPathComponent:@"imgs"];
 		
-		if ([fileManager fileExistsAtPath:documentsImgPath] == NO) {
+		//if ([fileManager fileExistsAtPath:documentsImgPath] == NO) {
 			NSError *error;
 			NSBundle *bundle = [NSBundle mainBundle];
 			NSString *localImagePath = [bundle pathForResource:@"imgs" ofType:nil];
 			[fileManager copyItemAtPath:localImagePath toPath:documentsImgPath error:&error];
-		}		
+		//}		
     }
 	
     return self;
