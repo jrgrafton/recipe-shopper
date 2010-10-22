@@ -27,6 +27,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
+	//Add logo to nav bar
+	UIImage *image = [UIImage imageNamed: @"header.png"];
+	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+	self.navigationItem.titleView = imageView;
+	[imageView release];
+	
+	[productsView setBackgroundColor: [UIColor clearColor]];
+	
 	products = [[NSMutableArray alloc] init];
 	
 	[productsView setAllowsSelection:NO];
@@ -35,7 +43,7 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
-	[[self navigationItem] setTitle:shelf];
+	//[[self navigationItem] setTitle:shelf];
 	
 	[products removeAllObjects];
 	[DataManager showOverlayView:[[self view] window]];
@@ -122,7 +130,7 @@
 	}
 	
 	/* reload the data so the new values are displayed */
-	[self.tableView reloadData];
+	[productsView reloadData];
 }
 
 /*
@@ -144,7 +152,7 @@
 	}
 	
 	/* reload the data so the new values are displayed */
-	[self.tableView reloadData];
+	[productsView reloadData];
 }
 
 #pragma mark -

@@ -21,13 +21,21 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
+	//Add logo to nav bar
+	UIImage *image = [UIImage imageNamed: @"header.png"];
+	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+	self.navigationItem.titleView = imageView;
+	[imageView release];
+	
+	[aislesView setBackgroundColor: [UIColor clearColor]];
+	
 	aisles = [[NSMutableArray alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	
-	[[self navigationItem] setTitle:department];
+	//[[self navigationItem] setTitle:department];
 	
 	[aisles removeAllObjects];
 	[aisles addObjectsFromArray:[DataManager getAislesForDepartment:department]];

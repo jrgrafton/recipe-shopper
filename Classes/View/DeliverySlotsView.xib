@@ -42,14 +42,27 @@
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
+					<object class="IBUIImageView" id="946576532">
+						<reference key="NSNextResponder" ref="269010601"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{40, 126}, {240, 128}}</string>
+						<reference key="NSSuperview" ref="269010601"/>
+						<int key="IBUIContentMode">1</int>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">watermark.png</string>
+						</object>
+					</object>
 					<object class="IBUITableView" id="873029372">
 						<reference key="NSNextResponder" ref="269010601"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{320, 152}</string>
+						<string key="NSFrameSize">{320, 164}</string>
 						<reference key="NSSuperview" ref="269010601"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC44NzQ1MDk4MDM5IDAuOTEzNzI1NDkwMiAwLjk1Njg2Mjc0NTEAA</bytes>
+							<int key="NSColorSpace">2</int>
+							<bytes key="NSRGB">MC4xMDU4ODIzNjE1IDAuNDUwOTgwNDI0OSAwLjI4NjI3NDUyMjUgMAA</bytes>
 						</object>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -68,7 +81,7 @@
 					<object class="IBUIPickerView" id="334317864">
 						<reference key="NSNextResponder" ref="269010601"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{0, 152}, {320, 216}}</string>
+						<string key="NSFrame">{{0, 164}, {320, 216}}</string>
 						<reference key="NSSuperview" ref="269010601"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -78,14 +91,11 @@
 						<bool key="IBUIShowsSelectionIndicator">YES</bool>
 					</object>
 				</object>
-				<string key="NSFrameSize">{320, 368}</string>
+				<string key="NSFrameSize">{320, 380}</string>
 				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
-					<int key="NSColorSpace">3</int>
-					<bytes key="NSWhite">MQA</bytes>
-					<object class="NSColorSpace" key="NSCustomColorSpace">
-						<int key="NSID">2</int>
-					</object>
+					<int key="NSColorSpace">1</int>
+					<bytes key="NSRGB">MC40MTU2ODYyNzQ1IDAuNTA1ODgyMzUyOSAwLjU5NjA3ODQzMTQAA</bytes>
 				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
@@ -177,6 +187,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="873029372"/>
 							<reference ref="334317864"/>
+							<reference ref="946576532"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -193,6 +204,11 @@
 						<reference key="object" ref="334317864"/>
 						<reference key="parent" ref="269010601"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">15</int>
+						<reference key="object" ref="946576532"/>
+						<reference key="parent" ref="269010601"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -201,6 +217,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>-1.CustomClassName</string>
 					<string>-2.CustomClassName</string>
+					<string>15.IBPluginDependency</string>
 					<string>4.IBEditorWindowLastContentRect</string>
 					<string>4.IBPluginDependency</string>
 					<string>8.IBEditorWindowLastContentRect</string>
@@ -212,9 +229,10 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>DeliverySlotsViewController</string>
 					<string>UIResponder</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{710, 10}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{427, 285}, {320, 368}}</string>
+					<string>{{427, 273}, {320, 380}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
@@ -238,7 +256,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">14</int>
+			<int key="maxID">15</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -406,6 +424,14 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">UIImageView</string>
+					<string key="superclassName">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">UIKit.framework/Headers/UIImageView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">UIPickerView</string>
 					<string key="superclassName">UIView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -516,6 +542,10 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<string key="IBDocument.LastKnownRelativeProjectPath">../../RecipeShopper.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
+		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="NS.key.0">watermark.png</string>
+			<string key="NS.object.0">{189, 135}</string>
+		</object>
 		<string key="IBCocoaTouchPluginVersion">123</string>
 	</data>
 </archive>

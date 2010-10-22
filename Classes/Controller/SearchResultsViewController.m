@@ -22,13 +22,25 @@
 
 @synthesize searchTerm;
 
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	
+	//Add logo to nav bar
+	UIImage *image = [UIImage imageNamed: @"header.png"];
+	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+	self.navigationItem.titleView = imageView;
+	[imageView release];
+	
+	[searchResultsView setBackgroundColor: [UIColor clearColor]];
+}
+
 - (void)newSearch {
 	searchResults = [[NSMutableArray alloc] init];
 	currentPage = 1;
 	[searchResults removeAllObjects];
 	[searchBarView setText:searchTerm];
 	
-	[[self navigationItem] setTitle:searchTerm];
+	//[[self navigationItem] setTitle:searchTerm];
 	
 	[self searchForProducts];
 }

@@ -35,6 +35,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
+	//Add logo to nav bar
+	UIImage *image = [UIImage imageNamed: @"header.png"];
+	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+	self.navigationItem.titleView = imageView;
+	[imageView release];
+	
+	[deliveryInfoView setBackgroundColor: [UIColor clearColor]];
+	
 	/* ensure table can't be selected */
 	[deliveryInfoView setAllowsSelection:NO];
 		
@@ -67,7 +75,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if ([[alertView title] isEqualToString:@"Success"]) {
 		//User wishes to proceed to payment screen
-		NSURL *url = [NSURL URLWithString:@"http://www.tesco.com/groceries/checkout/default.aspx?ui=nokia"];
+		NSURL *url = [NSURL URLWithString:@"http://www.tesco.com/groceries/checkout/default.aspx?ui=iphone"];
 		
 		if (![[UIApplication sharedApplication] openURL:url]){
 			[LogManager log:@"Unable to open Tesco.com payment page" withLevel:LOG_ERROR fromClass:@"DeliverySlotsViewController"];

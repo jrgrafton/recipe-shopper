@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "RecipeViewController.h"
 
-@interface RecipeHistoryViewController : UITableViewController <UIWebViewDelegate> {
+@interface RecipeHistoryViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,UIWebViewDelegate> {
 	IBOutlet UITableView *recipeHistoryView;
 }
 

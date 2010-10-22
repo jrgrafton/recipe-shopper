@@ -16,6 +16,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
+	//Add logo to nav bar
+	UIImage *image = [UIImage imageNamed: @"header.png"];
+	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+	self.navigationItem.titleView = imageView;
+	[imageView release];
+	
+	//Add watermark to scroll view
+	UIImage *watermark = [UIImage imageNamed:@"watermarkScroll.png"];
+	[recipeCategoryView setBackgroundColor:[UIColor colorWithPatternImage:watermark]];
+	
     categoryMappings = [[NSDictionary dictionaryWithObjectsAndKeys:
 						 @"Bread, cakes & biscuits", [NSNumber numberWithInt:CAKES], 
 						 @"Breakfast", [NSNumber numberWithInt:BREAKFASTS],
@@ -31,9 +41,9 @@
 						 @"Soups", [NSNumber numberWithInt:SOUPS],
 						 @"Starter", [NSNumber numberWithInt:STARTERS],
 						 nil] retain];
-		
+	
 	/* ensure the recipe category view is the right size */
-	recipeCategoryView.contentSize = CGSizeMake(320.0f, 1145.0f);	
+	[recipeCategoryView setContentSize: CGSizeMake(320.0f, 1145.0f)];	
 }
 
 - (IBAction)categoryChosen:(id)sender {
@@ -49,9 +59,6 @@
 	
 	/* load the recipes that are in this category into the recipe list */
 	[recipeListViewController loadRecipesForCategory:categoryName];
-	
-	/* make sure the list is scrolled to the top */
-	[recipeListViewController.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
 	
 	/* transition to new view */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];

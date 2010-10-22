@@ -44,6 +44,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
+	//Add logo to nav bar
+	UIImage *image = [UIImage imageNamed: @"header.png"];
+	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+	self.navigationItem.titleView = imageView;
+	[imageView release];
+	
 	/* round recipe view corners */
 	webView.layer.masksToBounds = YES;
 	webView.layer.cornerRadius = 5;

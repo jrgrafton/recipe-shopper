@@ -19,8 +19,14 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
+	//Add logo to nav bar
+	UIImage *image = [UIImage imageNamed: @"header.png"];
+	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+	self.navigationItem.titleView = imageView;
+	[imageView release];
+	
 	[webView setBackgroundColor:[UIColor clearColor]];
-	[webView loadHTMLString:@"<a href=\"https://secure.tesco.com/register/default.aspx?newReg=true&ui=nokia\">Register with Tesco.com</a>" baseURL:nil];
+	[webView loadHTMLString:@"<a href=\"https://secure.tesco.com/register/default.aspx?newReg=true&ui=iphone\">Register with Tesco.com</a>" baseURL:nil];
 	
 	[DataManager setOfflineMode:NO];
 }

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ShoppingListViewController : UITableViewController {
+@interface ShoppingListViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 	IBOutlet UITableView *productTableView;
 }
 

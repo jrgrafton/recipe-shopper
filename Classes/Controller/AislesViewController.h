@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "ShelvesViewController.h"
 
-@interface AislesViewController : UITableViewController {
+@interface AislesViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 	IBOutlet UITableView *aislesView;
-@private NSMutableArray *aisles;
+	
+	@private 
+	NSMutableArray *aisles;
 }
 
 @property (nonatomic, retain) NSString *department;

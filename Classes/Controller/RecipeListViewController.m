@@ -15,6 +15,18 @@
 
 @synthesize recipeViewController;
 
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	
+	//Add logo to nav bar
+	UIImage *image = [UIImage imageNamed: @"header.png"];
+	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+	self.navigationItem.titleView = imageView;
+	[imageView release];
+	
+	[recipeListView setBackgroundColor: [UIColor clearColor]];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	
@@ -32,6 +44,10 @@
 	categoryName = [category retain];
 	recipes = [[DataManager getAllRecipesInCategory:category] retain];
 	[recipeListView reloadData];
+	
+	/* make sure the list is scrolled to the top */
+	[recipeListView setContentOffset:CGPointMake(0, 0) animated:NO];
+	
 }
 
 #pragma mark -

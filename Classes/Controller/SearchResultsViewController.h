@@ -11,9 +11,11 @@
 @interface SearchResultsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate> {
 	IBOutlet UISearchBar *searchBarView;
 	IBOutlet UITableView *searchResultsView;
-@private NSMutableArray *searchResults;
-@private int currentPage;
-@private int totalPageCount;
+
+	@private 
+	NSMutableArray *searchResults;
+	NSInteger currentPage;
+	NSInteger totalPageCount;
 }
 
 @property (nonatomic, retain) NSString *searchTerm;

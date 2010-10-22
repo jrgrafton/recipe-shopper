@@ -13,8 +13,10 @@
 @interface OnlineShopViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate> {
 	IBOutlet UISearchBar *searchBarView;
 	IBOutlet UITableView *onlineShopView;
-@private NSArray *departments;
-@private NSDictionary *departmentImages;
+	
+	@private 
+	NSArray *departments;
+	NSDictionary *departmentImages;
 }
 
 @property (nonatomic, retain) AislesViewController *aislesViewController;

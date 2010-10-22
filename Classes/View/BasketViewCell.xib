@@ -59,8 +59,8 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">Title</string>
-								<object class="NSFont" key="IBUIFont" id="440042500">
-									<string key="NSName">ArialMT</string>
+								<object class="NSFont" key="IBUIFont" id="568162255">
+									<string key="NSName">Georgia</string>
 									<double key="NSSize">17</double>
 									<int key="NSfFlags">16</int>
 								</object>
@@ -87,7 +87,7 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">Info</string>
-								<reference key="IBUIFont" ref="440042500"/>
+								<reference key="IBUIFont" ref="568162255"/>
 								<reference key="IBUITextColor" ref="592099455"/>
 								<reference key="IBUIHighlightedColor" ref="285001942"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -158,9 +158,9 @@
 						<reference key="object" ref="411211641"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="726447304"/>
 							<reference ref="623488850"/>
 							<reference ref="139225469"/>
+							<reference ref="726447304"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -202,7 +202,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">P4AAAL+AAABBoAAAwgQAAA</bytes>
+						<bytes key="NSTransformStruct">P4AAAL+AAABBoAAAwhgAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">

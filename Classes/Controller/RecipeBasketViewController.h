@@ -10,7 +10,7 @@
 #import "RecipeViewController.h"
 #import "ShoppingListViewController.h"
 
-@interface RecipeBasketViewController : UITableViewController <UIWebViewDelegate> {
+@interface RecipeBasketViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,UIWebViewDelegate> {
 	IBOutlet UITableView *recipeBasketTableView;
 }
 

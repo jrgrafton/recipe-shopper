@@ -82,7 +82,6 @@
 		3EB5D6B51268ABBB009A80E0 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D67D1268ABBB009A80E0 /* Default.png */; };
 		3EB5D6B61268ABBB009A80E0 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D67E1268ABBB009A80E0 /* Default@2x.png */; };
 		3EB5D6B71268ABBB009A80E0 /* download@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D67F1268ABBB009A80E0 /* download@2x.png */; };
-		3EB5D6B81268ABBB009A80E0 /* tesco_header.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6801268ABBB009A80E0 /* tesco_header.png */; };
 		3EB5D6B91268ABBB009A80E0 /* breakfasts.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6821268ABBB009A80E0 /* breakfasts.png */; };
 		3EB5D6BA1268ABBB009A80E0 /* breakfasts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6831268ABBB009A80E0 /* breakfasts@2x.png */; };
 		3EB5D6BB1268ABBB009A80E0 /* cakesBiscuits.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6841268ABBB009A80E0 /* cakesBiscuits.png */; };
@@ -126,11 +125,21 @@
 		3EB5D6E11268ABBB009A80E0 /* todo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6AC1268ABBB009A80E0 /* todo.png */; };
 		3EB80E4C1235A50F00F74165 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB80E4B1235A50F00F74165 /* libsqlite3.0.dylib */; };
 		3EFBE0EC123CF117008B7DC2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EFBE0EB123CF117008B7DC2 /* SystemConfiguration.framework */; };
+		CE3D2DE712710C8700D100E2 /* watermarkScroll.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3D2DE512710C8700D100E2 /* watermarkScroll.png */; };
+		CE3D2DE812710C8700D100E2 /* watermarkScroll@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3D2DE612710C8700D100E2 /* watermarkScroll@2x.png */; };
+		CE9C64F11270E874000B2EC4 /* header.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9C64EF1270E874000B2EC4 /* header.png */; };
+		CE9C64F21270E874000B2EC4 /* watermark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9C64F01270E874000B2EC4 /* watermark@2x.png */; };
+		CE9C64F41270E880000B2EC4 /* header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9C64F31270E880000B2EC4 /* header@2x.png */; };
+		CE9C64F61270E895000B2EC4 /* plate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9C64F51270E895000B2EC4 /* plate@2x.png */; };
+		CE9C64F81270E8D2000B2EC4 /* plate.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9C64F71270E8D2000B2EC4 /* plate.png */; };
+		CE9C64FA1270E939000B2EC4 /* watermark.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9C64F91270E939000B2EC4 /* watermark.png */; };
+		CED7333A1270E56300B049BF /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CED733381270E56300B049BF /* icon.png */; };
+		CED7333B1270E56300B049BF /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CED733391270E56300B049BF /* icon@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D6058910D05DD3D006BFB54 /* RecipeShopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecipeShopper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D6058910D05DD3D006BFB54 /* Recipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765070DF74369002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		28A0AB4B0D9B1048005BE974 /* RecipeShopper_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecipeShopper_Prefix.pch; sourceTree = "<group>"; };
@@ -243,7 +252,6 @@
 		3EB5D67D1268ABBB009A80E0 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		3EB5D67E1268ABBB009A80E0 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		3EB5D67F1268ABBB009A80E0 /* download@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "download@2x.png"; sourceTree = "<group>"; };
-		3EB5D6801268ABBB009A80E0 /* tesco_header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tesco_header.png; sourceTree = "<group>"; };
 		3EB5D6821268ABBB009A80E0 /* breakfasts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = breakfasts.png; sourceTree = "<group>"; };
 		3EB5D6831268ABBB009A80E0 /* breakfasts@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "breakfasts@2x.png"; sourceTree = "<group>"; };
 		3EB5D6841268ABBB009A80E0 /* cakesBiscuits.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cakesBiscuits.png; sourceTree = "<group>"; };
@@ -288,6 +296,16 @@
 		3EB80E4B1235A50F00F74165 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		3EFBE0EB123CF117008B7DC2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* RecipeShopper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RecipeShopper-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		CE3D2DE512710C8700D100E2 /* watermarkScroll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = watermarkScroll.png; sourceTree = "<group>"; };
+		CE3D2DE612710C8700D100E2 /* watermarkScroll@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "watermarkScroll@2x.png"; sourceTree = "<group>"; };
+		CE9C64EF1270E874000B2EC4 /* header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = header.png; path = /Volumes/VMware_shared/RecipeShopper/header.png; sourceTree = "<absolute>"; };
+		CE9C64F01270E874000B2EC4 /* watermark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "watermark@2x.png"; path = "/Volumes/VMware_shared/RecipeShopper/watermark@2x.png"; sourceTree = "<absolute>"; };
+		CE9C64F31270E880000B2EC4 /* header@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "header@2x.png"; path = "/Volumes/VMware_shared/RecipeShopper/header@2x.png"; sourceTree = "<absolute>"; };
+		CE9C64F51270E895000B2EC4 /* plate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "plate@2x.png"; path = "/Volumes/VMware_shared/RecipeShopper/plate@2x.png"; sourceTree = "<absolute>"; };
+		CE9C64F71270E8D2000B2EC4 /* plate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plate.png; sourceTree = "<group>"; };
+		CE9C64F91270E939000B2EC4 /* watermark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = watermark.png; sourceTree = "<group>"; };
+		CED733381270E56300B049BF /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		CED733391270E56300B049BF /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -320,7 +338,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* RecipeShopper.app */,
+				1D6058910D05DD3D006BFB54 /* Recipes.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -528,14 +546,23 @@
 			isa = PBXGroup;
 			children = (
 				3EB5D6781268ABBB009A80E0 /* bottom-fade.png */,
+				CE9C64EF1270E874000B2EC4 /* header.png */,
+				CE9C64F31270E880000B2EC4 /* header@2x.png */,
 				3EB5D6791268ABBB009A80E0 /* button_minus.png */,
 				3EB5D67A1268ABBB009A80E0 /* button_minus@2x.png */,
 				3EB5D67B1268ABBB009A80E0 /* button_plus.png */,
 				3EB5D67C1268ABBB009A80E0 /* button_plus@2x.png */,
+				CE9C64F71270E8D2000B2EC4 /* plate.png */,
+				CE9C64F51270E895000B2EC4 /* plate@2x.png */,
+				CED733381270E56300B049BF /* icon.png */,
+				CED733391270E56300B049BF /* icon@2x.png */,
 				3EB5D67D1268ABBB009A80E0 /* Default.png */,
 				3EB5D67E1268ABBB009A80E0 /* Default@2x.png */,
+				CE9C64F91270E939000B2EC4 /* watermark.png */,
+				CE9C64F01270E874000B2EC4 /* watermark@2x.png */,
+				CE3D2DE512710C8700D100E2 /* watermarkScroll.png */,
+				CE3D2DE612710C8700D100E2 /* watermarkScroll@2x.png */,
 				3EB5D67F1268ABBB009A80E0 /* download@2x.png */,
-				3EB5D6801268ABBB009A80E0 /* tesco_header.png */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -619,7 +646,7 @@
 			);
 			name = RecipeShopper;
 			productName = Shopper;
-			productReference = 1D6058910D05DD3D006BFB54 /* RecipeShopper.app */;
+			productReference = 1D6058910D05DD3D006BFB54 /* Recipes.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -683,7 +710,6 @@
 				3EB5D6B51268ABBB009A80E0 /* Default.png in Resources */,
 				3EB5D6B61268ABBB009A80E0 /* Default@2x.png in Resources */,
 				3EB5D6B71268ABBB009A80E0 /* download@2x.png in Resources */,
-				3EB5D6B81268ABBB009A80E0 /* tesco_header.png in Resources */,
 				3EB5D6B91268ABBB009A80E0 /* breakfasts.png in Resources */,
 				3EB5D6BA1268ABBB009A80E0 /* breakfasts@2x.png in Resources */,
 				3EB5D6BB1268ABBB009A80E0 /* cakesBiscuits.png in Resources */,
@@ -727,6 +753,16 @@
 				3EB5D6E11268ABBB009A80E0 /* todo.png in Resources */,
 				3E892BE11268B26500A512B5 /* imgs in Resources */,
 				3EAD8E86126FB1D000B72B67 /* BasketViewCell.xib in Resources */,
+				CED7333A1270E56300B049BF /* icon.png in Resources */,
+				CED7333B1270E56300B049BF /* icon@2x.png in Resources */,
+				CE9C64F11270E874000B2EC4 /* header.png in Resources */,
+				CE9C64F21270E874000B2EC4 /* watermark@2x.png in Resources */,
+				CE9C64F41270E880000B2EC4 /* header@2x.png in Resources */,
+				CE9C64F61270E895000B2EC4 /* plate@2x.png in Resources */,
+				CE9C64F81270E8D2000B2EC4 /* plate.png in Resources */,
+				CE9C64FA1270E939000B2EC4 /* watermark.png in Resources */,
+				CE3D2DE712710C8700D100E2 /* watermarkScroll.png in Resources */,
+				CE3D2DE812710C8700D100E2 /* watermarkScroll@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -790,7 +826,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = RecipeShopper_Prefix.pch;
 				INFOPLIST_FILE = "RecipeShopper-Info.plist";
-				PRODUCT_NAME = RecipeShopper;
+				PRODUCT_NAME = Recipes;
 			};
 			name = Debug;
 		};
@@ -802,7 +838,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = RecipeShopper_Prefix.pch;
 				INFOPLIST_FILE = "RecipeShopper-Info.plist";
-				PRODUCT_NAME = RecipeShopper;
+				PRODUCT_NAME = Recipes;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -816,6 +852,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
+				PRODUCT_NAME = Recipes;
 				SDKROOT = iphoneos4.1;
 			};
 			name = Debug;
@@ -830,6 +867,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
+				PRODUCT_NAME = Recipes;
 				SDKROOT = iphoneos4.1;
 			};
 			name = Release;

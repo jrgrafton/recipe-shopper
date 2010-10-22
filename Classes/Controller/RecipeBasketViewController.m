@@ -21,7 +21,15 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	[[self navigationItem] setTitle:@"Recipe Basket"];
+	//Add logo to nav bar
+	UIImage *image = [UIImage imageNamed: @"header.png"];
+	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+	self.navigationItem.titleView = imageView;
+	[imageView release];
+	
+	[recipeBasketTableView setBackgroundColor: [UIColor clearColor]];
+	
+	//[[self navigationItem] setTitle:@"Recipe Basket"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

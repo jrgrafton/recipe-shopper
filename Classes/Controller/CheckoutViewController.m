@@ -33,6 +33,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
+	//Add logo to nav bar
+	UIImage *image = [UIImage imageNamed: @"header.png"];
+	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+	self.navigationItem.titleView = imageView;
+	[imageView release];
+	
+	[basketView setBackgroundColor: [UIColor clearColor]];
+	
 	/* add this object as an observer of the change basket method so we can update the basket details when they change */
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateBasketDetails) name:@"BasketChanged" object:nil];
 	

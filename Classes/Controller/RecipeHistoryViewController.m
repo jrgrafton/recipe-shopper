@@ -19,6 +19,18 @@
 #pragma mark -
 #pragma mark View lifecycle
 
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	
+	//Add logo to nav bar
+	UIImage *image = [UIImage imageNamed: @"header.png"];
+	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+	self.navigationItem.titleView = imageView;
+	[imageView release];
+	
+	[recipeHistoryView setBackgroundColor: [UIColor clearColor]];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	

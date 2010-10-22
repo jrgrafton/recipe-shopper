@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "RecipeViewController.h"
 
-@interface RecipeListViewController : UITableViewController <UIWebViewDelegate> {
+@interface RecipeListViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,UIWebViewDelegate> {
     
 	IBOutlet UITableView *recipeListView;
-@private NSArray *recipes;
-@private NSString *categoryName;
+	
+	@private 
+	NSArray *recipes;
+	NSString *categoryName;
 	
 }
 
