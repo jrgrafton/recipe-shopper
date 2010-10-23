@@ -9,6 +9,7 @@
 #import "HomeViewController.h"
 #import "RecipeShopperAppDelegate.h"
 #import "DataManager.h"
+#include "LogManager.h"
 
 @implementation HomeViewController
 
@@ -24,9 +25,6 @@
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
 	self.navigationItem.titleView = imageView;
 	[imageView release];
-	
-	[webView setBackgroundColor:[UIColor clearColor]];
-	[webView loadHTMLString:@"<a href=\"https://secure.tesco.com/register/default.aspx?newReg=true&ui=iphone\">Register with Tesco.com</a>" baseURL:nil];
 	
 	[DataManager setOfflineMode:NO];
 }
@@ -50,10 +48,10 @@
 - (void)replaceLoginButton {
 	/* replace the login button and register link with the greeting label and the logout button */
 	[loginButton setHidden:YES];
-	[webView setHidden:YES];
-	[greetingLabel setHidden:NO];
-	[greetingLabel setText:[NSString stringWithFormat:@"Hello %@", [DataManager getCustomerName]]];
 	[logoutButton setHidden:NO];
+	[createAccountButton setHidden:YES];
+	[greetingLabel setHidden:NO];
+	[greetingLabel setText:[NSString stringWithFormat:@"Hello, %@", [[DataManager getCustomerName] capitalizedString]]];
 }
 
 - (IBAction)logout:(id)sender {
@@ -62,9 +60,9 @@
 	
 	/* then replace the logout button and the greeting with the login button and register link again */
 	[loginButton setHidden:NO];
-	[webView setHidden:NO];
-	[greetingLabel setHidden:YES];
 	[logoutButton setHidden:YES];
+	[createAccountButton setHidden:NO];
+	[greetingLabel setHidden:YES];
 }
 
 - (IBAction)transitionToRecipeCategoryView:(id)sender {
@@ -104,12 +102,29 @@
 }
 
 - (IBAction)offlineModeValueChanged:(id)sender {
-	if (offlineModeSwitch.on) {
-		[DataManager setOfflineMode:YES];
-	} else {
-		[DataManager setOfflineMode:NO];
+	[DataManager setOfflineMode: [offlineModeSwitch isOn]];
+}
+
+- (IBAction)createAccount:(id)sender {
+	UIAlertView *successAlert = [[UIAlertView alloc] initWithTitle:@"New Account" message:@"You will now be transferred to Tesco.com for account creation" delegate:self cancelButtonTitle:@"Proceed" otherButtonTitles:nil];
+	[successAlert show];
+	[successAlert release];
+}
+
+#pragma mark -
+#pragma mark UIAlertView responders
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	//User wishes to proceed to payment screen
+	NSURL *url = [NSURL URLWithString:@"https://secure.tesco.com/register/default.aspx?newReg=true&ui=iphone"];
+	
+	if (![[UIApplication sharedApplication] openURL:url]){
+		[LogManager log:@"Unable to open Tesco.com registration page" withLevel:LOG_ERROR fromClass:@"HomeViewController"];
 	}
 }
+
+#pragma mark -
+#pragma mark Memory management
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.

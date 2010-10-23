@@ -11,11 +11,12 @@
 #import "RecipeHistoryViewController.h"
 #import "RecipeCategoryViewController.h"
 
-@interface HomeViewController : UIViewController <UIWebViewDelegate> {
+@interface HomeViewController : UIViewController <UIAlertViewDelegate> {
 	IBOutlet UIButton *loginButton;
-	IBOutlet UIWebView *webView;
-	IBOutlet UILabel *greetingLabel;
 	IBOutlet UIButton *logoutButton;
+	IBOutlet UIButton *createAccountButton;
+	
+	IBOutlet UILabel *greetingLabel;
 	IBOutlet UISwitch *offlineModeSwitch;
 }
 
@@ -25,6 +26,7 @@
 
 - (IBAction)login:(id)sender;
 - (IBAction)logout:(id)sender;
+- (IBAction)createAccount:(id)sender;
 - (IBAction)transitionToRecipeCategoryView:(id)sender;
 - (IBAction)transitionToRecipeBasketView:(id)sender;
 - (IBAction)transitionToRecipeHistoryView:(id)sender;

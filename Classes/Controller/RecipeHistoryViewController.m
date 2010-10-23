@@ -72,12 +72,11 @@
 	Recipe *recipe = [recentRecipes objectAtIndex:[indexPath row]];
 	
 	if ([indexPath row] == 0) {		
-		[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:TRUE];
-		UIImageView *imageView = (UIImageView *)[cell viewWithTag:99];
-		[imageView setImage:[UIImage imageNamed: @"recentRecipesHeader.png"]];
-		
+		[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:YES];
+		UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
+		[headerLabel setText:@"Recent Recipes"];
 	} else {
-		[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:FALSE];
+		[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:NO];
 	}
 	
     return cell;	
