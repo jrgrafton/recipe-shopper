@@ -50,8 +50,9 @@
 	[loginButton setHidden:YES];
 	[logoutButton setHidden:NO];
 	[createAccountButton setHidden:YES];
-	[greetingLabel setHidden:NO];
-	[greetingLabel setText:[NSString stringWithFormat:@"Hello, %@", [[DataManager getCustomerName] capitalizedString]]];
+	[loggedOutGreetingLabel setHidden:YES];
+	[loggedInGreetingLabel setHidden:NO];
+	[loggedInGreetingLabel setText:[NSString stringWithFormat:@"Hello, %@", [[DataManager getCustomerName] capitalizedString]]];
 }
 
 - (IBAction)logout:(id)sender {
@@ -62,7 +63,8 @@
 	[loginButton setHidden:NO];
 	[logoutButton setHidden:YES];
 	[createAccountButton setHidden:NO];
-	[greetingLabel setHidden:YES];
+	[loggedInGreetingLabel setHidden:YES];
+	[loggedOutGreetingLabel setHidden:NO];
 }
 
 - (IBAction)transitionToRecipeCategoryView:(id)sender {

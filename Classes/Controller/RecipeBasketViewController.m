@@ -47,11 +47,15 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 85;
+	if ([indexPath row] == 0) {
+		return ([DataManager getRecipeBasketCount] == 0)? 130:110;
+	}else {
+		return 85;
+	}
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [DataManager getRecipeBasketCount];	
+	return ([DataManager getRecipeBasketCount] == 0)? 1 : [DataManager getRecipeBasketCount];	
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -60,14 +64,32 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     /* create a cell for this row's recipe */
-	Recipe *recipe = [DataManager getRecipeFromBasket:[indexPath row]];
-	[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:FALSE];
+	
+	if([DataManager getRecipeBasketCount] != 0) {
+		Recipe *recipe = [DataManager getRecipeFromBasket:[indexPath row]];
+		if ([indexPath row] == 0) {		
+			[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:YES];
+		} else {
+			[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:NO];
+		}
+	} else { /* Create special empty basket cell */
+		[recipeBasketTableView setAllowsSelection:NO];
+		NSArray *bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeBasketEmpty" owner:self options:nil];
+		
+		for (id viewElement in bundle) {
+			if ([viewElement isKindOfClass:[UITableViewCell class]])
+				cell = (UITableViewCell *)viewElement;
+		}
+	}
+	
+	UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
+	[headerLabel setText:@"Recipe Basket"];
 	
 	return cell;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
+    return ([DataManager getRecipeBasketCount] == 0);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -84,6 +106,10 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if ([DataManager getRecipeBasketCount] == 0) {
+		return;
+	}
+	
 	/* show the recipe */
 	if (recipeViewController == nil) {
 		RecipeViewController *recipeView = [[RecipeViewController alloc] initWithNibName:@"RecipeView" bundle:nil];

@@ -32,17 +32,26 @@
 	if (*cellReference == nil) {
 		/* load the recipe view cell nib */
         NSArray *bundle;
+		UIImage *disclosureImage = [UIImage imageNamed:@"disclosure.png"];
+		UIImageView *imageView = [[UIImageView alloc] initWithImage: disclosureImage];
+		UIView *accessoryView;		
+		
 		
 		if (isHeader) {
 			bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeViewCellHeader" owner:self options:nil];
+			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height -10)];
 		}else{
 			bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeViewCell" owner:self options:nil];
+			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height)];
 		}
 		
         for (id viewElement in bundle) {
 			if ([viewElement isKindOfClass:[UITableViewCell class]])
 				*cellReference = (UITableViewCell *)viewElement;
 		}
+		
+		[accessoryView addSubview:imageView];
+		[*cellReference setAccessoryView:accessoryView];
     }
 	
 	UITableViewCell *cell = *cellReference;

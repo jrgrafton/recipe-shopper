@@ -57,7 +57,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if ([indexPath row] == 0) {
-		return 110;
+		return ([recentRecipes count] == 0)? 130:110;
 	}else {
 		return 85;
 	}
@@ -69,15 +69,27 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     /* create a cell for this row's recipe */
-	Recipe *recipe = [recentRecipes objectAtIndex:[indexPath row]];
-	
-	if ([indexPath row] == 0) {		
-		[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:YES];
-		UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
-		[headerLabel setText:@"Recent Recipes"];
-	} else {
-		[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:NO];
+	if ([recentRecipes count] != 0) {
+		[recipeHistoryView setAllowsSelection:YES];
+		Recipe *recipe = [recentRecipes objectAtIndex:[indexPath row]];
+		
+		if ([indexPath row] == 0) {		
+			[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:YES];
+		} else {
+			[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:NO];
+		}
+	}else { /* Create special empty history cell */
+		[recipeHistoryView setAllowsSelection:NO];
+		 NSArray *bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeHistoryEmpty" owner:self options:nil];
+		
+		for (id viewElement in bundle) {
+			if ([viewElement isKindOfClass:[UITableViewCell class]])
+				cell = (UITableViewCell *)viewElement;
+		}
 	}
+	
+	UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
+	[headerLabel setText:@"Recent Recipes"];
 	
     return cell;	
 }
@@ -86,6 +98,9 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if ([recentRecipes count] == 0) {
+		return;
+	}
 	if (recipeViewController == nil) {
 		RecipeViewController *recipeView = [[RecipeViewController alloc] initWithNibName:@"RecipeView" bundle:nil];
 		[self setRecipeViewController:recipeView];

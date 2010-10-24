@@ -16,7 +16,8 @@
 	IBOutlet UIButton *logoutButton;
 	IBOutlet UIButton *createAccountButton;
 	
-	IBOutlet UILabel *greetingLabel;
+	IBOutlet UILabel *loggedInGreetingLabel;
+	IBOutlet UILabel *loggedOutGreetingLabel;
 	IBOutlet UISwitch *offlineModeSwitch;
 }
 
