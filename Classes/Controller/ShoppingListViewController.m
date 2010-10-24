@@ -68,7 +68,7 @@
 		return ([indexPath row] == 0)? 70:50;
 	} else {
 		/* this is the shopping list itself */
-		return 120;
+		return ([indexPath row] == 0)? 135:120;
 	}
 }
 
@@ -81,67 +81,15 @@
 		
 		cell = [tableView dequeueReusableCellWithIdentifier:ShoppingListDetailsCellIdentifier];
 		
-		if (cell == nil) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ShoppingListDetailsCellIdentifier] autorelease];
-		}
-		
 		if ([indexPath row] == 0) {
-			/* ensure we dont show an image */
-			[[cell imageView] setImage:nil];
-			
-			//Add header
-			UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 300)];
-			[tableHeaderView setBackgroundColor:[UIColor clearColor]];
-			UIImage *disclosureImage = [UIImage imageNamed:@"tableHeader.png"];
-			UIImageView *imageView = [[UIImageView alloc] initWithImage: disclosureImage];
-
-			UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 0, 250, 18)];
-			[headerLabel setFont:[UIFont fontWithName:@"Georgia" size:13]];
+			NSArray *keyValue = [NSArray arrayWithObjects:@"Number Of Items",[NSString stringWithFormat:@"%d",[DataManager getTotalProductCount]],nil];
+			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:ShoppingListDetailsCellIdentifier withNameValuePair:keyValue isHeader:YES];
+			UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
 			[headerLabel setText:@"Totals"];
-			[headerLabel setBackgroundColor:[UIColor clearColor]];
 			
-			[tableHeaderView addSubview:imageView];
-			[tableHeaderView addSubview:headerLabel];
-			[[cell contentView] addSubview: tableHeaderView];
-			
-			[imageView release];
-			[headerLabel release];
-			[tableHeaderView release];
-			
-			/* total number of items in shopping list */
-			[[cell textLabel] setText: @"Number Of Items"];
-			[[cell textLabel] setFont:[UIFont fontWithName:@"Georgia" size:14]];
-			[[cell detailTextLabel] setText:@""];
-			
-			UILabel *numItemsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
-			[numItemsLabel setFont:[UIFont fontWithName:@"Georgia" size:14]];
-			[numItemsLabel setText:[NSString stringWithFormat:@"%d", [DataManager getTotalProductCount]]];
-			[numItemsLabel setTextAlignment: UITextAlignmentRight];
-			[numItemsLabel setBackgroundColor:[UIColor clearColor]];
-			
-			UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
-			[accessoryView setBackgroundColor:[UIColor clearColor]];
-			[accessoryView addSubview:numItemsLabel];
-			[cell setAccessoryView:accessoryView];
-			[accessoryView release];
-			[numItemsLabel release];
 		} else if ([indexPath row] == 1) {
-			[[cell imageView] setImage:nil];
-			
-			[[cell textLabel] setText:@"Total Cost"];
-			[[cell textLabel] setFont:[UIFont fontWithName:@"Georgia" size:14]];
-			[[cell detailTextLabel] setText:@""];
-			
-			UILabel *totalCostLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 70, 40)];
-			[totalCostLabel setFont:[UIFont fontWithName:@"Georgia" size:14]];
-			[totalCostLabel setText:[DataManager getProductBasketPrice]];
-			[totalCostLabel setTextAlignment: UITextAlignmentRight];
-			
-			UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 40)];
-			[accessoryView addSubview:totalCostLabel];
-			[cell setAccessoryView:accessoryView];
-			[accessoryView release];
-			[totalCostLabel release];
+			NSArray *keyValue = [NSArray arrayWithObjects:@"Total Cost",[DataManager getProductBasketPrice],nil];
+			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:ShoppingListDetailsCellIdentifier withNameValuePair:keyValue isHeader:NO];
 		}
 	} else if (indexPath.section == 1) {
 		/* this is the shopping list itself */
@@ -152,13 +100,16 @@
 		/* create a cell for this row's product */
 		Product *product = [DataManager getProductFromBasket:[indexPath row]];
 		NSNumber *quantity = [DataManager getProductQuantityFromBasket:product];
-		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:YES];
+		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:YES isHeader:([indexPath row] == 0)];
 		
 		[[buttons objectAtIndex:0] addTarget:self action:@selector(addProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 		
 		if ([buttons count] > 1) {
 			[[buttons objectAtIndex:1] addTarget:self action:@selector(removeProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 		}
+		
+		UILabel *headerLabel = (UILabel *)[cell viewWithTag:13];
+		[headerLabel setText:@"Shopping List"];
 	}
 	
     return cell;

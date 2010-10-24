@@ -39,6 +39,11 @@
 	[recipeBasketTableView reloadData];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+}
+
+
 #pragma mark -
 #pragma mark Table view data source
 
@@ -66,12 +71,9 @@
     /* create a cell for this row's recipe */
 	
 	if([DataManager getRecipeBasketCount] != 0) {
+		[recipeBasketTableView setAllowsSelection:YES];
 		Recipe *recipe = [DataManager getRecipeFromBasket:[indexPath row]];
-		if ([indexPath row] == 0) {		
-			[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:YES];
-		} else {
-			[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:NO];
-		}
+		[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:([indexPath row] == 0)];
 	} else { /* Create special empty basket cell */
 		[recipeBasketTableView setAllowsSelection:NO];
 		NSArray *bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeBasketEmpty" owner:self options:nil];
@@ -89,7 +91,7 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return ([DataManager getRecipeBasketCount] == 0);
+    return ([DataManager getRecipeBasketCount] != 0);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -98,7 +100,8 @@
 		[DataManager removeRecipeFromBasket:[DataManager getRecipeFromBasket:[indexPath row]]];
 
 		/* delete the row from the view */
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+        //[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+		[tableView reloadData];
     }
 }
 
@@ -121,6 +124,18 @@
 	
 	[[recipeViewController view] setHidden:FALSE];
 	[recipeViewController processViewForRecipe:[DataManager getRecipeFromBasket:[indexPath row]] withWebViewDelegate:self];
+}
+
+- (void)tableView:(UITableView *)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell * cell = [recipeBasketTableView cellForRowAtIndexPath:indexPath];
+	UILabel *titleLabel = (UILabel*)[cell viewWithTag:2];
+	[titleLabel setFrame:CGRectMake([titleLabel frame].origin.x,[titleLabel frame].origin.y,[titleLabel frame].size.width - 40,[titleLabel frame].size.height)];
+}
+
+- (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell * cell = [recipeBasketTableView cellForRowAtIndexPath:indexPath];
+	UILabel *titleLabel = (UILabel*)[cell viewWithTag:2];
+	[titleLabel setFrame:CGRectMake([titleLabel frame].origin.x,[titleLabel frame].origin.y,[titleLabel frame].size.width + 40,[titleLabel frame].size.height)];
 }
 
 #pragma mark -

@@ -76,7 +76,7 @@
     /* Create a cell for this row's product */
 	Product *product = [products objectAtIndex:[indexPath row]];
 	NSNumber *quantity = [DataManager getProductQuantityFromBasket:product];
-	NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO];
+	NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isHeader:([indexPath row] == 0)];
 	
 	[[buttons objectAtIndex:0] addTarget:self action:@selector(addProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 	

@@ -22,13 +22,36 @@
 			1D6058900D05DD3D006BFB54 /* RecipeShopper */,
 		);
 		breakpoints = (
-			CE81CA2B127280BE00D8A725 /* RecipeHistoryViewController.m:92 */,
 		);
 		codeSenseManager = CE6FCC18126BB71000A55CB6 /* Code sense */;
 		executables = (
 			CE6FCBE5126BB6D400A55CB6 /* RecipeShopper */,
 		);
 		perUserDictionary = {
+			"PBXConfiguration.PBXBreakpointsDataSource.v1:1CA1AED706398EBD00589147" = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXBreakpointsDataSource_BreakpointID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					20,
+					198,
+					20,
+					99,
+					99,
+					29,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXBreakpointsDataSource_ActionID,
+					PBXBreakpointsDataSource_TypeID,
+					PBXBreakpointsDataSource_BreakpointID,
+					PBXBreakpointsDataSource_UseID,
+					PBXBreakpointsDataSource_LocationID,
+					PBXBreakpointsDataSource_ConditionID,
+					PBXBreakpointsDataSource_IgnoreCountID,
+					PBXBreakpointsDataSource_ContinueID,
+				);
+			};
 			PBXConfiguration.PBXFileTableDataSource3.PBXBookmarksDataSource = {
 				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
 				PBXFileTableDataSourceColumnSortingKey = PBXBookmarksDataSource_NameID;
@@ -187,6 +210,7 @@
 			CE74CC721273527600B5566E = CE74CC721273527600B5566E /* PBXTextBookmark */;
 			CE74CC731273527600B5566E = CE74CC731273527600B5566E /* PBXBookmark */;
 			CE74CCA3127353EA00B5566E = CE74CCA3127353EA00B5566E /* PBXBookmark */;
+			CE76EA8112746E3500903FCC /* PBXTextBookmark */ = CE76EA8112746E3500903FCC /* PBXTextBookmark */;
 			CE76EA9E12746E4500903FCC /* PBXBookmark */ = CE76EA9E12746E4500903FCC /* PBXBookmark */;
 			CE76EABF12747E2300903FCC /* XCBuildMessageTextBookmark */ = CE76EABF12747E2300903FCC /* XCBuildMessageTextBookmark */;
 			CE76EAC012747E2300903FCC /* PBXTextBookmark */ = CE76EAC012747E2300903FCC /* PBXTextBookmark */;
@@ -312,6 +336,92 @@
 			CE76EBFC1274D75000903FCC /* PBXTextBookmark */ = CE76EBFC1274D75000903FCC /* PBXTextBookmark */;
 			CE76EBFF1274D75A00903FCC /* PBXTextBookmark */ = CE76EBFF1274D75A00903FCC /* PBXTextBookmark */;
 			CE76EC021274D77D00903FCC /* PBXTextBookmark */ = CE76EC021274D77D00903FCC /* PBXTextBookmark */;
+			CE76EC191274EAC300903FCC /* PBXTextBookmark */ = CE76EC191274EAC300903FCC /* PBXTextBookmark */;
+			CE76EC1A1274EAC300903FCC /* PBXTextBookmark */ = CE76EC1A1274EAC300903FCC /* PBXTextBookmark */;
+			CE76EC1B1274EAC300903FCC /* PBXBookmark */ = CE76EC1B1274EAC300903FCC /* PBXBookmark */;
+			CE76EC1C1274EAC300903FCC /* PBXBookmark */ = CE76EC1C1274EAC300903FCC /* PBXBookmark */;
+			CE76EC1D1274EAC300903FCC /* PBXTextBookmark */ = CE76EC1D1274EAC300903FCC /* PBXTextBookmark */;
+			CE76EC1E1274EAC300903FCC /* PBXTextBookmark */ = CE76EC1E1274EAC300903FCC /* PBXTextBookmark */;
+			CE76EC1F1274EAC300903FCC /* PBXTextBookmark */ = CE76EC1F1274EAC300903FCC /* PBXTextBookmark */;
+			CE76EC201274EAC300903FCC /* PBXTextBookmark */ = CE76EC201274EAC300903FCC /* PBXTextBookmark */;
+			CE76EC211274EAC300903FCC /* PBXTextBookmark */ = CE76EC211274EAC300903FCC /* PBXTextBookmark */;
+			CE76EC221274EAC300903FCC /* PBXTextBookmark */ = CE76EC221274EAC300903FCC /* PBXTextBookmark */;
+			CE76EC231274EAC300903FCC /* PBXTextBookmark */ = CE76EC231274EAC300903FCC /* PBXTextBookmark */;
+			CE76EC241274EB8200903FCC /* PBXTextBookmark */ = CE76EC241274EB8200903FCC /* PBXTextBookmark */;
+			CE76EC2B1274ED1500903FCC /* PBXTextBookmark */ = CE76EC2B1274ED1500903FCC /* PBXTextBookmark */;
+			CE76EC2C1274ED1500903FCC /* PBXTextBookmark */ = CE76EC2C1274ED1500903FCC /* PBXTextBookmark */;
+			CE76EC2D1274ED1500903FCC /* XCBuildMessageTextBookmark */ = CE76EC2D1274ED1500903FCC /* XCBuildMessageTextBookmark */;
+			CE76EC2E1274ED1500903FCC /* PBXTextBookmark */ = CE76EC2E1274ED1500903FCC /* PBXTextBookmark */;
+			CE76EC331274ED4D00903FCC /* PBXTextBookmark */ = CE76EC331274ED4D00903FCC /* PBXTextBookmark */;
+			CE76EC361274ED4F00903FCC /* PBXTextBookmark */ = CE76EC361274ED4F00903FCC /* PBXTextBookmark */;
+			CE76EC371274ED4F00903FCC /* PBXTextBookmark */ = CE76EC371274ED4F00903FCC /* PBXTextBookmark */;
+			CE76EC381274ED4F00903FCC /* PBXTextBookmark */ = CE76EC381274ED4F00903FCC /* PBXTextBookmark */;
+			CE76EC391274ED4F00903FCC /* PBXTextBookmark */ = CE76EC391274ED4F00903FCC /* PBXTextBookmark */;
+			CE76EC3A1274ED4F00903FCC /* PBXTextBookmark */ = CE76EC3A1274ED4F00903FCC /* PBXTextBookmark */;
+			CE76EC3B1274ED4F00903FCC /* PBXTextBookmark */ = CE76EC3B1274ED4F00903FCC /* PBXTextBookmark */;
+			CE76EC3C1274ED4F00903FCC /* PBXTextBookmark */ = CE76EC3C1274ED4F00903FCC /* PBXTextBookmark */;
+			CE76EC3D1274ED4F00903FCC /* PBXTextBookmark */ = CE76EC3D1274ED4F00903FCC /* PBXTextBookmark */;
+			CE76EC3E1274EDD800903FCC /* PBXTextBookmark */ = CE76EC3E1274EDD800903FCC /* PBXTextBookmark */;
+			CE76EC3F1274EDD800903FCC /* PBXTextBookmark */ = CE76EC3F1274EDD800903FCC /* PBXTextBookmark */;
+			CE76EC421274EE2900903FCC /* PBXTextBookmark */ = CE76EC421274EE2900903FCC /* PBXTextBookmark */;
+			CE76EC431274EE2900903FCC /* PBXTextBookmark */ = CE76EC431274EE2900903FCC /* PBXTextBookmark */;
+			CE76EC441274EE5400903FCC /* PBXTextBookmark */ = CE76EC441274EE5400903FCC /* PBXTextBookmark */;
+			CE76EC451274EE5400903FCC /* PBXTextBookmark */ = CE76EC451274EE5400903FCC /* PBXTextBookmark */;
+			CE76EC461274EE5400903FCC /* PBXTextBookmark */ = CE76EC461274EE5400903FCC /* PBXTextBookmark */;
+			CE76EC511274EF8F00903FCC /* PBXTextBookmark */ = CE76EC511274EF8F00903FCC /* PBXTextBookmark */;
+			CE76EC541274EFA900903FCC /* PBXTextBookmark */ = CE76EC541274EFA900903FCC /* PBXTextBookmark */;
+			CE76EC551274EFA900903FCC /* PBXTextBookmark */ = CE76EC551274EFA900903FCC /* PBXTextBookmark */;
+			CE76EC561274EFC700903FCC /* PBXTextBookmark */ = CE76EC561274EFC700903FCC /* PBXTextBookmark */;
+			CE76EC5B1274F09300903FCC /* PBXTextBookmark */ = CE76EC5B1274F09300903FCC /* PBXTextBookmark */;
+			CE76EC5C1274F09300903FCC /* PBXTextBookmark */ = CE76EC5C1274F09300903FCC /* PBXTextBookmark */;
+			CE76EC5D1274F09300903FCC /* PBXTextBookmark */ = CE76EC5D1274F09300903FCC /* PBXTextBookmark */;
+			CE76EC5E1274F09300903FCC /* PBXTextBookmark */ = CE76EC5E1274F09300903FCC /* PBXTextBookmark */;
+			CE76EC5F1274F09300903FCC /* PBXTextBookmark */ = CE76EC5F1274F09300903FCC /* PBXTextBookmark */;
+			CE76EC601274F09300903FCC /* PBXTextBookmark */ = CE76EC601274F09300903FCC /* PBXTextBookmark */;
+			CE76EC611274F09300903FCC /* PBXTextBookmark */ = CE76EC611274F09300903FCC /* PBXTextBookmark */;
+			CE76EC621274F09300903FCC /* PBXTextBookmark */ = CE76EC621274F09300903FCC /* PBXTextBookmark */;
+			CE76EC631274F0B100903FCC /* PBXTextBookmark */ = CE76EC631274F0B100903FCC /* PBXTextBookmark */;
+			CE76EC681274F0CB00903FCC /* PBXTextBookmark */ = CE76EC681274F0CB00903FCC /* PBXTextBookmark */;
+			CE76EC691274F0CB00903FCC /* PBXTextBookmark */ = CE76EC691274F0CB00903FCC /* PBXTextBookmark */;
+			CE76EC6A1274F0CB00903FCC /* PBXTextBookmark */ = CE76EC6A1274F0CB00903FCC /* PBXTextBookmark */;
+			CE76EC6D1274F0E000903FCC /* PBXTextBookmark */ = CE76EC6D1274F0E000903FCC /* PBXTextBookmark */;
+			CE76EC741274F0FC00903FCC /* PBXTextBookmark */ = CE76EC741274F0FC00903FCC /* PBXTextBookmark */;
+			CE76EC751274F0FC00903FCC /* PBXTextBookmark */ = CE76EC751274F0FC00903FCC /* PBXTextBookmark */;
+			CE76EC7C1274F14700903FCC /* PBXTextBookmark */ = CE76EC7C1274F14700903FCC /* PBXTextBookmark */;
+			CE76EC7D1274F15A00903FCC /* PBXTextBookmark */ = CE76EC7D1274F15A00903FCC /* PBXTextBookmark */;
+			CE76EC7E1274F16300903FCC /* PBXTextBookmark */ = CE76EC7E1274F16300903FCC /* PBXTextBookmark */;
+			CE76EC7F1274F16300903FCC /* PBXTextBookmark */ = CE76EC7F1274F16300903FCC /* PBXTextBookmark */;
+			CE76EC801274F16300903FCC /* PBXTextBookmark */ = CE76EC801274F16300903FCC /* PBXTextBookmark */;
+			CE76EC811274F18D00903FCC /* PBXTextBookmark */ = CE76EC811274F18D00903FCC /* PBXTextBookmark */;
+			CE76EC821274F1A900903FCC /* PBXTextBookmark */ = CE76EC821274F1A900903FCC /* PBXTextBookmark */;
+			CE76EC851274F20400903FCC /* PBXTextBookmark */ = CE76EC851274F20400903FCC /* PBXTextBookmark */;
+			CE76EC861274F20400903FCC /* PBXTextBookmark */ = CE76EC861274F20400903FCC /* PBXTextBookmark */;
+			CE76EC871274F20400903FCC /* PBXTextBookmark */ = CE76EC871274F20400903FCC /* PBXTextBookmark */;
+			CE76EC911274F2AA00903FCC /* PBXTextBookmark */ = CE76EC911274F2AA00903FCC /* PBXTextBookmark */;
+			CE76EC921274F2AA00903FCC /* PBXTextBookmark */ = CE76EC921274F2AA00903FCC /* PBXTextBookmark */;
+			CE76EC931274F2AA00903FCC /* PBXTextBookmark */ = CE76EC931274F2AA00903FCC /* PBXTextBookmark */;
+			CE76EC961274F33200903FCC /* PBXTextBookmark */ = CE76EC961274F33200903FCC /* PBXTextBookmark */;
+			CE76EC971274F33200903FCC /* PBXTextBookmark */ = CE76EC971274F33200903FCC /* PBXTextBookmark */;
+			CE76EC981274F33200903FCC /* PBXTextBookmark */ = CE76EC981274F33200903FCC /* PBXTextBookmark */;
+			CE76EC991274F3C300903FCC /* PBXTextBookmark */ = CE76EC991274F3C300903FCC /* PBXTextBookmark */;
+			CE76EC9A1274F49200903FCC /* PBXTextBookmark */ = CE76EC9A1274F49200903FCC /* PBXTextBookmark */;
+			CE76EC9B1274F49300903FCC /* PBXTextBookmark */ = CE76EC9B1274F49300903FCC /* PBXTextBookmark */;
+			CE76EC9C1274F49900903FCC /* PBXTextBookmark */ = CE76EC9C1274F49900903FCC /* PBXTextBookmark */;
+			CE76ECA11274F60B00903FCC /* PBXTextBookmark */ = CE76ECA11274F60B00903FCC /* PBXTextBookmark */;
+			CE76ECA21274F60B00903FCC /* PBXTextBookmark */ = CE76ECA21274F60B00903FCC /* PBXTextBookmark */;
+			CE76ECA31274F60B00903FCC /* PBXTextBookmark */ = CE76ECA31274F60B00903FCC /* PBXTextBookmark */;
+			CE76ECA41274F60B00903FCC /* PBXTextBookmark */ = CE76ECA41274F60B00903FCC /* PBXTextBookmark */;
+			CE76ECA71274F6D500903FCC /* PBXTextBookmark */ = CE76ECA71274F6D500903FCC /* PBXTextBookmark */;
+			CE76ECA81274F78000903FCC /* PBXTextBookmark */ = CE76ECA81274F78000903FCC /* PBXTextBookmark */;
+			CE76ECA91274F78000903FCC /* PBXTextBookmark */ = CE76ECA91274F78000903FCC /* PBXTextBookmark */;
+			CE76ECAA1274F78000903FCC /* PBXTextBookmark */ = CE76ECAA1274F78000903FCC /* PBXTextBookmark */;
+			CE76ECAB1274F79E00903FCC /* PBXTextBookmark */ = CE76ECAB1274F79E00903FCC /* PBXTextBookmark */;
+			CE76ECAE1274F7FF00903FCC /* PBXTextBookmark */ = CE76ECAE1274F7FF00903FCC /* PBXTextBookmark */;
+			CE76ECB11274F87500903FCC /* PBXTextBookmark */ = CE76ECB11274F87500903FCC /* PBXTextBookmark */;
+			CE76ECB41274F8AA00903FCC /* PBXTextBookmark */ = CE76ECB41274F8AA00903FCC /* PBXTextBookmark */;
+			CE76ECB71274F95100903FCC /* PBXTextBookmark */ = CE76ECB71274F95100903FCC /* PBXTextBookmark */;
+			CE76ECBA1274F97C00903FCC /* PBXTextBookmark */ = CE76ECBA1274F97C00903FCC /* PBXTextBookmark */;
+			CE76ECBD1274F9AE00903FCC /* PBXTextBookmark */ = CE76ECBD1274F9AE00903FCC /* PBXTextBookmark */;
 			CE81C8D01271AF5A00D8A725 = CE81C8D01271AF5A00D8A725 /* PBXTextBookmark */;
 			CE81C8D11271AF5A00D8A725 = CE81C8D11271AF5A00D8A725 /* PBXTextBookmark */;
 			CE81C8D21271AF5A00D8A725 = CE81C8D21271AF5A00D8A725 /* PBXBookmark */;
@@ -400,9 +510,9 @@
 	};
 	3EB5D51E1268AB3D009A80E0 /* CheckoutViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1059, 3887}}";
-			sepNavSelRange = "{952, 55}";
-			sepNavVisRange = "{553, 1190}";
+			sepNavIntBoundsRect = "{{0, 0}, {1524, 3718}}";
+			sepNavSelRange = "{5789, 0}";
+			sepNavVisRange = "{3646, 1278}";
 		};
 	};
 	3EB5D51F1268AB3D009A80E0 /* OnlineShopViewController.h */ = {
@@ -428,9 +538,9 @@
 	};
 	3EB5D5221268AB3D009A80E0 /* OverlayViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1059, 780}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1011, 780}}";
 			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{52, 915}";
+			sepNavVisRange = "{52, 868}";
 		};
 	};
 	3EB5D5231268AB3D009A80E0 /* ProductsViewController.h */ = {
@@ -442,23 +552,23 @@
 	};
 	3EB5D5241268AB3D009A80E0 /* ProductsViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1559, 2262}}";
-			sepNavSelRange = "{4202, 28}";
-			sepNavVisRange = "{1425, 1333}";
+			sepNavIntBoundsRect = "{{0, 0}, {1559, 2327}}";
+			sepNavSelRange = "{2395, 0}";
+			sepNavVisRange = "{1575, 1302}";
 		};
 	};
 	3EB5D5251268AB3D009A80E0 /* RecipeBasketViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1011, 441}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1011, 416}}";
 			sepNavSelRange = "{397, 21}";
 			sepNavVisRange = "{0, 503}";
 		};
 	};
 	3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {779, 2158}}";
-			sepNavSelRange = "{4923, 0}";
-			sepNavVisRange = "{4878, 44}";
+			sepNavIntBoundsRect = "{{0, 0}, {1132, 2041}}";
+			sepNavSelRange = "{4855, 0}";
+			sepNavVisRange = "{3925, 1526}";
 		};
 	};
 	3EB5D5271268AB3D009A80E0 /* RecipeCategoryViewController.h */ = {
@@ -470,24 +580,24 @@
 	};
 	3EB5D5281268AB3D009A80E0 /* RecipeCategoryViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1011, 1105}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1011, 1118}}";
 			sepNavSelRange = "{771, 797}";
-			sepNavVisRange = "{236, 1460}";
+			sepNavVisRange = "{320, 1376}";
 			sepNavWindowFrame = "{{17, 225}, {1133, 650}}";
 		};
 	};
 	3EB5D5291268AB3D009A80E0 /* RecipeHistoryViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1011, 441}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1011, 416}}";
 			sepNavSelRange = "{378, 0}";
 			sepNavVisRange = "{0, 516}";
 		};
 	};
 	3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1011, 1794}}";
-			sepNavSelRange = "{768, 0}";
-			sepNavVisRange = "{444, 1125}";
+			sepNavIntBoundsRect = "{{0, 0}, {1011, 1872}}";
+			sepNavSelRange = "{336, 0}";
+			sepNavVisRange = "{0, 771}";
 		};
 	};
 	3EB5D52B1268AB3D009A80E0 /* RecipeListViewController.h */ = {
@@ -507,7 +617,7 @@
 	};
 	3EB5D52D1268AB3D009A80E0 /* RecipeViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1011, 441}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1011, 416}}";
 			sepNavSelRange = "{0, 0}";
 			sepNavVisRange = "{0, 527}";
 		};
@@ -528,9 +638,9 @@
 	};
 	3EB5D5301268AB3D009A80E0 /* SearchResultsViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1030, 3367}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1011, 3354}}";
 			sepNavSelRange = "{721, 62}";
-			sepNavVisRange = "{251, 775}";
+			sepNavVisRange = "{313, 713}";
 		};
 	};
 	3EB5D5311268AB3D009A80E0 /* ShelvesViewController.h */ = {
@@ -556,23 +666,23 @@
 	};
 	3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1076, 3250}}";
-			sepNavSelRange = "{3238, 0}";
-			sepNavVisRange = "{2475, 1649}";
+			sepNavIntBoundsRect = "{{0, 0}, {1440, 2470}}";
+			sepNavSelRange = "{3905, 0}";
+			sepNavVisRange = "{2782, 1336}";
 		};
 	};
 	3EB5D5351268AB3D009A80E0 /* UITableViewCellFactory.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1510, 441}}";
-			sepNavSelRange = "{479, 0}";
-			sepNavVisRange = "{0, 760}";
+			sepNavIntBoundsRect = "{{0, 0}, {1678, 416}}";
+			sepNavSelRange = "{752, 24}";
+			sepNavVisRange = "{0, 1002}";
 		};
 	};
 	3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1125, 1807}}";
-			sepNavSelRange = "{855, 149}";
-			sepNavVisRange = "{513, 1371}";
+			sepNavIntBoundsRect = "{{0, 0}, {779, 2197}}";
+			sepNavSelRange = "{5720, 0}";
+			sepNavVisRange = "{5687, 196}";
 		};
 	};
 	3EB5D54B1268AB4C009A80E0 /* DataManager.h */ = {
@@ -783,7 +893,7 @@
 		fRef = 3EB5D5241268AB3D009A80E0 /* ProductsViewController.m */;
 		name = "ProductsViewController.m: 133";
 		rLen = 28;
-		rLoc = 4202;
+		rLoc = 4234;
 		rType = 0;
 		vrLen = 1283;
 		vrLoc = 3448;
@@ -977,7 +1087,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 36";
 		rLen = 0;
-		rLoc = 1055;
+		rLoc = 1103;
 		rType = 0;
 		vrLen = 1224;
 		vrLoc = 457;
@@ -1020,6 +1130,13 @@
 		isa = PBXBookmark;
 		fRef = CE74CBDD12732BC500B5566E /* logout.png */;
 	};
+	CE76EA8112746E3500903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
+		rLen = 0;
+		rLoc = 87;
+		rType = 1;
+	};
 	CE76EA9E12746E4500903FCC /* PBXBookmark */ = {
 		isa = PBXBookmark;
 		fRef = CE74CBDD12732BC500B5566E /* logout.png */;
@@ -1030,7 +1147,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 41;
+		rLoc = 43;
 		rType = 1;
 	};
 	CE76EAC012747E2300903FCC /* PBXTextBookmark */ = {
@@ -1038,7 +1155,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 40";
 		rLen = 0;
-		rLoc = 1284;
+		rLoc = 1332;
 		rType = 0;
 		vrLen = 422;
 		vrLoc = 924;
@@ -1127,7 +1244,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 41;
+		rLoc = 43;
 		rType = 1;
 	};
 	CE76EACD12747EA100903FCC /* PBXTextBookmark */ = {
@@ -1135,7 +1252,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 41";
 		rLen = 0;
-		rLoc = 1284;
+		rLoc = 1332;
 		rType = 0;
 		vrLen = 1309;
 		vrLoc = 561;
@@ -1145,7 +1262,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 41";
 		rLen = 0;
-		rLoc = 1284;
+		rLoc = 1332;
 		rType = 0;
 		vrLen = 1303;
 		vrLoc = 561;
@@ -1155,7 +1272,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 40";
 		rLen = 0;
-		rLoc = 1284;
+		rLoc = 1332;
 		rType = 0;
 		vrLen = 1400;
 		vrLoc = 561;
@@ -1165,7 +1282,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 40";
 		rLen = 0;
-		rLoc = 1284;
+		rLoc = 1332;
 		rType = 0;
 		vrLen = 1395;
 		vrLoc = 561;
@@ -1175,7 +1292,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 40";
 		rLen = 0;
-		rLoc = 1284;
+		rLoc = 1332;
 		rType = 0;
 		vrLen = 1398;
 		vrLoc = 561;
@@ -1185,7 +1302,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 40";
 		rLen = 0;
-		rLoc = 1284;
+		rLoc = 1332;
 		rType = 0;
 		vrLen = 1399;
 		vrLoc = 561;
@@ -1195,7 +1312,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 40";
 		rLen = 0;
-		rLoc = 1284;
+		rLoc = 1332;
 		rType = 0;
 		vrLen = 1402;
 		vrLoc = 561;
@@ -1205,7 +1322,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 40";
 		rLen = 0;
-		rLoc = 1284;
+		rLoc = 1332;
 		rType = 0;
 		vrLen = 1402;
 		vrLoc = 561;
@@ -1215,7 +1332,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 44";
 		rLen = 0;
-		rLoc = 1512;
+		rLoc = 1560;
 		rType = 0;
 		vrLen = 1147;
 		vrLoc = 486;
@@ -1225,7 +1342,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 44";
 		rLen = 0;
-		rLoc = 1512;
+		rLoc = 1560;
 		rType = 0;
 		vrLen = 1271;
 		vrLoc = 562;
@@ -1235,7 +1352,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 38";
 		rLen = 0;
-		rLoc = 1031;
+		rLoc = 1082;
 		rType = 0;
 		vrLen = 1257;
 		vrLoc = 561;
@@ -1245,7 +1362,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 42";
 		rLen = 0;
-		rLoc = 1284;
+		rLoc = 1332;
 		rType = 0;
 		vrLen = 268;
 		vrLoc = 1089;
@@ -1255,7 +1372,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 37";
 		rLen = 0;
-		rLoc = 1029;
+		rLoc = 1080;
 		rType = 0;
 		vrLen = 1256;
 		vrLoc = 561;
@@ -1265,7 +1382,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 37";
 		rLen = 0;
-		rLoc = 1029;
+		rLoc = 1080;
 		rType = 0;
 		vrLen = 1185;
 		vrLoc = 485;
@@ -1275,7 +1392,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 37";
 		rLen = 0;
-		rLoc = 1029;
+		rLoc = 1080;
 		rType = 0;
 		vrLen = 1334;
 		vrLoc = 534;
@@ -1285,7 +1402,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 37";
 		rLen = 0;
-		rLoc = 1029;
+		rLoc = 1080;
 		rType = 0;
 		vrLen = 1339;
 		vrLoc = 534;
@@ -1295,7 +1412,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 37";
 		rLen = 0;
-		rLoc = 1029;
+		rLoc = 1080;
 		rType = 0;
 		vrLen = 1340;
 		vrLoc = 534;
@@ -1305,7 +1422,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 37";
 		rLen = 0;
-		rLoc = 1029;
+		rLoc = 1080;
 		rType = 0;
 		vrLen = 1339;
 		vrLoc = 534;
@@ -1315,7 +1432,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 37";
 		rLen = 0;
-		rLoc = 1029;
+		rLoc = 1080;
 		rType = 0;
 		vrLen = 1338;
 		vrLoc = 534;
@@ -1325,7 +1442,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 37";
 		rLen = 0;
-		rLoc = 1029;
+		rLoc = 1080;
 		rType = 0;
 		vrLen = 1337;
 		vrLoc = 534;
@@ -1335,7 +1452,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 37";
 		rLen = 0;
-		rLoc = 1029;
+		rLoc = 1080;
 		rType = 0;
 		vrLen = 1293;
 		vrLoc = 485;
@@ -1345,7 +1462,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 42";
 		rLen = 0;
-		rLoc = 1284;
+		rLoc = 1332;
 		rType = 0;
 		vrLen = 482;
 		vrLoc = 1038;
@@ -1356,7 +1473,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 44;
+		rLoc = 49;
 		rType = 1;
 	};
 	CE76EB3212748F9E00903FCC /* PBXTextBookmark */ = {
@@ -1364,7 +1481,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 45";
 		rLen = 0;
-		rLoc = 1076;
+		rLoc = 1163;
 		rType = 0;
 		vrLen = 235;
 		vrLoc = 1024;
@@ -1384,7 +1501,7 @@
 		fRef = 3EB5D5241268AB3D009A80E0 /* ProductsViewController.m */;
 		name = "ProductsViewController.m: 133";
 		rLen = 28;
-		rLoc = 4202;
+		rLoc = 4234;
 		rType = 0;
 		vrLen = 1282;
 		vrLoc = 3449;
@@ -1402,7 +1519,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 34";
 		rLen = 16;
-		rLoc = 837;
+		rLoc = 888;
 		rType = 0;
 		vrLen = 1335;
 		vrLoc = 486;
@@ -1412,7 +1529,7 @@
 		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
 		name = "RecipeHistoryViewController.m: 83";
 		rLen = 0;
-		rLoc = 2620;
+		rLoc = 2474;
 		rType = 0;
 		vrLen = 1138;
 		vrLoc = 1734;
@@ -1423,7 +1540,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 44;
+		rLoc = 49;
 		rType = 1;
 	};
 	CE76EB3C12748FB000903FCC /* PBXTextBookmark */ = {
@@ -1431,7 +1548,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 40";
 		rLen = 0;
-		rLoc = 1022;
+		rLoc = 1109;
 		rType = 0;
 		vrLen = 870;
 		vrLoc = 458;
@@ -1441,7 +1558,7 @@
 		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
 		name = "RecipeHistoryViewController.m: 83";
 		rLen = 0;
-		rLoc = 2620;
+		rLoc = 2474;
 		rType = 0;
 		vrLen = 1235;
 		vrLoc = 1060;
@@ -1451,7 +1568,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 51";
 		rLen = 0;
-		rLoc = 1287;
+		rLoc = 1374;
 		rType = 0;
 		vrLen = 1049;
 		vrLoc = 745;
@@ -1461,7 +1578,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 51";
 		rLen = 0;
-		rLoc = 1287;
+		rLoc = 1374;
 		rType = 0;
 		vrLen = 1054;
 		vrLoc = 745;
@@ -1471,7 +1588,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 51";
 		rLen = 0;
-		rLoc = 1347;
+		rLoc = 1434;
 		rType = 0;
 		vrLen = 1024;
 		vrLoc = 745;
@@ -1481,7 +1598,7 @@
 		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
 		name = "RecipeHistoryViewController.m: 83";
 		rLen = 0;
-		rLoc = 2620;
+		rLoc = 2474;
 		rType = 0;
 		vrLen = 1235;
 		vrLoc = 1060;
@@ -1531,7 +1648,7 @@
 		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
 		name = "RecipeHistoryViewController.m: 100";
 		rLen = 0;
-		rLoc = 3151;
+		rLoc = 3005;
 		rType = 0;
 		vrLen = 947;
 		vrLoc = 2815;
@@ -1541,7 +1658,7 @@
 		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
 		name = "RecipeHistoryViewController.m: 100";
 		rLen = 0;
-		rLoc = 3139;
+		rLoc = 2993;
 		rType = 0;
 		vrLen = 943;
 		vrLoc = 2815;
@@ -1551,7 +1668,7 @@
 		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
 		name = "RecipeHistoryViewController.m: 101";
 		rLen = 0;
-		rLoc = 3154;
+		rLoc = 3008;
 		rType = 0;
 		vrLen = 954;
 		vrLoc = 2815;
@@ -1581,7 +1698,7 @@
 		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
 		name = "RecipeHistoryViewController.m: 84";
 		rLen = 0;
-		rLoc = 2598;
+		rLoc = 2452;
 		rType = 0;
 		vrLen = 1205;
 		vrLoc = 1768;
@@ -1601,7 +1718,7 @@
 		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
 		name = "RecipeHistoryViewController.m: 77";
 		rLen = 0;
-		rLoc = 2374;
+		rLoc = 2360;
 		rType = 0;
 		vrLen = 1208;
 		vrLoc = 1768;
@@ -1611,7 +1728,7 @@
 		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
 		name = "RecipeHistoryViewController.m: 77";
 		rLen = 0;
-		rLoc = 2374;
+		rLoc = 2360;
 		rType = 0;
 		vrLen = 1254;
 		vrLoc = 1771;
@@ -1622,7 +1739,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 90;
+		rLoc = 92;
 		rType = 1;
 	};
 	CE76EB781274C99600903FCC /* PBXTextBookmark */ = {
@@ -1630,7 +1747,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 89";
 		rLen = 0;
-		rLoc = 2731;
+		rLoc = 2722;
 		rType = 0;
 		vrLen = 376;
 		vrLoc = 2619;
@@ -1641,7 +1758,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 155;
+		rLoc = 170;
 		rType = 1;
 	};
 	CE76EB7C1274C9AA00903FCC /* PBXTextBookmark */ = {
@@ -1649,7 +1766,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 155";
 		rLen = 0;
-		rLoc = 4923;
+		rLoc = 5739;
 		rType = 0;
 		vrLen = 49;
 		vrLoc = 4788;
@@ -1671,7 +1788,7 @@
 		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
 		name = "RecipeHistoryViewController.m: 101";
 		rLen = 47;
-		rLoc = 3120;
+		rLoc = 2974;
 		rType = 0;
 		vrLen = 1120;
 		vrLoc = 2601;
@@ -1692,7 +1809,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 90;
+		rLoc = 92;
 		rType = 1;
 	};
 	CE76EB851274C9AC00903FCC /* PBXTextBookmark */ = {
@@ -1700,7 +1817,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 90";
 		rLen = 0;
-		rLoc = 2731;
+		rLoc = 2722;
 		rType = 0;
 		vrLen = 1371;
 		vrLoc = 1920;
@@ -1710,7 +1827,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 58";
 		rLen = 0;
-		rLoc = 1474;
+		rLoc = 1561;
 		rType = 0;
 		vrLen = 1244;
 		vrLoc = 1075;
@@ -1720,7 +1837,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 155";
 		rLen = 0;
-		rLoc = 4923;
+		rLoc = 5739;
 		rType = 0;
 		vrLen = 64;
 		vrLoc = 4867;
@@ -1750,7 +1867,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 51";
 		rLen = 0;
-		rLoc = 1331;
+		rLoc = 1418;
 		rType = 0;
 		vrLen = 1414;
 		vrLoc = 1467;
@@ -1760,7 +1877,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 51";
 		rLen = 0;
-		rLoc = 1331;
+		rLoc = 1418;
 		rType = 0;
 		vrLen = 1358;
 		vrLoc = 1467;
@@ -1770,7 +1887,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 155";
 		rLen = 0;
-		rLoc = 4923;
+		rLoc = 5739;
 		rType = 0;
 		vrLen = 47;
 		vrLoc = 4878;
@@ -1780,7 +1897,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 68";
 		rLen = 0;
-		rLoc = 1905;
+		rLoc = 1992;
 		rType = 0;
 		vrLen = 1320;
 		vrLoc = 1561;
@@ -1790,7 +1907,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 68";
 		rLen = 0;
-		rLoc = 1905;
+		rLoc = 1992;
 		rType = 0;
 		vrLen = 1320;
 		vrLoc = 1561;
@@ -1800,7 +1917,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 87";
 		rLen = 0;
-		rLoc = 2713;
+		rLoc = 2704;
 		rType = 0;
 		vrLen = 1316;
 		vrLoc = 1561;
@@ -1810,7 +1927,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 78";
 		rLen = 0;
-		rLoc = 2466;
+		rLoc = 2457;
 		rType = 0;
 		vrLen = 1425;
 		vrLoc = 1039;
@@ -1914,7 +2031,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 156";
 		rLen = 0;
-		rLoc = 4923;
+		rLoc = 5739;
 		rType = 0;
 		vrLen = 51;
 		vrLoc = 4878;
@@ -1954,7 +2071,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 156";
 		rLen = 0;
-		rLoc = 4923;
+		rLoc = 5739;
 		rType = 0;
 		vrLen = 44;
 		vrLoc = 4878;
@@ -2004,7 +2121,7 @@
 		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
 		name = "UITableViewCellFactory.m: 35";
 		rLen = 149;
-		rLoc = 855;
+		rLoc = 906;
 		rType = 0;
 		vrLen = 1371;
 		vrLoc = 513;
@@ -2024,7 +2141,7 @@
 		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
 		name = "ShoppingListViewController.m: 95";
 		rLen = 0;
-		rLoc = 3268;
+		rLoc = 2639;
 		rType = 0;
 		vrLen = 1463;
 		vrLoc = 2099;
@@ -2034,7 +2151,7 @@
 		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
 		name = "ShoppingListViewController.m: 96";
 		rLen = 0;
-		rLoc = 2882;
+		rLoc = 2639;
 		rType = 0;
 		vrLen = 1394;
 		vrLoc = 2099;
@@ -2094,7 +2211,7 @@
 		fRef = 3EB5D5241268AB3D009A80E0 /* ProductsViewController.m */;
 		name = "ProductsViewController.m: 133";
 		rLen = 28;
-		rLoc = 4202;
+		rLoc = 4234;
 		rType = 0;
 		vrLen = 1333;
 		vrLoc = 1425;
@@ -2114,7 +2231,7 @@
 		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
 		name = "ShoppingListViewController.m: 121";
 		rLen = 0;
-		rLoc = 4547;
+		rLoc = 2925;
 		rType = 0;
 		vrLen = 1559;
 		vrLoc = 2734;
@@ -2124,7 +2241,7 @@
 		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
 		name = "ShoppingListViewController.m: 101";
 		rLen = 0;
-		rLoc = 3268;
+		rLoc = 2639;
 		rType = 0;
 		vrLen = 1416;
 		vrLoc = 2360;
@@ -2134,7 +2251,7 @@
 		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
 		name = "ShoppingListViewController.m: 100";
 		rLen = 0;
-		rLoc = 3212;
+		rLoc = 2639;
 		rType = 0;
 		vrLen = 1474;
 		vrLoc = 2360;
@@ -2144,7 +2261,7 @@
 		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
 		name = "ShoppingListViewController.m: 116";
 		rLen = 0;
-		rLoc = 4008;
+		rLoc = 2639;
 		rType = 0;
 		vrLen = 1579;
 		vrLoc = 2799;
@@ -2154,7 +2271,7 @@
 		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
 		name = "ShoppingListViewController.m: 97";
 		rLen = 0;
-		rLoc = 2866;
+		rLoc = 2639;
 		rType = 0;
 		vrLen = 1620;
 		vrLoc = 2491;
@@ -2164,7 +2281,7 @@
 		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
 		name = "ShoppingListViewController.m: 97";
 		rLen = 0;
-		rLoc = 2866;
+		rLoc = 2639;
 		rType = 0;
 		vrLen = 1557;
 		vrLoc = 2397;
@@ -2174,7 +2291,7 @@
 		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
 		name = "ShoppingListViewController.m: 97";
 		rLen = 0;
-		rLoc = 2875;
+		rLoc = 2639;
 		rType = 0;
 		vrLen = 1557;
 		vrLoc = 2397;
@@ -2184,7 +2301,7 @@
 		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
 		name = "ShoppingListViewController.m: 109";
 		rLen = 0;
-		rLoc = 3268;
+		rLoc = 2639;
 		rType = 0;
 		vrLen = 1493;
 		vrLoc = 2367;
@@ -2194,7 +2311,7 @@
 		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
 		name = "ShoppingListViewController.m: 94";
 		rLen = 0;
-		rLoc = 2625;
+		rLoc = 2639;
 		rType = 0;
 		vrLen = 1494;
 		vrLoc = 2367;
@@ -2204,10 +2321,854 @@
 		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
 		name = "ShoppingListViewController.m: 98";
 		rLen = 0;
-		rLoc = 2863;
+		rLoc = 2639;
 		rType = 0;
 		vrLen = 1382;
 		vrLoc = 2360;
+	};
+	CE76EC191274EAC300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5331268AB3D009A80E0 /* ShoppingListViewController.h */;
+		name = "ShoppingListViewController.h: 12";
+		rLen = 16;
+		rLoc = 307;
+		rType = 0;
+		vrLen = 386;
+		vrLoc = 0;
+	};
+	CE76EC1A1274EAC300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5321268AB3D009A80E0 /* ShelvesViewController.m */;
+		name = "ShelvesViewController.m: 25";
+		rLen = 0;
+		rLoc = 485;
+		rType = 0;
+		vrLen = 1016;
+		vrLoc = 255;
+	};
+	CE76EC1B1274EAC300903FCC /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = CE76EB701274C85E00903FCC /* recipeBasketEmpty@2x.png */;
+	};
+	CE76EC1C1274EAC300903FCC /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = CE76EB6F1274C85E00903FCC /* recipeBasketEmpty.png */;
+	};
+	CE76EC1D1274EAC300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5221268AB3D009A80E0 /* OverlayViewController.m */;
+		name = "OverlayViewController.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 868;
+		vrLoc = 52;
+	};
+	CE76EC1E1274EAC300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5291268AB3D009A80E0 /* RecipeHistoryViewController.h */;
+		name = "RecipeHistoryViewController.h: 13";
+		rLen = 0;
+		rLoc = 378;
+		rType = 0;
+		vrLen = 516;
+		vrLoc = 0;
+	};
+	CE76EC1F1274EAC300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5351268AB3D009A80E0 /* UITableViewCellFactory.h */;
+		name = "UITableViewCellFactory.h: 19";
+		rLen = 0;
+		rLoc = 481;
+		rType = 0;
+		vrLen = 978;
+		vrLoc = 0;
+	};
+	CE76EC201274EAC300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 162";
+		rLen = 0;
+		rLoc = 5874;
+		rType = 0;
+		vrLen = 994;
+		vrLoc = 4703;
+	};
+	CE76EC211274EAC300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5241268AB3D009A80E0 /* ProductsViewController.m */;
+		name = "ProductsViewController.m: 133";
+		rLen = 28;
+		rLoc = 4234;
+		rType = 0;
+		vrLen = 1297;
+		vrLoc = 1461;
+	};
+	CE76EC221274EAC300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
+		name = "RecipeHistoryViewController.m: 91";
+		rLen = 98;
+		rLoc = 2709;
+		rType = 0;
+		vrLen = 1254;
+		vrLoc = 1771;
+	};
+	CE76EC231274EAC300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
+		name = "ShoppingListViewController.m: 102";
+		rLen = 0;
+		rLoc = 3335;
+		rType = 0;
+		vrLen = 1333;
+		vrLoc = 1239;
+	};
+	CE76EC241274EB8200903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
+		name = "ShoppingListViewController.m: 71";
+		rLen = 0;
+		rLoc = 1825;
+		rType = 0;
+		vrLen = 1361;
+		vrLoc = 1239;
+	};
+	CE76EC2B1274ED1500903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 152";
+		rLen = 0;
+		rLoc = 5739;
+		rType = 0;
+		vrLen = 49;
+		vrLoc = 4734;
+	};
+	CE76EC2C1274ED1500903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D51E1268AB3D009A80E0 /* CheckoutViewController.m */;
+		name = "CheckoutViewController.m: 172";
+		rLen = 0;
+		rLoc = 5581;
+		rType = 0;
+		vrLen = 583;
+		vrLoc = 5346;
+	};
+	CE76EC2D1274ED1500903FCC /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Incompatible Objective-C types initializing 'struct UIView *', expected 'struct UILabel *'";
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 161;
+		rType = 1;
+	};
+	CE76EC2E1274ED1500903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 171";
+		rLen = 0;
+		rLoc = 5720;
+		rType = 0;
+		vrLen = 290;
+		vrLoc = 6197;
+	};
+	CE76EC331274ED4D00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 171";
+		rLen = 0;
+		rLoc = 5720;
+		rType = 0;
+		vrLen = 290;
+		vrLoc = 6197;
+	};
+	CE76EC361274ED4F00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5351268AB3D009A80E0 /* UITableViewCellFactory.h */;
+		name = "UITableViewCellFactory.h: 21";
+		rLen = 24;
+		rLoc = 752;
+		rType = 0;
+		vrLen = 1002;
+		vrLoc = 0;
+	};
+	CE76EC371274ED4F00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 106";
+		rLen = 0;
+		rLoc = 3448;
+		rType = 0;
+		vrLen = 1432;
+		vrLoc = 3144;
+	};
+	CE76EC381274ED4F00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
+		name = "RecipeHistoryViewController.m: 76";
+		rLen = 0;
+		rLoc = 2337;
+		rType = 0;
+		vrLen = 1133;
+		vrLoc = 1698;
+	};
+	CE76EC391274ED4F00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 70";
+		rLen = 0;
+		rLoc = 2254;
+		rType = 0;
+		vrLen = 1267;
+		vrLoc = 1467;
+	};
+	CE76EC3A1274ED4F00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5281268AB3D009A80E0 /* RecipeCategoryViewController.m */;
+		name = "RecipeCategoryViewController.m: 29";
+		rLen = 797;
+		rLoc = 771;
+		rType = 0;
+		vrLen = 1376;
+		vrLoc = 320;
+	};
+	CE76EC3B1274ED4F00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
+		name = "ShoppingListViewController.m: 103";
+		rLen = 31;
+		rLoc = 3501;
+		rType = 0;
+		vrLen = 1474;
+		vrLoc = 2541;
+	};
+	CE76EC3C1274ED4F00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D51E1268AB3D009A80E0 /* CheckoutViewController.m */;
+		name = "CheckoutViewController.m: 172";
+		rLen = 0;
+		rLoc = 5581;
+		rType = 0;
+		vrLen = 1225;
+		vrLoc = 4913;
+	};
+	CE76EC3D1274ED4F00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D51E1268AB3D009A80E0 /* CheckoutViewController.m */;
+		name = "CheckoutViewController.m: 172";
+		rLen = 0;
+		rLoc = 5789;
+		rType = 0;
+		vrLen = 1246;
+		vrLoc = 4924;
+	};
+	CE76EC3E1274EDD800903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D51E1268AB3D009A80E0 /* CheckoutViewController.m */;
+		name = "CheckoutViewController.m: 172";
+		rLen = 0;
+		rLoc = 5789;
+		rType = 0;
+		vrLen = 1278;
+		vrLoc = 3646;
+	};
+	CE76EC3F1274EDD800903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 29";
+		rLen = 0;
+		rLoc = 611;
+		rType = 0;
+		vrLen = 853;
+		vrLoc = 53;
+	};
+	CE76EC421274EE2900903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 29";
+		rLen = 0;
+		rLoc = 611;
+		rType = 0;
+		vrLen = 853;
+		vrLoc = 53;
+	};
+	CE76EC431274EE2900903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
+		name = "ShoppingListViewController.m: 92";
+		rLen = 0;
+		rLoc = 2923;
+		rType = 0;
+		vrLen = 1738;
+		vrLoc = 1937;
+	};
+	CE76EC441274EE5400903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
+		name = "ShoppingListViewController.m: 92";
+		rLen = 0;
+		rLoc = 2923;
+		rType = 0;
+		vrLen = 1905;
+		vrLoc = 1937;
+	};
+	CE76EC451274EE5400903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 29";
+		rLen = 0;
+		rLoc = 611;
+		rType = 0;
+		vrLen = 828;
+		vrLoc = 53;
+	};
+	CE76EC461274EE5400903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 159";
+		rLen = 0;
+		rLoc = 5381;
+		rType = 0;
+		vrLen = 1079;
+		vrLoc = 5408;
+	};
+	CE76EC511274EF8F00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 171";
+		rLen = 0;
+		rLoc = 5720;
+		rType = 0;
+		vrLen = 290;
+		vrLoc = 6197;
+	};
+	CE76EC541274EFA900903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 163";
+		rLen = 0;
+		rLoc = 5509;
+		rType = 0;
+		vrLen = 972;
+		vrLoc = 5532;
+	};
+	CE76EC551274EFA900903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 96";
+		rLen = 0;
+		rLoc = 3257;
+		rType = 0;
+		vrLen = 1373;
+		vrLoc = 2736;
+	};
+	CE76EC561274EFC700903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 98";
+		rLen = 0;
+		rLoc = 3448;
+		rType = 0;
+		vrLen = 1298;
+		vrLoc = 2736;
+	};
+	CE76EC5B1274F09300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 18";
+		rLen = 0;
+		rLoc = 401;
+		rType = 0;
+		vrLen = 790;
+		vrLoc = 0;
+	};
+	CE76EC5C1274F09300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5241268AB3D009A80E0 /* ProductsViewController.m */;
+		name = "ProductsViewController.m: 79";
+		rLen = 0;
+		rLoc = 2395;
+		rType = 0;
+		vrLen = 1231;
+		vrLoc = 1559;
+	};
+	CE76EC5D1274F09300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D52D1268AB3D009A80E0 /* RecipeViewController.h */;
+		name = "RecipeViewController.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 527;
+		vrLoc = 0;
+	};
+	CE76EC5E1274F09300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5291268AB3D009A80E0 /* RecipeHistoryViewController.h */;
+		name = "RecipeHistoryViewController.h: 13";
+		rLen = 0;
+		rLoc = 378;
+		rType = 0;
+		vrLen = 516;
+		vrLoc = 0;
+	};
+	CE76EC5F1274F09300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
+		name = "RecipeHistoryViewController.m: 87";
+		rLen = 98;
+		rLoc = 2709;
+		rType = 0;
+		vrLen = 1236;
+		vrLoc = 1773;
+	};
+	CE76EC601274F09300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5301268AB3D009A80E0 /* SearchResultsViewController.m */;
+		name = "SearchResultsViewController.m: 34";
+		rLen = 62;
+		rLoc = 721;
+		rType = 0;
+		vrLen = 713;
+		vrLoc = 313;
+	};
+	CE76EC611274F09300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
+		name = "ShoppingListViewController.m: 92";
+		rLen = 0;
+		rLoc = 2923;
+		rType = 0;
+		vrLen = 1857;
+		vrLoc = 1994;
+	};
+	CE76EC621274F09300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
+		name = "ShoppingListViewController.m: 112";
+		rLen = 0;
+		rLoc = 3946;
+		rType = 0;
+		vrLen = 1379;
+		vrLoc = 2640;
+	};
+	CE76EC631274F0B100903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 163";
+		rLen = 0;
+		rLoc = 5720;
+		rType = 0;
+		vrLen = 127;
+		vrLoc = 5835;
+	};
+	CE76EC681274F0CB00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
+		name = "ShoppingListViewController.m: 110";
+		rLen = 0;
+		rLoc = 3848;
+		rType = 0;
+		vrLen = 1477;
+		vrLoc = 2640;
+	};
+	CE76EC691274F0CB00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 18";
+		rLen = 0;
+		rLoc = 401;
+		rType = 0;
+		vrLen = 1253;
+		vrLoc = 3166;
+	};
+	CE76EC6A1274F0CB00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 18";
+		rLen = 0;
+		rLoc = 401;
+		rType = 0;
+		vrLen = 1156;
+		vrLoc = 3263;
+	};
+	CE76EC6D1274F0E000903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 163";
+		rLen = 0;
+		rLoc = 5720;
+		rType = 0;
+		vrLen = 127;
+		vrLoc = 5835;
+	};
+	CE76EC741274F0FC00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 18";
+		rLen = 0;
+		rLoc = 401;
+		rType = 0;
+		vrLen = 1156;
+		vrLoc = 3263;
+	};
+	CE76EC751274F0FC00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
+		name = "RecipeHistoryViewController.m: 87";
+		rLen = 1;
+		rLoc = 2709;
+		rType = 0;
+		vrLen = 1088;
+		vrLoc = 1934;
+	};
+	CE76EC7C1274F14700903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 163";
+		rLen = 0;
+		rLoc = 5720;
+		rType = 0;
+		vrLen = 196;
+		vrLoc = 5766;
+	};
+	CE76EC7D1274F15A00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 163";
+		rLen = 0;
+		rLoc = 5720;
+		rType = 0;
+		vrLen = 196;
+		vrLoc = 5766;
+	};
+	CE76EC7E1274F16300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
+		name = "RecipeHistoryViewController.m: 14";
+		rLen = 0;
+		rLoc = 336;
+		rType = 0;
+		vrLen = 771;
+		vrLoc = 0;
+	};
+	CE76EC7F1274F16300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 18";
+		rLen = 0;
+		rLoc = 401;
+		rType = 0;
+		vrLen = 1156;
+		vrLoc = 3263;
+	};
+	CE76EC801274F16300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 17";
+		rLen = 0;
+		rLoc = 373;
+		rType = 0;
+		vrLen = 900;
+		vrLoc = 186;
+	};
+	CE76EC811274F18D00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 163";
+		rLen = 0;
+		rLoc = 5720;
+		rType = 0;
+		vrLen = 196;
+		vrLoc = 5766;
+	};
+	CE76EC821274F1A900903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 113";
+		rLen = 23;
+		rLoc = 3997;
+		rType = 0;
+		vrLen = 1271;
+		vrLoc = 3367;
+	};
+	CE76EC851274F20400903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 113";
+		rLen = 23;
+		rLoc = 3997;
+		rType = 0;
+		vrLen = 1277;
+		vrLoc = 284;
+	};
+	CE76EC861274F20400903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5241268AB3D009A80E0 /* ProductsViewController.m */;
+		name = "ProductsViewController.m: 79";
+		rLen = 0;
+		rLoc = 2395;
+		rType = 0;
+		vrLen = 1302;
+		vrLoc = 1575;
+	};
+	CE76EC871274F20400903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
+		name = "ShoppingListViewController.m: 111";
+		rLen = 0;
+		rLoc = 3905;
+		rType = 0;
+		vrLen = 1336;
+		vrLoc = 2782;
+	};
+	CE76EC911274F2AA00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
+		name = "ShoppingListViewController.m: 111";
+		rLen = 0;
+		rLoc = 3905;
+		rType = 0;
+		vrLen = 1336;
+		vrLoc = 2782;
+	};
+	CE76EC921274F2AA00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		rLen = 0;
+		rLoc = 100;
+		rType = 1;
+	};
+	CE76EC931274F2AA00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 87";
+		rLen = 0;
+		rLoc = 3062;
+		rType = 0;
+		vrLen = 1240;
+		vrLoc = 2455;
+	};
+	CE76EC961274F33200903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 87";
+		rLen = 0;
+		rLoc = 3062;
+		rType = 0;
+		vrLen = 1300;
+		vrLoc = 2455;
+	};
+	CE76EC971274F33200903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 70";
+		rLen = 0;
+		rLoc = 2254;
+		rType = 0;
+		vrLen = 1266;
+		vrLoc = 1467;
+	};
+	CE76EC981274F33200903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 69";
+		rLen = 0;
+		rLoc = 2048;
+		rType = 0;
+		vrLen = 1259;
+		vrLoc = 1373;
+	};
+	CE76EC991274F3C300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 163";
+		rLen = 0;
+		rLoc = 5720;
+		rType = 0;
+		vrLen = 196;
+		vrLoc = 5687;
+	};
+	CE76EC9A1274F49200903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 163";
+		rLen = 0;
+		rLoc = 5720;
+		rType = 0;
+		vrLen = 196;
+		vrLoc = 5687;
+	};
+	CE76EC9B1274F49300903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */;
+		name = "UITableViewCellFactory.m: 163";
+		rLen = 0;
+		rLoc = 5720;
+		rType = 0;
+		vrLen = 196;
+		vrLoc = 5687;
+	};
+	CE76EC9C1274F49900903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 131";
+		rLen = 0;
+		rLoc = 5275;
+		rType = 0;
+		vrLen = 1155;
+		vrLoc = 3493;
+	};
+	CE76ECA11274F60B00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
+		name = "RecipeHistoryViewController.m: 14";
+		rLen = 0;
+		rLoc = 336;
+		rType = 0;
+		vrLen = 771;
+		vrLoc = 0;
+	};
+	CE76ECA21274F60B00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5251268AB3D009A80E0 /* RecipeBasketViewController.h */;
+		name = "RecipeBasketViewController.h: 16";
+		rLen = 0;
+		rLoc = 422;
+		rType = 0;
+		vrLen = 503;
+		vrLoc = 0;
+	};
+	CE76ECA31274F60B00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 131";
+		rLen = 0;
+		rLoc = 5275;
+		rType = 0;
+		vrLen = 1167;
+		vrLoc = 2168;
+	};
+	CE76ECA41274F60B00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 104";
+		rLen = 0;
+		rLoc = 3392;
+		rType = 0;
+		vrLen = 1028;
+		vrLoc = 2603;
+	};
+	CE76ECA71274F6D500903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 113";
+		rLen = 0;
+		rLoc = 3400;
+		rType = 0;
+		vrLen = 1094;
+		vrLoc = 2605;
+	};
+	CE76ECA81274F78000903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5251268AB3D009A80E0 /* RecipeBasketViewController.h */;
+		name = "RecipeBasketViewController.h: 14";
+		rLen = 21;
+		rLoc = 397;
+		rType = 0;
+		vrLen = 503;
+		vrLoc = 0;
+	};
+	CE76ECA91274F78000903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 109";
+		rLen = 0;
+		rLoc = 3400;
+		rType = 0;
+		vrLen = 1180;
+		vrLoc = 3020;
+	};
+	CE76ECAA1274F78000903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 110";
+		rLen = 0;
+		rLoc = 3400;
+		rType = 0;
+		vrLen = 1115;
+		vrLoc = 2705;
+	};
+	CE76ECAB1274F79E00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 110";
+		rLen = 0;
+		rLoc = 3400;
+		rType = 0;
+		vrLen = 1158;
+		vrLoc = 2705;
+	};
+	CE76ECAE1274F7FF00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 110";
+		rLen = 0;
+		rLoc = 3400;
+		rType = 0;
+		vrLen = 1192;
+		vrLoc = 2703;
+	};
+	CE76ECB11274F87500903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 140";
+		rLen = 0;
+		rLoc = 4893;
+		rType = 0;
+		vrLen = 1346;
+		vrLoc = 3608;
+	};
+	CE76ECB41274F8AA00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 138";
+		rLen = 0;
+		rLoc = 4821;
+		rType = 0;
+		vrLen = 1424;
+		vrLoc = 3631;
+	};
+	CE76ECB71274F95100903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 138";
+		rLen = 0;
+		rLoc = 4887;
+		rType = 0;
+		vrLen = 1608;
+		vrLoc = 3667;
+	};
+	CE76ECBA1274F97C00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 138";
+		rLen = 0;
+		rLoc = 4855;
+		rType = 0;
+		vrLen = 1506;
+		vrLoc = 3851;
+	};
+	CE76ECBD1274F9AE00903FCC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
+		name = "RecipeBasketViewController.m: 138";
+		rLen = 0;
+		rLoc = 4855;
+		rType = 0;
+		vrLen = 1526;
+		vrLoc = 3925;
 	};
 	CE81C8D01271AF5A00D8A725 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -2325,7 +3286,7 @@
 		fRef = 3EB5D5261268AB3D009A80E0 /* RecipeBasketViewController.m */;
 		name = "RecipeBasketViewController.m: 64";
 		rLen = 0;
-		rLoc = 1913;
+		rLoc = 2050;
 		rType = 0;
 		vrLen = 1389;
 		vrLoc = 1144;
@@ -2358,24 +3319,6 @@
 		name = "/Users/User/Documents/RecipeShopper/RecipeShopper-Info.plist";
 		rLen = 0;
 		rLoc = 9223372036854775808;
-	};
-	CE81CA2B127280BE00D8A725 /* RecipeHistoryViewController.m:92 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */;
-		functionName = "-tableView:cellForRowAtIndexPath:";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 92;
-		location = Recipes;
-		modificationTime = 309643841.35714;
-		originalNumberOfMultipleMatches = 1;
-		state = 1;
 	};
 	CE9C65571270F8D0000B2EC4 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;

@@ -73,11 +73,7 @@
 		[recipeHistoryView setAllowsSelection:YES];
 		Recipe *recipe = [recentRecipes objectAtIndex:[indexPath row]];
 		
-		if ([indexPath row] == 0) {		
-			[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:YES];
-		} else {
-			[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:NO];
-		}
+		[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:([indexPath row] == 0)];
 	}else { /* Create special empty history cell */
 		[recipeHistoryView setAllowsSelection:NO];
 		 NSArray *bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeHistoryEmpty" owner:self options:nil];

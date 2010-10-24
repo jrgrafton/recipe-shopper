@@ -25,6 +25,9 @@
 #define COUNT_TAG 10
 #define PLUS_BUTTON_TAG 11
 
+#define TOTAL_KEY_TAG 1
+#define TOTAL_VALUE_TAG 2
+
 + (void)createRecipeTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withRecipe:(Recipe *)recipe isHeader:(BOOL)isHeader {
 	UILabel *label;
 	UIImageView *image;
@@ -35,7 +38,6 @@
 		UIImage *disclosureImage = [UIImage imageNamed:@"disclosure.png"];
 		UIImageView *imageView = [[UIImageView alloc] initWithImage: disclosureImage];
 		UIView *accessoryView;		
-		
 		
 		if (isHeader) {
 			bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeViewCellHeader" owner:self options:nil];
@@ -72,7 +74,7 @@
 	[label setText:serves];
 }
 
-+ (NSArray *)createProductTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withProduct:(Product *)product andQuantity:(NSNumber *)quantity forShoppingList:(BOOL)forShoppingList {
++ (NSArray *)createProductTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withProduct:(Product *)product andQuantity:(NSNumber *)quantity forShoppingList:(BOOL)forShoppingList isHeader:(BOOL)isHeader {
 	UILabel *label;
 	UIImageView *image;
 	UIButton *plusButton, *minusButton;
@@ -82,7 +84,13 @@
 	
 	if (*cellReference == nil) {
 		/* load the product view cell nib */
-        NSArray *bundle = [[NSBundle mainBundle] loadNibNamed:@"ProductViewCell" owner:self options:nil];
+        NSArray *bundle;	
+		
+		if (isHeader) {
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"ProductViewCellHeader" owner:self options:nil];
+		}else{
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"ProductViewCell" owner:self options:nil];
+		}
 		
         for (id viewElement in bundle) {
 			if ([viewElement isKindOfClass:[UITableViewCell class]])
@@ -130,6 +138,33 @@
 	
 	/* return the plus and minus buttons */
 	return buttons;
+}
+
++ (void)createTotalTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withNameValuePair:(NSArray *)nameValuePair isHeader:(BOOL)isHeader {
+	if (*cellReference == nil) {
+		/* load the recipe view cell nib */
+        NSArray *bundle;
+		
+		if (isHeader) {
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"TotalsCellHeader" owner:self options:nil];
+		}else{
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"TotalsCell" owner:self options:nil];
+		}
+		
+        for (id viewElement in bundle) {
+			if ([viewElement isKindOfClass:[UITableViewCell class]])
+				*cellReference = (UITableViewCell *)viewElement;
+		}
+		
+	}
+	
+	UITableViewCell *cell = *cellReference;
+	UILabel *keyLabel = (UILabel*)[cell viewWithTag:TOTAL_KEY_TAG];
+	UILabel *valueLabel = (UILabel*)[cell viewWithTag:TOTAL_VALUE_TAG];
+	[keyLabel setText:[nameValuePair objectAtIndex:0]];
+	[valueLabel setText:[nameValuePair objectAtIndex:1]];
+	
+	return;
 }
 
 @end

@@ -169,7 +169,7 @@
 		
 		Product *product = [DataManager getProductFromBasket:[indexPath row]];
 		NSNumber *quantity = [DataManager getProductQuantityFromBasket:product];
-		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:ProductBasketCellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO];
+		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:ProductBasketCellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isHeader:([indexPath row] == 0)];
 		
 		[[buttons objectAtIndex:0] addTarget:self action:@selector(addProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 		
