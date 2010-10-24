@@ -65,6 +65,10 @@
 						<string key="IBText"/>
 						<string key="IBPrompt"/>
 						<string key="IBPlaceholder">Search</string>
+						<object class="NSColor" key="IBTintColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MAA</bytes>
+						</object>
 						<object class="IBUITextInputTraits" key="IBTextInputTraits">
 							<int key="IBUIAutocorrectionType">1</int>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -178,8 +182,8 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="754196813"/>
-							<reference ref="412298824"/>
 							<reference ref="118368424"/>
+							<reference ref="412298824"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -208,6 +212,7 @@
 					<string>-2.CustomClassName</string>
 					<string>10.IBEditorWindowLastContentRect</string>
 					<string>10.IBPluginDependency</string>
+					<string>10.IBViewBoundsToFrameTransform</string>
 					<string>19.IBEditorWindowLastContentRect</string>
 					<string>19.IBPluginDependency</string>
 					<string>21.IBPluginDependency</string>
@@ -220,6 +225,9 @@
 					<string>UIResponder</string>
 					<string>{{63, 1021}, {320, 44}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAwigAAA</bytes>
+					</object>
 					<string>{{453, 476}, {320, 380}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

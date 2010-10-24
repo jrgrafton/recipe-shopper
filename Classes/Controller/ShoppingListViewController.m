@@ -65,7 +65,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if ([indexPath section] == 0) {
 		/* this is the shopping list summary section */
-		return 50;
+		return ([indexPath row] == 0)? 70:50;
 	} else {
 		/* this is the shopping list itself */
 		return 120;
@@ -89,16 +89,38 @@
 			/* ensure we dont show an image */
 			[[cell imageView] setImage:nil];
 			
+			//Add header
+			UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 300)];
+			[tableHeaderView setBackgroundColor:[UIColor clearColor]];
+			UIImage *disclosureImage = [UIImage imageNamed:@"tableHeader.png"];
+			UIImageView *imageView = [[UIImageView alloc] initWithImage: disclosureImage];
+
+			UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 0, 250, 18)];
+			[headerLabel setFont:[UIFont fontWithName:@"Georgia" size:13]];
+			[headerLabel setText:@"Totals"];
+			[headerLabel setBackgroundColor:[UIColor clearColor]];
+			
+			[tableHeaderView addSubview:imageView];
+			[tableHeaderView addSubview:headerLabel];
+			[[cell contentView] addSubview: tableHeaderView];
+			
+			[imageView release];
+			[headerLabel release];
+			[tableHeaderView release];
+			
 			/* total number of items in shopping list */
 			[[cell textLabel] setText: @"Number Of Items"];
-			[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14]];
+			[[cell textLabel] setFont:[UIFont fontWithName:@"Georgia" size:14]];
 			[[cell detailTextLabel] setText:@""];
 			
 			UILabel *numItemsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
+			[numItemsLabel setFont:[UIFont fontWithName:@"Georgia" size:14]];
 			[numItemsLabel setText:[NSString stringWithFormat:@"%d", [DataManager getTotalProductCount]]];
 			[numItemsLabel setTextAlignment: UITextAlignmentRight];
+			[numItemsLabel setBackgroundColor:[UIColor clearColor]];
 			
-			UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 70, 40)];
+			UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
+			[accessoryView setBackgroundColor:[UIColor clearColor]];
 			[accessoryView addSubview:numItemsLabel];
 			[cell setAccessoryView:accessoryView];
 			[accessoryView release];
@@ -107,10 +129,11 @@
 			[[cell imageView] setImage:nil];
 			
 			[[cell textLabel] setText:@"Total Cost"];
-			[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14]];
+			[[cell textLabel] setFont:[UIFont fontWithName:@"Georgia" size:14]];
 			[[cell detailTextLabel] setText:@""];
 			
 			UILabel *totalCostLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 70, 40)];
+			[totalCostLabel setFont:[UIFont fontWithName:@"Georgia" size:14]];
 			[totalCostLabel setText:[DataManager getProductBasketPrice]];
 			[totalCostLabel setTextAlignment: UITextAlignmentRight];
 			

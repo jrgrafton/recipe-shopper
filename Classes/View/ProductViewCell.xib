@@ -50,7 +50,7 @@
 							<object class="IBUILabel" id="539943208">
 								<reference key="NSNextResponder" ref="155564837"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 86}, {75, 34}}</string>
+								<string key="NSFrame">{{9, 79}, {75, 29}}</string>
 								<reference key="NSSuperview" ref="155564837"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -77,7 +77,7 @@
 							<object class="IBUILabel" id="206977389">
 								<reference key="NSNextResponder" ref="155564837"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{83, 3}, {205, 37}}</string>
+								<string key="NSFrame">{{96, 9}, {192, 34}}</string>
 								<reference key="NSSuperview" ref="155564837"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -96,7 +96,7 @@
 							<object class="IBUIImageView" id="56506613">
 								<reference key="NSNextResponder" ref="155564837"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{5, 6}, {75, 75}}</string>
+								<string key="NSFrame">{{9, 9}, {75, 75}}</string>
 								<reference key="NSSuperview" ref="155564837"/>
 								<int key="IBUITag">1</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -105,7 +105,7 @@
 							<object class="IBUIImageView" id="664725752">
 								<reference key="NSNextResponder" ref="155564837"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{83, 48}, {75, 25}}</string>
+								<string key="NSFrame">{{96, 48}, {75, 25}}</string>
 								<reference key="NSSuperview" ref="155564837"/>
 								<int key="IBUITag">4</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -114,7 +114,7 @@
 							<object class="IBUILabel" id="372865739">
 								<reference key="NSNextResponder" ref="155564837"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{83, 75}, {119, 38}}</string>
+								<string key="NSFrame">{{93, 75}, {101, 38}}</string>
 								<reference key="NSSuperview" ref="155564837"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -167,7 +167,7 @@
 								</object>
 								<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">button_plus@2x.png</string>
+									<string key="NSResourceName">button_plus.png</string>
 								</object>
 							</object>
 							<object class="IBUIButton" id="510110805">
@@ -189,7 +189,7 @@
 								<reference key="IBUINormalTitleShadowColor" ref="774943727"/>
 								<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">button_minus@2x.png</string>
+									<string key="NSResourceName">button_minus.png</string>
 								</object>
 							</object>
 							<object class="IBUILabel" id="740485126">
@@ -231,10 +231,7 @@
 				</object>
 				<string key="NSFrameSize">{300, 120}</string>
 				<reference key="NSSuperview"/>
-				<object class="NSColor" key="IBUIBackgroundColor">
-					<int key="NSColorSpace">1</int>
-					<bytes key="NSRGB">MC44IDAuOCAwLjgAA</bytes>
-				</object>
+				<reference key="IBUIBackgroundColor" ref="337362231"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<int key="IBUISeparatorStyle">1</int>
 				<reference key="IBUIContentView" ref="155564837"/>
@@ -270,14 +267,14 @@
 						<reference key="object" ref="700044352"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="56506613"/>
 							<reference ref="539943208"/>
 							<reference ref="372865739"/>
-							<reference ref="664725752"/>
 							<reference ref="206977389"/>
 							<reference ref="740485126"/>
 							<reference ref="510110805"/>
 							<reference ref="603462120"/>
+							<reference ref="664725752"/>
+							<reference ref="56506613"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -329,7 +326,9 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>-2.CustomClassName</string>
 					<string>10.IBPluginDependency</string>
+					<string>10.IBViewBoundsToFrameTransform</string>
 					<string>11.IBPluginDependency</string>
+					<string>11.IBViewBoundsToFrameTransform</string>
 					<string>12.IBPluginDependency</string>
 					<string>13.IBPluginDependency</string>
 					<string>15.IBPluginDependency</string>
@@ -343,12 +342,18 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>UIResponder</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABAoAAAwp4AAA</bytes>
+					</object>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABCpgAAwo4AAA</bytes>
+					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{395, 360}, {300, 120}}</string>
+					<string>{{519, 463}, {300, 120}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -576,13 +581,13 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>button_minus@2x.png</string>
-				<string>button_plus@2x.png</string>
+				<string>button_minus.png</string>
+				<string>button_plus.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{88, 88}</string>
-				<string>{88, 88}</string>
+				<string>{44, 44}</string>
+				<string>{44, 44}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">123</string>

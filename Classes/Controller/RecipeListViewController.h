@@ -16,6 +16,7 @@
 	@private 
 	NSArray *recipes;
 	NSString *categoryName;
+	NSDictionary *extendedNameMappings;
 	
 }
 

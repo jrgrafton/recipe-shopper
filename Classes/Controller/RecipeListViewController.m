@@ -25,6 +25,23 @@
 	[imageView release];
 	
 	[recipeListView setBackgroundColor: [UIColor clearColor]];
+	
+	//Create extended name mappings
+	extendedNameMappings = [[NSDictionary dictionaryWithObjectsAndKeys:
+						 @"Cake and Biscuits", @"Bread, cakes & biscuits",  
+						 @"Beautiful Breakfasts", @"Breakfast",
+						 @"Tasty Desserts", @"Dessert",
+						 @"Delectable Dinners", @"Dinners",
+						 @"Hydrating Drinks", @"Drinks",
+						 @"Lucious Lunches", @"Lunches",
+						 @"Delicious Mains", @"Main",
+						 @"Party Food", @"Party food",
+						 @"Refreshing Salads", @"Salads",
+						 @"Yummy Sauces", @"Sauces",
+						 @"Snacks and Sides", @"Snacks & side dishes",
+						 @"Sumptious Soups", @"Soups",
+						 @"Salacious Starters", @"Starter",
+						 nil] retain];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -80,7 +97,8 @@
 	if ([indexPath row] == 0) {		
 		[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:YES];
 		UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
-		[headerLabel setText:categoryName];
+		NSLog(@"Getting object for %@",categoryName);
+		[headerLabel setText:[extendedNameMappings objectForKey:categoryName]];
 	} else {
 		[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:NO];
 	}
@@ -125,6 +143,7 @@
     [super dealloc];
 	[recipes release];
 	[categoryName release];
+	[extendedNameMappings release];
 }
 
 

@@ -23,6 +23,7 @@
 		productBasket = [[NSMutableDictionary alloc] init];
 	}
 	
+	[self setProductBasketPrice:@"£0.00"];
 	[self setShoppingListProducts:[NSNumber numberWithInt:0]];
 	
 	return self;
