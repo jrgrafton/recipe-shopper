@@ -50,7 +50,7 @@
 							<object class="IBUILabel" id="686795756">
 								<reference key="NSNextResponder" ref="583398324"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 15}, {120, 21}}</string>
+								<string key="NSFrame">{{20, 15}, {137, 21}}</string>
 								<reference key="NSSuperview" ref="583398324"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -61,22 +61,20 @@
 								<string key="IBUIText">Label</string>
 								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">Georgia-Bold</string>
-									<double key="NSSize">13</double>
+									<double key="NSSize">14</double>
 									<int key="NSfFlags">16</int>
 								</object>
 								<object class="NSColor" key="IBUITextColor" id="476987124">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MCAwIDAAA</bytes>
 								</object>
-								<object class="NSColor" key="IBUIHighlightedColor" id="850423242">
+								<object class="NSColor" key="IBUIHighlightedColor" id="235554390">
 									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MQA</bytes>
+									<bytes key="NSWhite">MCAwAA</bytes>
 								</object>
-								<object class="NSColor" key="IBUIShadowColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC44IDAuOCAwLjgAA</bytes>
-								</object>
+								<reference key="IBUIShadowColor" ref="235554390"/>
 								<int key="IBUIBaselineAdjustment">1</int>
+								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
 							</object>
 							<object class="IBUILabel" id="116598382">
@@ -93,12 +91,12 @@
 								<string key="IBUIText">Label</string>
 								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">Georgia</string>
-									<double key="NSSize">13</double>
+									<double key="NSSize">14</double>
 									<int key="NSfFlags">16</int>
 								</object>
 								<reference key="IBUITextColor" ref="476987124"/>
-								<reference key="IBUIHighlightedColor" ref="850423242"/>
-								<reference key="IBUIShadowColor" ref="850423242"/>
+								<reference key="IBUIHighlightedColor" ref="235554390"/>
+								<reference key="IBUIShadowColor" ref="235554390"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
@@ -107,10 +105,7 @@
 						</object>
 						<string key="NSFrameSize">{300, 50}</string>
 						<reference key="NSSuperview" ref="1034116294"/>
-						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MCAwAA</bytes>
-						</object>
+						<reference key="IBUIBackgroundColor" ref="235554390"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">4</int>
@@ -158,8 +153,8 @@
 						<reference key="object" ref="1034116294"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="116598382"/>
 							<reference ref="686795756"/>
+							<reference ref="116598382"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -191,7 +186,7 @@
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>UIResponder</string>
-					<string>{{613, 376}, {300, 50}}</string>
+					<string>{{511, 568}, {300, 50}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAwkAAAA</bytes>
@@ -202,7 +197,7 @@
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">P4AAAL+AAABDOQAAwggAAA</bytes>
+						<bytes key="NSTransformStruct">P4AAAL+AAABDJQAAwggAAA</bytes>
 					</object>
 				</object>
 			</object>

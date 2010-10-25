@@ -77,7 +77,7 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">Heading</string>
-								<object class="NSFont" key="IBUIFont" id="536980876">
+								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">Georgia</string>
 									<double key="NSSize">13</double>
 									<int key="NSfFlags">16</int>
@@ -101,7 +101,7 @@
 							<object class="IBUILabel" id="62450974">
 								<reference key="NSNextResponder" ref="119309681"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 30}, {113, 21}}</string>
+								<string key="NSFrame">{{20, 34}, {160, 21}}</string>
 								<reference key="NSSuperview" ref="119309681"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -112,25 +112,23 @@
 								<string key="IBUIText">Label</string>
 								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">Georgia-Bold</string>
-									<double key="NSSize">13</double>
+									<double key="NSSize">14</double>
 									<int key="NSfFlags">16</int>
 								</object>
 								<object class="NSColor" key="IBUITextColor" id="529878744">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MCAwIDAAA</bytes>
 								</object>
-								<object class="NSColor" key="IBUIHighlightedColor" id="481184914">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MQA</bytes>
-								</object>
-								<reference key="IBUIShadowColor" ref="481184914"/>
+								<reference key="IBUIHighlightedColor" ref="1027898525"/>
+								<reference key="IBUIShadowColor" ref="1027898525"/>
 								<int key="IBUIBaselineAdjustment">1</int>
+								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
 							</object>
 							<object class="IBUILabel" id="201939045">
 								<reference key="NSNextResponder" ref="119309681"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{172, 30}, {108, 21}}</string>
+								<string key="NSFrame">{{172, 34}, {108, 21}}</string>
 								<reference key="NSSuperview" ref="119309681"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -139,11 +137,16 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">Label</string>
-								<reference key="IBUIFont" ref="536980876"/>
+								<object class="NSFont" key="IBUIFont">
+									<string key="NSName">Georgia</string>
+									<double key="NSSize">14</double>
+									<int key="NSfFlags">16</int>
+								</object>
 								<reference key="IBUITextColor" ref="529878744"/>
-								<reference key="IBUIHighlightedColor" ref="481184914"/>
-								<reference key="IBUIShadowColor" ref="481184914"/>
+								<reference key="IBUIHighlightedColor" ref="1027898525"/>
+								<reference key="IBUIShadowColor" ref="1027898525"/>
 								<int key="IBUIBaselineAdjustment">1</int>
+								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUITextAlignment">2</int>
 							</object>
@@ -200,8 +203,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="101088961"/>
 							<reference ref="1030461320"/>
-							<reference ref="201939045"/>
 							<reference ref="62450974"/>
+							<reference ref="201939045"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -250,7 +253,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">P4AAAL+AAABDRwAAwjQAAA</bytes>
+						<bytes key="NSTransformStruct">P4AAAL+AAABDMQAAwkwAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
