@@ -46,6 +46,8 @@
 	/* ensure table can't be selected */
 	[deliveryInfoView setAllowsSelection:NO];
 		
+	deliveryTimesReset = NO;
+	
 	/* add checkout button */
 	UIBarButtonItem *checkoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Checkout" style:UIBarButtonItemStyleBordered target:self action:@selector(transitionToCheckout:)];
 	self.navigationItem.rightBarButtonItem = checkoutButton;
@@ -124,6 +126,7 @@
 		deliveryInfoType = @"Delivery Time";
 		NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
 		[timeFormatter setTimeStyle:NSDateFormatterShortStyle];
+		[timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
 		NSString *deliveryStart = [timeFormatter stringFromDate:[selectedDeliverySlot deliverySlotStartTime]];
 		NSString *deliveryEnd = [timeFormatter stringFromDate:[selectedDeliverySlot deliverySlotEndTime]];
 		[timeFormatter release];
@@ -170,9 +173,10 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
 	if (component == 0) {
 		/* if user has changed the delivery date, we need to update the delivery times */
-		[deliverySlotPickerView selectRow:0 inComponent:1 animated:TRUE];
+		[deliverySlotPickerView selectRow:0 inComponent:1 animated:YES];
 		[deliverySlotPickerView reloadComponent:1];
-	}
+		deliveryTimesReset = YES;
+	} 
 	
 	/* refresh the delivery info */
 	[self reloadDeliveryInfo];
@@ -198,6 +202,7 @@
 		[label setFont:[UIFont boldSystemFontOfSize:12]];
 		NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
 		[timeFormatter setTimeStyle:NSDateFormatterShortStyle];
+		[timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
 		NSDate *selectedDate = [sortedDeliveryDatesArray objectAtIndex:[pickerView selectedRowInComponent:0]];
 		NSDictionary *timesToSlots = [deliveryDates objectForKey:selectedDate];
 		NSMutableArray *sortedDeliveryTimesArray = [NSMutableArray arrayWithArray:[timesToSlots allKeys]];
@@ -233,9 +238,15 @@
 	NSMutableArray *sortedDeliveryTimesArray = [NSMutableArray arrayWithArray:[deliveryTimeToSlot allKeys]];
 	[sortedDeliveryTimesArray sortUsingSelector:@selector(compare:)];
 	
-	NSDate *selectedTime = [sortedDeliveryTimesArray objectAtIndex:[deliverySlotPickerView selectedRowInComponent:1]];
-	selectedDeliverySlot = [deliveryTimeToSlot objectForKey:selectedTime];
-	 
+	if (deliveryTimesReset == YES) {
+		/* use the first item in the times array as that is where the spinner is headed, even if it isn't there yet! */
+		selectedDeliverySlot = [deliveryTimeToSlot objectForKey:[sortedDeliveryTimesArray objectAtIndex:0]];
+		deliveryTimesReset = NO;
+	} else {
+		NSDate *selectedTime = [sortedDeliveryTimesArray objectAtIndex:[deliverySlotPickerView selectedRowInComponent:1]];
+		selectedDeliverySlot = [deliveryTimeToSlot objectForKey:selectedTime];
+	}
+	
 	/* reload the delivery info */
 	[deliveryInfoView reloadData];
 }

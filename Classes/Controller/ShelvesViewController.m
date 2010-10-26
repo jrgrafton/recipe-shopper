@@ -11,6 +11,12 @@
 #import "UITableViewCellFactory.h"
 #import "DataManager.h"
 
+@interface ShelvesViewController()
+
+- (void)loadProducts:(NSString *)shelf;
+
+@end
+
 @implementation ShelvesViewController
 
 @synthesize productsViewController;
@@ -35,8 +41,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-	
-	//[[self navigationItem] setTitle:aisle];
 	
 	[shelves removeAllObjects];
 	[shelves addObjectsFromArray:[DataManager getShelvesForAisle:aisle]];
@@ -90,15 +94,27 @@
 		[productsView release];
 	}
 	
-	[productsViewController setShelf:[shelves objectAtIndex:[indexPath row]]];
+	[DataManager showOverlayView:[[self view] window]];
+	[DataManager setOverlayLabelText:[NSString stringWithFormat:@"Downloading %@", [shelves objectAtIndex:[indexPath row]]]];
+	[DataManager showActivityIndicator];
 	
-	[shelvesView deselectRowAtIndexPath:indexPath animated:YES];
+	[NSThread detachNewThreadSelector:@selector(loadProducts:) toTarget:self withObject:[shelves objectAtIndex:[indexPath row]]];
+}
+
+#pragma mark -
+#pragma mark Private methods
+
+- (void)loadProducts:(NSString *)shelf {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	[productsViewController loadProducts:shelf];
 	
 	/* transition to products view */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[[appDelegate onlineShopViewController] pushViewController:self.productsViewController animated:YES];
+	
+	[pool release];
 }
-
 
 #pragma mark -
 #pragma mark Memory management

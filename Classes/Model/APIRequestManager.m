@@ -283,10 +283,12 @@
 	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error] == YES) {
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setLocale:[[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease]];
+		[dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
 		[dateFormatter setDateFormat:@"yyyy-MM-dd"];
 		
 		NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
 		[timeFormatter setLocale:[[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease]];
+		[timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
 		[timeFormatter setDateFormat:@"HH:mm"];
 		 
 		NSEnumerator *deliverySlotEnumerator = [[apiResults objectForKey:@"DeliverySlots"] objectEnumerator];

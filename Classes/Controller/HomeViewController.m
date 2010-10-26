@@ -26,7 +26,13 @@
 	self.navigationItem.titleView = imageView;
 	[imageView release];
 	
-	[DataManager setOfflineMode:NO];
+	if ([[DataManager getUserPreference:@"offlineMode"] isEqualToString:@"YES"]) {
+		[DataManager setOfflineMode:YES];
+		[offlineModeSwitch setOn:YES];
+	} else {
+		[DataManager setOfflineMode:NO];
+		[offlineModeSwitch setOn:NO];
+	}
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -104,7 +110,13 @@
 }
 
 - (IBAction)offlineModeValueChanged:(id)sender {
-	[DataManager setOfflineMode: [offlineModeSwitch isOn]];
+	[DataManager setOfflineMode:[offlineModeSwitch isOn]];
+	
+	if ([offlineModeSwitch isOn] == YES) {
+		[DataManager setUserPreference:@"offlineMode" prefValue:@"YES"];
+	} else {
+		[DataManager setUserPreference:@"offlineMode" prefValue:@"NO"];
+	}
 }
 
 - (IBAction)createAccount:(id)sender {

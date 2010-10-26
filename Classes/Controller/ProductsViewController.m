@@ -14,7 +14,6 @@
 
 @interface ProductsViewController()
 
-- (void)loadProducts;
 - (void)addProductButtonClicked:(id)sender;
 - (void)removeProductButtonClicked:(id)sender;
 
@@ -22,35 +21,37 @@
 
 @implementation ProductsViewController
 
-@synthesize shelf;
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
 	//Add logo to nav bar
-	UIImage *image = [UIImage imageNamed: @"header.png"];
-	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+	UIImage *image = [UIImage imageNamed:@"header.png"];
+	UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
 	self.navigationItem.titleView = imageView;
 	[imageView release];
 	
-	[productsView setBackgroundColor: [UIColor clearColor]];
-	
-	products = [[NSMutableArray alloc] init];
+	[productsView setBackgroundColor:[UIColor clearColor]];
 	
 	[productsView setAllowsSelection:NO];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	
-	//[[self navigationItem] setTitle:shelf];
-	
+- (void)loadProducts:(NSString *)shelf {
+	products = [[NSMutableArray alloc] init];
 	[products removeAllObjects];
-	[DataManager showOverlayView:[[self view] window]];
-	//[DataManager setOverlayViewOffset:[productsView contentOffset]];
-	[DataManager setOverlayLabelText:[NSString stringWithFormat:@"Downloading %@", shelf]];
-	[DataManager showActivityIndicator];
-	[NSThread detachNewThreadSelector:@selector(loadProducts) toTarget:self withObject:nil];
+	[products addObjectsFromArray:[DataManager getProductsForShelf:shelf]];
+	
+	/* scroll the products to the top */
+	[productsView setContentOffset:CGPointMake(0, 0) animated:NO];
+	
+	if ([products count] == 0) {
+		/* just pop up a window to say so */
+		UIAlertView *noResultsAlert = [[UIAlertView alloc] initWithTitle:@"Online Shop" message:[NSString stringWithFormat:@"No results found for '%@'", shelf] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[noResultsAlert show];
+		[noResultsAlert release];
+	}
+	
+	[productsView reloadData];
+	[DataManager hideOverlayView];
 }
 
 #pragma mark -
@@ -85,30 +86,6 @@
 	}
 	
     return cell;
-}
-
-#pragma mark -
-#pragma mark Private methods
-
-- (void)loadProducts {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	[products addObjectsFromArray:[DataManager getProductsForShelf:shelf]];
-	
-	/* scroll the products to the top */
-	[productsView setContentOffset:CGPointMake(0, 0) animated:NO];
-	
-	if ([products count] == 0) {
-		/* just pop up a window to say so */
-		UIAlertView *noResultsAlert = [[UIAlertView alloc] initWithTitle:@"Online Shop" message:[NSString stringWithFormat:@"No results found for '%@'", shelf] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[noResultsAlert show];
-		[noResultsAlert release];
-	}
-	
-	[productsView reloadData];
-	[DataManager hideOverlayView];
-	
-	[pool release];
 }
 
 /*

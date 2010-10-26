@@ -40,8 +40,6 @@
 	[searchResults removeAllObjects];
 	[searchBarView setText:searchTerm];
 	
-	//[[self navigationItem] setTitle:searchTerm];
-	
 	[self searchForProducts];
 }
 
