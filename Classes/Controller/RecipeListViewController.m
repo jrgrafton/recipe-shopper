@@ -87,7 +87,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString *CellIdentifier = @"RecipeCell";
+	NSString *CellIdentifier = ([indexPath row] == 0)? @"RecipeCellHeader":@"RecipeCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
@@ -97,7 +97,6 @@
 	if ([indexPath row] == 0) {		
 		[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:YES];
 		UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
-		NSLog(@"Getting object for %@",categoryName);
 		[headerLabel setText:[extendedNameMappings objectForKey:categoryName]];
 	} else {
 		[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:NO];

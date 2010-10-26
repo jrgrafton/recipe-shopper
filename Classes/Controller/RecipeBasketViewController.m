@@ -64,7 +64,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString *CellIdentifier = @"RecipeCell";
+	NSString *CellIdentifier = ([indexPath row] == 0)? @"RecipeCellHeader":@"RecipeCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
@@ -84,8 +84,10 @@
 		}
 	}
 	
-	UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
-	[headerLabel setText:@"Recipe Basket"];
+	if ([indexPath row] == 0) {
+		UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
+		[headerLabel setText:@"Recipe Basket"];
+	}
 	
 	return cell;
 }

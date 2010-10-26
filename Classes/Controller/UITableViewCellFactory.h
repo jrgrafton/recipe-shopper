@@ -23,4 +23,13 @@
 /* create cells for total table sections */
 + (void)createTotalTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withNameValuePair:(NSArray *)nameValuePair isHeader:(BOOL)isHeader;
 
+/* create cells for online shopping department section */
++ (void)createOnlineShopDepartmentTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withDepartmentName:(NSString *)departmentName withIcon:(UIImage *)iconImage isHeader:(BOOL)isHeader;
+
+/* create cells for online shopping department aisle section */
++ (void)createOnlineShopAisleTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withAisleName:(NSString *)aisleName isHeader:(BOOL)isHeader;
+
+/* create cells for online shopping department category shelf section */
++ (void)createOnlineShopShelfTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withShelfName:(NSString *)shelfName isHeader:(BOOL)isHeader;
+
 @end

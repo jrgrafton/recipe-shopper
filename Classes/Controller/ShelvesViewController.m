@@ -8,6 +8,7 @@
 
 #import "ShelvesViewController.h"
 #import "RecipeShopperAppDelegate.h"
+#import "UITableViewCellFactory.h"
 #import "DataManager.h"
 
 @implementation ShelvesViewController
@@ -62,21 +63,21 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"ShelfCell";
+	NSString *CellIdentifier = ([indexPath row] == 0)? @"ShelvesCellHeader":@"ShelvesCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    /* Create a cell for this row's shelf name */
-	if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
-    }
+	[UITableViewCellFactory createOnlineShopShelfTableCell:&cell withIdentifier:CellIdentifier withShelfName:[shelves objectAtIndex:[indexPath row]] isHeader:([indexPath row] == 0)];
 	
-	[[cell textLabel] setText:[shelves objectAtIndex:[indexPath row]]];
-	
-	/* add a disclosure indicator so that it looks like you can press it */
-	[cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+	if ([indexPath row] == 0) {
+		UILabel *headerLabel = (UILabel *)[cell viewWithTag:3];
+		[headerLabel setText:@"Shelves"];
+	}
 	
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return ([indexPath row] == 0)? 64:44; 
 }
 
 #pragma mark -
@@ -90,9 +91,6 @@
 	}
 	
 	[productsViewController setShelf:[shelves objectAtIndex:[indexPath row]]];
-	
-	/* make sure the list is scrolled to the top */
-	//[productsViewController.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
 	
 	[shelvesView deselectRowAtIndexPath:indexPath animated:YES];
 	

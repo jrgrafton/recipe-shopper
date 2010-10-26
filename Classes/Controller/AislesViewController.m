@@ -8,6 +8,7 @@
 
 #import "AislesViewController.h"
 #import "RecipeShopperAppDelegate.h"
+#import "UITableViewCellFactory.h"
 #import "DataManager.h"
 
 @implementation AislesViewController
@@ -62,21 +63,21 @@
     return [aisles count];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return ([indexPath row] == 0)? 64:44; 
+}
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"AisleCell";
+	NSString *CellIdentifier = ([indexPath row] == 0)? @"AisleCellHeader":@"AisleCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    /* Create a cell for this row's aisle name */
-	if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
-    }
+	[UITableViewCellFactory createOnlineShopAisleTableCell:&cell withIdentifier:CellIdentifier withAisleName:[aisles objectAtIndex:[indexPath row]] isHeader:([indexPath row] == 0)];
 	
-	[[cell textLabel] setText:[aisles objectAtIndex:[indexPath row]]];
-	
-	/* add a disclosure indicator so that it looks like you can press it */
-	[cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+	if ([indexPath row] == 0) {
+		UILabel *headerLabel = (UILabel *)[cell viewWithTag:3];
+		[headerLabel setText:@"Aisles"];
+	}
 	
     return cell;
 }

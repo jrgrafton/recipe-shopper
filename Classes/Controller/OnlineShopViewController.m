@@ -9,10 +9,8 @@
 #import "OnlineShopViewController.h"
 #import "RecipeShopperAppDelegate.h"
 #import "DataManager.h"
+#import "UITableViewCellFactory.h"
 #import "UIImage-Extended.h"
-
-#define DEPARTMENTNAME_TAG 1
-#define DEPARTMENTIMAGE_TAG 2
 
 @implementation OnlineShopViewController
 
@@ -86,7 +84,7 @@
 #pragma mark Table view data source
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 70;
+	return ([indexPath row] == 0)? 90:70;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -98,30 +96,17 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"DepartmentCell";
-    UILabel *departmentNameLabel;
-	UIImageView *departmentImage;
+    NSString *CellIdentifier = ([indexPath row] == 0)? @"DepartmentCellHeader":@"DepartmentCell";
 	
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    /* Create a cell for this row's department name */
-	if (cell == nil) {
-		/* load the product view cell nib */
-        NSArray *bundle = [[NSBundle mainBundle] loadNibNamed:@"DepartmentCell" owner:self options:nil];
-		
-        for (id viewElement in bundle) {
-			if ([viewElement isKindOfClass:[UITableViewCell class]])
-				cell = (UITableViewCell *)viewElement;
-		}
-	}
-	
 	NSString *departmentName = [departments objectAtIndex:[indexPath row]];
-	
-	departmentNameLabel = (UILabel *)[cell viewWithTag:DEPARTMENTNAME_TAG];
-    [departmentNameLabel setText:departmentName];
 
-	departmentImage = (UIImageView *)[cell viewWithTag:DEPARTMENTIMAGE_TAG];
-	[departmentImage setImage:[departmentImages objectForKey:departmentName]];
+	[UITableViewCellFactory createOnlineShopDepartmentTableCell:&cell withIdentifier:CellIdentifier withDepartmentName:departmentName withIcon:[departmentImages objectForKey:departmentName] isHeader:([indexPath row] == 0)];
+	
+	if ([indexPath row] == 0) {
+		UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
+		[headerLabel setText:@"Produce Categories"];
+	}
 	
     return cell;
 }

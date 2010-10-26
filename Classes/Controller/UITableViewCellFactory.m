@@ -11,6 +11,9 @@
 
 @implementation UITableViewCellFactory
 
+//Disclosure offset is half header height + half disclosure height
+#define DISCLOSURE_OFFSET 9 + 8
+
 #define PRODUCT_IMAGE_TAG 1
 #define PRODUCT_PRICE_TAG 2
 #define PRODUCT_TITLE_TAG 3
@@ -24,6 +27,13 @@
 #define MINUS_BUTTON_TAG 9
 #define COUNT_TAG 10
 #define PLUS_BUTTON_TAG 11
+
+#define DEPARTMENTNAME_TAG 1
+#define DEPARTMENTIMAGE_TAG 2
+
+#define AISLENAME_TAG 1
+
+#define SHELFNAME_TAG 1
 
 #define TOTAL_KEY_TAG 1
 #define TOTAL_VALUE_TAG 2
@@ -41,7 +51,8 @@
 		
 		if (isHeader) {
 			bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeViewCellHeader" owner:self options:nil];
-			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height -10)];
+			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height + DISCLOSURE_OFFSET)];
+			[imageView setFrame:CGRectMake(0, DISCLOSURE_OFFSET, [imageView frame].size.width, [imageView frame].size.height)];
 		}else{
 			bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeViewCell" owner:self options:nil];
 			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height)];
@@ -163,6 +174,107 @@
 	UILabel *valueLabel = (UILabel*)[cell viewWithTag:TOTAL_VALUE_TAG];
 	[keyLabel setText:[nameValuePair objectAtIndex:0]];
 	[valueLabel setText:[nameValuePair objectAtIndex:1]];
+	
+	return;
+}
+
+
+/* create cells for shopping section */
++ (void)createOnlineShopDepartmentTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withDepartmentName:(NSString *)departmentName withIcon:(UIImage *)iconImage isHeader:(BOOL)isHeader {
+	/* Create a cell for this row's department name */
+	if (*cellReference == nil) {
+		/* load the product view cell nib */
+		NSArray *bundle;
+		
+		if (isHeader) {
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"DepartmentCellHeader" owner:self options:nil];
+		}else{
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"DepartmentCell" owner:self options:nil];
+		}
+		
+        for (id viewElement in bundle) {
+			if ([viewElement isKindOfClass:[UITableViewCell class]])
+				*cellReference = (UITableViewCell *)viewElement;
+		}
+	}
+	
+	UITableViewCell *cell = *cellReference;
+	
+	UILabel *departmentNameLabel = (UILabel *)[cell viewWithTag:DEPARTMENTNAME_TAG];
+    [departmentNameLabel setText:departmentName];
+	
+	UIImageView *departmentImage = (UIImageView *)[cell viewWithTag:DEPARTMENTIMAGE_TAG];
+	[departmentImage setImage:iconImage];
+	
+	return;
+}
+
++ (void)createOnlineShopAisleTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withAisleName:(NSString *)aisleName isHeader:(BOOL)isHeader {
+	/* Create a cell for this row's department name */
+	if (*cellReference == nil) {
+		/* load the product view cell nib */
+		NSArray *bundle;
+		UIImage *disclosureImage = [UIImage imageNamed:@"disclosure.png"];
+		UIImageView *imageView = [[UIImageView alloc] initWithImage: disclosureImage];
+		UIView *accessoryView;
+		
+		if (isHeader) {
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"AislesCellHeader" owner:self options:nil];
+			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height + DISCLOSURE_OFFSET)];
+			[imageView setFrame:CGRectMake(0, DISCLOSURE_OFFSET, [imageView frame].size.width, [imageView frame].size.height)];
+		}else{
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"AislesCell" owner:self options:nil];
+			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height)];
+		}
+		
+        for (id viewElement in bundle) {
+			if ([viewElement isKindOfClass:[UITableViewCell class]])
+				*cellReference = (UITableViewCell *)viewElement;
+		}
+		
+		[accessoryView addSubview:imageView];
+		[*cellReference setAccessoryView:accessoryView];
+	}
+	
+	UITableViewCell *cell = *cellReference;
+	
+	UILabel *aisleNameLabel = (UILabel *)[cell viewWithTag:AISLENAME_TAG];
+    [aisleNameLabel setText:aisleName];
+	
+	return;
+}
+
++ (void)createOnlineShopShelfTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withShelfName:(NSString *)shelfName isHeader:(BOOL)isHeader {
+	/* Create a cell for this row's department name */
+	if (*cellReference == nil) {
+		/* load the product view cell nib */
+		NSArray *bundle;
+		UIImage *disclosureImage = [UIImage imageNamed:@"disclosure.png"];
+		UIImageView *imageView = [[UIImageView alloc] initWithImage: disclosureImage];
+		UIView *accessoryView;
+		
+		if (isHeader) {
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"ShelvesCellHeader" owner:self options:nil];
+			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height + DISCLOSURE_OFFSET)];
+			[imageView setFrame:CGRectMake(0, DISCLOSURE_OFFSET, [imageView frame].size.width, [imageView frame].size.height)];
+		}else{
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"ShelvesCell" owner:self options:nil];
+			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height)];
+		}
+		
+        for (id viewElement in bundle) {
+			if ([viewElement isKindOfClass:[UITableViewCell class]])
+				*cellReference = (UITableViewCell *)viewElement;
+		}
+		
+		[accessoryView addSubview:imageView];
+		[*cellReference setAccessoryView:accessoryView];
+	}
+	
+	UITableViewCell *cell = *cellReference;
+	
+	UILabel *shelvesNameLabel = (UILabel *)[cell viewWithTag:SHELFNAME_TAG];
+    [shelvesNameLabel setText:shelfName];
 	
 	return;
 }
