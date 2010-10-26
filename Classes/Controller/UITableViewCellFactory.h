@@ -32,4 +32,7 @@
 /* create cells for online shopping department category shelf section */
 + (void)createOnlineShopShelfTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withShelfName:(NSString *)shelfName isHeader:(BOOL)isHeader;
 
+/* create cells for delivery slot sections */
++ (void)createDeliverySlotTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withNameValuePair:(NSArray *)nameValuePair isHeader:(BOOL)isHeader;
+
 @end

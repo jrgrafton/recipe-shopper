@@ -77,23 +77,23 @@
 	
 	if (indexPath.section == 0) {
 		/* this is the shopping list summary section */
-		static NSString *ShoppingListDetailsCellIdentifier = @"ShoppingListSummaryCell";
+		NSString *CellIdentifier = ([indexPath row] == 0)? @"ShoppingListSummaryCellHeader":@"ShoppingListSummaryCell";
 		
-		cell = [tableView dequeueReusableCellWithIdentifier:ShoppingListDetailsCellIdentifier];
+		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
 		if ([indexPath row] == 0) {
 			NSArray *keyValue = [NSArray arrayWithObjects:@"Number Of Items",[NSString stringWithFormat:@"%d",[DataManager getTotalProductCount]],nil];
-			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:ShoppingListDetailsCellIdentifier withNameValuePair:keyValue isHeader:YES];
+			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:YES];
 			UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
 			[headerLabel setText:@"Totals"];
 			
 		} else if ([indexPath row] == 1) {
 			NSArray *keyValue = [NSArray arrayWithObjects:@"Total Cost",[DataManager getProductBasketPrice],nil];
-			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:ShoppingListDetailsCellIdentifier withNameValuePair:keyValue isHeader:NO];
+			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:NO];
 		}
 	} else if (indexPath.section == 1) {
 		/* this is the shopping list itself */
-		static NSString *CellIdentifier = @"ShoppingListCell";
+		NSString *CellIdentifier = ([indexPath row] == 0)? @"ShoppingListCellHeader":@"ShoppingListCell";
 		
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		

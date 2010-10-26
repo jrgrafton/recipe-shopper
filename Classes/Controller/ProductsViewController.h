@@ -10,8 +10,13 @@
 
 @interface ProductsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 	IBOutlet UITableView *productsView;
-	@private NSMutableArray *products;
+	
+	@private 
+	NSMutableArray *products;
+	NSString *productShelf;
 }
+
+@property (nonatomic, retain) NSString *productShelf;
 
 - (void)loadProducts:(NSString *)shelf;
 

@@ -74,7 +74,7 @@
 	
 	if ([indexPath row] == 0) {
 		UILabel *headerLabel = (UILabel *)[cell viewWithTag:3];
-		[headerLabel setText:@"Shelves"];
+		[headerLabel setText:[self aisle]];
 	}
 	
     return cell;
@@ -90,6 +90,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (productsViewController == nil) {
 		ProductsViewController *productsView = [[ProductsViewController alloc] initWithNibName:@"ProductsView" bundle:nil];
+		[productsView setProductShelf:[shelves objectAtIndex:[indexPath row]]];
 		[self setProductsViewController:productsView];
 		[productsView release];
 	}

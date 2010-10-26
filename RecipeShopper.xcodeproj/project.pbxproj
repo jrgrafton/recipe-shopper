@@ -15,7 +15,6 @@
 		3E892BE11268B26500A512B5 /* imgs in Resources */ = {isa = PBXBuildFile; fileRef = 3E892BCA1268B26500A512B5 /* imgs */; };
 		3EAD8E86126FB1D000B72B67 /* BasketViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EAD8E85126FB1D000B72B67 /* BasketViewCell.xib */; };
 		3EB5D5011268AB29009A80E0 /* AislesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4EB1268AB29009A80E0 /* AislesView.xib */; };
-		3EB5D5021268AB29009A80E0 /* DeliveryInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4EC1268AB29009A80E0 /* DeliveryInfoCell.xib */; };
 		3EB5D5031268AB29009A80E0 /* DeliverySlotsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4ED1268AB29009A80E0 /* DeliverySlotsView.xib */; };
 		3EB5D5041268AB29009A80E0 /* DepartmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4EE1268AB29009A80E0 /* DepartmentCell.xib */; };
 		3EB5D5051268AB29009A80E0 /* HomeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4EF1268AB29009A80E0 /* HomeView.xib */; };
@@ -25,13 +24,13 @@
 		3EB5D5091268AB29009A80E0 /* OnlineShopView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F31268AB29009A80E0 /* OnlineShopView.xib */; };
 		3EB5D50A1268AB29009A80E0 /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F41268AB29009A80E0 /* OverlayView.xib */; };
 		3EB5D50C1268AB29009A80E0 /* ProductsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F61268AB29009A80E0 /* ProductsView.xib */; };
-		3EB5D50D1268AB29009A80E0 /* ProductViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F71268AB29009A80E0 /* ProductViewCell.xib */; };
+		3EB5D50D1268AB29009A80E0 /* ProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F71268AB29009A80E0 /* ProductCell.xib */; };
 		3EB5D50E1268AB29009A80E0 /* RecipeBasketView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F81268AB29009A80E0 /* RecipeBasketView.xib */; };
 		3EB5D50F1268AB29009A80E0 /* RecipeCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4F91268AB29009A80E0 /* RecipeCategoryView.xib */; };
 		3EB5D5101268AB29009A80E0 /* RecipeHistoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FA1268AB29009A80E0 /* RecipeHistoryView.xib */; };
 		3EB5D5111268AB29009A80E0 /* RecipeListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FB1268AB29009A80E0 /* RecipeListView.xib */; };
 		3EB5D5121268AB29009A80E0 /* RecipeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FC1268AB29009A80E0 /* RecipeView.xib */; };
-		3EB5D5131268AB29009A80E0 /* RecipeViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FD1268AB29009A80E0 /* RecipeViewCell.xib */; };
+		3EB5D5131268AB29009A80E0 /* RecipeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FD1268AB29009A80E0 /* RecipeCell.xib */; };
 		3EB5D5141268AB29009A80E0 /* SearchResultsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FE1268AB29009A80E0 /* SearchResultsView.xib */; };
 		3EB5D5151268AB29009A80E0 /* ShelvesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FF1268AB29009A80E0 /* ShelvesView.xib */; };
 		3EB5D5161268AB29009A80E0 /* ShoppingListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D5001268AB29009A80E0 /* ShoppingListView.xib */; };
@@ -128,10 +127,12 @@
 		CE3D2DE712710C8700D100E2 /* watermarkScroll.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3D2DE512710C8700D100E2 /* watermarkScroll.png */; };
 		CE3D2DE812710C8700D100E2 /* watermarkScroll@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3D2DE612710C8700D100E2 /* watermarkScroll@2x.png */; };
 		CE6F01D2127641F6003696FA /* DepartmentCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6F01D1127641F6003696FA /* DepartmentCellHeader.xib */; };
-		CE6F022912764A28003696FA /* AislesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6F022812764A28003696FA /* AislesCell.xib */; };
-		CE6F022B12764A37003696FA /* AislesCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6F022A12764A37003696FA /* AislesCellHeader.xib */; };
-		CE6F026512764FF9003696FA /* ShelvesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6F026412764FF9003696FA /* ShelvesCell.xib */; };
-		CE6F026712765008003696FA /* ShelvesCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6F026612765008003696FA /* ShelvesCellHeader.xib */; };
+		CE6F022912764A28003696FA /* AisleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6F022812764A28003696FA /* AisleCell.xib */; };
+		CE6F022B12764A37003696FA /* AisleCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6F022A12764A37003696FA /* AisleCellHeader.xib */; };
+		CE6F026512764FF9003696FA /* ShelfCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6F026412764FF9003696FA /* ShelfCell.xib */; };
+		CE6F026712765008003696FA /* ShelfCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6F026612765008003696FA /* ShelfCellHeader.xib */; };
+		CE73D1531277742700325A43 /* DeliverySlotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE73D1521277742700325A43 /* DeliverySlotCell.xib */; };
+		CE73D1551277743300325A43 /* DeliverySlotCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE73D1541277743300325A43 /* DeliverySlotCellHeader.xib */; };
 		CE74CBBC12732B1200B5566E /* recipesHome.png in Resources */ = {isa = PBXBuildFile; fileRef = CE74CBBA12732B1200B5566E /* recipesHome.png */; };
 		CE74CBBD12732B1200B5566E /* recipesHome@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE74CBBB12732B1200B5566E /* recipesHome@2x.png */; };
 		CE74CBC012732B4B00B5566E /* recipeHistoryHome.png in Resources */ = {isa = PBXBuildFile; fileRef = CE74CBBE12732B4B00B5566E /* recipeHistoryHome.png */; };
@@ -158,12 +159,12 @@
 		CE76EB6C1274935800903FCC /* RecipeBasketEmpty.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE76EB6B1274935800903FCC /* RecipeBasketEmpty.xib */; };
 		CE76EB711274C85E00903FCC /* recipeBasketEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = CE76EB6F1274C85E00903FCC /* recipeBasketEmpty.png */; };
 		CE76EB721274C85E00903FCC /* recipeBasketEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE76EB701274C85E00903FCC /* recipeBasketEmpty@2x.png */; };
-		CE76EC0C1274DE8900903FCC /* TotalsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE76EC0B1274DE8900903FCC /* TotalsCell.xib */; };
-		CE76EC0E1274DE9B00903FCC /* TotalsCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE76EC0D1274DE9B00903FCC /* TotalsCellHeader.xib */; };
-		CE76EC181274EAB700903FCC /* ProductViewCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE76EC171274EAB700903FCC /* ProductViewCellHeader.xib */; };
+		CE76EC0C1274DE8900903FCC /* TotalCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE76EC0B1274DE8900903FCC /* TotalCell.xib */; };
+		CE76EC0E1274DE9B00903FCC /* TotalCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE76EC0D1274DE9B00903FCC /* TotalCellHeader.xib */; };
+		CE76EC181274EAB700903FCC /* ProductCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE76EC171274EAB700903FCC /* ProductCellHeader.xib */; };
 		CE81C89E1271967200D8A725 /* header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81C89C1271967200D8A725 /* header@2x.png */; };
 		CE81C90B1271B73500D8A725 /* recentRecipesHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81C90A1271B73500D8A725 /* recentRecipesHeader@2x.png */; };
-		CE81C9991271FA4500D8A725 /* RecipeViewCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE81C9981271FA4500D8A725 /* RecipeViewCellHeader.xib */; };
+		CE81C9991271FA4500D8A725 /* RecipeCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE81C9981271FA4500D8A725 /* RecipeCellHeader.xib */; };
 		CE81CA0C127206E400D8A725 /* header.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81CA08127206E400D8A725 /* header.png */; };
 		CE81CA0D127206E400D8A725 /* noHistory@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81CA09127206E400D8A725 /* noHistory@2x.png */; };
 		CE81CA0E127206E400D8A725 /* watermark.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81CA0A127206E400D8A725 /* watermark.png */; };
@@ -184,7 +185,6 @@
 		3E892BCA1268B26500A512B5 /* imgs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = imgs; sourceTree = "<group>"; };
 		3EAD8E85126FB1D000B72B67 /* BasketViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = BasketViewCell.xib; path = View/BasketViewCell.xib; sourceTree = "<group>"; };
 		3EB5D4EB1268AB29009A80E0 /* AislesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AislesView.xib; path = View/AislesView.xib; sourceTree = "<group>"; };
-		3EB5D4EC1268AB29009A80E0 /* DeliveryInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DeliveryInfoCell.xib; path = View/DeliveryInfoCell.xib; sourceTree = "<group>"; };
 		3EB5D4ED1268AB29009A80E0 /* DeliverySlotsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DeliverySlotsView.xib; path = View/DeliverySlotsView.xib; sourceTree = "<group>"; };
 		3EB5D4EE1268AB29009A80E0 /* DepartmentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DepartmentCell.xib; path = View/DepartmentCell.xib; sourceTree = "<group>"; };
 		3EB5D4EF1268AB29009A80E0 /* HomeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = HomeView.xib; path = View/HomeView.xib; sourceTree = "<group>"; };
@@ -194,13 +194,13 @@
 		3EB5D4F31268AB29009A80E0 /* OnlineShopView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = OnlineShopView.xib; path = View/OnlineShopView.xib; sourceTree = "<group>"; };
 		3EB5D4F41268AB29009A80E0 /* OverlayView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = OverlayView.xib; path = View/OverlayView.xib; sourceTree = "<group>"; };
 		3EB5D4F61268AB29009A80E0 /* ProductsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ProductsView.xib; path = View/ProductsView.xib; sourceTree = "<group>"; };
-		3EB5D4F71268AB29009A80E0 /* ProductViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ProductViewCell.xib; path = View/ProductViewCell.xib; sourceTree = "<group>"; };
+		3EB5D4F71268AB29009A80E0 /* ProductCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ProductCell.xib; path = View/ProductCell.xib; sourceTree = "<group>"; };
 		3EB5D4F81268AB29009A80E0 /* RecipeBasketView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeBasketView.xib; path = View/RecipeBasketView.xib; sourceTree = "<group>"; };
 		3EB5D4F91268AB29009A80E0 /* RecipeCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeCategoryView.xib; path = View/RecipeCategoryView.xib; sourceTree = "<group>"; };
 		3EB5D4FA1268AB29009A80E0 /* RecipeHistoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeHistoryView.xib; path = View/RecipeHistoryView.xib; sourceTree = "<group>"; };
 		3EB5D4FB1268AB29009A80E0 /* RecipeListView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeListView.xib; path = View/RecipeListView.xib; sourceTree = "<group>"; };
 		3EB5D4FC1268AB29009A80E0 /* RecipeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeView.xib; path = View/RecipeView.xib; sourceTree = "<group>"; };
-		3EB5D4FD1268AB29009A80E0 /* RecipeViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeViewCell.xib; path = View/RecipeViewCell.xib; sourceTree = "<group>"; };
+		3EB5D4FD1268AB29009A80E0 /* RecipeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeCell.xib; path = View/RecipeCell.xib; sourceTree = "<group>"; };
 		3EB5D4FE1268AB29009A80E0 /* SearchResultsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SearchResultsView.xib; path = View/SearchResultsView.xib; sourceTree = "<group>"; };
 		3EB5D4FF1268AB29009A80E0 /* ShelvesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ShelvesView.xib; path = View/ShelvesView.xib; sourceTree = "<group>"; };
 		3EB5D5001268AB29009A80E0 /* ShoppingListView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ShoppingListView.xib; path = View/ShoppingListView.xib; sourceTree = "<group>"; };
@@ -335,10 +335,12 @@
 		CE3D2DE512710C8700D100E2 /* watermarkScroll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = watermarkScroll.png; sourceTree = "<group>"; };
 		CE3D2DE612710C8700D100E2 /* watermarkScroll@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "watermarkScroll@2x.png"; sourceTree = "<group>"; };
 		CE6F01D1127641F6003696FA /* DepartmentCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DepartmentCellHeader.xib; sourceTree = "<group>"; };
-		CE6F022812764A28003696FA /* AislesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AislesCell.xib; sourceTree = "<group>"; };
-		CE6F022A12764A37003696FA /* AislesCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AislesCellHeader.xib; sourceTree = "<group>"; };
-		CE6F026412764FF9003696FA /* ShelvesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShelvesCell.xib; sourceTree = "<group>"; };
-		CE6F026612765008003696FA /* ShelvesCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShelvesCellHeader.xib; sourceTree = "<group>"; };
+		CE6F022812764A28003696FA /* AisleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AisleCell.xib; sourceTree = "<group>"; };
+		CE6F022A12764A37003696FA /* AisleCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AisleCellHeader.xib; sourceTree = "<group>"; };
+		CE6F026412764FF9003696FA /* ShelfCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShelfCell.xib; sourceTree = "<group>"; };
+		CE6F026612765008003696FA /* ShelfCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShelfCellHeader.xib; sourceTree = "<group>"; };
+		CE73D1521277742700325A43 /* DeliverySlotCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeliverySlotCell.xib; sourceTree = "<group>"; };
+		CE73D1541277743300325A43 /* DeliverySlotCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeliverySlotCellHeader.xib; sourceTree = "<group>"; };
 		CE74CBBA12732B1200B5566E /* recipesHome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recipesHome.png; sourceTree = "<group>"; };
 		CE74CBBB12732B1200B5566E /* recipesHome@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "recipesHome@2x.png"; sourceTree = "<group>"; };
 		CE74CBBE12732B4B00B5566E /* recipeHistoryHome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recipeHistoryHome.png; sourceTree = "<group>"; };
@@ -365,12 +367,12 @@
 		CE76EB6B1274935800903FCC /* RecipeBasketEmpty.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeBasketEmpty.xib; sourceTree = "<group>"; };
 		CE76EB6F1274C85E00903FCC /* recipeBasketEmpty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recipeBasketEmpty.png; sourceTree = "<group>"; };
 		CE76EB701274C85E00903FCC /* recipeBasketEmpty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "recipeBasketEmpty@2x.png"; sourceTree = "<group>"; };
-		CE76EC0B1274DE8900903FCC /* TotalsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TotalsCell.xib; sourceTree = "<group>"; };
-		CE76EC0D1274DE9B00903FCC /* TotalsCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TotalsCellHeader.xib; sourceTree = "<group>"; };
-		CE76EC171274EAB700903FCC /* ProductViewCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductViewCellHeader.xib; sourceTree = "<group>"; };
+		CE76EC0B1274DE8900903FCC /* TotalCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TotalCell.xib; sourceTree = "<group>"; };
+		CE76EC0D1274DE9B00903FCC /* TotalCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TotalCellHeader.xib; sourceTree = "<group>"; };
+		CE76EC171274EAB700903FCC /* ProductCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductCellHeader.xib; sourceTree = "<group>"; };
 		CE81C89C1271967200D8A725 /* header@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header@2x.png"; sourceTree = "<group>"; };
 		CE81C90A1271B73500D8A725 /* recentRecipesHeader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "recentRecipesHeader@2x.png"; sourceTree = "<group>"; };
-		CE81C9981271FA4500D8A725 /* RecipeViewCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeViewCellHeader.xib; sourceTree = "<group>"; };
+		CE81C9981271FA4500D8A725 /* RecipeCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeCellHeader.xib; sourceTree = "<group>"; };
 		CE81CA08127206E400D8A725 /* header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = header.png; sourceTree = "<group>"; };
 		CE81CA09127206E400D8A725 /* noHistory@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "noHistory@2x.png"; sourceTree = "<group>"; };
 		CE81CA0A127206E400D8A725 /* watermark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = watermark.png; sourceTree = "<group>"; };
@@ -500,12 +502,13 @@
 			isa = PBXGroup;
 			children = (
 				3EB5D4EB1268AB29009A80E0 /* AislesView.xib */,
-				CE6F022812764A28003696FA /* AislesCell.xib */,
-				CE6F022A12764A37003696FA /* AislesCellHeader.xib */,
+				CE6F022812764A28003696FA /* AisleCell.xib */,
+				CE6F022A12764A37003696FA /* AisleCellHeader.xib */,
 				3EAD8E85126FB1D000B72B67 /* BasketViewCell.xib */,
 				3EB5D4F21268AB29009A80E0 /* CheckoutView.xib */,
-				3EB5D4EC1268AB29009A80E0 /* DeliveryInfoCell.xib */,
 				3EB5D4ED1268AB29009A80E0 /* DeliverySlotsView.xib */,
+				CE73D1521277742700325A43 /* DeliverySlotCell.xib */,
+				CE73D1541277743300325A43 /* DeliverySlotCellHeader.xib */,
 				3EB5D4F31268AB29009A80E0 /* OnlineShopView.xib */,
 				3EB5D4EE1268AB29009A80E0 /* DepartmentCell.xib */,
 				CE6F01D1127641F6003696FA /* DepartmentCellHeader.xib */,
@@ -514,24 +517,24 @@
 				3EB5D4F11268AB29009A80E0 /* MoreSearchResultsCell.xib */,
 				3EB5D4F41268AB29009A80E0 /* OverlayView.xib */,
 				3EB5D4F61268AB29009A80E0 /* ProductsView.xib */,
-				3EB5D4F71268AB29009A80E0 /* ProductViewCell.xib */,
-				CE76EC171274EAB700903FCC /* ProductViewCellHeader.xib */,
+				3EB5D4F71268AB29009A80E0 /* ProductCell.xib */,
+				CE76EC171274EAB700903FCC /* ProductCellHeader.xib */,
 				3EB5D4F81268AB29009A80E0 /* RecipeBasketView.xib */,
 				3EB5D4F91268AB29009A80E0 /* RecipeCategoryView.xib */,
 				3EB5D4FA1268AB29009A80E0 /* RecipeHistoryView.xib */,
 				3EB5D4FB1268AB29009A80E0 /* RecipeListView.xib */,
 				3EB5D4FC1268AB29009A80E0 /* RecipeView.xib */,
-				3EB5D4FD1268AB29009A80E0 /* RecipeViewCell.xib */,
-				CE81C9981271FA4500D8A725 /* RecipeViewCellHeader.xib */,
+				3EB5D4FD1268AB29009A80E0 /* RecipeCell.xib */,
+				CE81C9981271FA4500D8A725 /* RecipeCellHeader.xib */,
 				CE76EB6B1274935800903FCC /* RecipeBasketEmpty.xib */,
 				CE76EB2612748D0800903FCC /* RecipeHistoryEmpty.xib */,
 				3EB5D4FE1268AB29009A80E0 /* SearchResultsView.xib */,
 				3EB5D4FF1268AB29009A80E0 /* ShelvesView.xib */,
-				CE6F026412764FF9003696FA /* ShelvesCell.xib */,
-				CE6F026612765008003696FA /* ShelvesCellHeader.xib */,
+				CE6F026412764FF9003696FA /* ShelfCell.xib */,
+				CE6F026612765008003696FA /* ShelfCellHeader.xib */,
 				3EB5D5001268AB29009A80E0 /* ShoppingListView.xib */,
-				CE76EC0B1274DE8900903FCC /* TotalsCell.xib */,
-				CE76EC0D1274DE9B00903FCC /* TotalsCellHeader.xib */,
+				CE76EC0B1274DE8900903FCC /* TotalCell.xib */,
+				CE76EC0D1274DE9B00903FCC /* TotalCellHeader.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -795,7 +798,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3EB5D5011268AB29009A80E0 /* AislesView.xib in Resources */,
-				3EB5D5021268AB29009A80E0 /* DeliveryInfoCell.xib in Resources */,
 				3EB5D5031268AB29009A80E0 /* DeliverySlotsView.xib in Resources */,
 				3EB5D5041268AB29009A80E0 /* DepartmentCell.xib in Resources */,
 				3EB5D5051268AB29009A80E0 /* HomeView.xib in Resources */,
@@ -805,13 +807,13 @@
 				3EB5D5091268AB29009A80E0 /* OnlineShopView.xib in Resources */,
 				3EB5D50A1268AB29009A80E0 /* OverlayView.xib in Resources */,
 				3EB5D50C1268AB29009A80E0 /* ProductsView.xib in Resources */,
-				3EB5D50D1268AB29009A80E0 /* ProductViewCell.xib in Resources */,
+				3EB5D50D1268AB29009A80E0 /* ProductCell.xib in Resources */,
 				3EB5D50E1268AB29009A80E0 /* RecipeBasketView.xib in Resources */,
 				3EB5D50F1268AB29009A80E0 /* RecipeCategoryView.xib in Resources */,
 				3EB5D5101268AB29009A80E0 /* RecipeHistoryView.xib in Resources */,
 				3EB5D5111268AB29009A80E0 /* RecipeListView.xib in Resources */,
 				3EB5D5121268AB29009A80E0 /* RecipeView.xib in Resources */,
-				3EB5D5131268AB29009A80E0 /* RecipeViewCell.xib in Resources */,
+				3EB5D5131268AB29009A80E0 /* RecipeCell.xib in Resources */,
 				3EB5D5141268AB29009A80E0 /* SearchResultsView.xib in Resources */,
 				3EB5D5151268AB29009A80E0 /* ShelvesView.xib in Resources */,
 				3EB5D5161268AB29009A80E0 /* ShoppingListView.xib in Resources */,
@@ -876,7 +878,7 @@
 				CE3D2DE812710C8700D100E2 /* watermarkScroll@2x.png in Resources */,
 				CE81C89E1271967200D8A725 /* header@2x.png in Resources */,
 				CE81C90B1271B73500D8A725 /* recentRecipesHeader@2x.png in Resources */,
-				CE81C9991271FA4500D8A725 /* RecipeViewCellHeader.xib in Resources */,
+				CE81C9991271FA4500D8A725 /* RecipeCellHeader.xib in Resources */,
 				CE81CA0C127206E400D8A725 /* header.png in Resources */,
 				CE81CA0D127206E400D8A725 /* noHistory@2x.png in Resources */,
 				CE81CA0E127206E400D8A725 /* watermark.png in Resources */,
@@ -907,14 +909,16 @@
 				CE76EB6C1274935800903FCC /* RecipeBasketEmpty.xib in Resources */,
 				CE76EB711274C85E00903FCC /* recipeBasketEmpty.png in Resources */,
 				CE76EB721274C85E00903FCC /* recipeBasketEmpty@2x.png in Resources */,
-				CE76EC0C1274DE8900903FCC /* TotalsCell.xib in Resources */,
-				CE76EC0E1274DE9B00903FCC /* TotalsCellHeader.xib in Resources */,
-				CE76EC181274EAB700903FCC /* ProductViewCellHeader.xib in Resources */,
+				CE76EC0C1274DE8900903FCC /* TotalCell.xib in Resources */,
+				CE76EC0E1274DE9B00903FCC /* TotalCellHeader.xib in Resources */,
+				CE76EC181274EAB700903FCC /* ProductCellHeader.xib in Resources */,
 				CE6F01D2127641F6003696FA /* DepartmentCellHeader.xib in Resources */,
-				CE6F022912764A28003696FA /* AislesCell.xib in Resources */,
-				CE6F022B12764A37003696FA /* AislesCellHeader.xib in Resources */,
-				CE6F026512764FF9003696FA /* ShelvesCell.xib in Resources */,
-				CE6F026712765008003696FA /* ShelvesCellHeader.xib in Resources */,
+				CE6F022912764A28003696FA /* AisleCell.xib in Resources */,
+				CE6F022B12764A37003696FA /* AisleCellHeader.xib in Resources */,
+				CE6F026512764FF9003696FA /* ShelfCell.xib in Resources */,
+				CE6F026712765008003696FA /* ShelfCellHeader.xib in Resources */,
+				CE73D1531277742700325A43 /* DeliverySlotCell.xib in Resources */,
+				CE73D1551277743300325A43 /* DeliverySlotCellHeader.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

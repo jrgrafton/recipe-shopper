@@ -7,6 +7,7 @@
 //
 
 #import "DeliverySlotsViewController.h"
+#import "UITableViewCellFactory.h"
 #import "DataManager.h"
 #import "LogManager.h"
 
@@ -38,6 +39,7 @@
 	//Add logo to nav bar
 	UIImage *image = [UIImage imageNamed: @"header.png"];
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+	[imageView setContentMode:UIViewContentModeScaleAspectFit];
 	self.navigationItem.titleView = imageView;
 	[imageView release];
 	
@@ -48,8 +50,7 @@
 		
 	deliveryTimesReset = NO;
 	
-	/* add checkout button */
-	UIBarButtonItem *checkoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Checkout" style:UIBarButtonItemStyleBordered target:self action:@selector(transitionToCheckout:)];
+	UIBarButtonItem *checkoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Payment" style:UIBarButtonItemStyleBordered target:self action:@selector(transitionToCheckout:)];
 	self.navigationItem.rightBarButtonItem = checkoutButton;
 }
 
@@ -97,50 +98,38 @@
 	return 3;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return ([indexPath row] == 0)? 60:40;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"DeliveryInfoCell";
+	NSString *CellIdentifier = ([indexPath row] == 0)? @"DeliveryInfoCellHeader":@"DeliveryInfoCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    /* create a cell for this row's delivery info */
-	if (cell == nil) {
-		/* load the delivery info cell nib */
-        NSArray *bundle = [[NSBundle mainBundle] loadNibNamed:@"DeliveryInfoCell" owner:self options:nil];
-		
-        for (id viewElement in bundle) {
-			if ([viewElement isKindOfClass:[UITableViewCell class]])
-				cell = (UITableViewCell *)viewElement;
-		}
-    }
-	
-	NSString *deliveryInfoType;
-	NSString *deliveryInfoDetails;
 	
 	if ([indexPath row] == 0) {
-		deliveryInfoType = @"Delivery Date";
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setDateFormat:@"EEEE MMMM d"];
-		deliveryInfoDetails = [dateFormatter stringFromDate:[selectedDeliverySlot deliverySlotDate]];
+		NSArray *keyValue = [NSArray arrayWithObjects:@"Delivery Date",[dateFormatter stringFromDate:[selectedDeliverySlot deliverySlotDate]],nil];
+		[UITableViewCellFactory createDeliverySlotTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:YES];
+		
+		UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
+		[headerLabel setText:@"Delivery Details"];
 		[dateFormatter release];
+		
 	} else if ([indexPath row] == 1) {
-		deliveryInfoType = @"Delivery Time";
 		NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
 		[timeFormatter setTimeStyle:NSDateFormatterShortStyle];
 		[timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
-		NSString *deliveryStart = [timeFormatter stringFromDate:[selectedDeliverySlot deliverySlotStartTime]];
-		NSString *deliveryEnd = [timeFormatter stringFromDate:[selectedDeliverySlot deliverySlotEndTime]];
+		NSString *deliveryInfoDetails = [NSString stringWithFormat:@"%@ - %@", [timeFormatter stringFromDate:[selectedDeliverySlot deliverySlotStartTime]], [timeFormatter stringFromDate:[selectedDeliverySlot deliverySlotEndTime]]];
+		
+		NSArray *keyValue = [NSArray arrayWithObjects:@"Delivery Time",deliveryInfoDetails,nil];
+		[UITableViewCellFactory createDeliverySlotTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:NO];
 		[timeFormatter release];
-		deliveryInfoDetails = [NSString stringWithFormat:@"%@ - %@", deliveryStart, deliveryEnd];
-	} else if ([indexPath row] == 2) {
-		deliveryInfoType = @"Delivery Cost";
-		deliveryInfoDetails = [NSString stringWithFormat:@"£%.2f", [[selectedDeliverySlot deliverySlotCost] floatValue]];
+	} else {
+		NSArray *keyValue = [NSArray arrayWithObjects:@"Delivery Cost",[NSString stringWithFormat:@"£%.2f", [[selectedDeliverySlot deliverySlotCost] floatValue]],nil];
+		[UITableViewCellFactory createDeliverySlotTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:NO];
 	}
-	
-	UILabel *label = (UILabel *)[cell viewWithTag:DELIVERY_INFO_TYPE_TAG];
-	[label setText:deliveryInfoType];
-	
-	label = (UILabel *)[cell viewWithTag:DELIVERY_INFO_DETAILS_TAG];
-    [label setText:deliveryInfoDetails];
 	
     return cell;
 }

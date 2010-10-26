@@ -76,7 +76,7 @@
 	
 	if ([indexPath row] == 0) {
 		UILabel *headerLabel = (UILabel *)[cell viewWithTag:3];
-		[headerLabel setText:@"Aisles"];
+		[headerLabel setText: [self department]];
 	}
 	
     return cell;

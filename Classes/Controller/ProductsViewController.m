@@ -21,6 +21,8 @@
 
 @implementation ProductsViewController
 
+@synthesize productShelf;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
@@ -58,7 +60,7 @@
 #pragma mark Table view data source
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 120;
+	return ([indexPath row] == 0)? 135:120;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -70,7 +72,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"ProductCell";
+	NSString *CellIdentifier = ([indexPath row] == 0)? @"ProductCellHeader":@"ProductCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	
@@ -83,6 +85,11 @@
 	
 	if ([buttons count] > 1) {
 		[[buttons objectAtIndex:1] addTarget:self action:@selector(removeProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+	}
+	
+	if ([indexPath row] == 0) {
+		UILabel *headerLabel = (UILabel *)[cell viewWithTag:13];
+		[headerLabel setText:[self productShelf]];
 	}
 	
     return cell;

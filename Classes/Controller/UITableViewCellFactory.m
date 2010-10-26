@@ -38,6 +38,9 @@
 #define TOTAL_KEY_TAG 1
 #define TOTAL_VALUE_TAG 2
 
+#define DELIVERYSLOTS_LABEL1_TAG 1
+#define DELIVERYSLOTS_LABEL2_TAG 2
+
 + (void)createRecipeTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withRecipe:(Recipe *)recipe isHeader:(BOOL)isHeader {
 	UILabel *label;
 	UIImageView *image;
@@ -50,11 +53,11 @@
 		UIView *accessoryView;		
 		
 		if (isHeader) {
-			bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeViewCellHeader" owner:self options:nil];
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeCellHeader" owner:self options:nil];
 			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height + DISCLOSURE_OFFSET)];
 			[imageView setFrame:CGRectMake(0, DISCLOSURE_OFFSET, [imageView frame].size.width, [imageView frame].size.height)];
 		}else{
-			bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeViewCell" owner:self options:nil];
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeCell" owner:self options:nil];
 			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height)];
 		}
 		
@@ -98,9 +101,9 @@
         NSArray *bundle;	
 		
 		if (isHeader) {
-			bundle = [[NSBundle mainBundle] loadNibNamed:@"ProductViewCellHeader" owner:self options:nil];
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"ProductCellHeader" owner:self options:nil];
 		}else{
-			bundle = [[NSBundle mainBundle] loadNibNamed:@"ProductViewCell" owner:self options:nil];
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"ProductCell" owner:self options:nil];
 		}
 		
         for (id viewElement in bundle) {
@@ -157,9 +160,9 @@
         NSArray *bundle;
 		
 		if (isHeader) {
-			bundle = [[NSBundle mainBundle] loadNibNamed:@"TotalsCellHeader" owner:self options:nil];
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"TotalCellHeader" owner:self options:nil];
 		}else{
-			bundle = [[NSBundle mainBundle] loadNibNamed:@"TotalsCell" owner:self options:nil];
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"TotalCell" owner:self options:nil];
 		}
 		
         for (id viewElement in bundle) {
@@ -219,11 +222,11 @@
 		UIView *accessoryView;
 		
 		if (isHeader) {
-			bundle = [[NSBundle mainBundle] loadNibNamed:@"AislesCellHeader" owner:self options:nil];
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"AisleCellHeader" owner:self options:nil];
 			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height + DISCLOSURE_OFFSET)];
 			[imageView setFrame:CGRectMake(0, DISCLOSURE_OFFSET, [imageView frame].size.width, [imageView frame].size.height)];
 		}else{
-			bundle = [[NSBundle mainBundle] loadNibNamed:@"AislesCell" owner:self options:nil];
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"AisleCell" owner:self options:nil];
 			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height)];
 		}
 		
@@ -254,11 +257,11 @@
 		UIView *accessoryView;
 		
 		if (isHeader) {
-			bundle = [[NSBundle mainBundle] loadNibNamed:@"ShelvesCellHeader" owner:self options:nil];
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"ShelfCellHeader" owner:self options:nil];
 			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height + DISCLOSURE_OFFSET)];
 			[imageView setFrame:CGRectMake(0, DISCLOSURE_OFFSET, [imageView frame].size.width, [imageView frame].size.height)];
 		}else{
-			bundle = [[NSBundle mainBundle] loadNibNamed:@"ShelvesCell" owner:self options:nil];
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"ShelfCell" owner:self options:nil];
 			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height)];
 		}
 		
@@ -275,6 +278,33 @@
 	
 	UILabel *shelvesNameLabel = (UILabel *)[cell viewWithTag:SHELFNAME_TAG];
     [shelvesNameLabel setText:shelfName];
+	
+	return;
+}
+
++ (void)createDeliverySlotTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withNameValuePair:(NSArray *)nameValuePair isHeader:(BOOL)isHeader {
+	if (*cellReference == nil) {
+		/* load the recipe view cell nib */
+        NSArray *bundle;
+		
+		if (isHeader) {
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"DeliverySlotCellHeader" owner:self options:nil];
+		}else{
+			bundle = [[NSBundle mainBundle] loadNibNamed:@"DeliverySlotCell" owner:self options:nil];
+		}
+		
+        for (id viewElement in bundle) {
+			if ([viewElement isKindOfClass:[UITableViewCell class]])
+				*cellReference = (UITableViewCell *)viewElement;
+		}
+		
+	}
+	
+	UITableViewCell *cell = *cellReference;
+	UILabel *keyLabel = (UILabel*)[cell viewWithTag:DELIVERYSLOTS_LABEL1_TAG];
+	UILabel *valueLabel = (UILabel*)[cell viewWithTag:DELIVERYSLOTS_LABEL2_TAG];
+	[keyLabel setText:[nameValuePair objectAtIndex:0]];
+	[valueLabel setText:[nameValuePair objectAtIndex:1]];
 	
 	return;
 }

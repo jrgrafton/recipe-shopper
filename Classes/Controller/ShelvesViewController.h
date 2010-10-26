@@ -11,7 +11,9 @@
 
 @interface ShelvesViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 	IBOutlet UITableView *shelvesView;
-	@private NSMutableArray *shelves;
+	
+	@private 
+	NSMutableArray *shelves;
 }
 
 @property (nonatomic, retain) ProductsViewController *productsViewController;

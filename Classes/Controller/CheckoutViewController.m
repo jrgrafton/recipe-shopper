@@ -20,9 +20,7 @@
 
 @end
 
-#define CELL_TITLE_TAG 1
-#define CELL_INFO_TAG 2
-#define CELL_ACTIVITY_INDICATOR_TAG 3
+#define CELL_ACTIVITY_INDICATOR_TAG 6
 
 @implementation CheckoutViewController
 
@@ -36,9 +34,11 @@
 	//Add logo to nav bar
 	UIImage *image = [UIImage imageNamed: @"header.png"];
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+	[imageView setContentMode:UIViewContentModeScaleAspectFit];
+	[imageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 	self.navigationItem.titleView = imageView;
 	[imageView release];
-	
+
 	[basketView setBackgroundColor: [UIColor clearColor]];
 	
 	/* add this object as an observer of the change basket method so we can update the basket details when they change */
@@ -93,11 +93,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if ([indexPath section] == 0) {
-		/* this is the basket summary section */
-		return 50;
+		/* this is the shopping list summary section */
+		return ([indexPath row] == 0)? 70:50;
 	} else {
-		/* this is the basket itself */
-		return 120;
+		/* this is the shopping list itself */
+		return ([indexPath row] == 0)? 135:120;
 	}
 }
 
@@ -120,46 +120,27 @@
 	
 	if (indexPath.section == 0) {
 		/* this is the basket summary section */
-		static NSString *CellIdentifier = @"BasketSummaryCell";
-		
+		NSString *CellIdentifier = ([indexPath row] == 0)? @"BasketSummaryCellHeader":@"BasketSummaryCell";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
-		/* create a cell for this row's info */
-		if (cell == nil) {
-			/* load the basket view cell nib */
-			NSArray *bundle = [[NSBundle mainBundle] loadNibNamed:@"BasketViewCell" owner:self options:nil];
-			
-			for (id viewElement in bundle) {
-				if ([viewElement isKindOfClass:[UITableViewCell class]])
-					cell = (UITableViewCell *)viewElement;
-			}
-		}
-
-		UILabel *titleLabel = (UILabel *)[cell viewWithTag:CELL_TITLE_TAG];
-		UILabel *infoLabel = (UILabel *)[cell viewWithTag:CELL_INFO_TAG];
-		UIActivityIndicatorView *activityIndicator = (UIActivityIndicatorView *)[cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
-		
 		if ([indexPath row] == 0) {
-			[titleLabel setText:@"Number Of Items"];
-			[infoLabel setText:[NSString stringWithFormat:@"%d", [DataManager getTotalProductCount]]];
-		} else if ([indexPath row] == 1) {
-			[titleLabel setText:@"Total Cost"];
-			[infoLabel setText:[NSString stringWithFormat:@"£%.2f", [[self basketPrice] floatValue]]];
+			NSArray *keyValue = [NSArray arrayWithObjects:@"Number Of Items",[NSString stringWithFormat:@"%d",[DataManager getTotalProductCount]],nil];
+			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:YES];
+			UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
+			[headerLabel setText:@"Totals"];
 			
+		} else if ([indexPath row] == 1) {
+			NSArray *keyValue = [NSArray arrayWithObjects:@"Total Cost",[NSString stringWithFormat:@"£%.2f", [[self basketPrice] floatValue]],nil];
+			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:NO];
+			UIActivityIndicatorView *activityIndicator = (UIActivityIndicatorView *)[cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
 			if (waitingForAPI == YES) {
 				[activityIndicator startAnimating];
 			} else {
 				[activityIndicator stopAnimating];
 			}
 		} else {
-			[titleLabel setText:@"MultiBuy Savings"];
-			[infoLabel setText:[NSString stringWithFormat:@"£%.2f", [[self basketSavings] floatValue]]];
-			
-			if (waitingForAPI == YES) {
-				[activityIndicator startAnimating];
-			} else {
-				[activityIndicator stopAnimating];
-			}
+			NSArray *keyValue = [NSArray arrayWithObjects:@"MultiBuy Savings",[NSString stringWithFormat:@"£%.2f",[[self basketSavings] floatValue] ],nil];
+			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:NO];
 		}
 	} else if (indexPath.section == 1) {
 		/* this is the basket itself */
@@ -176,6 +157,9 @@
 		if ([buttons count] > 1) {
 			[[buttons objectAtIndex:1] addTarget:self action:@selector(removeProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 		}
+		
+		UILabel *headerLabel = (UILabel *)[cell viewWithTag:13];
+		[headerLabel setText:@"Product Basket"];
 	}
 	
 	return cell;	
