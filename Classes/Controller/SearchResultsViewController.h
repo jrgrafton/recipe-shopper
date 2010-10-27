@@ -13,6 +13,7 @@
 	IBOutlet UITableView *searchResultsView;
 
 	@private 
+	UIView *footerView;
 	NSMutableArray *searchResults;
 	NSInteger currentPage;
 	NSInteger totalPageCount;

@@ -14,6 +14,7 @@
 
 @interface SearchResultsViewController()
 
+- (void)fetchMoreProducts;
 - (void)searchForProducts;
 
 @end
@@ -81,7 +82,36 @@
 #pragma mark Table view data source
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 120;
+	return ([indexPath row] == 0)? 135:120;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	return (currentPage < totalPageCount)? 90:0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if(footerView == nil) {
+        //allocate the view if it doesn't exist yet
+        footerView  = [[UIView alloc] init];
+		
+		UIImage *image = [[UIImage imageNamed:@"fetchMore.png"]
+						  stretchableImageWithLeftCapWidth:8 topCapHeight:8];
+		
+		//create the button
+		UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(10, 10, 300, 67)];
+		[button setBackgroundImage:image forState:UIControlStateNormal];
+
+		//set action of the button
+		[button addTarget:self action:@selector(fetchMoreProducts)
+		 forControlEvents:UIControlEventTouchUpInside];
+		
+		//add the button to the view
+		[footerView addSubview:button];
+		[button release];
+    }
+	
+    //return the view for the footer
+    return (currentPage < totalPageCount)? footerView:nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -89,65 +119,44 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (currentPage >= totalPageCount) {
-		return [searchResults count];
-	} else if ([searchResults count] != 0) {
-		return [searchResults count] + 1;
-	} else {
-		return 0;
-	}
+	return [searchResults count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if ([indexPath row] == [searchResults count]) {
-		static NSString *CellIdentifier = @"MoreSearchResultsCell";
-		
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-				
-		/* create a cell for loading more search results */
-		if (cell == nil) {
-			NSArray *bundle = [[NSBundle mainBundle] loadNibNamed:@"MoreSearchResultsCell" owner:self options:nil];
-			
-			for (id viewElement in bundle) {
-				if ([viewElement isKindOfClass:[UITableViewCell class]])
-					cell = (UITableViewCell *)viewElement;
-			}
-		}
-		
-		return cell;
-	} else {
-		static NSString *CellIdentifier = @"SearchResultCell";
-		
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		
-		/* create a cell for this row's product */
-		Product *product = [searchResults objectAtIndex:[indexPath row]];
-		NSNumber *quantity = [DataManager getProductQuantityFromBasket:product];
-		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isHeader:NO];
-		
-		[[buttons objectAtIndex:0] addTarget:self action:@selector(addProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-		
-		if ([buttons count] > 1) {
-			[[buttons objectAtIndex:1] addTarget:self action:@selector(removeProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-		}
-		
-		return cell;
-	}
-}
+	NSString *CellIdentifier = ([indexPath row] == 0)? @"SearchResultCellHeader":@"SearchResultCell";
+	
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	
+	/* create a cell for this row's product */
+	Product *product = [searchResults objectAtIndex:[indexPath row]];
+	NSNumber *quantity = [DataManager getProductQuantityFromBasket:product];
+	NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isHeader:([indexPath row] == 0)];
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if ([indexPath row] == [searchResults count]) {
-		currentPage++;
-		[DataManager showOverlayView:searchResultsView];
-		[DataManager setOverlayViewOffset:[searchResultsView contentOffset]];
-		[DataManager setOverlayLabelText:[NSString stringWithFormat:@"Fetching page %d of %d", currentPage, totalPageCount]];
-		[DataManager showActivityIndicator];		
-		[NSThread detachNewThreadSelector:@selector(searchForProducts) toTarget:self withObject:nil];
+	[[buttons objectAtIndex:0] addTarget:self action:@selector(addProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+	
+	if ([buttons count] > 1) {
+		[[buttons objectAtIndex:1] addTarget:self action:@selector(removeProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 	}
+	
+	if ([indexPath row] == 0) {
+		UILabel *headerLabel = (UILabel *)[cell viewWithTag:13];
+		[headerLabel setText:[[self searchTerm] capitalizedString]];
+	}
+	
+	return cell;
 }
 
 #pragma mark -
 #pragma mark Private methods
+
+- (void)fetchMoreProducts {
+	currentPage++;
+	[DataManager showOverlayView:searchResultsView];
+	[DataManager setOverlayViewOffset:[searchResultsView contentOffset]];
+	[DataManager setOverlayLabelText:[NSString stringWithFormat:@"Fetching page %d of %d", currentPage, totalPageCount]];
+	[DataManager showActivityIndicator];		
+	[NSThread detachNewThreadSelector:@selector(searchForProducts) toTarget:self withObject:nil];
+}
 
 - (void)searchForProducts {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];

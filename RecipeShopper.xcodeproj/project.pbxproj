@@ -126,6 +126,8 @@
 		3EFBE0EC123CF117008B7DC2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EFBE0EB123CF117008B7DC2 /* SystemConfiguration.framework */; };
 		CE3D2DE712710C8700D100E2 /* watermarkScroll.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3D2DE512710C8700D100E2 /* watermarkScroll.png */; };
 		CE3D2DE812710C8700D100E2 /* watermarkScroll@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3D2DE612710C8700D100E2 /* watermarkScroll@2x.png */; };
+		CE6E45771278DF2400888D64 /* fetchMore.png in Resources */ = {isa = PBXBuildFile; fileRef = CE6E45751278DF2400888D64 /* fetchMore.png */; };
+		CE6E45781278DF2400888D64 /* fetchMore@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE6E45761278DF2400888D64 /* fetchMore@2x.png */; };
 		CE6F01D2127641F6003696FA /* DepartmentCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6F01D1127641F6003696FA /* DepartmentCellHeader.xib */; };
 		CE6F022912764A28003696FA /* AisleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6F022812764A28003696FA /* AisleCell.xib */; };
 		CE6F022B12764A37003696FA /* AisleCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6F022A12764A37003696FA /* AisleCellHeader.xib */; };
@@ -334,6 +336,8 @@
 		8D1107310486CEB800E47090 /* RecipeShopper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RecipeShopper-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		CE3D2DE512710C8700D100E2 /* watermarkScroll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = watermarkScroll.png; sourceTree = "<group>"; };
 		CE3D2DE612710C8700D100E2 /* watermarkScroll@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "watermarkScroll@2x.png"; sourceTree = "<group>"; };
+		CE6E45751278DF2400888D64 /* fetchMore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fetchMore.png; sourceTree = "<group>"; };
+		CE6E45761278DF2400888D64 /* fetchMore@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fetchMore@2x.png"; sourceTree = "<group>"; };
 		CE6F01D1127641F6003696FA /* DepartmentCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DepartmentCellHeader.xib; sourceTree = "<group>"; };
 		CE6F022812764A28003696FA /* AisleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AisleCell.xib; sourceTree = "<group>"; };
 		CE6F022A12764A37003696FA /* AisleCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AisleCellHeader.xib; sourceTree = "<group>"; };
@@ -641,6 +645,8 @@
 				3EB5D67C1268ABBB009A80E0 /* button_plus@2x.png */,
 				CE74CC091273376A00B5566E /* createAccount.png */,
 				CE74CC0A1273376A00B5566E /* createAccount@2x.png */,
+				CE6E45751278DF2400888D64 /* fetchMore.png */,
+				CE6E45761278DF2400888D64 /* fetchMore@2x.png */,
 				CE74CBE312732BD100B5566E /* homeButton.png */,
 				CE74CBE412732BD200B5566E /* homeButton@2x.png */,
 				CE74CBE712732BE400B5566E /* logoSmall.png */,
@@ -919,6 +925,8 @@
 				CE6F026712765008003696FA /* ShelfCellHeader.xib in Resources */,
 				CE73D1531277742700325A43 /* DeliverySlotCell.xib in Resources */,
 				CE73D1551277743300325A43 /* DeliverySlotCellHeader.xib in Resources */,
+				CE6E45771278DF2400888D64 /* fetchMore.png in Resources */,
+				CE6E45781278DF2400888D64 /* fetchMore@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
