@@ -33,6 +33,8 @@
 	[imageView release];
 	
 	[searchResultsView setBackgroundColor: [UIColor clearColor]];
+	
+	[searchResultsView setAllowsSelection:NO];
 }
 
 - (void)newSearch {
