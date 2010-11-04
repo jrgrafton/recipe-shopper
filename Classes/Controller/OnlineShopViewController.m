@@ -8,7 +8,6 @@
 
 #import "OnlineShopViewController.h"
 #import "RecipeShopperAppDelegate.h"
-#import "DataManager.h"
 #import "UITableViewCellFactory.h"
 #import "UIImage-Extended.h"
 
@@ -28,7 +27,9 @@
 	
 	[onlineShopView setBackgroundColor: [UIColor clearColor]];
 	
-	departments = [[DataManager getDepartments] retain];
+	dataManager = [DataManager getInstance];
+	
+	departments = [[dataManager getDepartments] retain];
 
 	departmentImages = [[NSDictionary dictionaryWithObjectsAndKeys:
 						 [UIImage imageNamed: @"cupboard_icon.png"], @"Food Cupboard", 
@@ -56,12 +57,12 @@
 	}
 	
 	onlineShopView.scrollEnabled = YES;
-	[DataManager hideOverlayView];
+	[dataManager hideOverlayView];
 	[searchResultsViewController setSearchTerm:[searchBar text]];
 	
-	[DataManager showOverlayView:[[self view] window]];
-	[DataManager setOverlayLabelText:[NSString stringWithFormat:@"Searching for %@", [searchBar text]]];
-	[DataManager showActivityIndicator];
+	[dataManager showOverlayView:[[self view] window]];
+	[dataManager setOverlayLabelText:[NSString stringWithFormat:@"Searching for %@", [searchBar text]]];
+	[dataManager showActivityIndicator];
 	
 	[NSThread detachNewThreadSelector:@selector(searchForProducts) toTarget:self withObject:nil];
 }
@@ -69,13 +70,13 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
 	[searchBar resignFirstResponder];
 	[searchBar setShowsCancelButton:NO animated:YES];
-	[DataManager hideOverlayView];
+	[dataManager hideOverlayView];
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-	[DataManager showOverlayView:onlineShopView];
-	[DataManager setOverlayViewOffset:[onlineShopView contentOffset]];
-	[DataManager hideActivityIndicator];
+	[dataManager showOverlayView:onlineShopView];
+	[dataManager setOverlayViewOffset:[onlineShopView contentOffset]];
+	[dataManager hideActivityIndicator];
 	[searchBar setShowsCancelButton:YES animated:YES];
 	[onlineShopView setScrollEnabled:NO];
 }

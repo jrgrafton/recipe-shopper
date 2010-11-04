@@ -10,15 +10,18 @@
 #import "RecipeBasketViewController.h"
 #import "RecipeHistoryViewController.h"
 #import "RecipeCategoryViewController.h"
+#import "DataManager.h"
 
 @interface HomeViewController : UIViewController <UIAlertViewDelegate> {
 	IBOutlet UIButton *loginButton;
 	IBOutlet UIButton *logoutButton;
 	IBOutlet UIButton *createAccountButton;
-	
 	IBOutlet UILabel *loggedInGreetingLabel;
 	IBOutlet UILabel *loggedOutGreetingLabel;
 	IBOutlet UISwitch *offlineModeSwitch;
+	
+@private 
+	DataManager *dataManager;
 }
 
 @property (nonatomic, retain) RecipeBasketViewController *recipeBasketViewController;

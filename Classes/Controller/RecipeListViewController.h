@@ -8,16 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "RecipeViewController.h"
+#import "DataManager.h"
 
 @interface RecipeListViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,UIWebViewDelegate> {
-    
 	IBOutlet UITableView *recipeListView;
 	
-	@private 
+@private
+	DataManager *dataManager;
 	NSArray *recipes;
 	NSString *categoryName;
 	NSDictionary *extendedNameMappings;
-	
 }
 
 - (void)loadRecipesForCategory:(NSString *)category;

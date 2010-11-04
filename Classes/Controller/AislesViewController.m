@@ -9,7 +9,6 @@
 #import "AislesViewController.h"
 #import "RecipeShopperAppDelegate.h"
 #import "UITableViewCellFactory.h"
-#import "DataManager.h"
 
 @implementation AislesViewController
 
@@ -28,6 +27,8 @@
 	self.navigationItem.titleView = imageView;
 	[imageView release];
 	
+	dataManager = [DataManager getInstance];
+	
 	[aislesView setBackgroundColor: [UIColor clearColor]];
 	
 	aisles = [[NSMutableArray alloc] init];
@@ -39,7 +40,7 @@
 	//[[self navigationItem] setTitle:department];
 	
 	[aisles removeAllObjects];
-	[aisles addObjectsFromArray:[DataManager getAislesForDepartment:department]];
+	[aisles addObjectsFromArray:[dataManager getAislesForDepartment:department]];
 	
 	if ([aisles count] == 0) {
 		/* just pop up a window to say so */

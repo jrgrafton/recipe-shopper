@@ -8,18 +8,18 @@
 
 #import <Foundation/Foundation.h>
 #import "Recipe.h"
+#import "Product.h"
 
 @interface DatabaseRequestManager : NSObject {
-
 }
 
-- (id)init;
 - (NSString *)getUserPreference:(NSString *)prefName;
 - (void)setUserPreference:(NSString *)prefName andValue:(NSString *)prefValue;
 - (NSArray *)getAllRecipesInCategory:(NSString *)categoryName;
 - (void)fetchExtendedDataForRecipe:(Recipe *)recipe;
 - (void)addRecipeToHistory:(NSNumber *)recipeID;
-- (NSArray *)getRecentRecipes;
-- (NSArray *)createProductsFromProductBaseIDs:(NSDictionary *)productBaseIDList;
+- (NSArray *)getRecipeHistory;
+- (void)clearRecipeHistory;
+- (Product *)createProductFromProductBaseID:(NSString *)productBaseID;
 
 @end

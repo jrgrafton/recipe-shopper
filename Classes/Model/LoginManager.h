@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "DataManager.h"
 
 @interface LoginManager : NSObject <UIAlertViewDelegate> {
-
+@private 
+	DataManager *dataManager;
 }
 
 @property (nonatomic, retain) NSString *loginName;

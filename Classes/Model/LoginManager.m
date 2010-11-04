@@ -7,16 +7,23 @@
 //
 
 #import "LoginManager.h"
-#import "DataManager.h"
 #import "RecipeShopperAppDelegate.h"
 
 @implementation LoginManager
 
 @synthesize loginName;
 
+- (id)init {
+	[super init];
+	
+	dataManager = [DataManager getInstance];
+	
+	return self;
+}
+
 - (void)requestLoginToStore {
-	if ([DataManager loggedIn] == NO) {
-		if ([DataManager phoneIsOnline]) {
+	if ([dataManager loggedIn] == NO) {
+		if ([dataManager phoneIsOnline] == YES) {
 			UIAlertView *loginPrompt = [[UIAlertView alloc] initWithTitle:@"Login" message:@"Please login to your account\n\n\n\n\n" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
 			
 			UITextField *emailField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 80.0, 260.0, 30.0)];
@@ -27,7 +34,7 @@
 			[emailField setBorderStyle:UITextBorderStyleBezel];
 			[emailField setKeyboardType:UIKeyboardTypeEmailAddress];
 			
-			NSString *cachedEmail = [DataManager getUserPreference:@"login.email"];
+			NSString *cachedEmail = [dataManager getUserPreference:@"login.email"];
 			
 			if (cachedEmail != nil) {
 				[emailField setText:cachedEmail];
@@ -42,7 +49,7 @@
 			[passwordField setAutocorrectionType: UITextAutocorrectionTypeNo];
 			[passwordField setBorderStyle:UITextBorderStyleBezel];
 			
-			NSString *cachedPassword = [DataManager getUserPreference:@"login.password"];
+			NSString *cachedPassword = [dataManager getUserPreference:@"login.password"];
 			
 			if (cachedPassword != nil) {
 				[passwordField setText:cachedPassword];
@@ -91,7 +98,7 @@
 		[details addObject:passwordText];
 		
 		RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
-		[DataManager showOverlayView:[[[[appDelegate tabBarController] selectedViewController] view] window]];
+		[dataManager showOverlayView:[[[[appDelegate tabBarController] selectedViewController] view] window]];
 		
 		[NSThread detachNewThreadSelector:@selector(loginToStore:) toTarget:self withObject:details];
 	} else if ([[alertView title] isEqualToString:@""] && [alertView cancelButtonIndex] != buttonIndex) {
@@ -103,20 +110,23 @@
 - (void)loginToStore:(NSArray *)details {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	[DataManager setOverlayLabelText:@"Logging in ..."];
+	[dataManager setOverlayLabelText:@"Logging in ..."];
 	
-	if ([DataManager loginToStore:[details objectAtIndex:0] withPassword:[details objectAtIndex:1]] == YES) {
+	if ([dataManager loginToStore:[details objectAtIndex:0] withPassword:[details objectAtIndex:1]] == YES) {
 		/* save username and password in preferences */
-		[DataManager setUserPreference:@"login.email" prefValue:[details objectAtIndex:0]];
-		[DataManager setUserPreference:@"login.password" prefValue:[details objectAtIndex:1]];
+		[dataManager setUserPreference:@"login.email" prefValue:[details objectAtIndex:0]];
+		[dataManager setUserPreference:@"login.password" prefValue:[details objectAtIndex:1]];
 		
 		/* save the login name so we can display it on the home page */
 		[self setLoginName:[details objectAtIndex:0]];
 		
-		/* add any products which may be in the product basket to the online basket now */
-		[DataManager addProductBasketToBasket];
+		/* empty the online basket */
+		[dataManager emptyOnlineBasket];
 		
-		[DataManager hideOverlayView];
+		/* add any products which may be in the product basket to the online basket now */
+		[dataManager addProductBasketToOnlineBasket];
+		
+		[dataManager hideOverlayView];
 		
 		/* inform any observers that the user has logged in */
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"LoggedIn" object:self];

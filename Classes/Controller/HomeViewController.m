@@ -8,8 +8,7 @@
 
 #import "HomeViewController.h"
 #import "RecipeShopperAppDelegate.h"
-#import "DataManager.h"
-#include "LogManager.h"
+#import "LogManager.h"
 
 @implementation HomeViewController
 
@@ -26,11 +25,13 @@
 	self.navigationItem.titleView = imageView;
 	[imageView release];
 	
-	if ([[DataManager getUserPreference:@"offlineMode"] isEqualToString:@"YES"]) {
-		[DataManager setOfflineMode:YES];
+	dataManager = [DataManager getInstance];
+	
+	if ([[dataManager getUserPreference:@"offlineMode"] isEqualToString:@"YES"]) {
+		[dataManager setOfflineMode:YES];
 		[offlineModeSwitch setOn:YES];
 	} else {
-		[DataManager setOfflineMode:NO];
+		[dataManager setOfflineMode:NO];
 		[offlineModeSwitch setOn:NO];
 	}
 }
@@ -45,7 +46,7 @@
 }
 
 - (IBAction)login:(id)sender {
-	[DataManager requestLoginToStore];
+	[dataManager requestLoginToStore];
 	
 	/* add ourselves as an observer for logged in messages so we can replace the login button when the user has logged in */
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(replaceLoginButton) name:@"LoggedIn" object:nil];
@@ -58,12 +59,12 @@
 	[createAccountButton setHidden:YES];
 	[loggedOutGreetingLabel setHidden:YES];
 	[loggedInGreetingLabel setHidden:NO];
-	[loggedInGreetingLabel setText:[NSString stringWithFormat:@"Hello, %@", [[DataManager getCustomerName] capitalizedString]]];
+	[loggedInGreetingLabel setText:[NSString stringWithFormat:@"Hello, %@", [[dataManager getCustomerName] capitalizedString]]];
 }
 
 - (IBAction)logout:(id)sender {
 	/* log out of the store */
-	[DataManager logoutOfStore];
+	[dataManager logoutOfStore];
 	
 	/* then replace the logout button and the greeting with the login button and register link again */
 	[loginButton setHidden:NO];
@@ -110,12 +111,12 @@
 }
 
 - (IBAction)offlineModeValueChanged:(id)sender {
-	[DataManager setOfflineMode:[offlineModeSwitch isOn]];
+	[dataManager setOfflineMode:[offlineModeSwitch isOn]];
 	
 	if ([offlineModeSwitch isOn] == YES) {
-		[DataManager setUserPreference:@"offlineMode" prefValue:@"YES"];
+		[dataManager setUserPreference:@"offlineMode" prefValue:@"YES"];
 	} else {
-		[DataManager setUserPreference:@"offlineMode" prefValue:@"NO"];
+		[dataManager setUserPreference:@"offlineMode" prefValue:@"NO"];
 	}
 }
 

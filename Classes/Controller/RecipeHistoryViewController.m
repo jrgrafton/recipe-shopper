@@ -7,9 +7,12 @@
 //
 
 #import "RecipeHistoryViewController.h"
-#import "DataManager.h"
 #import "UITableViewCellFactory.h"
 #import "RecipeShopperAppDelegate.h"
+
+@interface RecipeHistoryViewController()
+- (void)clearRecipeHistory:(id)sender;
+@end
 
 @implementation RecipeHistoryViewController
 
@@ -28,13 +31,18 @@
 	self.navigationItem.titleView = imageView;
 	[imageView release];
 	
+	dataManager = [DataManager getInstance];
+	
+	UIBarButtonItem *clearButton = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStyleBordered target:self action:@selector(clearRecipeHistory:)];
+	self.navigationItem.rightBarButtonItem = clearButton;
+
 	[recipeHistoryView setBackgroundColor: [UIColor clearColor]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
-	[self setRecentRecipes:[DataManager getRecentRecipes]];
+	[self setRecentRecipes:[dataManager getRecipeHistory]];
 	[recipeHistoryView reloadData];
 }
 
@@ -110,6 +118,26 @@
 	/* force view to load all resources before its pushed on to main view stack */
 	[[recipeViewController view] setHidden:FALSE];
 	[recipeViewController processViewForRecipe:[recentRecipes objectAtIndex:[indexPath row]] withWebViewDelegate:self];
+}
+
+#pragma mark -
+#pragma mark Button responders
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == 1) {
+		[dataManager clearRecipeHistory];
+		[self setRecentRecipes:[dataManager getRecipeHistory]];
+		[recipeHistoryView reloadData];
+	}
+}
+
+#pragma mark -
+#pragma mark Private methods
+
+- (void)clearRecipeHistory:(id)sender {
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Clear recipe history" message:@"Are you sure?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+	[alert show];
+	[alert release];
 }
 
 #pragma mark -

@@ -9,7 +9,6 @@
 #import "RecipeViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "RecipeShopperAppDelegate.h"
-#import "DataManager.h"
 
 @interface RecipeViewController()
 
@@ -58,6 +57,8 @@
 	imageFadeView.layer.masksToBounds = YES;
 	imageFadeView.layer.cornerRadius = 5;
 	
+	dataManager = [DataManager getInstance];
+	
 	/* change background color */
 	webView.backgroundColor = [UIColor whiteColor];
 }
@@ -90,7 +91,7 @@
 	
 	if (locationOfLink != NSNotFound) {
 		/* add the current recipe to the basket and to the recipe history */
-		[DataManager addRecipeToBasket:currentRecipe];
+		[dataManager addRecipeToBasket:currentRecipe];
 
 		UIAlertView *recipeAlert = [[UIAlertView alloc] initWithTitle:@"Add recipe" message:@"Recipe successfully added to recipe basket" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[recipeAlert show];
@@ -111,7 +112,7 @@
 	[self setCurrentRecipe:recipe];
 	
 	/* now get the extended data for this recipe (only get this when we actually want to display it) */
-	[DataManager fetchExtendedDataForRecipe:currentRecipe];
+	[dataManager fetchExtendedDataForRecipe:currentRecipe];
 
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSString *userDocsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];

@@ -8,14 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "DeliverySlot.h"
+#import "DataManager.h"
 
 @interface DeliverySlotsViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate> {
 	IBOutlet UITableView *deliveryInfoView;
 	IBOutlet UIPickerView *deliverySlotPickerView;
-@private NSDictionary *deliveryDates;
-@private NSMutableArray *sortedDeliveryDatesArray;
-@private DeliverySlot *selectedDeliverySlot;
-@private BOOL deliveryTimesReset;
+	
+@private 
+	DataManager *dataManager;
+	NSDictionary *deliveryDates;
+	NSMutableArray *sortedDeliveryDatesArray;
+	DeliverySlot *selectedDeliverySlot;
+	BOOL deliveryTimesReset;
 }
 
 - (void)loadDeliveryDates;

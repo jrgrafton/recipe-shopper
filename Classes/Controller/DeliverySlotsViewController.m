@@ -8,7 +8,6 @@
 
 #import "DeliverySlotsViewController.h"
 #import "UITableViewCellFactory.h"
-#import "DataManager.h"
 #import "LogManager.h"
 
 #define DELIVERY_INFO_TYPE_TAG 1
@@ -25,7 +24,7 @@
 @implementation DeliverySlotsViewController
 
 - (void)loadDeliveryDates {
-	deliveryDates = [[DataManager getDeliveryDates] retain];
+	deliveryDates = [[dataManager getDeliveryDates] retain];
 	sortedDeliveryDatesArray = [[NSMutableArray arrayWithArray:[deliveryDates allKeys]] retain];
 	[sortedDeliveryDatesArray sortUsingSelector:@selector(compare:)];
 }
@@ -44,6 +43,8 @@
 	[imageView release];
 	
 	[deliveryInfoView setBackgroundColor: [UIColor clearColor]];
+	
+	dataManager = [DataManager getInstance];
 	
 	/* ensure table can't be selected */
 	[deliveryInfoView setAllowsSelection:NO];
@@ -65,9 +66,9 @@
 }
 
 - (void)transitionToCheckout:(id)sender {
-	[DataManager showOverlayView:[[self view] window]];
-	[DataManager setOverlayLabelText:@"Booking delivery slot"];
-	[DataManager showActivityIndicator];
+	[dataManager showOverlayView:[[self view] window]];
+	[dataManager setOverlayLabelText:@"Booking delivery slot"];
+	[dataManager showActivityIndicator];
 	
 	[NSThread detachNewThreadSelector:@selector(verifyDeliverySlot) toTarget:self withObject:nil];
 }
@@ -244,7 +245,7 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	NSString* error = NULL;
-	if ([DataManager chooseDeliverySlot:[selectedDeliverySlot deliverySlotID] returningError:&error] == YES) {
+	if ([dataManager chooseDeliverySlot:[selectedDeliverySlot deliverySlotID] returningError:&error] == YES) {
 		UIAlertView *successAlert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"You will now be transferred to Tesco.com for payment processing" delegate:self cancelButtonTitle:@"Proceed" otherButtonTitles:nil];
 		[successAlert show];
 		[successAlert release];
@@ -254,7 +255,7 @@
 		[errorAlert release];
 	}
 			
-	[DataManager hideOverlayView];
+	[dataManager hideOverlayView];
 	
 	[pool release];
 }

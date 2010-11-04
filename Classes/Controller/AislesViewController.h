@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "ShelvesViewController.h"
+#import "DataManager.h"
 
 @interface AislesViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 	IBOutlet UITableView *aislesView;
 	
-	@private 
+@private
+	DataManager *dataManager;
 	NSMutableArray *aisles;
 }
 

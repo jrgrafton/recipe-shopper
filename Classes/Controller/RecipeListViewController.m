@@ -8,7 +8,6 @@
 
 #import "RecipeListViewController.h"
 #import "RecipeShopperAppDelegate.h"
-#import "DataManager.h"
 #import "UITableViewCellFactory.h"
 
 @implementation RecipeListViewController
@@ -23,6 +22,8 @@
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
 	self.navigationItem.titleView = imageView;
 	[imageView release];
+	
+	dataManager = [DataManager getInstance];
 	
 	[recipeListView setBackgroundColor: [UIColor clearColor]];
 	
@@ -59,7 +60,7 @@
 
 - (void)loadRecipesForCategory:(NSString *)category {
 	categoryName = [category retain];
-	recipes = [[DataManager getAllRecipesInCategory:category] retain];
+	recipes = [[dataManager getAllRecipesInCategory:category] retain];
 	[recipeListView reloadData];
 	
 	/* make sure the list is scrolled to the top */

@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface DeliverySlot : NSObject {
-
 }
 
 @property (readonly,copy) NSString *deliverySlotID;

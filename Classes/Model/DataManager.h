@@ -7,70 +7,94 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DatabaseRequestManager.h"
+#import "RecipeBasketManager.h"
+#import "ProductBasketManager.h"
+#import "APIRequestManager.h"
+#import "LoginManager.h"
+#import "OverlayViewController.h"
 #import "Recipe.h"
 #import "Product.h"
 
-@interface DataManager : NSObject
+@interface DataManager : NSObject {
+@private 
+	DatabaseRequestManager *databaseRequestManager;
+	RecipeBasketManager *recipeBasketManager;
+	ProductBasketManager *productBasketManager;
+	APIRequestManager *apiRequestManager;
+	LoginManager *loginManager;
+	OverlayViewController *overlayViewController;	
+}
 
-+ (void)initialiseAll;
-+ (void)uninitialiseAll;
+@property (nonatomic) BOOL offlineMode;
+@property (nonatomic) BOOL updatingProductBasket;
+@property (nonatomic) BOOL updatingOnlineBasket;
+@property (nonatomic, assign) NSInteger productBasketUpdates;
+@property (nonatomic, assign) NSInteger onlineBasketUpdates;
 
-+ (BOOL)phoneIsOnline;
++ (DataManager *)getInstance;
 
-+ (void)updateBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity;
+- (id)init;
+- (void)uninitialiseAll;
+
+- (BOOL)phoneIsOnline;
+
+- (void)updateBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity;
 
 /* database manager calls */
-+ (NSArray *)getAllRecipesInCategory:(NSString *)categoryName;
-+ (void)fetchExtendedDataForRecipe:(Recipe *)recipe;
-+ (void)setUserPreference:(NSString *)prefName prefValue:(NSString *)prefValue;
-+ (NSString *)getUserPreference:(NSString *)prefName;
-+ (NSArray *)getRecentRecipes;
+- (NSArray *)getAllRecipesInCategory:(NSString *)categoryName;
+- (void)fetchExtendedDataForRecipe:(Recipe *)recipe;
+- (void)setUserPreference:(NSString *)prefName prefValue:(NSString *)prefValue;
+- (NSString *)getUserPreference:(NSString *)prefName;
+- (NSArray *)getRecipeHistory;
+- (void)clearRecipeHistory;
 
 /* api manager calls */
-+ (BOOL)offlineMode;
-+ (void)setOfflineMode:(BOOL)offlineMode;
-+ (BOOL)loggedIn;
-+ (BOOL)loginToStore:(NSString *)email withPassword:(NSString *)password;
-+ (void)logoutOfStore;
-+ (void)addProductBasketToBasket;
-+ (NSDictionary *)getBasketDetails;
-+ (NSArray *)getDepartments;
-+ (NSArray *)getAislesForDepartment:(NSString *)department;
-+ (NSArray *)getShelvesForAisle:(NSString *)aisle;
-+ (NSArray *)getProductsForShelf:(NSString *)shelf;
-+ (NSDictionary *)getDeliveryDates;
-+ (NSArray *)searchForProducts:(NSString *)searchTerm onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder;
-+ (BOOL)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error;
-+ (NSString *)getCustomerName;
+- (BOOL)loggedIn;
+- (BOOL)loginToStore:(NSString *)email withPassword:(NSString *)password;
+- (void)logoutOfStore;
+- (void)emptyOnlineBasket;
+- (void)addProductBasketToOnlineBasket;
+- (NSDictionary *)getBasketDetails;
+- (NSArray *)getDepartments;
+- (NSArray *)getAislesForDepartment:(NSString *)department;
+- (NSArray *)getShelvesForAisle:(NSString *)aisle;
+- (NSArray *)getProductsForShelf:(NSString *)shelf;
+- (NSDictionary *)getDeliveryDates;
+- (NSArray *)searchForProducts:(NSString *)searchTerm onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder;
+- (BOOL)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error;
+- (NSString *)getCustomerName;
 
 /* recipe basket manager calls */
-+ (NSArray *)getRecipeBasket;
-+ (NSInteger)getRecipeBasketCount;
-+ (Recipe *)getRecipeFromBasket:(NSUInteger)recipeIndex;
-+ (void)addRecipeToBasket:(Recipe *)recipe;
-+ (void)removeRecipeFromBasket:(Recipe *)recipe;
-+ (void)emptyRecipeBasket;
+- (NSArray *)getRecipeBasket;
+- (NSInteger)getRecipeBasketCount;
+- (Recipe *)getRecipeFromBasket:(NSUInteger)recipeIndex;
+- (void)addRecipeToBasket:(Recipe *)recipe;
+- (void)addRecipeProductToBasket:(NSArray *)recipeProduct;
+- (void)removeRecipeFromBasket:(Recipe *)recipe;
+- (void)removeRecipeProductFromBasket:(NSArray *)recipeProduct;
+- (void)emptyRecipeBasket;
 
 /* product basket manager calls */
-+ (void)addShoppingListProductsObserver:(id)observer;
-+ (void)addBasketProductsObserver:(id)observer;
-+ (NSDictionary *)getProductBasket;
-+ (NSString *)getProductBasketPrice;
-+ (NSInteger)getDistinctProductCount;
-+ (NSInteger)getTotalProductCount;
-+ (Product *)getProductFromBasket:(NSUInteger)productIndex;
-+ (NSNumber *)getProductQuantityFromBasket:(Product *)product;
-+ (void)emptyProductBasket;
+- (void)addShoppingListProductsObserver:(id)observer;
+- (void)addBasketProductsObserver:(id)observer;
+- (NSDictionary *)getProductBasket;
+- (NSString *)getProductBasketPrice;
+- (NSInteger)getDistinctProductCount;
+- (NSInteger)getTotalProductCount;
+- (Product *)getProductFromBasket:(NSUInteger)productIndex;
+- (NSNumber *)getProductQuantityFromBasket:(Product *)product;
+- (void)emptyProductBasket;
 
 /* login manager calls */
-+ (void)requestLoginToStore;
+- (void)requestLoginToStore;
 
 /* overlay view calls */
-+ (void)showOverlayView:(UIView *)superView;
-+ (void)hideOverlayView;
-+ (void)setOverlayViewOffset:(CGPoint)contentOffset;
-+ (void)showActivityIndicator;
-+ (void)hideActivityIndicator;
-+ (void)setOverlayLabelText:(NSString *)text;
+- (void)showOverlayView:(UIView *)superView;
+- (void)hideOverlayView;
+- (void)setOverlayViewOffset:(CGPoint)contentOffset;
+- (void)showActivityIndicator;
+- (void)hideActivityIndicator;
+- (void)setOverlayLabelText:(NSString *)text;
 
 @end

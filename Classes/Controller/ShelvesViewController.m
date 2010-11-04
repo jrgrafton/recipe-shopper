@@ -9,7 +9,6 @@
 #import "ShelvesViewController.h"
 #import "RecipeShopperAppDelegate.h"
 #import "UITableViewCellFactory.h"
-#import "DataManager.h"
 
 @interface ShelvesViewController()
 
@@ -34,6 +33,8 @@
 	self.navigationItem.titleView = imageView;
 	[imageView release];
 	
+	dataManager = [DataManager getInstance];
+	
 	[shelvesView setBackgroundColor: [UIColor clearColor]];
 	
 	shelves = [[NSMutableArray alloc] init];
@@ -43,7 +44,7 @@
     [super viewWillAppear:animated];
 	
 	[shelves removeAllObjects];
-	[shelves addObjectsFromArray:[DataManager getShelvesForAisle:aisle]];
+	[shelves addObjectsFromArray:[dataManager getShelvesForAisle:aisle]];
 	
 	if ([shelves count] == 0) {
 		/* just pop up a window to say so */
@@ -95,9 +96,9 @@
 		[productsView release];
 	}
 	
-	[DataManager showOverlayView:[[self view] window]];
-	[DataManager setOverlayLabelText:[NSString stringWithFormat:@"Downloading %@", [shelves objectAtIndex:[indexPath row]]]];
-	[DataManager showActivityIndicator];
+	[dataManager showOverlayView:[[self view] window]];
+	[dataManager setOverlayLabelText:[NSString stringWithFormat:@"Downloading %@", [shelves objectAtIndex:[indexPath row]]]];
+	[dataManager showActivityIndicator];
 	
 	[NSThread detachNewThreadSelector:@selector(loadProducts:) toTarget:self withObject:[shelves objectAtIndex:[indexPath row]]];
 }

@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DataManager.h"
 
 @interface ProductsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 	IBOutlet UITableView *productsView;
 	
-	@private 
+@private 
+	DataManager *dataManager;
 	NSMutableArray *products;
 	NSString *productShelf;
 }

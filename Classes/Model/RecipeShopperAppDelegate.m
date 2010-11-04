@@ -7,7 +7,6 @@
 //
 
 #import "RecipeShopperAppDelegate.h"
-#import "DataManager.h"
 
 @implementation RecipeShopperAppDelegate
 
@@ -21,10 +20,10 @@
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [DataManager initialiseAll];
-    	
-	[DataManager addShoppingListProductsObserver:self];
-	[DataManager addBasketProductsObserver:self];
+	dataManager = [DataManager getInstance];
+	
+	[dataManager addShoppingListProductsObserver:self];
+	[dataManager addBasketProductsObserver:self];
 	
     /* add the tab bar controller's view to the window and display */
     [window addSubview:tabBarController.view];
@@ -84,20 +83,20 @@
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    [DataManager uninitialiseAll];
+    [dataManager uninitialiseAll];
 }
 
 #pragma mark -
 #pragma mark Tab Bar Controller delegate
 
 - (BOOL)tabBarController:(UITabBarController *)theTabBarController shouldSelectViewController:(UIViewController *)viewController {
-	if (([DataManager offlineMode] == YES) && ((viewController == [theTabBarController.viewControllers objectAtIndex:2]) || (viewController == [theTabBarController.viewControllers objectAtIndex:3]))) {
+	if (([dataManager offlineMode] == YES) && ((viewController == [theTabBarController.viewControllers objectAtIndex:2]) || (viewController == [theTabBarController.viewControllers objectAtIndex:3]))) {
 		UIAlertView *offlineAlert = [[UIAlertView alloc] initWithTitle:@"Offline mode" message:@"Feature unavailable in offline mode" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[offlineAlert show];
 		[offlineAlert release];
 		return NO;
-	} else if (([DataManager loggedIn] == NO) && (viewController == [theTabBarController.viewControllers objectAtIndex:3])) {
-		[DataManager requestLoginToStore];
+	} else if (([dataManager loggedIn] == NO) && (viewController == [theTabBarController.viewControllers objectAtIndex:3])) {
+		[dataManager requestLoginToStore];
 		
 		/* add ourselves as an observer for logged in messages so we can transition when the user has logged in */
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transitionToCheckout) name:@"LoggedIn" object:nil];

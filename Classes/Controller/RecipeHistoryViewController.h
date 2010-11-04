@@ -8,9 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "RecipeViewController.h"
+#import "DataManager.h"
 
-@interface RecipeHistoryViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,UIWebViewDelegate> {
+@interface RecipeHistoryViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,UIWebViewDelegate, UIAlertViewDelegate> {
 	IBOutlet UITableView *recipeHistoryView;
+	
+@private 
+	DataManager *dataManager;
 }
 
 @property (nonatomic, retain) RecipeViewController *recipeViewController;

@@ -9,7 +9,6 @@
 #import "SearchResultsViewController.h"
 #import "Product.h"
 #import "UITableViewCellFactory.h"
-#import "DataManager.h"
 #import "RecipeShopperAppDelegate.h"
 
 @interface SearchResultsViewController()
@@ -34,7 +33,14 @@
 	
 	[searchResultsView setBackgroundColor: [UIColor clearColor]];
 	
+	/* prevent the rows from being selected */
 	[searchResultsView setAllowsSelection:NO];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	[searchResultsView reloadData];
 }
 
 - (void)newSearch {
@@ -58,9 +64,9 @@
 	[searchResults removeAllObjects];
 	[self setSearchTerm:[searchBar text]];
 	
-	[DataManager showOverlayView:[[self view] window]];
-	[DataManager setOverlayLabelText:[NSString stringWithFormat:@"Searching for %@", searchTerm]];
-	[DataManager showActivityIndicator];
+	[dataManager showOverlayView:[[self view] window]];
+	[dataManager setOverlayLabelText:[NSString stringWithFormat:@"Searching for %@", searchTerm]];
+	[dataManager showActivityIndicator];
 	[NSThread detachNewThreadSelector:@selector(searchForProducts) toTarget:self withObject:nil];
 }
 
@@ -69,13 +75,13 @@
 	[searchBar setShowsCancelButton:NO animated:YES];
 	[searchResultsView setScrollEnabled:YES];
 	
-	[DataManager hideOverlayView];
+	[dataManager hideOverlayView];
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-	[DataManager showOverlayView:searchResultsView];
-	[DataManager setOverlayViewOffset:[searchResultsView contentOffset]];
-	[DataManager hideActivityIndicator];
+	[dataManager showOverlayView:searchResultsView];
+	[dataManager setOverlayViewOffset:[searchResultsView contentOffset]];
+	[dataManager hideActivityIndicator];
 	[searchBar setShowsCancelButton:YES animated:YES];
 	[searchResultsView setScrollEnabled:NO];
 }
@@ -131,7 +137,7 @@
 	
 	/* create a cell for this row's product */
 	Product *product = [searchResults objectAtIndex:[indexPath row]];
-	NSNumber *quantity = [DataManager getProductQuantityFromBasket:product];
+	NSNumber *quantity = [dataManager getProductQuantityFromBasket:product];
 	NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isHeader:([indexPath row] == 0)];
 
 	[[buttons objectAtIndex:0] addTarget:self action:@selector(addProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -153,17 +159,17 @@
 
 - (void)fetchMoreProducts {
 	currentPage++;
-	[DataManager showOverlayView:searchResultsView];
-	[DataManager setOverlayViewOffset:[searchResultsView contentOffset]];
-	[DataManager setOverlayLabelText:[NSString stringWithFormat:@"Fetching page %d of %d", currentPage, totalPageCount]];
-	[DataManager showActivityIndicator];		
+	[dataManager showOverlayView:searchResultsView];
+	[dataManager setOverlayViewOffset:[searchResultsView contentOffset]];
+	[dataManager setOverlayLabelText:[NSString stringWithFormat:@"Fetching page %d of %d", currentPage, totalPageCount]];
+	[dataManager showActivityIndicator];		
 	[NSThread detachNewThreadSelector:@selector(searchForProducts) toTarget:self withObject:nil];
 }
 
 - (void)searchForProducts {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	NSArray *results = [DataManager searchForProducts:[self searchTerm] onPage:currentPage totalPageCountHolder:&totalPageCount];
+	NSArray *results = [dataManager searchForProducts:[self searchTerm] onPage:currentPage totalPageCountHolder:&totalPageCount];
 	[searchResults addObjectsFromArray:results];
 	
 	if ([searchResults count] == 0) {
@@ -179,7 +185,7 @@
 	}
 	
 	[searchResultsView reloadData];
-	[DataManager hideOverlayView];
+	[dataManager hideOverlayView];
 	
 	[pool release];
 }
@@ -197,7 +203,7 @@
 	while ((product = [productsEnumerator nextObject])) {
 		if ([[product productBaseID] intValue] == [productBaseID intValue]) {
 			/* we've found the product that relates to this product ID so increase its quantity in the basket */
-			[DataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:1]];
+			[dataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:1]];
 			break;
 		}
 	}
@@ -219,7 +225,7 @@
 	while ((product = [productsEnumerator nextObject])) {
 		if ([[product productBaseID] intValue] == [productBaseID intValue]) {
 			/* we've found the product that relates to this product ID so decrease its quantity in the basket */
-			[DataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:-1]];
+			[dataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:-1]];
 			break;
 		}
 	}

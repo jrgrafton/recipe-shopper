@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "ProductsViewController.h"
+#import "DataManager.h"
 
 @interface ShelvesViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 	IBOutlet UITableView *shelvesView;
 	
-	@private 
+@private 
+	DataManager *dataManager;
 	NSMutableArray *shelves;
 }
 

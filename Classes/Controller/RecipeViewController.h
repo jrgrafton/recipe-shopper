@@ -8,10 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "Recipe.h"
+#import "DataManager.h"
 
 @interface RecipeViewController : UIViewController <UIWebViewDelegate> {
 	IBOutlet UIWebView *webView;
 	IBOutlet UIImageView *imageFadeView;
+	
+@private 
+	DataManager *dataManager;
 	Recipe *currentRecipe;
 }
 

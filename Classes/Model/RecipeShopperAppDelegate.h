@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DataManager.h"
 
 @interface RecipeShopperAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate> {
+@private 
+	DataManager *dataManager;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;

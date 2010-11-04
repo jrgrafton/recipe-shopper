@@ -28,12 +28,10 @@ typedef enum RecipeCategory
 } RecipeCategory;
 
 @interface RecipeCategoryViewController : UIViewController {
-    
 	IBOutlet UIScrollView *recipeCategoryView;
 	
-	@private 
+@private 
 	NSDictionary *categoryMappings;
-
 }
 
 @property (nonatomic,retain) RecipeListViewController *recipeListViewController;

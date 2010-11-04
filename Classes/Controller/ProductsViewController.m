@@ -10,7 +10,6 @@
 #import "Product.h"
 #import "UITableViewCellFactory.h"
 #import "LogManager.h"
-#import "DataManager.h"
 
 @interface ProductsViewController()
 
@@ -32,15 +31,23 @@
 	self.navigationItem.titleView = imageView;
 	[imageView release];
 	
+	dataManager = [DataManager getInstance];
+	
 	[productsView setBackgroundColor:[UIColor clearColor]];
 	
 	[productsView setAllowsSelection:NO];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	[productsView reloadData];
+}
+
 - (void)loadProducts:(NSString *)shelf {
 	products = [[NSMutableArray alloc] init];
 	[products removeAllObjects];
-	[products addObjectsFromArray:[DataManager getProductsForShelf:shelf]];
+	[products addObjectsFromArray:[dataManager getProductsForShelf:shelf]];
 	
 	/* scroll the products to the top */
 	[productsView setContentOffset:CGPointMake(0, 0) animated:NO];
@@ -53,7 +60,7 @@
 	}
 	
 	[productsView reloadData];
-	[DataManager hideOverlayView];
+	[dataManager hideOverlayView];
 }
 
 #pragma mark -
@@ -78,7 +85,7 @@
 	
     /* Create a cell for this row's product */
 	Product *product = [products objectAtIndex:[indexPath row]];
-	NSNumber *quantity = [DataManager getProductQuantityFromBasket:product];
+	NSNumber *quantity = [dataManager getProductQuantityFromBasket:product];
 	NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isHeader:([indexPath row] == 0)];
 	
 	[[buttons objectAtIndex:0] addTarget:self action:@selector(addProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -108,7 +115,7 @@
 	while ((product = [productsEnumerator nextObject])) {
 		if ([[product productBaseID] intValue] == [productBaseID intValue]) {
 			/* we've found the product that relates to this product ID so increase its quantity in the basket */
-			[DataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:1]];
+			[dataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:1]];
 			break;
 		}
 	}
@@ -130,7 +137,7 @@
 	while ((product = [productsEnumerator nextObject])) {
 		if ([[product productBaseID] intValue] == [productBaseID intValue]) {
 			/* we've found the product that relates to this product ID so decrease its quantity in the basket */
-			[DataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:-1]];
+			[dataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:-1]];
 			break;
 		}
 	}

@@ -12,7 +12,6 @@
 #import "Product.h"
 #import "NSData-Extended.h"
 #import "LogManager.h"
-#import "DataManager.h"
 
 static sqlite3 *database = nil;
 
@@ -41,7 +40,7 @@ static sqlite3 *database = nil;
 			NSError *error;
 			
 			if ([fileManager copyItemAtPath:defaultDBPath toPath:dbPath error:&error] != YES) {
-				[LogManager log:[NSString stringWithFormat:@"Failed to create writable database file with message '%@'", [error localizedDescription]] withLevel:LOG_INFO fromClass:@"DataManager"];
+				[LogManager log:[NSString stringWithFormat:@"Failed to create writable database file with message '%@'", [error localizedDescription]] withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
 			}
 		}
 				
@@ -189,7 +188,6 @@ static sqlite3 *database = nil;
 		if (sqlite3_step(updatestmt) == SQLITE_DONE) {
 			NSString *msg = [NSString stringWithFormat:@"Successfully inserted recipe history using query %s", recipeHistoryQuery];
 			[LogManager log:msg withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
-			
 		} else {
 			NSString *msg = [NSString stringWithFormat:@"Error executing statement %s", recipeHistoryQuery];
 			[LogManager log:msg withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
@@ -199,80 +197,59 @@ static sqlite3 *database = nil;
 	sqlite3_reset(updatestmt);
 }
 
-- (NSArray *)getRecentRecipes {
+- (NSArray *)getRecipeHistory {
 	NSMutableArray *recipes = [[[NSMutableArray alloc] init] autorelease];
-	NSMutableArray *recipeIDs = [NSMutableArray array];
-	
-	const char *recipeHistoryQuery = [[NSString stringWithFormat:@"select recipeID from recipeHistory ORDER BY dateTime DESC"] UTF8String];
+		
+	const char *recipeHistoryQuery = [[NSString stringWithFormat:@"select * from recipes join recipeHistory on recipes.recipeID = recipeHistory.recipeID GROUP BY recipeHistory.recipeID ORDER BY dateTime DESC"] UTF8String];
 	
 	sqlite3_stmt *selectstmt;
 	
 	if (sqlite3_prepare_v2(database, recipeHistoryQuery, -1, &selectstmt, NULL) == SQLITE_OK) {
 		while (sqlite3_step(selectstmt) == SQLITE_ROW) {
-			[recipeIDs addObject:[NSNumber numberWithInt:sqlite3_column_int(selectstmt, 0)]];
+			[recipes addObject:[self createRecipe:selectstmt]];
 		}
 	}
 	
-	if ([recipeIDs count] == 0){
+	if ([recipes count] == 0){
 		[LogManager log:@"Recipe history table appears empty..." withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
 		return [NSArray arrayWithArray:recipes];
 	}
 	
 	sqlite3_reset(selectstmt);
-	
-	/* now fetch recipe items from recipes table */
-	int numberOfRecipeIDsRemaining = [recipeIDs count];
-	NSEnumerator *recipeIDsEnumerator = [recipeIDs objectEnumerator];
-	NSString *recipeQuery = @"select * from recipes WHERE ";
-	NSString *recipeID;
-	
-	while ((recipeID = [recipeIDsEnumerator nextObject])) {
-		/* add this recipe ID to the database query */
-		recipeQuery = [NSString stringWithFormat:@"%@ recipeID = %@", recipeQuery, recipeID]; 
 		
-		if (--numberOfRecipeIDsRemaining > 0) {
-			recipeQuery = [NSString stringWithFormat:@"%@%@", recipeQuery, @" or "];
-		}
-	}
-	
-	recipeQuery = [NSString stringWithFormat:@"%@%@", recipeQuery, @";"];
-	
-	if (sqlite3_prepare_v2(database, [recipeQuery UTF8String], -1, &selectstmt, NULL) == SQLITE_OK) {
-		while (sqlite3_step(selectstmt) == SQLITE_ROW) {
-			[recipes addObject:[self createRecipe:selectstmt]];
-		}
-	}
-	
 	return [NSArray arrayWithArray:recipes];
 }
 
-- (NSArray *)createProductsFromProductBaseIDs:(NSDictionary *)productBaseIDList {
-	NSMutableArray *products = [NSMutableArray array];
-	int numberOfProductBaseIDsRemaining = [[productBaseIDList allKeys] count];
-	NSEnumerator *productBaseIDsEnumerator = [[productBaseIDList allKeys] objectEnumerator];
-	NSString *productQuery = @"select * from products WHERE ";
-	NSString *productBaseID;
+- (void)clearRecipeHistory {
+	const char *clearRecipeHistoryCmd = [[NSString stringWithFormat:@"delete from recipeHistory"] UTF8String];
 	
-	while ((productBaseID = [productBaseIDsEnumerator nextObject])) {
-		/* add this product ID to the database query */
-		productQuery = [NSString stringWithFormat:@"%@ productBaseID = %@", productQuery, productBaseID]; 
-		
-		if (--numberOfProductBaseIDsRemaining > 0) {
-			productQuery = [NSString stringWithFormat:@"%@%@", productQuery, @" or "];
-		}
-	}
-	
-	productQuery = [NSString stringWithFormat:@"%@%@", productQuery, @";"];
-		
 	sqlite3_stmt *selectstmt;
 	
-	if (sqlite3_prepare_v2(database, [productQuery UTF8String], -1, &selectstmt, NULL) == SQLITE_OK) {
-		while (sqlite3_step(selectstmt) == SQLITE_ROW) {
-			[products addObject:[self createProduct:selectstmt]];
+	if (sqlite3_prepare_v2(database, clearRecipeHistoryCmd, -1, &selectstmt, NULL) == SQLITE_OK) {
+		if (sqlite3_step(selectstmt) == SQLITE_DONE) {
+			[LogManager log:@"Successfully deleted recipe history" withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
+		} else {
+			[LogManager log:@"Failed to delete recipe history" withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
 		}
 	}
 	
-	return products;
+	sqlite3_reset(selectstmt);	
+}
+
+- (Product *)createProductFromProductBaseID:(NSString *)productBaseID {
+    NSString *productQuery = [NSString stringWithFormat:@"select * from products WHERE productBaseID = %@", productBaseID];
+	
+    sqlite3_stmt *selectstmt;
+    
+    if (sqlite3_prepare_v2(database, [productQuery UTF8String], -1, &selectstmt, NULL) == SQLITE_OK) {
+        if (sqlite3_step(selectstmt) == SQLITE_ROW) {
+            return [self createProduct:selectstmt];
+        } else {
+            return nil;
+        }
+    } else {
+        return nil;
+    }
 }
 
 - (Recipe *)createRecipe:(sqlite3_stmt *)selectstmt {

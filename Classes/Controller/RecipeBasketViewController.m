@@ -9,7 +9,6 @@
 #import "RecipeBasketViewController.h"
 #import "RecipeShopperAppDelegate.h"
 #import "UITableViewCellFactory.h"
-#import "DataManager.h"
 
 @implementation RecipeBasketViewController
 
@@ -26,6 +25,8 @@
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
 	self.navigationItem.titleView = imageView;
 	[imageView release];
+	
+	dataManager = [DataManager getInstance];
 	
 	[recipeBasketTableView setBackgroundColor: [UIColor clearColor]];
 	
@@ -53,14 +54,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if ([indexPath row] == 0) {
-		return ([DataManager getRecipeBasketCount] == 0)? 130:110;
+		return ([dataManager getRecipeBasketCount] == 0)? 130:110;
 	}else {
 		return 85;
 	}
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return ([DataManager getRecipeBasketCount] == 0)? 1 : [DataManager getRecipeBasketCount];	
+	return ([dataManager getRecipeBasketCount] == 0)? 1 : [dataManager getRecipeBasketCount];	
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -70,9 +71,9 @@
     
     /* create a cell for this row's recipe */
 	
-	if([DataManager getRecipeBasketCount] != 0) {
+	if([dataManager getRecipeBasketCount] != 0) {
 		[recipeBasketTableView setAllowsSelection:YES];
-		Recipe *recipe = [DataManager getRecipeFromBasket:[indexPath row]];
+		Recipe *recipe = [dataManager getRecipeFromBasket:[indexPath row]];
 		[UITableViewCellFactory createRecipeTableCell:&cell withIdentifier:CellIdentifier withRecipe:recipe isHeader:([indexPath row] == 0)];
 	} else { /* Create special empty basket cell */
 		[recipeBasketTableView setAllowsSelection:NO];
@@ -93,13 +94,13 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return ([DataManager getRecipeBasketCount] != 0);
+    return ([dataManager getRecipeBasketCount] != 0);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         /* delete the recipe from the recipe basket */
-		[DataManager removeRecipeFromBasket:[DataManager getRecipeFromBasket:[indexPath row]]];
+		[dataManager removeRecipeFromBasket:[dataManager getRecipeFromBasket:[indexPath row]]];
 
 		/* delete the row from the view */
         //[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
@@ -111,7 +112,7 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if ([DataManager getRecipeBasketCount] == 0) {
+	if ([dataManager getRecipeBasketCount] == 0) {
 		return;
 	}
 	
@@ -125,7 +126,7 @@
 	[recipeBasketTableView deselectRowAtIndexPath:indexPath animated:YES];
 	
 	[[recipeViewController view] setHidden:FALSE];
-	[recipeViewController processViewForRecipe:[DataManager getRecipeFromBasket:[indexPath row]] withWebViewDelegate:self];
+	[recipeViewController processViewForRecipe:[dataManager getRecipeFromBasket:[indexPath row]] withWebViewDelegate:self];
 }
 
 - (void)tableView:(UITableView *)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath {

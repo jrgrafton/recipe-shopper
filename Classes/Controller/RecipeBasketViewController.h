@@ -9,9 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "RecipeViewController.h"
 #import "ShoppingListViewController.h"
+#import "DataManager.h"
 
 @interface RecipeBasketViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,UIWebViewDelegate> {
 	IBOutlet UITableView *recipeBasketTableView;
+	
+@private
+	DataManager *dataManager;
 }
 
 @property (nonatomic, retain) RecipeViewController *recipeViewController;

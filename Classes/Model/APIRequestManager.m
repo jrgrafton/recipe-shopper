@@ -11,7 +11,6 @@
 #import "Product.h"
 #import "LogManager.h"
 #import "DeliverySlot.h"
-#import "DataManager.h"
 
 #define DEVELOPER_KEY @"xIvRaeGkY6OavPL1XtX9"
 #define APPLICATION_KEY @"CA1A9E0437CBE399E890"
@@ -21,10 +20,7 @@
 @interface APIRequestManager()
 
 - (BOOL)apiRequest:(NSString *)requestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error;
-- (BOOL)emptyBasket;
 - (BOOL)login:(NSString *)email withPassword:(NSString *)password;
-- (void)processRequestQueue:(NSArray *)requestQueue;
-- (void)processSingleRequest:(NSString *)requestString;
 - (NSString *)urlEncodeValue:(NSString *)requestString;
 - (Product *)createProductFromJSON:(NSDictionary *)productJSON;
 
@@ -38,8 +34,6 @@
 
 - (id)init {
 	if (self = [super init]) {
-		currentAsyncRequestCount = 0;
-		requestResults = [[NSMutableDictionary alloc] init];
 		departments = [[NSMutableDictionary alloc] init];
 		aisles = [[NSMutableDictionary alloc] init];
 		shelves = [[NSMutableDictionary alloc] init];
@@ -77,55 +71,47 @@
 	[self setLoggedIn:NO];
 }
 
-/*
- * Takes a list of product Base IDs, finds them in the online store and adds them to an array
- */
-- (NSArray *)createProductsFromProductBaseIDs:(NSDictionary *)productBaseIDList {
-	NSMutableArray *products = [NSMutableArray array];
-	NSMutableArray *requestQueue = [[NSMutableArray alloc] init];
+- (NSDictionary *)getOnlineBasket {
+	NSMutableDictionary *onlineBasket = [[NSMutableDictionary alloc] init];
+	NSDictionary *apiResults;
+	NSString *error;
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKETSUMMARY&sessionkey=%@", REST_SERVICE_URL, sessionKey];
 	
-	for (NSString *productBaseID in [productBaseIDList allKeys]) {
-		NSString *requestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&sessionkey=%@", REST_SERVICE_URL, productBaseID, sessionKey];
-		[requestQueue addObject:requestString];
-	}
+	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error];
 	
-	/* spawn a thread to process the request queue */
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[NSThread detachNewThreadSelector: @selector(processRequestQueue:) toTarget:self withObject:requestQueue];
-	[pool release];
-	
-	/* now spin until all requests have been serviced */
-	while ([[requestResults allKeys] count] < [requestQueue count]) {
-		[NSThread sleepForTimeInterval:0.2];
-	}
-	
-	/* all requests have returned, now iterate through, populating products array */
-	for (NSString *result in requestResults) {
-		id apiResult = [requestResults objectForKey:result];
-		
-		if (apiResult == [NSNull null]) {
-			/* API request for search must have failed */
-			/* CREATE A DUMMY PRODUCT FOR THIS ONE */
-		} else {
-			NSString *totalProducts = [apiResult objectForKey:@"TotalProductCount"];
-			
-			if ([totalProducts intValue] == 0) {
-				/* couldn't find the product ID in the online store, so just create a dummy product */
-				//[products addObject:[self createDummyProduct:[apiResult objectForKey:@"StatusInfo"]]];
-			} else {
-				/* assume its a single product, so we want the first (and only) one */
-				[products addObject:[self createProductFromJSON:[[apiResult objectForKey:@"Products"] objectAtIndex:0]]];
-			}
+	if (apiRequestOK == YES) {
+		for (NSDictionary *product in [apiResults objectForKey:@"BasketLines"]) {
+			NSString *productID = [product objectForKey:@"ProductId"];
+			NSString *quantity = [product objectForKey:@"BasketLineQuantity"];
+			[onlineBasket setObject:quantity forKey:productID];
 		}
 	}
 	
-	/* finally ensure that both requestQueue and requestResults are emptied */
-	[requestQueue removeAllObjects];
-	[requestResults removeAllObjects];
-	
-	[requestQueue release];
-	
-	return products;
+	return onlineBasket;
+}
+
+- (Product *)createProductFromProductBaseID:(NSString *)productBaseID {
+    NSString *requestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&sessionkey=%@", REST_SERVICE_URL, productBaseID, sessionKey];
+    NSDictionary *apiResults;
+    NSString *error;
+    Product *product;
+    
+    if ([self apiRequest:requestString returningApiResults: &apiResults returningError:&error] == YES) {
+        NSString *totalProducts = [apiResults objectForKey:@"TotalProductCount"];
+        
+        if ([totalProducts intValue] == 0) {
+            /* couldn't find the product ID in the online store */
+            return nil;
+        } else {
+            /* assume its a single product, so we want the first (and only) one */
+            product = [self createProductFromJSON:[[apiResults objectForKey:@"Products"] objectAtIndex:0]];
+        }
+    } else {
+        /* API request for search has failed */
+        return nil;
+    }
+    
+    return product;
 }
 
 - (NSArray *)getDepartments {
@@ -185,73 +171,16 @@
 	return products;
 }
 
-/*
- * Adds all of the products that are currently in the internal basket to 
- * the online basket by adding each "CHANGEBASKET" request to a queue and kicking
- * off each request in a separate thread.
- * If any requests fail for any reason, we fail the whole process
- */
-- (BOOL)addProductBasketToBasket {
-	/* assume success unless we hear otherwise */
-	BOOL productBasketAddedOK = YES;
-	NSMutableArray *requestQueue = [[NSMutableArray alloc] init];
-	
-	/* first, empty the store basket by removing all products */
-	[DataManager setOverlayLabelText:@"Emptying online basket ..."];
-	
-	if ([self emptyBasket] == YES) {
-		/* now add all of the products in our local basket to the store basket */
-		NSDictionary *productBasket = [DataManager getProductBasket];
-		NSEnumerator *productsEnumerator = [productBasket keyEnumerator];
-		Product *product;
-		
-		[DataManager setOverlayLabelText:@"Adding products to online basket ..."];
-		
-		while ((product = [productsEnumerator nextObject])) {
-			NSString *requestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&productid=%@&changequantity=%@&sessionkey=%@", REST_SERVICE_URL, [product productID], [productBasket objectForKey:product], sessionKey];
-			[requestQueue addObject:requestString];
-		}
-		
-		/* spawn a thread to process the request queue */
-		[NSThread detachNewThreadSelector:@selector(processRequestQueue:) toTarget:self withObject:requestQueue];
-		
-		/* now spin until all requests have been serviced */
-		while ([[requestResults allKeys] count] < [requestQueue count]) {
-			[NSThread sleepForTimeInterval:0.2];
-		}
-		
-		/* all requests have returned, now iterate through checking to see if any of them failed */
-		for (NSString *result in requestResults) {
-			if ([requestResults objectForKey:result] == [NSNull null]) {
-				/* when one fails, we fail the whole thing */
-				productBasketAddedOK = NO;
-			}
-		}
-		
-		/* finally ensure that both requestQueue and restDictionary are emptied */
-		[requestQueue removeAllObjects];
-		[requestResults removeAllObjects];
-	} else {
-		/* API request failed */
-		productBasketAddedOK = NO;
-	}
-	
-	[requestQueue release];
-	
-	return productBasketAddedOK;
-}
-
 - (NSDictionary *)getBasketDetails {
 	NSMutableDictionary *basketDetails = [NSMutableDictionary dictionary];
 	NSDictionary *apiResults;
 	NSString *error;
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKET&sessionkey=%@", REST_SERVICE_URL, sessionKey];
 	
-	[DataManager setOverlayLabelText:@"Updating online basket ..."];
-	
 	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error] == YES) {
 		[basketDetails setObject:[apiResults objectForKey:@"BasketGuidePrice"] forKey:@"BasketPrice"];
 		[basketDetails setObject:[apiResults objectForKey:@"BasketGuideMultiBuySavings"] forKey:@"BasketSavings"];
+		[basketDetails setObject:[apiResults objectForKey:@"BasketTotalClubcardPoints"] forKey:@"BasketPoints"];
 	}
 	
 	return basketDetails;
@@ -363,13 +292,8 @@
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=CHOOSEDELIVERYSLOT&deliveryslotid=%@&sessionkey=%@", REST_SERVICE_URL, deliverySlotID, sessionKey];
 
 	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:error] == YES) {
-		if ([DataManager getTotalProductCount] < 5) {
-			*error = @"Fewer than 5 items in the basket";
-			return NO;
-		} else {
-			requestString = [NSString stringWithFormat:@"%@?command=READYFORCHECKOUT&sessionkey=%@", REST_SERVICE_URL, sessionKey];
-			return [self apiRequest:requestString returningApiResults:&apiResults returningError:error];
-		}
+		requestString = [NSString stringWithFormat:@"%@?command=READYFORCHECKOUT&sessionkey=%@", REST_SERVICE_URL, sessionKey];
+		return [self apiRequest:requestString returningApiResults:&apiResults returningError:error];
 	} else {
 		return NO;
 	}
@@ -439,89 +363,6 @@
 	}
 	
 	return loggedInSuccessfully;
-}
-
-- (BOOL)emptyBasket {
-	BOOL basketEmptiedOK = YES;
-	NSDictionary *apiResults;
-	NSString *error;
-	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKETSUMMARY&sessionkey=%@", REST_SERVICE_URL, sessionKey];
-	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error];
-	NSMutableArray *requestQueue = [[NSMutableArray alloc] init];
-	
-	if (apiRequestOK == TRUE) {
-		for (NSDictionary *product in [apiResults objectForKey:@"BasketLines"]) {
-			NSString *productID = [product objectForKey:@"ProductId"];
-			NSInteger quantity = 0 - [[product objectForKey:@"BasketLineQuantity"] intValue];
-			NSString *requestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&productid=%@&changequantity=%d&sessionkey=%@", REST_SERVICE_URL, productID, quantity, sessionKey];
-			[requestQueue addObject:requestString];
-		}
-		
-		/* spawn a thread to process the request queue */
-		[NSThread detachNewThreadSelector: @selector(processRequestQueue:) toTarget:self withObject:requestQueue];
-		
-		/* now spin until all requests have been serviced */
-		while ([[requestResults allKeys] count] < [requestQueue count]) {
-			[NSThread sleepForTimeInterval:0.2];
-		}
-		
-		/* finally ensure that both requestQueue and requestResults are emptied */
-		[requestQueue removeAllObjects];
-		[requestResults removeAllObjects];
-	} else {
-		basketEmptiedOK = NO;
-	}
-	
-	[requestQueue release];
-	
-	return basketEmptiedOK;
-}
-
-/*
- * Sends each API request in the queue to its own thread to be processed
- */
-- (void)processRequestQueue:(NSArray *)requestQueue {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	for (NSInteger index = 0; index < [requestQueue count]; index++) {
-		NSString *request = [requestQueue objectAtIndex:index];
-		
-		if (currentAsyncRequestCount < MAX_ASYNC_REQUESTS) {
-			currentAsyncRequestCount++;
-			[NSThread detachNewThreadSelector:@selector(processSingleRequest:) toTarget:self withObject:request];
-		} else {
-			//Better done with MUTEX locks if we had the time
-			[NSThread sleepForTimeInterval:0.5];
-			index--;
-		}
-	}
-	
-	[pool release];
-}
-
-/*
- * Processes a single API request at a time, setting the value of the 
- * result in an array for checking later
- */
-- (void)processSingleRequest:(NSString *)requestString {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	/* retain request string since we are operating in new thread */
-	[requestString retain];
-	
-	NSDictionary *apiResults;
-	NSString *error;
-	
-	if ([self apiRequest:requestString returningApiResults: &apiResults returningError:&error] == YES) {
-		[requestResults setValue:apiResults forKey:requestString];
-	} else {
-		[requestResults setValue:[NSNull null] forKey:requestString];
-	}
-	
-	currentAsyncRequestCount--;
-	
-	[requestString release];
-	[pool release];
 }
 
 /*

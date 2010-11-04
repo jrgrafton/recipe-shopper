@@ -8,10 +8,10 @@
 
 #import "ShoppingListViewController.h"
 #import "UITableViewCellFactory.h"
-#import "DataManager.h"
 
 @interface ShoppingListViewController()
 
+- (void)productBasketUpdateComplete;
 - (void)addProductButtonClicked:(id)sender;
 - (void)removeProductButtonClicked:(id)sender;
 
@@ -30,19 +30,28 @@
 	self.navigationItem.titleView = imageView;
 	[imageView release];
 	
+	dataManager = [DataManager getInstance];
+	
 	[productTableView setBackgroundColor: [UIColor clearColor]];
 	
 	[productTableView setAllowsSelection:NO];
+	
+	/* add this object as an observer of the method that updates the product basket so we can remove the overlay view when the product basket update is complete */
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productBasketUpdateComplete) name:@"ProductBasketUpdateComplete" object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
 	
 	/* scroll the list to the top */
 	[productTableView setContentOffset:CGPointMake(0, 0) animated:NO];
 	
-	/* reload the table data in case it has changed */
 	[productTableView reloadData];
+	
+	if ([dataManager updatingProductBasket] == YES) {
+		[dataManager showOverlayView:[[self view] window]];
+		[dataManager setOverlayLabelText:@"Updating shopping list"];
+	}
 }
 
 #pragma mark -
@@ -58,7 +67,7 @@
 		return 2;
 	} else {
 		/* this is the shopping list itself */
-		return [DataManager getDistinctProductCount];
+		return [dataManager getTotalProductCount];
 	}
 }
 
@@ -82,13 +91,13 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
 		if ([indexPath row] == 0) {
-			NSArray *keyValue = [NSArray arrayWithObjects:@"Number Of Items",[NSString stringWithFormat:@"%d",[DataManager getTotalProductCount]],nil];
+			NSArray *keyValue = [NSArray arrayWithObjects:@"Number Of Items",[NSString stringWithFormat:@"%d",[dataManager getTotalProductCount]],nil];
 			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:YES];
 			UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
 			[headerLabel setText:@"Totals"];
 			
 		} else if ([indexPath row] == 1) {
-			NSArray *keyValue = [NSArray arrayWithObjects:@"Total Cost",[DataManager getProductBasketPrice],nil];
+			NSArray *keyValue = [NSArray arrayWithObjects:@"Total Cost",[dataManager getProductBasketPrice],nil];
 			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:NO];
 		}
 	} else if (indexPath.section == 1) {
@@ -98,8 +107,8 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
 		/* create a cell for this row's product */
-		Product *product = [DataManager getProductFromBasket:[indexPath row]];
-		NSNumber *quantity = [DataManager getProductQuantityFromBasket:product];
+		Product *product = [dataManager getProductFromBasket:[indexPath row]];
+		NSNumber *quantity = [dataManager getProductQuantityFromBasket:product];
 		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:YES isHeader:([indexPath row] == 0)];
 		
 		[[buttons objectAtIndex:0] addTarget:self action:@selector(addProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -118,6 +127,11 @@
 #pragma mark -
 #pragma mark Private methods
 
+- (void)productBasketUpdateComplete {
+	[dataManager hideOverlayView];
+	[productTableView reloadData];
+}
+
 /*
  * Add this cell's product (identified by the tag of the sender, which will be the product ID)
  * to both the product basket and the online basket
@@ -125,13 +139,13 @@
 - (void)addProductButtonClicked:(id)sender {
 	NSString *productBaseID = [NSString stringWithFormat:@"%d", [sender tag]];
 	
-	NSEnumerator *productsEnumerator = [[DataManager getProductBasket] keyEnumerator];
+	NSEnumerator *productsEnumerator = [[dataManager getProductBasket] keyEnumerator];
 	Product *product;
 	
 	while ((product = [productsEnumerator nextObject])) {
 		if ([[product productBaseID] intValue] == [productBaseID intValue]) {
 			/* we've found the product that relates to this product ID so increase its quantity in the product basket */
-			[DataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:1]];
+			[dataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:1]];
 			
 			/* add the cost of one of these items to the shopping list price */
 			CGFloat productPrice = [[product productPrice] floatValue];
@@ -153,13 +167,13 @@
 - (void)removeProductButtonClicked:(id)sender {
 	NSString *productBaseID = [NSString stringWithFormat:@"%d", [sender tag]];
 	
-	NSEnumerator *productsEnumerator = [[DataManager getProductBasket] keyEnumerator];
+	NSEnumerator *productsEnumerator = [[dataManager getProductBasket] keyEnumerator];
 	Product *product;
 	
 	while ((product = [productsEnumerator nextObject])) {
 		if ([[product productBaseID] intValue] == [productBaseID intValue]) {
 			/* we've found the product that relates to this product ID so decrease its quantity in the product basket */
-			[DataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:-1]];
+			[dataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:-1]];
 			
 			/* deduct the cost of one of these items from the shopping list price */
 			CGFloat productPrice = [[product productPrice] floatValue];

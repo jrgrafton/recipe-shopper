@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DataManager.h"
 
 @interface SearchResultsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate> {
 	IBOutlet UISearchBar *searchBarView;
 	IBOutlet UITableView *searchResultsView;
-
-	@private 
+	
+@private 
+	DataManager *dataManager;
 	UIView *footerView;
 	NSMutableArray *searchResults;
 	NSInteger currentPage;
