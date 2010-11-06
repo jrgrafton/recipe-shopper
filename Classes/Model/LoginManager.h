@@ -7,9 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DataManager.h"
+
+@class DataManager;
 
 @interface LoginManager : NSObject <UIAlertViewDelegate> {
+	
 @private 
 	DataManager *dataManager;
 }

@@ -7,6 +7,7 @@
 //
 
 #import "RecipeShopperAppDelegate.h"
+#import "DataManager.h"
 
 @implementation RecipeShopperAppDelegate
 

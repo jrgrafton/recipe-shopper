@@ -8,6 +8,7 @@
 
 #import "LoginManager.h"
 #import "RecipeShopperAppDelegate.h"
+#import "DataManager.h"
 
 @implementation LoginManager
 

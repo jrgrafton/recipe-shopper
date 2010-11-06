@@ -17,6 +17,7 @@
 #import "Product.h"
 
 @interface DataManager : NSObject {
+	
 @private 
 	DatabaseRequestManager *databaseRequestManager;
 	RecipeBasketManager *recipeBasketManager;

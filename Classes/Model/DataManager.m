@@ -16,7 +16,7 @@
 
 @end
 
-static DataManager *sharedDataManager = nil;
+static DataManager *sharedInstance = nil;
 
 @implementation DataManager
 
@@ -27,15 +27,22 @@ static DataManager *sharedDataManager = nil;
 @synthesize onlineBasketUpdates;
 
 + (DataManager *)getInstance {
-    if (sharedDataManager == nil) {
-        sharedDataManager = [[super allocWithZone:NULL] init];
-    }
-	
-    return sharedDataManager;
+	@synchronized(self){
+		if (sharedInstance == nil) {
+			sharedInstance = [[DataManager alloc] init];
+		}
+	}
+    return sharedInstance;
 }
 
 + (id)allocWithZone:(NSZone *)zone {
-    return [self getInstance];
+    @synchronized(self) {
+        if (sharedInstance == nil) {
+            sharedInstance = [super allocWithZone:zone];
+            return sharedInstance;  // assignment and return on first allocation
+        }
+    }
+    return nil; // on subsequent allocation attempts return nil
 }
 
 - (id)copyWithZone:(NSZone *)zone {

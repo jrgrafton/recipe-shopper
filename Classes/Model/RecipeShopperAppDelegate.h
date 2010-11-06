@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DataManager.h"
+
+@class DataManager;
 
 @interface RecipeShopperAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate> {
 @private 
