@@ -23,6 +23,8 @@ static DataManager *sharedInstance = nil;
 @synthesize offlineMode;
 @synthesize updatingProductBasket;
 @synthesize updatingOnlineBasket;
+@synthesize loadingDepartmentList;
+@synthesize departmentListHasLoaded;
 @synthesize productBasketUpdates;
 @synthesize onlineBasketUpdates;
 
@@ -89,6 +91,8 @@ static DataManager *sharedInstance = nil;
 		
 		[self setUpdatingProductBasket:NO];
 		[self setUpdatingOnlineBasket:NO];
+		[self setLoadingDepartmentList:NO];
+		[self setDepartmentListHasLoaded:NO];
 		[self setProductBasketUpdates:0];
 		[self setOnlineBasketUpdates:0];
 	}
@@ -215,6 +219,11 @@ static DataManager *sharedInstance = nil;
 }
 
 - (void)addProductBasketToOnlineBasket {
+	if ([self getTotalProductCount] == 0) {
+		[self setUpdatingOnlineBasket:NO];
+		return;
+	}
+	
 	[self setUpdatingOnlineBasket:YES];
 	
 	NSDictionary *productBasket = [self getProductBasket];
@@ -231,8 +240,18 @@ static DataManager *sharedInstance = nil;
 	return [apiRequestManager getBasketDetails];
 }
 
-- (NSArray *)getDepartments {
-	return [apiRequestManager getDepartments];
+- (void)getDepartments {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	[self setLoadingDepartmentList:YES];
+	NSArray *departmentList = [apiRequestManager getDepartments];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:departmentList,@"departmentList",nil];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"departmentListFinishedLoading" object:self userInfo:userInfo];
+	[self setLoadingDepartmentList:NO];
+	[self setDepartmentListHasLoaded:YES];
+	
+	[pool release];
 }
 
 - (NSArray *)getAislesForDepartment:(NSString *)department {

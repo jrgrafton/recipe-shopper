@@ -16,9 +16,7 @@
 
 - (id)init {
 	[super init];
-	
 	dataManager = [DataManager getInstance];
-	
 	return self;
 }
 
@@ -121,7 +119,7 @@
 		/* save the login name so we can display it on the home page */
 		[self setLoginName:[details objectAtIndex:0]];
 		
-		/* empty the online basket */
+		/* empty the online basket  PROMPT TO EMPTY BASKET HERE*/
 		[dataManager emptyOnlineBasket];
 		
 		/* add any products which may be in the product basket to the online basket now */
@@ -131,6 +129,12 @@
 		
 		/* inform any observers that the user has logged in */
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"LoggedIn" object:self];
+	}else{
+		/* LOGIN FAILED */
+		[dataManager hideOverlayView];
+		
+		/* inform any observers that the loggin has failed */
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"LoginFailed" object:self];
 	}
 	
 	[pool release];

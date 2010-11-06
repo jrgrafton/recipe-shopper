@@ -17,6 +17,13 @@
 #pragma mark -
 #pragma mark View lifecycle
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+		dataManager = [DataManager getInstance];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
@@ -25,9 +32,7 @@
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
 	self.navigationItem.titleView = imageView;
 	[imageView release];
-	
-	dataManager = [DataManager getInstance];
-	
+
 	[recipeBasketTableView setBackgroundColor: [UIColor clearColor]];
 	
 	//[[self navigationItem] setTitle:@"Recipe Basket"];

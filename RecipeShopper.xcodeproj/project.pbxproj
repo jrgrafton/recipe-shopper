@@ -496,8 +496,8 @@
 				3EB5D56C1268AB4C009A80E0 /* RecipeBasketManager.m */,
 				3EB5D56D1268AB4C009A80E0 /* RecipeShopperAppDelegate.h */,
 				3EB5D56E1268AB4C009A80E0 /* RecipeShopperAppDelegate.m */,
-				3EB5D56F1268AB4C009A80E0 /* UIImage-Extended.h */,
 				3EB5D5701268AB4C009A80E0 /* UIImage-Extended.m */,
+				3EB5D56F1268AB4C009A80E0 /* UIImage-Extended.h */,
 			);
 			name = Model;
 			sourceTree = "<group>";

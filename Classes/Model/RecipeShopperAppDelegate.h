@@ -10,7 +10,7 @@
 
 @class DataManager;
 
-@interface RecipeShopperAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate> {
+@interface RecipeShopperAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate, UIAlertViewDelegate> {
 @private 
 	DataManager *dataManager;
 }

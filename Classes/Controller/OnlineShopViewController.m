@@ -15,9 +15,20 @@
 
 @synthesize aislesViewController;
 @synthesize searchResultsViewController;
+@synthesize departments;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+		dataManager = [DataManager getInstance];
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	
+	//initWithNib does not get called when controller is root in navigation stack
+	dataManager = [DataManager getInstance];
 	
 	//Add logo to nav bar
 	UIImage *image = [UIImage imageNamed: @"header.png"];
@@ -27,10 +38,8 @@
 	
 	[onlineShopView setBackgroundColor: [UIColor clearColor]];
 	
-	dataManager = [DataManager getInstance];
-	
-	departments = [[dataManager getDepartments] retain];
-
+	departments = nil;
+	 
 	departmentImages = [[NSDictionary dictionaryWithObjectsAndKeys:
 						 [UIImage imageNamed: @"cupboard_icon.png"], @"Food Cupboard", 
 						 [UIImage imageNamed: @"fresh_icon.png"], @"Fresh Food",
@@ -43,6 +52,34 @@
 						 [UIImage imageNamed: @"drinks_icon.png"], @"Drinks",
 						 [UIImage imageNamed: @"pets_icon.png"], @"Pets",
 						 nil] retain];
+}
+	 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (departments == nil) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(departmentListFinishedLoading:) name:@"departmentListFinishedLoading" object:nil];
+		
+		/* If department list has already loaded just fetch cached array in main UI thread */
+		if ([dataManager departmentListHasLoaded]) {
+			[dataManager getDepartments];
+		}else {
+			[dataManager showOverlayView:[[self view] window]];
+			[dataManager setOverlayLabelText:@"Loading departments"];
+			/* We might have tried to load deparment list ahead of time from somewhere else */
+			if (![dataManager loadingDepartmentList]) {
+				[NSThread detachNewThreadSelector:@selector(getDepartments) toTarget:dataManager withObject:nil];
+			}
+		}
+	}
+}
+
+- (void)departmentListFinishedLoading: (NSNotification *)notification {
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
+	
+	[self setDepartments: [[notification userInfo] objectForKey:@"departmentList"]];
+	[onlineShopView reloadData];
+	[dataManager hideOverlayView];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {

@@ -21,16 +21,24 @@
 
 @synthesize basketPrice;
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+		dataManager = [DataManager getInstance];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+	
+	//initWithNib does not get called when controller is root in navigation stack
+	dataManager = [DataManager getInstance];
 	
 	//Add logo to nav bar
 	UIImage *image = [UIImage imageNamed: @"header.png"];
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
 	self.navigationItem.titleView = imageView;
 	[imageView release];
-	
-	dataManager = [DataManager getInstance];
 	
 	[productTableView setBackgroundColor: [UIColor clearColor]];
 	
@@ -67,7 +75,7 @@
 		return 2;
 	} else {
 		/* this is the shopping list itself */
-		return [dataManager getTotalProductCount];
+		return [dataManager getDistinctProductCount];
 	}
 }
 

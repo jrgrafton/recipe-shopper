@@ -16,11 +16,11 @@
 	IBOutlet UITableView *onlineShopView;
 @private 
 	DataManager *dataManager;
-	NSArray *departments;
 	NSDictionary *departmentImages;
 }
 
 @property (nonatomic, retain) AislesViewController *aislesViewController;
 @property (nonatomic, retain) SearchResultsViewController *searchResultsViewController;
+@property (nonatomic, retain) NSArray *departments;
 
 @end

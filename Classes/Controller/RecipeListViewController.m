@@ -14,6 +14,13 @@
 
 @synthesize recipeViewController;
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+		dataManager = [DataManager getInstance];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
@@ -22,8 +29,6 @@
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
 	self.navigationItem.titleView = imageView;
 	[imageView release];
-	
-	dataManager = [DataManager getInstance];
 	
 	[recipeListView setBackgroundColor: [UIColor clearColor]];
 	
@@ -65,7 +70,6 @@
 	
 	/* make sure the list is scrolled to the top */
 	[recipeListView setContentOffset:CGPointMake(0, 0) animated:NO];
-	
 }
 
 #pragma mark -

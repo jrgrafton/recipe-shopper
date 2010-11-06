@@ -30,19 +30,25 @@
 @synthesize basketSavings;
 @synthesize basketPoints;
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+		dataManager = [DataManager getInstance];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+	
+	//initWithNib does not get called when controller is root in navigation stack
+	dataManager = [DataManager getInstance];
 	
 	//Add logo to nav bar
 	UIImage *image = [UIImage imageNamed: @"header.png"];
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
-	[imageView setContentMode:UIViewContentModeScaleAspectFit];
-	[imageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 	self.navigationItem.titleView = imageView;
 	[imageView release];
 
-	dataManager = [DataManager getInstance];
-	
 	[basketView setBackgroundColor: [UIColor clearColor]];
 	
 	/* add this object as an observer of the method that updates the product basket so we can remove the overlay view when the product basket update is complete */
@@ -134,48 +140,34 @@
 		NSString *CellIdentifier = ([indexPath row] == 0)? @"BasketSummaryCellHeader":@"BasketSummaryCell";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
+		NSArray *keyValue;
+		
 		if ([indexPath row] == 0) {
-			NSArray *keyValue = [NSArray arrayWithObjects:@"Number Of Items",[NSString stringWithFormat:@"%d",[dataManager getTotalProductCount]],nil];
+			keyValue = [NSArray arrayWithObjects:@"Number Of Items",[NSString stringWithFormat:@"%d",[dataManager getTotalProductCount]],nil];
 			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:YES];
 			UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
 			[headerLabel setText:@"Totals"];
 		} else if ([indexPath row] == 1) {
-			NSArray *keyValue = [NSArray arrayWithObjects:@"Total Cost",[NSString stringWithFormat:@"£%.2f", [[self basketPrice] floatValue]],nil];
-			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:NO];
-			UIActivityIndicatorView *activityIndicator = (UIActivityIndicatorView *)[cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
-			
-			if ([dataManager updatingOnlineBasket] == YES) {
-				[activityIndicator startAnimating];
-			} else {
-				[activityIndicator stopAnimating];
-			}
+			keyValue = [NSArray arrayWithObjects:@"Total Cost",[NSString stringWithFormat:@"£%.2f", [[self basketPrice] floatValue]],nil];
 		} else if ([indexPath row] == 2) {
-			NSArray *keyValue = [NSArray arrayWithObjects:@"MultiBuy Savings",[NSString stringWithFormat:@"£%.2f",[[self basketSavings] floatValue] ],nil];
-			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:NO];
-			UIActivityIndicatorView *activityIndicator = (UIActivityIndicatorView *)[cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
-			
-			if ([dataManager updatingOnlineBasket] == YES) {
-				[activityIndicator startAnimating];
-			} else {
-				[activityIndicator stopAnimating];
-			}
+			keyValue = [NSArray arrayWithObjects:@"MultiBuy Savings",[NSString stringWithFormat:@"£%.2f",[[self basketSavings] floatValue] ],nil];
 		} else {
-			NSArray *keyValue;
-			
 			if ([self basketPoints] == nil) {
 				keyValue = [NSArray arrayWithObjects:@"Clubcard Points", @"0",nil];
 			} else {
 				keyValue = [NSArray arrayWithObjects:@"Clubcard Points",[NSString stringWithFormat:@"%@",[self basketPoints]],nil];
 			}
-			
-			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:NO];
-			UIActivityIndicatorView *activityIndicator = (UIActivityIndicatorView *)[cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
-			
-			if ([dataManager updatingOnlineBasket] == YES) {
-				[activityIndicator startAnimating];
-			} else {
-				[activityIndicator stopAnimating];
-			}
+		}
+		
+		[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:NO];
+		UIActivityIndicatorView *activityIndicator = (UIActivityIndicatorView *)[cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
+		
+		if ([dataManager updatingOnlineBasket] == YES) {
+			[activityIndicator startAnimating];
+			[activityIndicator setHidden:NO];
+		} else {
+			[activityIndicator setHidden:YES];
+			[activityIndicator stopAnimating];
 		}
 	} else if (indexPath.section == 1) {
 		/* this is the basket itself */

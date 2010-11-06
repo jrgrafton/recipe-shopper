@@ -22,6 +22,13 @@
 
 @synthesize searchTerm;
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+		dataManager = [DataManager getInstance];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	

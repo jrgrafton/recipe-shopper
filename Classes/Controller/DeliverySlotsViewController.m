@@ -32,6 +32,13 @@
 #pragma mark -
 #pragma mark View lifecycle
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+		dataManager = [DataManager getInstance];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
@@ -43,8 +50,6 @@
 	[imageView release];
 	
 	[deliveryInfoView setBackgroundColor: [UIColor clearColor]];
-	
-	dataManager = [DataManager getInstance];
 	
 	/* ensure table can't be selected */
 	[deliveryInfoView setAllowsSelection:NO];

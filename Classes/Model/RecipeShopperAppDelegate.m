@@ -91,8 +91,8 @@
 #pragma mark Tab Bar Controller delegate
 
 - (BOOL)tabBarController:(UITabBarController *)theTabBarController shouldSelectViewController:(UIViewController *)viewController {
-	if (([dataManager offlineMode] == YES) && ((viewController == [theTabBarController.viewControllers objectAtIndex:2]) || (viewController == [theTabBarController.viewControllers objectAtIndex:3]))) {
-		UIAlertView *offlineAlert = [[UIAlertView alloc] initWithTitle:@"Offline mode" message:@"Feature unavailable in offline mode" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	if (([dataManager phoneIsOnline] == NO) && ((viewController == [theTabBarController.viewControllers objectAtIndex:2]) || (viewController == [theTabBarController.viewControllers objectAtIndex:3]))) {
+		UIAlertView *offlineAlert = [[UIAlertView alloc] initWithTitle:@"Offline mode" message:@"Feature unavailable offline" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[offlineAlert show];
 		[offlineAlert release];
 		return NO;
@@ -102,6 +102,9 @@
 		/* add ourselves as an observer for logged in messages so we can transition when the user has logged in */
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transitionToCheckout) name:@"LoggedIn" object:nil];
 		
+		/* add ourselves as an observer for login failed so we can prompt user */
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:@"LoginFailed" object:nil];
+		
 		/* and make sure we don't transition yet */
 		return NO;
 	}
@@ -109,10 +112,34 @@
 	return YES;
 }
 
+- (void)loginFailed {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	UIAlertView *successAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Login failed" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry",nil];
+	[successAlert show];
+	[successAlert release];
+}
+
 - (void)transitionToCheckout {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	/* transition to the online basket view */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[[appDelegate tabBarController] setSelectedViewController:[tabBarController.viewControllers objectAtIndex:3]];
+}
+
+#pragma mark -
+#pragma mark UIAlertView responders
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	//In case user clicks cancel on login
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
+	
+	if ([alertView title] == @"Error" && buttonIndex == 1) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transitionToCheckout) name:@"LoggedIn" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:@"LoginFailed" object:nil];
+		[dataManager requestLoginToStore];
+	}
 }
 
 #pragma mark -

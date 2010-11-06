@@ -10,6 +10,11 @@
 #import "RecipeShopperAppDelegate.h"
 #import "LogManager.h"
 
+@interface RecipeHistoryViewController()
+- (void)loginSuccess;
+- (void)loginFailed;
+@end
+
 @implementation HomeViewController
 
 @synthesize recipeBasketViewController;
@@ -19,13 +24,14 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
+	//initWithNib does not get called when controller is root in navigation stack
+	dataManager = [DataManager getInstance];
+	
 	//Add logo to nav bar
 	UIImage *image = [UIImage imageNamed: @"header.png"];
 	UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
 	self.navigationItem.titleView = imageView;
 	[imageView release];
-	
-	dataManager = [DataManager getInstance];
 	
 	if ([[dataManager getUserPreference:@"offlineMode"] isEqualToString:@"YES"]) {
 		[dataManager setOfflineMode:YES];
@@ -34,6 +40,9 @@
 		[dataManager setOfflineMode:NO];
 		[offlineModeSwitch setOn:NO];
 	}
+	
+	/* Try and do a cheeky cached load of product departments */
+	[NSThread detachNewThreadSelector:@selector(getDepartments) toTarget:dataManager withObject:nil];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -46,13 +55,18 @@
 }
 
 - (IBAction)login:(id)sender {
-	[dataManager requestLoginToStore];
-	
 	/* add ourselves as an observer for logged in messages so we can replace the login button when the user has logged in */
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(replaceLoginButton) name:@"LoggedIn" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:@"LoggedIn" object:nil];
+	
+	/* add ourselves as an observer for login failed so we can prompt user */
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:@"LoginFailed" object:nil];
+	
+	[dataManager requestLoginToStore];
 }
 
-- (void)replaceLoginButton {
+- (void)loginSuccess {
+	[[NSNotificationCenter defaultCenter] removeObserver: self];	
+	
 	/* replace the login button and register link with the greeting label and the logout button */
 	[loginButton setHidden:YES];
 	[logoutButton setHidden:NO];
@@ -60,6 +74,14 @@
 	[loggedOutGreetingLabel setHidden:YES];
 	[loggedInGreetingLabel setHidden:NO];
 	[loggedInGreetingLabel setText:[NSString stringWithFormat:@"Hello, %@", [[dataManager getCustomerName] capitalizedString]]];
+}
+
+- (void)loginFailed {
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
+	
+	UIAlertView *successAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Login failed" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry",nil];
+	[successAlert show];
+	[successAlert release];
 }
 
 - (IBAction)logout:(id)sender {
@@ -130,11 +152,19 @@
 #pragma mark UIAlertView responders
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	//User wishes to proceed to payment screen
-	NSURL *url = [NSURL URLWithString:@"https://secure.tesco.com/register/default.aspx?newReg=true&ui=iphone"];
+	//In case user clicks cancel on login
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	
-	if (![[UIApplication sharedApplication] openURL:url]){
-		[LogManager log:@"Unable to open Tesco.com registration page" withLevel:LOG_ERROR fromClass:@"HomeViewController"];
+	if ([alertView title] == @"New Account") {
+		NSURL *url = [NSURL URLWithString:@"https://secure.tesco.com/register/default.aspx?newReg=true&ui=iphone"];
+		
+		if (![[UIApplication sharedApplication] openURL:url]){
+			[LogManager log:@"Unable to open Tesco.com registration page" withLevel:LOG_ERROR fromClass:@"HomeViewController"];
+		}
+	}else if ([alertView title] == @"Error" && buttonIndex == 1) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:@"LoggedIn" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:@"LoginFailed" object:nil];
+		[dataManager requestLoginToStore];
 	}
 }
 

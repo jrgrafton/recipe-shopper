@@ -115,6 +115,10 @@
 }
 
 - (NSArray *)getDepartments {
+	if ([[departments allKeys] count] != 0) {
+		return [departments allKeys];
+	}
+	
 	NSDictionary *apiResults;
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTPRODUCTCATEGORIES&sessionkey=%@", REST_SERVICE_URL, sessionKey];
 	NSString *error;
@@ -342,6 +346,8 @@
 			}
 		}
 	}
+	
+	[LogManager log:[NSString stringWithFormat:@"Received response for request: '%@'", requestString] withLevel:LOG_INFO fromClass:[[self class] description]];
 	
 	return apiReqOK;
 }

@@ -27,11 +27,14 @@
 	OverlayViewController *overlayViewController;	
 }
 
-@property (nonatomic) BOOL offlineMode;
-@property (nonatomic) BOOL updatingProductBasket;
-@property (nonatomic) BOOL updatingOnlineBasket;
-@property (nonatomic, assign) NSInteger productBasketUpdates;
-@property (nonatomic, assign) NSInteger onlineBasketUpdates;
+/* Not explicitly stating non-atomic means we get atomic vars */
+@property (assign) BOOL offlineMode;
+@property (assign) BOOL updatingProductBasket;
+@property (assign) BOOL updatingOnlineBasket;
+@property (assign) BOOL loadingDepartmentList;
+@property (assign) BOOL departmentListHasLoaded;
+@property (assign) NSInteger productBasketUpdates;
+@property (assign) NSInteger onlineBasketUpdates;
 
 + (DataManager *)getInstance;
 
@@ -57,7 +60,7 @@
 - (void)emptyOnlineBasket;
 - (void)addProductBasketToOnlineBasket;
 - (NSDictionary *)getBasketDetails;
-- (NSArray *)getDepartments;
+- (void)getDepartments;	/* Results sent out with notification */
 - (NSArray *)getAislesForDepartment:(NSString *)department;
 - (NSArray *)getShelvesForAisle:(NSString *)aisle;
 - (NSArray *)getProductsForShelf:(NSString *)shelf;

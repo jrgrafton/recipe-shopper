@@ -24,17 +24,19 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
+		dataManager = [DataManager getInstance];
+		
 		NSFileManager *fileManager = [NSFileManager defaultManager];
 		NSString *userDocsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory , NSUserDomainMask, YES) objectAtIndex:0];
 		
 		NSString *documentsImgPath = [userDocsPath stringByAppendingPathComponent:@"imgs"];
 		
-		//if ([fileManager fileExistsAtPath:documentsImgPath] == NO) {
+		if ([fileManager fileExistsAtPath:documentsImgPath] == NO) {
 			NSError *error;
 			NSBundle *bundle = [NSBundle mainBundle];
 			NSString *localImagePath = [bundle pathForResource:@"imgs" ofType:nil];
 			[fileManager copyItemAtPath:localImagePath toPath:documentsImgPath error:&error];
-		//}		
+		}		
     }
 	
     return self;
@@ -56,8 +58,6 @@
 	/* round fade image corners */
 	imageFadeView.layer.masksToBounds = YES;
 	imageFadeView.layer.cornerRadius = 5;
-	
-	dataManager = [DataManager getInstance];
 	
 	/* change background color */
 	webView.backgroundColor = [UIColor whiteColor];
