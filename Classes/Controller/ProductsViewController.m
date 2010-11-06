@@ -121,7 +121,8 @@
 	for (Product * product in products){
 		if ([[product productID] compare:productID] == NSOrderedSame) {
 			NSLog(@"Calling reload at row: %i", index);
-			[productsView reloadRowsAtIndexPaths: [[NSArray alloc] initWithObjects:[NSIndexPath indexPathForRow:index inSection:0], nil] withRowAnimation:UITableViewRowAnimationNone];
+			NSArray * array = [[[NSArray alloc] initWithObjects:[NSIndexPath indexPathForRow:index inSection:0], nil] autorelease];
+			[productsView reloadRowsAtIndexPaths: array withRowAnimation:UITableViewRowAnimationNone];
 			 return;
 		}
 		index++;
