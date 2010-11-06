@@ -18,6 +18,10 @@
 @synthesize productImage;
 @synthesize productOfferImage;
 
+//Fields used for fetching data JIT
+@synthesize productOfferImageURL;
+@synthesize productImageURL;
+
 - (BOOL)isEqual:(id)anObject {
 	if (![anObject isKindOfClass:[Product class]]) return NO;
 	

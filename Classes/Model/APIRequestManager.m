@@ -166,11 +166,16 @@
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTPRODUCTSBYCATEGORY&category=%@&sessionkey=%@", REST_SERVICE_URL, [shelves objectForKey:shelf], sessionKey];
 	NSString *error;
 	
+	//NSTimeInterval start = [[NSDate date]timeIntervalSince1970];
+	
 	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error] == YES) {
 		for (NSDictionary *productInfo in [apiResults objectForKey:@"Products"]) {
 			[products addObject:[self createProductFromJSON:productInfo]];
 		}
 	}
+	/*
+	NSTimeInterval end = [[NSDate date] timeIntervalSince1970];
+	NSLog(@"Operation took: %f secs",end - start);*/
 	
 	return products;
 }
@@ -303,6 +308,34 @@
 	}
 }
 
+- (void)fetchImagesForProduct:(Product*) product {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	UIImage *productImage = [[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[product productImageURL]]] autorelease];
+	 
+	 if (productImage == nil) {
+		productImage = [UIImage imageNamed:@"icon_product_default.jpg"];
+	 }
+	 
+	 UIImage *productOfferImage;
+	 
+	 if ([product productOfferImageURL] != nil) {
+		productOfferImage = [[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[product productOfferImageURL]]] autorelease];
+	 } else {
+		productOfferImage = nil;
+	 }
+	
+	[product setProductImage:productImage];
+	[product setProductOfferImage:productOfferImage];
+	
+	
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[product productID],@"productID",nil];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"productImageFetchComplete" object:self userInfo:userInfo];
+	
+	[pool release];
+}
+
 #pragma mark -
 #pragma mark private functions
 
@@ -393,24 +426,17 @@
 	NSString *productPrice = [productJSON objectForKey:@"Price"];
 	NSString *productOffer = [productJSON objectForKey:@"OfferPromotion"];
 	
-	UIImage *productImage = [[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[productJSON objectForKey:@"ImagePath"]]]] autorelease];
+	NSURL *productImageURL = [NSURL URLWithString:[productJSON objectForKey:@"ImagePath"]];
+	NSURL *productOfferImageURL = [NSURL URLWithString:[productJSON objectForKey:@"OfferLabelImagePath"]];
 	
-	if (productImage == nil) {
-		productImage = [UIImage imageNamed:@"icon_product_default.jpg"];
-	}
-	
-	NSString *productOfferImageUrl = [productJSON objectForKey:@"OfferLabelImagePath"];
-	UIImage *productOfferImage;
-	
-	if ([productOfferImageUrl length] != 0) {
-		productOfferImage = [[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:productOfferImageUrl]]] autorelease];
-	} else {
-		productOfferImage = nil;
-	}
-	
-	return [[[Product alloc] initWithProductBaseID:productBaseID andProductID:productID andProductName:productName
+	Product *product = [[[Product alloc] initWithProductBaseID:productBaseID andProductID:productID andProductName:productName
 							   andProductPrice:productPrice andProductOffer:productOffer
-							   andProductImage:productImage andProductOfferImage:productOfferImage] autorelease];
+							   andProductImage:nil andProductOfferImage:nil] autorelease];
+									 
+	[product setProductImageURL:productImageURL];
+	[product setProductOfferImageURL:productOfferImageURL];
+	
+	return product;
 }
 
 @end

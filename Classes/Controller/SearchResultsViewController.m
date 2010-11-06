@@ -144,6 +144,8 @@
 	
 	/* create a cell for this row's product */
 	Product *product = [searchResults objectAtIndex:[indexPath row]];
+	[dataManager fetchImagesForProduct:product];
+	
 	NSNumber *quantity = [dataManager getProductQuantityFromBasket:product];
 	NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isHeader:([indexPath row] == 0)];
 

@@ -27,6 +27,7 @@ static DataManager *sharedInstance = nil;
 @synthesize departmentListHasLoaded;
 @synthesize productBasketUpdates;
 @synthesize onlineBasketUpdates;
+@synthesize productImageFetchThreads;
 
 + (DataManager *)getInstance {
 	@synchronized(self){
@@ -89,12 +90,19 @@ static DataManager *sharedInstance = nil;
 		/* initialise the overlay view */
 		overlayViewController = [[OverlayViewController alloc] initWithNibName:@"OverlayView" bundle:[NSBundle mainBundle]];
 		
+		/* intialise product fetch status dict */
+		productImageFetchStatuses = [[NSMutableDictionary alloc] init];
+		
+		/* need be notified so we can update internal product img fetch statuses*/
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productImageFetchStatusNotification:) name:@"productImageFetchComplete" object:nil];
+		
 		[self setUpdatingProductBasket:NO];
 		[self setUpdatingOnlineBasket:NO];
 		[self setLoadingDepartmentList:NO];
 		[self setDepartmentListHasLoaded:NO];
 		[self setProductBasketUpdates:0];
 		[self setOnlineBasketUpdates:0];
+		[self setProductImageFetchThreads:0];
 	}
 	
 	return self;
@@ -107,6 +115,7 @@ static DataManager *sharedInstance = nil;
     [apiRequestManager release];
 	[loginManager release];
 	[overlayViewController release];
+	[productImageFetchStatuses release];
 }
 
 - (BOOL)phoneIsOnline {
@@ -280,6 +289,24 @@ static DataManager *sharedInstance = nil;
 
 - (NSString *)getCustomerName {
 	return [apiRequestManager customerName];
+}
+
+- (void)fetchImagesForProduct:(Product *)product {
+	if ([self phoneIsOnline]) {
+		if ([productImageFetchStatuses objectForKey:[product productID]] == nil) {
+			NSLog(@"Starting thread for: %@", [product productID]);
+			productImageFetchThreads++;
+			[productImageFetchStatuses setObject:[NSNumber numberWithInt:PRODUCT_FETCH_REQUESTED] forKey:[product productID]];
+			[NSThread detachNewThreadSelector:@selector(fetchImagesForProduct:) toTarget:apiRequestManager withObject:product];
+			
+			[LogManager log:[NSString stringWithFormat:@"Number of product image fetch requests is now %d", productImageFetchThreads] withLevel:LOG_INFO fromClass:[[self class] description]];
+		}
+	}
+}
+
+- (void)productImageFetchStatusNotification:(NSNotification *)notification {
+	productImageFetchThreads--;
+	
 }
 
 #pragma mark -

@@ -34,5 +34,6 @@
 - (NSDictionary *)getDeliveryDates;
 - (NSArray *)searchForProducts:(NSString *)searchTerm onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder;
 - (BOOL)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error;
+- (void)fetchImagesForProduct:(Product*) product;
 
 @end

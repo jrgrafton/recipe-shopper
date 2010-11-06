@@ -16,6 +16,8 @@
 #import "Recipe.h"
 #import "Product.h"
 
+#define PRODUCT_FETCH_REQUESTED 0
+
 @interface DataManager : NSObject {
 	
 @private 
@@ -24,7 +26,10 @@
 	ProductBasketManager *productBasketManager;
 	APIRequestManager *apiRequestManager;
 	LoginManager *loginManager;
-	OverlayViewController *overlayViewController;	
+	OverlayViewController *overlayViewController;
+	
+	/* Status map of productID -> status */
+	NSMutableDictionary *productImageFetchStatuses;
 }
 
 /* Not explicitly stating non-atomic means we get atomic vars */
@@ -35,6 +40,7 @@
 @property (assign) BOOL departmentListHasLoaded;
 @property (assign) NSInteger productBasketUpdates;
 @property (assign) NSInteger onlineBasketUpdates;
+@property (assign) NSInteger productImageFetchThreads;
 
 + (DataManager *)getInstance;
 
@@ -68,6 +74,8 @@
 - (NSArray *)searchForProducts:(NSString *)searchTerm onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder;
 - (BOOL)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error;
 - (NSString *)getCustomerName;
+- (void)fetchImagesForProduct:(Product*) product;
+- (void)productImageFetchStatusNotification: (NSNotification *)notification;
 
 /* recipe basket manager calls */
 - (NSArray *)getRecipeBasket;

@@ -41,6 +41,8 @@
 	[productsView setBackgroundColor:[UIColor clearColor]];
 	
 	[productsView setAllowsSelection:NO];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productImageFetchStatusNotification:) name:@"productImageFetchComplete" object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -84,12 +86,16 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSString *CellIdentifier = ([indexPath row] == 0)? @"ProductCellHeader":@"ProductCell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	NSString *CellIdentifier = ([indexPath row] == 0)? @"ProductCellHeader":[NSString stringWithFormat:@"ProductCell%i",[indexPath row]];
 	
-    /* Create a cell for this row's product */
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	
+	/* Create a cell for this row's product */
 	Product *product = [products objectAtIndex:[indexPath row]];
+	[dataManager fetchImagesForProduct:product];
+	
+	NSLog(@"Reloading row: %i", [indexPath row]);
+	
 	NSNumber *quantity = [dataManager getProductQuantityFromBasket:product];
 	NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isHeader:([indexPath row] == 0)];
 	
@@ -104,7 +110,22 @@
 		[headerLabel setText:[self productShelf]];
 	}
 	
-    return cell;
+	return cell;
+}
+
+- (void)productImageFetchStatusNotification:(NSNotification *)notification {
+	NSNumber *productID = [[notification userInfo] objectForKey:@"productID"];
+	NSLog(@"Notification for: %@", productID);
+	NSInteger index = 0;
+	
+	for (Product * product in products){
+		if ([[product productID] compare:productID] == NSOrderedSame) {
+			NSLog(@"Calling reload at row: %i", index);
+			[productsView reloadRowsAtIndexPaths: [[NSArray alloc] initWithObjects:[NSIndexPath indexPathForRow:index inSection:0], nil] withRowAnimation:UITableViewRowAnimationNone];
+			 return;
+		}
+		index++;
+	}
 }
 
 /*
