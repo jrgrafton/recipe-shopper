@@ -92,9 +92,6 @@ static DataManager *sharedInstance = nil;
 		/* initialise the overlay view */
 		overlayViewController = [[OverlayViewController alloc] initWithNibName:@"OverlayView" bundle:[NSBundle mainBundle]];
 		
-		/* need be notified so we can update internal product img fetch statuses*/
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productImageFetchStatusNotification:) name:@"productImageFetchComplete" object:nil];
-		
 		[self setUpdatingProductBasket:NO];
 		[self setUpdatingOnlineBasket:NO];
 		[self setLoadingDepartmentList:NO];
@@ -131,7 +128,11 @@ static DataManager *sharedInstance = nil;
 	/* update this product in the product basket */
 	[productBasketManager updateProductBasketQuantity:product byQuantity:quantity];
 	
-	[LogManager log:[NSString stringWithFormat:@"Number of product basket threads remaining is %d", productBasketUpdates] withLevel:LOG_INFO fromClass:[[self class] description]];
+	if ([overlayViewController isShowing]) {
+		[self performSelectorOnMainThread:@selector(setOverlayLoadingLabelText:) withObject:[NSString stringWithFormat:@"%d basket update(s) remaining",productBasketUpdates] waitUntilDone:YES];
+	}
+	
+	[LogManager log:[NSString stringWithFormat:@"Number of product basket thread(s) remaining is %d", productBasketUpdates] withLevel:LOG_INFO fromClass:[[self class] description]];
 
 	if (productBasketUpdates == 0) {
 		/* we've finished updating the product basket now */
@@ -159,6 +160,7 @@ static DataManager *sharedInstance = nil;
 	onlineBasketUpdates++;
 	[apiRequestManager updateBasketQuantity:productID byQuantity:quantity];
 	onlineBasketUpdates--;
+	
 	[LogManager log:[NSString stringWithFormat:@"Number of online basket updates remaining is %d", onlineBasketUpdates] withLevel:LOG_INFO fromClass:[[self class] description]];
 	
 	if (onlineBasketUpdates == 0) {
@@ -301,6 +303,9 @@ static DataManager *sharedInstance = nil;
 	}
 	
 	if ([self phoneIsOnline]) {
+		/* need be notified so we can update internal product img fetch statuses*/
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productImageFetchStatusNotification:) name:@"productImageFetchComplete" object:nil];
+		
 		for (Product* product in productBatch) {
 			NSLog(@"Starting thread for product: %@", [product productID]);
 			productImageFetchThreads++;
@@ -316,6 +321,7 @@ static DataManager *sharedInstance = nil;
 	
 	NSInteger leftToFetch = productImageFetchLastBatchSize - productImageFetchSuccessCount;
 	if (leftToFetch == 0) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self];
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"productImageBatchFetchComplete" object:self userInfo:nil];
 	}else {
 		[overlayViewController setOverlayLoadingLabelText:[NSString stringWithFormat:@"%d products left to fetch",leftToFetch]];	
@@ -359,7 +365,7 @@ static DataManager *sharedInstance = nil;
 	
     if ([self phoneIsOnline] == YES) {
 		/* phone is online so create the products for this recipe using the online store */
-        product = [apiRequestManager createProductFromProductBaseID:[recipeProduct objectAtIndex:0]];
+        product = [apiRequestManager createProductFromProductBaseID:[recipeProduct objectAtIndex:0] fetchImages:YES];
 	} else {
 		/* we're using offline mode so create the products for this recipe using the database */
 		product = [databaseRequestManager createProductFromProductBaseID:[recipeProduct objectAtIndex:0]];
@@ -395,7 +401,7 @@ static DataManager *sharedInstance = nil;
 	
     if ([self phoneIsOnline] == YES) {
         /* phone is online so create the products for this recipe using the online store */
-        product = [apiRequestManager createProductFromProductBaseID:[recipeProduct objectAtIndex:0]];
+        product = [apiRequestManager createProductFromProductBaseID:[recipeProduct objectAtIndex:0] fetchImages:YES];
     } else {
 		/* we're using offline mode so create the products for this recipe using the database */
         product = [databaseRequestManager createProductFromProductBaseID:[recipeProduct objectAtIndex:0]];

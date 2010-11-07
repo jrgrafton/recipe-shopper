@@ -14,6 +14,7 @@
 
 @property (nonatomic, retain) IBOutlet UILabel *overlayLabel;
 @property (nonatomic, retain) IBOutlet UILabel *overlayLoadingLabel;
+@property (nonatomic, assign) BOOL isShowing;
 
 - (void)showOverlayView:(UIView *)superView;
 - (void)hideOverlayView;

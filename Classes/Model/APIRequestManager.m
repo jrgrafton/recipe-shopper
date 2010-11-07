@@ -22,7 +22,7 @@
 - (BOOL)apiRequest:(NSString *)requestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error;
 - (BOOL)login:(NSString *)email withPassword:(NSString *)password;
 - (NSString *)urlEncodeValue:(NSString *)requestString;
-- (Product *)createProductFromJSON:(NSDictionary *)productJSON;
+- (Product *)createProductFromJSON:(NSDictionary *)productJSON fetchImages:(BOOL)fetchImages;
 
 @end
 
@@ -91,7 +91,7 @@
 	return onlineBasket;
 }
 
-- (Product *)createProductFromProductBaseID:(NSString *)productBaseID {
+- (Product *)createProductFromProductBaseID:(NSString *)productBaseID fetchImages:(BOOL)fetchImages{
     NSString *requestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&sessionkey=%@", REST_SERVICE_URL, productBaseID, sessionKey];
     NSDictionary *apiResults;
     NSString *error;
@@ -105,7 +105,7 @@
             return nil;
         } else {
             /* assume its a single product, so we want the first (and only) one */
-            product = [self createProductFromJSON:[[apiResults objectForKey:@"Products"] objectAtIndex:0]];
+            product = [self createProductFromJSON:[[apiResults objectForKey:@"Products"] objectAtIndex:0] fetchImages:fetchImages];
         }
     } else {
         /* API request for search has failed */
@@ -172,7 +172,7 @@
 		
 		if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error] == YES) {
 			for (NSDictionary *productInfo in [apiResults objectForKey:@"Products"]) {
-				[shelfProductCache addObject:[self createProductFromJSON:productInfo]];
+				[shelfProductCache addObject:[self createProductFromJSON:productInfo  fetchImages:NO]];
 			}
 		}
 		//NSTimeInterval end = [[NSDate date] timeIntervalSince1970];
@@ -297,7 +297,7 @@
 		*totalPageCountHolder = [[apiResults objectForKey:@"TotalPageCount"] intValue];
 		
 		while ((productInfo = [productsEnumerator nextObject])) {
-			[products addObject:[self createProductFromJSON:productInfo]];
+			[products addObject:[self createProductFromJSON:productInfo fetchImages:NO]];
 		}
 	}
 	
@@ -427,7 +427,7 @@
 /*
  * Creates a product from the JSON info
  */
-- (Product *)createProductFromJSON:(NSDictionary *)productJSON {
+- (Product *)createProductFromJSON:(NSDictionary *)productJSON fetchImages:(BOOL)fetchImages {
 	NSNumber *productBaseID = [NSNumber numberWithInt:[[productJSON objectForKey:@"BaseProductId"] intValue]];
 	NSNumber *productID = [NSNumber numberWithInt:[[productJSON objectForKey:@"ProductId"] intValue]];
 	NSString *productName = [productJSON objectForKey:@"Name"];
@@ -443,6 +443,10 @@
 									 
 	[product setProductImageURL:productImageURL];
 	[product setProductOfferImageURL:productOfferImageURL];
+	if (fetchImages) {
+		[self fetchImagesForProduct:product];
+	}
+	
 	
 	return product;
 }

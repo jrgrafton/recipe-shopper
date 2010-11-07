@@ -12,16 +12,19 @@
 
 @synthesize overlayLabel;
 @synthesize overlayLoadingLabel;
+@synthesize isShowing;
 
 - (void)showOverlayView:(UIView *)superView {
 	[superView addSubview:[self view]];
 	[self setOverlayViewOffset:CGPointMake(0.0, 20.0)];
 	[self setOverlayLabelText:@""];
 	[self setOverlayLoadingLabelText:@""];
+	[self setIsShowing:YES];
 }
 
 - (void)hideOverlayView {
 	[[self view] removeFromSuperview];
+	[self setIsShowing:NO];
 }
 
 - (void)showActivityIndicator {
