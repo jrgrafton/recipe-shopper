@@ -13,6 +13,7 @@
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *overlayLabel;
+@property (nonatomic, retain) IBOutlet UILabel *overlayLoadingLabel;
 
 - (void)showOverlayView:(UIView *)superView;
 - (void)hideOverlayView;
@@ -20,5 +21,6 @@
 - (void)showActivityIndicator;
 - (void)hideActivityIndicator;
 - (void)setOverlayLabelText:(NSString *)text;
+- (void)setOverlayLoadingLabelText:(NSString *)text;
 
 @end

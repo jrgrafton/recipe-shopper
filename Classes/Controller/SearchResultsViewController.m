@@ -50,15 +50,6 @@
 	[searchResultsView reloadData];
 }
 
-- (void)newSearch {
-	searchResults = [[NSMutableArray alloc] init];
-	currentPage = 1;
-	[searchResults removeAllObjects];
-	[searchBarView setText:searchTerm];
-	
-	[self searchForProducts];
-}
-
 #pragma mark -
 #pragma mark Search bar delegate
 
@@ -144,7 +135,6 @@
 	
 	/* create a cell for this row's product */
 	Product *product = [searchResults objectAtIndex:[indexPath row]];
-	[dataManager fetchImagesForProduct:product];
 	
 	NSNumber *quantity = [dataManager getProductQuantityFromBasket:product];
 	NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isHeader:([indexPath row] == 0)];
@@ -165,6 +155,15 @@
 
 #pragma mark -
 #pragma mark Private methods
+
+- (void)newSearch {
+	searchResults = [[NSMutableArray alloc] init];
+	currentPage = 1;
+	[searchResults removeAllObjects];
+	[searchBarView setText:searchTerm];
+	
+	[self searchForProducts];
+}
 
 - (void)fetchMoreProducts {
 	currentPage++;

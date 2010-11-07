@@ -28,6 +28,8 @@ static DataManager *sharedInstance = nil;
 @synthesize productBasketUpdates;
 @synthesize onlineBasketUpdates;
 @synthesize productImageFetchThreads;
+@synthesize productImageFetchLastBatchSize;
+@synthesize productImageFetchSuccessCount;
 
 + (DataManager *)getInstance {
 	@synchronized(self){
@@ -90,9 +92,6 @@ static DataManager *sharedInstance = nil;
 		/* initialise the overlay view */
 		overlayViewController = [[OverlayViewController alloc] initWithNibName:@"OverlayView" bundle:[NSBundle mainBundle]];
 		
-		/* intialise product fetch status dict */
-		productImageFetchStatuses = [[NSMutableDictionary alloc] init];
-		
 		/* need be notified so we can update internal product img fetch statuses*/
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productImageFetchStatusNotification:) name:@"productImageFetchComplete" object:nil];
 		
@@ -103,6 +102,8 @@ static DataManager *sharedInstance = nil;
 		[self setProductBasketUpdates:0];
 		[self setOnlineBasketUpdates:0];
 		[self setProductImageFetchThreads:0];
+		[self setProductImageFetchLastBatchSize:0];
+		[self setProductImageFetchSuccessCount:0];
 	}
 	
 	return self;
@@ -115,7 +116,6 @@ static DataManager *sharedInstance = nil;
     [apiRequestManager release];
 	[loginManager release];
 	[overlayViewController release];
-	[productImageFetchStatuses release];
 }
 
 - (BOOL)phoneIsOnline {
@@ -271,8 +271,8 @@ static DataManager *sharedInstance = nil;
 	return [apiRequestManager getShelvesForAisle:aisle];
 }
 
-- (NSArray *)getProductsForShelf:(NSString *)shelf {
-	return [apiRequestManager getProductsForShelf:shelf];
+- (NSArray *)getProductsForShelf:(NSString *)shelf onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder {
+	return [apiRequestManager getProductsForShelf:shelf onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder];
 }
 
 - (NSDictionary *)getDeliveryDates {
@@ -291,14 +291,20 @@ static DataManager *sharedInstance = nil;
 	return [apiRequestManager customerName];
 }
 
-- (void)fetchImagesForProduct:(Product *)product {
+- (void)fetchImagesForProductBatch:(NSArray *)productBatch {
+	[self setProductImageFetchLastBatchSize: [productBatch count]];
+	productImageFetchSuccessCount = 0;
+	
+	if ([productBatch count] == 0) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"productImageBatchFetchComplete" object:self userInfo:nil];
+		return;
+	}
+	
 	if ([self phoneIsOnline]) {
-		if ([productImageFetchStatuses objectForKey:[product productID]] == nil) {
-			NSLog(@"Starting thread for: %@", [product productID]);
+		for (Product* product in productBatch) {
+			NSLog(@"Starting thread for product: %@", [product productID]);
 			productImageFetchThreads++;
-			[productImageFetchStatuses setObject:[NSNumber numberWithInt:PRODUCT_FETCH_REQUESTED] forKey:[product productID]];
 			[NSThread detachNewThreadSelector:@selector(fetchImagesForProduct:) toTarget:apiRequestManager withObject:product];
-			
 			[LogManager log:[NSString stringWithFormat:@"Number of product image fetch requests is now %d", productImageFetchThreads] withLevel:LOG_INFO fromClass:[[self class] description]];
 		}
 	}
@@ -306,7 +312,14 @@ static DataManager *sharedInstance = nil;
 
 - (void)productImageFetchStatusNotification:(NSNotification *)notification {
 	productImageFetchThreads--;
+	productImageFetchSuccessCount++;
 	
+	NSInteger leftToFetch = productImageFetchLastBatchSize - productImageFetchSuccessCount;
+	if (leftToFetch == 0) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"productImageBatchFetchComplete" object:self userInfo:nil];
+	}else {
+		[overlayViewController setOverlayLoadingLabelText:[NSString stringWithFormat:@"%d products left to fetch",leftToFetch]];	
+	}
 }
 
 #pragma mark -
@@ -478,6 +491,10 @@ static DataManager *sharedInstance = nil;
 
 - (void)setOverlayLabelText:(NSString *)text {
 	[overlayViewController performSelectorOnMainThread:@selector(setOverlayLabelText:) withObject:text waitUntilDone:YES];
+}
+
+- (void)setOverlayLoadingLabelText:(NSString *)text {
+	[overlayViewController performSelectorOnMainThread:@selector(setOverlayLoadingLabelText:) withObject:text waitUntilDone:YES];
 }
 
 @end

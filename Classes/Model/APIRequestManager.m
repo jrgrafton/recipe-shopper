@@ -15,7 +15,7 @@
 #define DEVELOPER_KEY @"xIvRaeGkY6OavPL1XtX9"
 #define APPLICATION_KEY @"CA1A9E0437CBE399E890"
 #define REST_SERVICE_URL @"https://secure.techfortesco.com/groceryapi_b1/restservice.aspx"
-#define MAX_ASYNC_REQUESTS 15
+#define SHELF_SIMULATED_PAGE_SIZE 15
 
 @interface APIRequestManager()
 
@@ -37,6 +37,7 @@
 		departments = [[NSMutableDictionary alloc] init];
 		aisles = [[NSMutableDictionary alloc] init];
 		shelves = [[NSMutableDictionary alloc] init];
+		shelfProductCache = [[NSMutableArray alloc] init];
 		
 		sessionKey = @"";
 		
@@ -160,24 +161,31 @@
 	return shelfNames;
 }
 
-- (NSArray *)getProductsForShelf:(NSString *)shelf {
-	NSMutableArray *products = [NSMutableArray array];
-	NSDictionary *apiResults;
-	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTPRODUCTSBYCATEGORY&category=%@&sessionkey=%@", REST_SERVICE_URL, [shelves objectForKey:shelf], sessionKey];
-	NSString *error;
-	
-	//NSTimeInterval start = [[NSDate date]timeIntervalSince1970];
-	
-	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error] == YES) {
-		for (NSDictionary *productInfo in [apiResults objectForKey:@"Products"]) {
-			[products addObject:[self createProductFromJSON:productInfo]];
+- (NSArray *)getProductsForShelf:(NSString *)shelf onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder {
+	if (page == 1) {
+		[shelfProductCache removeAllObjects];
+		NSDictionary *apiResults;
+		NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTPRODUCTSBYCATEGORY&category=%@&sessionkey=%@", REST_SERVICE_URL, [shelves objectForKey:shelf], sessionKey];
+		NSString *error;
+		
+		//NSTimeInterval start = [[NSDate date]timeIntervalSince1970];
+		
+		if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error] == YES) {
+			for (NSDictionary *productInfo in [apiResults objectForKey:@"Products"]) {
+				[shelfProductCache addObject:[self createProductFromJSON:productInfo]];
+			}
 		}
+		//NSTimeInterval end = [[NSDate date] timeIntervalSince1970];
+		//NSLog(@"Operation took: %f secs",end - start);
 	}
-	/*
-	NSTimeInterval end = [[NSDate date] timeIntervalSince1970];
-	NSLog(@"Operation took: %f secs",end - start);*/
 	
-	return products;
+	*totalPageCountHolder = ([shelfProductCache count] / SHELF_SIMULATED_PAGE_SIZE) + 1;
+	
+	NSInteger startPageProductIndex = (page - 1) * SHELF_SIMULATED_PAGE_SIZE;
+	NSInteger indexCount = (startPageProductIndex + SHELF_SIMULATED_PAGE_SIZE < [shelfProductCache count])?
+									SHELF_SIMULATED_PAGE_SIZE : [shelfProductCache count] - startPageProductIndex;
+	
+	return [shelfProductCache subarrayWithRange:NSMakeRange(startPageProductIndex, indexCount)];
 }
 
 - (NSDictionary *)getBasketDetails {

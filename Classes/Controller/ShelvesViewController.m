@@ -59,6 +59,17 @@
 	}
 	
 	[shelvesView reloadData];
+	
+	/* Notification when batch of product images have finished being fetched so we know when to transition */
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productImageBatchFetchCompleteNotification) name:@"productImageBatchFetchComplete" object:nil];
+
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	
+	/* Don't care about notifications unless I am current view controller */
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark -
@@ -114,13 +125,17 @@
 - (void)loadProducts:(NSString *)shelf {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	[productsViewController loadProducts:shelf];
-	
-	/* transition to products view */
-	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[[appDelegate onlineShopViewController] pushViewController:self.productsViewController animated:YES];
+	[productsViewController setCurrentPage:1];
+	[productsViewController setProductShelf:shelf];
+	[productsViewController loadProducts];
 	
 	[pool release];
+}
+
+- (void)productImageBatchFetchCompleteNotification {
+	/* transition to products view only after we know its completely finished loading */
+	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
+	[[appDelegate onlineShopViewController] pushViewController:self.productsViewController animated:YES];
 }
 
 #pragma mark -

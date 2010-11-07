@@ -15,6 +15,8 @@
 	NSMutableDictionary *departments;
 	NSMutableDictionary *aisles;
 	NSMutableDictionary *shelves;
+	
+	NSMutableArray *shelfProductCache; /* Shelf result cache so we can simulate pagination */
 }
 
 @property (nonatomic) BOOL offlineMode;
@@ -28,7 +30,7 @@
 - (NSArray *)getDepartments;
 - (NSArray *)getAislesForDepartment:(NSString *)department;
 - (NSArray *)getShelvesForAisle:(NSString *)aisle;
-- (NSArray *)getProductsForShelf:(NSString *)shelf;
+- (NSArray *)getProductsForShelf:(NSString *)shelf onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder;
 - (NSDictionary *)getBasketDetails;
 - (BOOL)updateBasketQuantity:(NSString *)productID byQuantity:(NSNumber *)quantity;
 - (NSDictionary *)getDeliveryDates;

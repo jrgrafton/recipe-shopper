@@ -15,11 +15,13 @@
 @private 
 	DataManager *dataManager;
 	NSMutableArray *products;
-	NSString *productShelf;
+	NSInteger totalPageCount;
+	UIView *footerView;
 }
 
 @property (nonatomic, retain) NSString *productShelf;
+@property (nonatomic, assign) NSInteger currentPage;
 
-- (void)loadProducts:(NSString *)shelf;
+- (void)loadProducts;
 
 @end

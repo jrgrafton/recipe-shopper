@@ -11,11 +11,13 @@
 @implementation OverlayViewController
 
 @synthesize overlayLabel;
+@synthesize overlayLoadingLabel;
 
 - (void)showOverlayView:(UIView *)superView {
 	[superView addSubview:[self view]];
 	[self setOverlayViewOffset:CGPointMake(0.0, 20.0)];
 	[self setOverlayLabelText:@""];
+	[self setOverlayLoadingLabelText:@""];
 }
 
 - (void)hideOverlayView {
@@ -38,6 +40,10 @@
 
 - (void)setOverlayLabelText:(NSString *)text {
 	[overlayLabel setText:text];
+}
+
+- (void)setOverlayLoadingLabelText:(NSString *)text {
+	[overlayLoadingLabel setText:text];
 }
 
 - (void)didReceiveMemoryWarning {

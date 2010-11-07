@@ -15,16 +15,23 @@
 
 - (void)addProductButtonClicked:(id)sender;
 - (void)removeProductButtonClicked:(id)sender;
+- (void)fetchMoreProducts;
+- (void)productImageBatchFetchCompleteNotification;
 
 @end
 
 @implementation ProductsViewController
 
 @synthesize productShelf;
+@synthesize currentPage;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
 		dataManager = [DataManager getInstance];
+		products = [[NSMutableArray alloc] init];
+		
+		/* Notification when batch of product images have finished being fetched */
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productImageBatchFetchCompleteNotification) name:@"productImageBatchFetchComplete" object:nil];
     }
     return self;
 }
@@ -41,8 +48,6 @@
 	[productsView setBackgroundColor:[UIColor clearColor]];
 	
 	[productsView setAllowsSelection:NO];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productImageFetchStatusNotification:) name:@"productImageFetchComplete" object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -51,30 +56,40 @@
 	[productsView reloadData];
 }
 
-- (void)loadProducts:(NSString *)shelf {
-	products = [[NSMutableArray alloc] init];
-	[products removeAllObjects];
-	[products addObjectsFromArray:[dataManager getProductsForShelf:shelf]];
-	
-	/* scroll the products to the top */
-	[productsView setContentOffset:CGPointMake(0, 0) animated:NO];
-	
-	if ([products count] == 0) {
-		/* just pop up a window to say so */
-		UIAlertView *noResultsAlert = [[UIAlertView alloc] initWithTitle:@"Online Shop" message:[NSString stringWithFormat:@"No results found for '%@'", shelf] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[noResultsAlert show];
-		[noResultsAlert release];
-	}
-	
-	[productsView reloadData];
-	[dataManager hideOverlayView];
-}
-
 #pragma mark -
 #pragma mark Table view data source
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return ([indexPath row] == 0)? 135:120;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	return (currentPage < totalPageCount)? 90:0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if(footerView == nil) {
+        //allocate the view if it doesn't exist yet
+        footerView  = [[UIView alloc] init];
+		
+		UIImage *image = [[UIImage imageNamed:@"fetchMore.png"]
+						  stretchableImageWithLeftCapWidth:8 topCapHeight:8];
+		
+		//create the button
+		UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(10, 10, 300, 67)];
+		[button setBackgroundImage:image forState:UIControlStateNormal];
+		
+		//set action of the button
+		[button addTarget:self action:@selector(fetchMoreProducts)
+		 forControlEvents:UIControlEventTouchUpInside];
+		
+		//add the button to the view
+		[footerView addSubview:button];
+		[button release];
+    }
+	
+    //return the view for the footer
+    return (currentPage < totalPageCount)? footerView:nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -92,9 +107,6 @@
 	
 	/* Create a cell for this row's product */
 	Product *product = [products objectAtIndex:[indexPath row]];
-	[dataManager fetchImagesForProduct:product];
-	
-	NSLog(@"Reloading row: %i", [indexPath row]);
 	
 	NSNumber *quantity = [dataManager getProductQuantityFromBasket:product];
 	NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isHeader:([indexPath row] == 0)];
@@ -113,20 +125,44 @@
 	return cell;
 }
 
-- (void)productImageFetchStatusNotification:(NSNotification *)notification {
-	NSNumber *productID = [[notification userInfo] objectForKey:@"productID"];
-	NSLog(@"Notification for: %@", productID);
-	NSInteger index = 0;
+#pragma mark -
+#pragma mark private methods
+
+- (void)loadProducts {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	for (Product * product in products){
-		if ([[product productID] compare:productID] == NSOrderedSame) {
-			NSLog(@"Calling reload at row: %i", index);
-			NSArray * array = [[[NSArray alloc] initWithObjects:[NSIndexPath indexPathForRow:index inSection:0], nil] autorelease];
-			[productsView reloadRowsAtIndexPaths: array withRowAnimation:UITableViewRowAnimationNone];
-			 return;
-		}
-		index++;
+	if (currentPage == 1) {
+		[products removeAllObjects];
 	}
+	
+	NSArray *result = [[dataManager getProductsForShelf:productShelf onPage:currentPage totalPageCountHolder:&totalPageCount]retain];
+	[dataManager setOverlayLoadingLabelText:[NSString stringWithFormat:@"%d products left to fetch",[result count]]];
+	
+	[dataManager fetchImagesForProductBatch: result];
+	[products addObjectsFromArray: result];
+	
+	if ([products count] == 0) {
+		/* just pop up a window to say so */
+		UIAlertView *noResultsAlert = [[UIAlertView alloc] initWithTitle:@"Online Shop" message:[NSString stringWithFormat:@"No results found for '%@'", productShelf] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[noResultsAlert show];
+		[noResultsAlert release];
+	}
+	
+	[pool release];
+}
+
+- (void)fetchMoreProducts {
+	currentPage++;
+	[dataManager showOverlayView:[[self view] window]];
+	[dataManager setOverlayLabelText:[NSString stringWithFormat:@"Fetching page %d of %d", currentPage, totalPageCount]];
+	[dataManager showActivityIndicator];		
+	[NSThread detachNewThreadSelector:@selector(loadProducts) toTarget:self withObject:nil];
+}
+
+- (void)productImageBatchFetchCompleteNotification {
+	NSLog(@"COMPLETE NOTIFICATION");
+	[dataManager hideOverlayView];
+	[productsView reloadData];
 }
 
 /*

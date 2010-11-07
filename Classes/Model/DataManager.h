@@ -16,8 +16,6 @@
 #import "Recipe.h"
 #import "Product.h"
 
-#define PRODUCT_FETCH_REQUESTED 0
-
 @interface DataManager : NSObject {
 	
 @private 
@@ -27,9 +25,6 @@
 	APIRequestManager *apiRequestManager;
 	LoginManager *loginManager;
 	OverlayViewController *overlayViewController;
-	
-	/* Status map of productID -> status */
-	NSMutableDictionary *productImageFetchStatuses;
 }
 
 /* Not explicitly stating non-atomic means we get atomic vars */
@@ -41,6 +36,8 @@
 @property (assign) NSInteger productBasketUpdates;
 @property (assign) NSInteger onlineBasketUpdates;
 @property (assign) NSInteger productImageFetchThreads;
+@property (assign) NSInteger productImageFetchLastBatchSize;
+@property (assign) NSInteger productImageFetchSuccessCount;
 
 + (DataManager *)getInstance;
 
@@ -69,12 +66,12 @@
 - (void)getDepartments;	/* Results sent out with notification */
 - (NSArray *)getAislesForDepartment:(NSString *)department;
 - (NSArray *)getShelvesForAisle:(NSString *)aisle;
-- (NSArray *)getProductsForShelf:(NSString *)shelf;
+- (NSArray *)getProductsForShelf:(NSString *)shelf onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder;
 - (NSDictionary *)getDeliveryDates;
 - (NSArray *)searchForProducts:(NSString *)searchTerm onPage:(NSInteger)page totalPageCountHolder:(NSInteger *)totalPageCountHolder;
 - (BOOL)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error;
 - (NSString *)getCustomerName;
-- (void)fetchImagesForProduct:(Product*) product;
+- (void)fetchImagesForProductBatch:(NSArray*) productBatch;
 - (void)productImageFetchStatusNotification: (NSNotification *)notification;
 
 /* recipe basket manager calls */
@@ -108,5 +105,6 @@
 - (void)showActivityIndicator;
 - (void)hideActivityIndicator;
 - (void)setOverlayLabelText:(NSString *)text;
+- (void)setOverlayLoadingLabelText:(NSString *)text;
 
 @end
