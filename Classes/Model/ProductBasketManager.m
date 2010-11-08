@@ -7,6 +7,7 @@
 //
 
 #import "ProductBasketManager.h"
+#import "DataManager.h"
 
 @interface ProductBasketManager()
 - (void)recalculateBasketPrice;
@@ -21,10 +22,10 @@
 - (id)init {
 	if (self = [super init]) {
 		productBasket = [[NSMutableDictionary alloc] init];
+		dataManager = [DataManager getInstance];
+		[self setProductBasketPrice:@"£0.00"];
+		[self setShoppingListProducts:[NSNumber numberWithInt:0]];
 	}
-	
-	[self setProductBasketPrice:@"£0.00"];
-	[self setShoppingListProducts:[NSNumber numberWithInt:0]];
 	
 	return self;
 }
@@ -49,7 +50,7 @@
 	}
 	
 	[self recalculateBasketPrice];
-	[self setShoppingListProducts:[NSNumber numberWithInt:[[productBasket allKeys] count]]];
+	[self setShoppingListProducts:[NSNumber numberWithInt:[dataManager getTotalProductCount]]];
 }
 
 #pragma mark -

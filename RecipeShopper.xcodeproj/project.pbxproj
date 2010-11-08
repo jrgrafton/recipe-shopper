@@ -31,7 +31,6 @@
 		3EB5D5111268AB29009A80E0 /* RecipeListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FB1268AB29009A80E0 /* RecipeListView.xib */; };
 		3EB5D5121268AB29009A80E0 /* RecipeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FC1268AB29009A80E0 /* RecipeView.xib */; };
 		3EB5D5131268AB29009A80E0 /* RecipeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FD1268AB29009A80E0 /* RecipeCell.xib */; };
-		3EB5D5141268AB29009A80E0 /* SearchResultsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FE1268AB29009A80E0 /* SearchResultsView.xib */; };
 		3EB5D5151268AB29009A80E0 /* ShelvesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D4FF1268AB29009A80E0 /* ShelvesView.xib */; };
 		3EB5D5161268AB29009A80E0 /* ShoppingListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D5001268AB29009A80E0 /* ShoppingListView.xib */; };
 		3EB5D5371268AB3D009A80E0 /* AislesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5181268AB3D009A80E0 /* AislesViewController.m */; };
@@ -46,7 +45,6 @@
 		3EB5D5401268AB3D009A80E0 /* RecipeHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D52A1268AB3D009A80E0 /* RecipeHistoryViewController.m */; };
 		3EB5D5411268AB3D009A80E0 /* RecipeListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D52C1268AB3D009A80E0 /* RecipeListViewController.m */; };
 		3EB5D5421268AB3D009A80E0 /* RecipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D52E1268AB3D009A80E0 /* RecipeViewController.m */; };
-		3EB5D5431268AB3D009A80E0 /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5301268AB3D009A80E0 /* SearchResultsViewController.m */; };
 		3EB5D5441268AB3D009A80E0 /* ShelvesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5321268AB3D009A80E0 /* ShelvesViewController.m */; };
 		3EB5D5451268AB3D009A80E0 /* ShoppingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */; };
 		3EB5D5461268AB3D009A80E0 /* UITableViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EB5D5361268AB3D009A80E0 /* UITableViewCellFactory.m */; };
@@ -203,7 +201,6 @@
 		3EB5D4FB1268AB29009A80E0 /* RecipeListView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeListView.xib; path = View/RecipeListView.xib; sourceTree = "<group>"; };
 		3EB5D4FC1268AB29009A80E0 /* RecipeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeView.xib; path = View/RecipeView.xib; sourceTree = "<group>"; };
 		3EB5D4FD1268AB29009A80E0 /* RecipeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RecipeCell.xib; path = View/RecipeCell.xib; sourceTree = "<group>"; };
-		3EB5D4FE1268AB29009A80E0 /* SearchResultsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SearchResultsView.xib; path = View/SearchResultsView.xib; sourceTree = "<group>"; };
 		3EB5D4FF1268AB29009A80E0 /* ShelvesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ShelvesView.xib; path = View/ShelvesView.xib; sourceTree = "<group>"; };
 		3EB5D5001268AB29009A80E0 /* ShoppingListView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ShoppingListView.xib; path = View/ShoppingListView.xib; sourceTree = "<group>"; };
 		3EB5D5171268AB3D009A80E0 /* AislesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AislesViewController.h; path = Controller/AislesViewController.h; sourceTree = "<group>"; };
@@ -230,8 +227,6 @@
 		3EB5D52C1268AB3D009A80E0 /* RecipeListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecipeListViewController.m; path = Controller/RecipeListViewController.m; sourceTree = "<group>"; };
 		3EB5D52D1268AB3D009A80E0 /* RecipeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecipeViewController.h; path = Controller/RecipeViewController.h; sourceTree = "<group>"; };
 		3EB5D52E1268AB3D009A80E0 /* RecipeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecipeViewController.m; path = Controller/RecipeViewController.m; sourceTree = "<group>"; };
-		3EB5D52F1268AB3D009A80E0 /* SearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchResultsViewController.h; path = Controller/SearchResultsViewController.h; sourceTree = "<group>"; };
-		3EB5D5301268AB3D009A80E0 /* SearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchResultsViewController.m; path = Controller/SearchResultsViewController.m; sourceTree = "<group>"; };
 		3EB5D5311268AB3D009A80E0 /* ShelvesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShelvesViewController.h; path = Controller/ShelvesViewController.h; sourceTree = "<group>"; };
 		3EB5D5321268AB3D009A80E0 /* ShelvesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShelvesViewController.m; path = Controller/ShelvesViewController.m; sourceTree = "<group>"; };
 		3EB5D5331268AB3D009A80E0 /* ShoppingListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShoppingListViewController.h; path = Controller/ShoppingListViewController.h; sourceTree = "<group>"; };
@@ -532,7 +527,6 @@
 				CE81C9981271FA4500D8A725 /* RecipeCellHeader.xib */,
 				CE76EB6B1274935800903FCC /* RecipeBasketEmpty.xib */,
 				CE76EB2612748D0800903FCC /* RecipeHistoryEmpty.xib */,
-				3EB5D4FE1268AB29009A80E0 /* SearchResultsView.xib */,
 				3EB5D4FF1268AB29009A80E0 /* ShelvesView.xib */,
 				CE6F026412764FF9003696FA /* ShelfCell.xib */,
 				CE6F026612765008003696FA /* ShelfCellHeader.xib */,
@@ -570,8 +564,6 @@
 				3EB5D52C1268AB3D009A80E0 /* RecipeListViewController.m */,
 				3EB5D52D1268AB3D009A80E0 /* RecipeViewController.h */,
 				3EB5D52E1268AB3D009A80E0 /* RecipeViewController.m */,
-				3EB5D52F1268AB3D009A80E0 /* SearchResultsViewController.h */,
-				3EB5D5301268AB3D009A80E0 /* SearchResultsViewController.m */,
 				3EB5D5311268AB3D009A80E0 /* ShelvesViewController.h */,
 				3EB5D5321268AB3D009A80E0 /* ShelvesViewController.m */,
 				3EB5D5331268AB3D009A80E0 /* ShoppingListViewController.h */,
@@ -820,7 +812,6 @@
 				3EB5D5111268AB29009A80E0 /* RecipeListView.xib in Resources */,
 				3EB5D5121268AB29009A80E0 /* RecipeView.xib in Resources */,
 				3EB5D5131268AB29009A80E0 /* RecipeCell.xib in Resources */,
-				3EB5D5141268AB29009A80E0 /* SearchResultsView.xib in Resources */,
 				3EB5D5151268AB29009A80E0 /* ShelvesView.xib in Resources */,
 				3EB5D5161268AB29009A80E0 /* ShoppingListView.xib in Resources */,
 				3EB5D6701268ABA9009A80E0 /* recipeshopper.sqlite in Resources */,
@@ -950,7 +941,6 @@
 				3EB5D5401268AB3D009A80E0 /* RecipeHistoryViewController.m in Sources */,
 				3EB5D5411268AB3D009A80E0 /* RecipeListViewController.m in Sources */,
 				3EB5D5421268AB3D009A80E0 /* RecipeViewController.m in Sources */,
-				3EB5D5431268AB3D009A80E0 /* SearchResultsViewController.m in Sources */,
 				3EB5D5441268AB3D009A80E0 /* ShelvesViewController.m in Sources */,
 				3EB5D5451268AB3D009A80E0 /* ShoppingListViewController.m in Sources */,
 				3EB5D5461268AB3D009A80E0 /* UITableViewCellFactory.m in Sources */,

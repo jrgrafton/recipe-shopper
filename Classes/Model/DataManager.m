@@ -321,10 +321,10 @@ static DataManager *sharedInstance = nil;
 	
 	NSInteger leftToFetch = productImageFetchLastBatchSize - productImageFetchSuccessCount;
 	if (leftToFetch == 0) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"productImageBatchFetchComplete" object:nil userInfo:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"productImageBatchFetchComplete" object:self userInfo:nil];
 	}else {
-		[overlayViewController setOverlayLoadingLabelText:[NSString stringWithFormat:@"%d products left to fetch",leftToFetch]];	
+		[overlayViewController setOverlayLoadingLabelText:[NSString stringWithFormat:@"%d product(s) left to fetch",leftToFetch]];	
 	}
 }
 
@@ -359,6 +359,8 @@ static DataManager *sharedInstance = nil;
 
 - (void)addRecipeProductToBasket:(NSArray *)recipeProduct {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[recipeProduct retain];	//Since its coming from an external thread
+	
     Product *product;
     
 	productBasketUpdates++;
@@ -377,6 +379,7 @@ static DataManager *sharedInstance = nil;
         [self updateBasketQuantity:product byQuantity:[recipeProduct objectAtIndex:1]];
     }
     
+	[recipeProduct release];
     [pool release];
 }
 

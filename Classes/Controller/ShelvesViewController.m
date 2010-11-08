@@ -107,7 +107,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (productsViewController == nil) {
 		ProductsViewController *productsView = [[ProductsViewController alloc] initWithNibName:@"ProductsView" bundle:nil];
-		[productsView setProductShelf:[shelves objectAtIndex:[indexPath row]]];
+		[productsView setProductTerm:[shelves objectAtIndex:[indexPath row]]];
 		[self setProductsViewController:productsView];
 		[productsView release];
 	}
@@ -126,13 +126,16 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	[productsViewController setCurrentPage:1];
-	[productsViewController setProductShelf:shelf];
+	[productsViewController setProductTerm:shelf];
+	[productsViewController setProductViewFor:PRODUCT_SHELF];
 	[productsViewController loadProducts];
 	
 	[pool release];
 }
 
 - (void)productImageBatchFetchCompleteNotification {
+	[dataManager hideOverlayView];
+	
 	/* transition to products view only after we know its completely finished loading */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[[appDelegate onlineShopViewController] pushViewController:self.productsViewController animated:YES];

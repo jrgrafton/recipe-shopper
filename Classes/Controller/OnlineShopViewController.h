@@ -20,7 +20,7 @@
 }
 
 @property (nonatomic, retain) AislesViewController *aislesViewController;
-@property (nonatomic, retain) SearchResultsViewController *searchResultsViewController;
+@property (nonatomic, retain) ProductsViewController *searchResultsViewController;
 @property (nonatomic, retain) NSArray *departments;
 
 @end

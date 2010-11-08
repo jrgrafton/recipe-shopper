@@ -10,7 +10,11 @@
 #import "Product.h"
 #import "Recipe.h"
 
+@class DataManager;
+
 @interface ProductBasketManager : NSObject {
+	@private
+		DataManager *dataManager;
 }
 
 @property (nonatomic, retain) NSMutableDictionary *productBasket;

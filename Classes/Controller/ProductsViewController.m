@@ -22,16 +22,14 @@
 
 @implementation ProductsViewController
 
-@synthesize productShelf;
+@synthesize productTerm;
 @synthesize currentPage;
+@synthesize productViewFor;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
 		dataManager = [DataManager getInstance];
 		products = [[NSMutableArray alloc] init];
-		
-		/* Notification when batch of product images have finished being fetched */
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productImageBatchFetchCompleteNotification) name:@"productImageBatchFetchComplete" object:nil];
     }
     return self;
 }
@@ -52,8 +50,14 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	
 	[productsView reloadData];
+	
+	/* Notification when batch of product images have finished being fetched */
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productImageBatchFetchCompleteNotification) name:@"productImageBatchFetchComplete" object:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark -
@@ -119,7 +123,7 @@
 	
 	if ([indexPath row] == 0) {
 		UILabel *headerLabel = (UILabel *)[cell viewWithTag:13];
-		[headerLabel setText:[self productShelf]];
+		[headerLabel setText:[self productTerm]];
 	}
 	
 	return cell;
@@ -135,7 +139,20 @@
 		[products removeAllObjects];
 	}
 	
-	NSArray *result = [[dataManager getProductsForShelf:productShelf onPage:currentPage totalPageCountHolder:&totalPageCount]retain];
+	NSArray *result;
+	
+	switch (productViewFor) {
+		case PRODUCT_SHELF:
+			result = [dataManager getProductsForShelf:productTerm onPage:currentPage totalPageCountHolder:&totalPageCount];
+			break;
+		case PRODUCT_SEARCH:
+			result = [dataManager searchForProducts:productTerm onPage:currentPage totalPageCountHolder:&totalPageCount];
+			break;
+		default:
+			break;
+	}
+	
+	
 	[dataManager setOverlayLoadingLabelText:[NSString stringWithFormat:@"%d products left to fetch",[result count]]];
 	
 	[dataManager fetchImagesForProductBatch: result];
@@ -143,7 +160,7 @@
 	
 	if ([products count] == 0) {
 		/* just pop up a window to say so */
-		UIAlertView *noResultsAlert = [[UIAlertView alloc] initWithTitle:@"Online Shop" message:[NSString stringWithFormat:@"No results found for '%@'", productShelf] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		UIAlertView *noResultsAlert = [[UIAlertView alloc] initWithTitle:@"Online Shop" message:[NSString stringWithFormat:@"No results found for '%@'", productTerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[noResultsAlert show];
 		[noResultsAlert release];
 	}
@@ -160,7 +177,6 @@
 }
 
 - (void)productImageBatchFetchCompleteNotification {
-	NSLog(@"COMPLETE NOTIFICATION");
 	[dataManager hideOverlayView];
 	[productsView reloadData];
 }

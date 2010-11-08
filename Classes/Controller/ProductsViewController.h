@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "DataManager.h"
 
+typedef enum ProductViewFor
+{
+	PRODUCT_SEARCH,
+	PRODUCT_SHELF
+} ProductViewFor;
+
 @interface ProductsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 	IBOutlet UITableView *productsView;
 	
@@ -19,8 +25,9 @@
 	UIView *footerView;
 }
 
-@property (nonatomic, retain) NSString *productShelf;
+@property (nonatomic, retain) NSString *productTerm;
 @property (nonatomic, assign) NSInteger currentPage;
+@property (nonatomic, assign) ProductViewFor productViewFor;
 
 - (void)loadProducts;
 

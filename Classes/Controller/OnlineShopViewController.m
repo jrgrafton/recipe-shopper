@@ -72,11 +72,19 @@
 			}
 		}
 	}
+	
+	/* Notification when batch of product images have finished being fetched so we know when to transition */
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productImageBatchFetchCompleteNotification) name:@"productImageBatchFetchComplete" object:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	
+	/* Don't care about notifications unless I am current view controller */
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)departmentListFinishedLoading: (NSNotification *)notification {
-	[[NSNotificationCenter defaultCenter] removeObserver: self];
-	
 	[self setDepartments: [[notification userInfo] objectForKey:@"departmentList"]];
 	[onlineShopView reloadData];
 	[dataManager hideOverlayView];
@@ -88,14 +96,17 @@
 	
 	/* transition to the search results view */
 	if (searchResultsViewController == nil) {
-		SearchResultsViewController *searchResultsView = [[SearchResultsViewController alloc] initWithNibName:@"SearchResultsView" bundle:nil];
+		ProductsViewController *searchResultsView = [[ProductsViewController alloc] initWithNibName:@"ProductsView" bundle:nil];
 		[self setSearchResultsViewController:searchResultsView];
 		[searchResultsView release];
 	}
 	
 	onlineShopView.scrollEnabled = YES;
 	[dataManager hideOverlayView];
-	[searchResultsViewController setSearchTerm:[searchBar text]];
+	
+	[searchResultsViewController setCurrentPage:1];
+	[searchResultsViewController setProductTerm:[[searchBar text] capitalizedString]];
+	[searchResultsViewController setProductViewFor:PRODUCT_SEARCH];
 	
 	[dataManager showOverlayView:[[self view] window]];
 	[dataManager setOverlayLabelText:[NSString stringWithFormat:@"Searching for %@", [searchBar text]]];
@@ -177,13 +188,16 @@
 
 - (void)searchForProducts {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[searchResultsViewController loadProducts];
+	[pool release];
+}
+
+- (void)productImageBatchFetchCompleteNotification {
+	[dataManager hideOverlayView];
 	
-	[searchResultsViewController newSearch];
-	
+	/* transition to products view only after we know its completely finished loading */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[[appDelegate onlineShopViewController] pushViewController:self.searchResultsViewController animated:YES];
-	
-	[pool release];
 }
 
 - (void)didReceiveMemoryWarning {
