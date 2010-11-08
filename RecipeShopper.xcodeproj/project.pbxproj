@@ -119,7 +119,7 @@
 		3EB5D6DE1268ABBB009A80E0 /* icon_cart@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6A91268ABBB009A80E0 /* icon_cart@2x.png */; };
 		3EB5D6DF1268ABBB009A80E0 /* icon_home.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6AA1268ABBB009A80E0 /* icon_home.png */; };
 		3EB5D6E01268ABBB009A80E0 /* icon_shopping.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6AB1268ABBB009A80E0 /* icon_shopping.png */; };
-		3EB5D6E11268ABBB009A80E0 /* todo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6AC1268ABBB009A80E0 /* todo.png */; };
+		3EB5D6E11268ABBB009A80E0 /* icon_todo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB5D6AC1268ABBB009A80E0 /* icon_todo.png */; };
 		3EB80E4C1235A50F00F74165 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB80E4B1235A50F00F74165 /* libsqlite3.0.dylib */; };
 		3EFBE0EC123CF117008B7DC2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EFBE0EB123CF117008B7DC2 /* SystemConfiguration.framework */; };
 		CE3D2DE712710C8700D100E2 /* watermarkScroll.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3D2DE512710C8700D100E2 /* watermarkScroll.png */; };
@@ -325,7 +325,7 @@
 		3EB5D6A91268ABBB009A80E0 /* icon_cart@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_cart@2x.png"; sourceTree = "<group>"; };
 		3EB5D6AA1268ABBB009A80E0 /* icon_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_home.png; sourceTree = "<group>"; };
 		3EB5D6AB1268ABBB009A80E0 /* icon_shopping.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shopping.png; sourceTree = "<group>"; };
-		3EB5D6AC1268ABBB009A80E0 /* todo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = todo.png; sourceTree = "<group>"; };
+		3EB5D6AC1268ABBB009A80E0 /* icon_todo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_todo.png; sourceTree = "<group>"; };
 		3EB80E4B1235A50F00F74165 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		3EFBE0EB123CF117008B7DC2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* RecipeShopper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RecipeShopper-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
@@ -730,7 +730,7 @@
 				3EB5D6A91268ABBB009A80E0 /* icon_cart@2x.png */,
 				3EB5D6AA1268ABBB009A80E0 /* icon_home.png */,
 				3EB5D6AB1268ABBB009A80E0 /* icon_shopping.png */,
-				3EB5D6AC1268ABBB009A80E0 /* todo.png */,
+				3EB5D6AC1268ABBB009A80E0 /* icon_todo.png */,
 			);
 			path = "Tab Bar";
 			sourceTree = "<group>";
@@ -865,7 +865,7 @@
 				3EB5D6DE1268ABBB009A80E0 /* icon_cart@2x.png in Resources */,
 				3EB5D6DF1268ABBB009A80E0 /* icon_home.png in Resources */,
 				3EB5D6E01268ABBB009A80E0 /* icon_shopping.png in Resources */,
-				3EB5D6E11268ABBB009A80E0 /* todo.png in Resources */,
+				3EB5D6E11268ABBB009A80E0 /* icon_todo.png in Resources */,
 				3E892BE11268B26500A512B5 /* imgs in Resources */,
 				3EAD8E86126FB1D000B72B67 /* BasketViewCell.xib in Resources */,
 				CED7333A1270E56300B049BF /* icon.png in Resources */,
@@ -1015,13 +1015,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: james grafton (M885ELZWAR)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
 				PRODUCT_NAME = Recipes;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77DF8D75-D24F-4140-9EA2-851586E5FDD2";
 				SDKROOT = iphoneos4.1;
 			};
 			name = Release;

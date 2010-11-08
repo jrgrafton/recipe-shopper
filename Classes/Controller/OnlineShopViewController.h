@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "AislesViewController.h"
-#import "SearchResultsViewController.h"
 #import "DataManager.h"
 
 @interface OnlineShopViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate> {

@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="106"/>
+			<integer value="137"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -68,52 +68,46 @@
 				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<bool key="IBUIHorizontal">NO</bool>
-				<object class="IBUINavigationController" key="IBUISelectedViewController" id="589262166">
-					<object class="IBUITabBarItem" key="IBUITabBarItem" id="330592455">
-						<string key="IBUITitle">Shop Online</string>
+				<object class="IBUINavigationController" key="IBUISelectedViewController" id="819357451">
+					<object class="IBUITabBarItem" key="IBUITabBarItem" id="860497461">
+						<string key="IBUITitle">Shopping List</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">icon_shopping.png</string>
+							<string key="NSResourceName">icon_todo.png</string>
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<reference key="IBUITabBar"/>
 					</object>
+					<reference key="IBUIToolbarItems" ref="0"/>
 					<reference key="IBUIParentViewController" ref="1034742383"/>
-					<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 					<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 						<int key="interfaceOrientation">1</int>
 					</object>
 					<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					<bool key="IBUIHorizontal">NO</bool>
-					<object class="IBUINavigationBar" key="IBUINavigationBar" id="94516090">
+					<object class="IBUINavigationBar" key="IBUINavigationBar" id="223010148">
 						<nil key="NSNextResponder"/>
 						<int key="NSvFlags">256</int>
-						<string key="NSFrameSize">{0, 0}</string>
-						<object class="NSColor" key="IBUIBackgroundColor" id="1039629969">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MCAwIDAAA</bytes>
-						</object>
+						<string key="NSFrameSize">{320, 44}</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<reference key="IBUITintColor" ref="1039629969"/>
+						<object class="NSColor" key="IBUITintColor" id="1039629969">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MCAwIDAAA</bytes>
+						</object>
 					</object>
 					<object class="NSMutableArray" key="IBUIViewControllers">
 						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="IBUIViewController" id="228359777">
-							<object class="IBUINavigationItem" key="IBUINavigationItem" id="1057243241">
+						<object class="IBUIViewController" id="613885652">
+							<reference key="IBUIToolbarItems" ref="0"/>
+							<object class="IBUINavigationItem" key="IBUINavigationItem" id="340847719">
 								<reference key="IBUINavigationBar"/>
-								<string key="IBUITitle">Shop</string>
-								<object class="IBUIBarButtonItem" key="IBUIBackBarButtonItem" id="394204615">
-									<string key="IBUITitle">Shop</string>
-									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-									<int key="IBUIStyle">1</int>
-								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
-							<reference key="IBUIParentViewController" ref="589262166"/>
-							<string key="IBUINibName">OnlineShopView</string>
+							<reference key="IBUIParentViewController" ref="819357451"/>
+							<string key="IBUINibName">ShoppingListView</string>
 							<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 								<int key="interfaceOrientation">1</int>
 							</object>
@@ -173,27 +167,29 @@
 							</object>
 						</object>
 					</object>
-					<object class="IBUINavigationController" id="819357451">
-						<object class="IBUITabBarItem" key="IBUITabBarItem" id="860497461">
-							<string key="IBUITitle">Shopping List</string>
+					<reference ref="819357451"/>
+					<object class="IBUINavigationController" id="589262166">
+						<object class="IBUITabBarItem" key="IBUITabBarItem" id="330592455">
+							<string key="IBUITitle">Shop Online</string>
 							<object class="NSCustomResource" key="IBUIImage">
 								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">todo.png</string>
+								<string key="NSResourceName">icon_shopping.png</string>
 							</object>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							<reference key="IBUITabBar"/>
 						</object>
-						<reference key="IBUIToolbarItems" ref="0"/>
 						<reference key="IBUIParentViewController" ref="1034742383"/>
+						<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 						<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 							<int key="interfaceOrientation">1</int>
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<bool key="IBUIHorizontal">NO</bool>
-						<object class="IBUINavigationBar" key="IBUINavigationBar" id="223010148">
+						<object class="IBUINavigationBar" key="IBUINavigationBar" id="94516090">
 							<nil key="NSNextResponder"/>
 							<int key="NSvFlags">256</int>
-							<string key="NSFrameSize">{320, 44}</string>
+							<string key="NSFrameSize">{0, 0}</string>
+							<reference key="IBUIBackgroundColor" ref="1039629969"/>
 							<bool key="IBUIOpaque">NO</bool>
 							<bool key="IBUIClipsSubviews">YES</bool>
 							<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -202,13 +198,18 @@
 						</object>
 						<object class="NSMutableArray" key="IBUIViewControllers">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIViewController" id="613885652">
-								<reference key="IBUIToolbarItems" ref="0"/>
-								<object class="IBUINavigationItem" key="IBUINavigationItem" id="340847719">
+							<object class="IBUIViewController" id="228359777">
+								<object class="IBUINavigationItem" key="IBUINavigationItem" id="1057243241">
+									<string key="IBUITitle">Shop</string>
+									<object class="IBUIBarButtonItem" key="IBUIBackBarButtonItem" id="394204615">
+										<string key="IBUITitle">Shop</string>
+										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+										<int key="IBUIStyle">1</int>
+									</object>
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
-								<reference key="IBUIParentViewController" ref="819357451"/>
-								<string key="IBUINibName">ShoppingListView</string>
+								<reference key="IBUIParentViewController" ref="589262166"/>
+								<string key="IBUINibName">OnlineShopView</string>
 								<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 									<int key="interfaceOrientation">1</int>
 								</object>
@@ -217,7 +218,6 @@
 							</object>
 						</object>
 					</object>
-					<reference ref="589262166"/>
 					<object class="IBUINavigationController" id="954756478">
 						<object class="IBUITabBarItem" key="IBUITabBarItem" id="12376329">
 							<string key="IBUITitle">Checkout</string>
@@ -1333,7 +1333,7 @@
 				<string>icon_cart.png</string>
 				<string>icon_home.png</string>
 				<string>icon_shopping.png</string>
-				<string>todo.png</string>
+				<string>icon_todo.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
