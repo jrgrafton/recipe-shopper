@@ -147,27 +147,29 @@
 			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:YES];
 			UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
 			[headerLabel setText:@"Totals"];
-		} else if ([indexPath row] == 1) {
-			keyValue = [NSArray arrayWithObjects:@"Total Cost",[NSString stringWithFormat:@"£%.2f", [[self basketPrice] floatValue]],nil];
-		} else if ([indexPath row] == 2) {
-			keyValue = [NSArray arrayWithObjects:@"MultiBuy Savings",[NSString stringWithFormat:@"£%.2f",[[self basketSavings] floatValue] ],nil];
 		} else {
-			if ([self basketPoints] == nil) {
-				keyValue = [NSArray arrayWithObjects:@"Clubcard Points", @"0",nil];
+			if ([indexPath row] == 1) {
+				keyValue = [NSArray arrayWithObjects:@"Total Cost",[NSString stringWithFormat:@"£%.2f", [[self basketPrice] floatValue]],nil];
+			} else if ([indexPath row] == 2) {
+				keyValue = [NSArray arrayWithObjects:@"MultiBuy Savings",[NSString stringWithFormat:@"£%.2f",[[self basketSavings] floatValue] ],nil];
 			} else {
-				keyValue = [NSArray arrayWithObjects:@"Clubcard Points",[NSString stringWithFormat:@"%@",[self basketPoints]],nil];
+				if ([self basketPoints] == nil) {
+					keyValue = [NSArray arrayWithObjects:@"Clubcard Points", @"0",nil];
+				} else {
+					keyValue = [NSArray arrayWithObjects:@"Clubcard Points",[NSString stringWithFormat:@"%@",[self basketPoints]],nil];
+				}
 			}
-		}
-		
-		[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:NO];
-		UIActivityIndicatorView *activityIndicator = (UIActivityIndicatorView *)[cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
-		
-		if ([dataManager updatingOnlineBasket] == YES) {
-			[activityIndicator startAnimating];
-			[activityIndicator setHidden:NO];
-		} else {
-			[activityIndicator setHidden:YES];
-			[activityIndicator stopAnimating];
+			
+			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:NO];
+			UIActivityIndicatorView *activityIndicator = (UIActivityIndicatorView *)[cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
+			
+			if ([dataManager updatingOnlineBasket] == YES) {
+				[activityIndicator startAnimating];
+				[activityIndicator setHidden:NO];
+			} else {
+				[activityIndicator setHidden:YES];
+				[activityIndicator stopAnimating];
+			}			
 		}
 	} else if (indexPath.section == 1) {
 		/* this is the basket itself */
