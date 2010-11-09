@@ -433,13 +433,15 @@
 	NSString *productName = [productJSON objectForKey:@"Name"];
 	NSString *productPrice = [productJSON objectForKey:@"Price"];
 	NSString *productOffer = [productJSON objectForKey:@"OfferPromotion"];
+	NSString *productOfferValidity = [productJSON objectForKey:@"OfferValidity"];
 	
 	NSURL *productImageURL = [NSURL URLWithString:[productJSON objectForKey:@"ImagePath"]];
 	NSURL *productOfferImageURL = [NSURL URLWithString:[productJSON objectForKey:@"OfferLabelImagePath"]];
 	
 	Product *product = [[[Product alloc] initWithProductBaseID:productBaseID andProductID:productID andProductName:productName
-							   andProductPrice:productPrice andProductOffer:productOffer
-							   andProductImage:nil andProductOfferImage:nil] autorelease];
+											   andProductPrice:productPrice andProductOffer:productOffer 
+									   andProductOfferValidity:productOfferValidity andProductImage:nil 
+										  andProductOfferImage:nil] autorelease];
 									 
 	[product setProductImageURL:productImageURL];
 	[product setProductOfferImageURL:productOfferImageURL];

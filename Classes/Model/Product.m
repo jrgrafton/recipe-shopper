@@ -15,6 +15,7 @@
 @synthesize productName;
 @synthesize productPrice;
 @synthesize productOffer;
+@synthesize productOfferValidity;
 @synthesize productImage;
 @synthesize productOfferImage;
 
@@ -34,19 +35,22 @@
 
 - (id)copyWithZone:(NSZone *)zone {
 	return [[Product allocWithZone:zone] initWithProductBaseID:productBaseID andProductID:productID andProductName:productName
-										   andProductPrice:productPrice andProductOffer:productOffer
-										   andProductImage:productImage andProductOfferImage:productOfferImage];
+											   andProductPrice:productPrice andProductOffer:productOffer
+									   andProductOfferValidity:productOfferValidity andProductImage:productImage 
+										  andProductOfferImage:productOfferImage];
 }
 
 - (id)initWithProductBaseID:(NSNumber *)inProductBaseID andProductID:(NSNumber *)inProductID andProductName:(NSString *)inProductName 
-		andProductPrice:(NSString *)inProductPrice andProductOffer:(NSString *)inProductOffer
-		 andProductImage:(UIImage *)inProductImage andProductOfferImage:(UIImage *)inProductOfferImage {
+			andProductPrice:(NSString *)inProductPrice andProductOffer:(NSString *)inProductOffer
+	andProductOfferValidity:(NSString *)inProductOfferValidity andProductImage:(UIImage *)inProductImage 
+	   andProductOfferImage:(UIImage *)inProductOfferImage {
 	if (self = [super init]) {
 		[self setProductBaseID:inProductBaseID];
 		[self setProductID:inProductID];
 		[self setProductName:inProductName];
 		[self setProductPrice:inProductPrice];
 		[self setProductOffer:inProductOffer];
+		[self setProductOfferValidity:inProductOfferValidity];
 		[self setProductImage:inProductImage];
 		[self setProductOfferImage:inProductOfferImage];
 	}
@@ -60,6 +64,7 @@
 	[productName release];
 	[productPrice release];
 	[productOffer release];
+	[productOfferValidity release];
 	[productImage release];
 	[productOfferImage release];
 	[super dealloc];

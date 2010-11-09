@@ -318,8 +318,8 @@ static sqlite3 *database = nil;
 	UIImage *productImage = [UIImage imageWithData:[NSData dataWithBase64EncodedString:productImageString]];
 	
 	return [[[Product alloc] initWithProductBaseID:productBaseID andProductID:[NSNumber numberWithInt:0] andProductName:productName
-							   andProductPrice:productPrice andProductOffer:@""
-							   andProductImage:productImage andProductOfferImage:NULL] autorelease];
+								   andProductPrice:productPrice andProductOffer:@"" andProductOfferValidity:@""
+								   andProductImage:productImage andProductOfferImage:NULL] autorelease];
 }
 
 @end

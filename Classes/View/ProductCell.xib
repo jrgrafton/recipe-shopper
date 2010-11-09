@@ -106,7 +106,7 @@
 							<object class="IBUIImageView" id="664725752">
 								<reference key="NSNextResponder" ref="155564837"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{96, 48}, {75, 25}}</string>
+								<string key="NSFrame">{{96, 43}, {75, 25}}</string>
 								<reference key="NSSuperview" ref="155564837"/>
 								<int key="IBUIContentMode">1</int>
 								<int key="IBUITag">4</int>
@@ -116,7 +116,7 @@
 							<object class="IBUILabel" id="372865739">
 								<reference key="NSNextResponder" ref="155564837"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{93, 75}, {101, 38}}</string>
+								<string key="NSFrame">{{93, 68}, {101, 25}}</string>
 								<reference key="NSSuperview" ref="155564837"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -126,7 +126,7 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">Offer</string>
 								<object class="NSFont" key="IBUIFont">
-									<string key="NSName">Georgia</string>
+									<string key="NSName">Georgia-Bold</string>
 									<double key="NSSize">10</double>
 									<int key="NSfFlags">16</int>
 								</object>
@@ -217,6 +217,29 @@
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUITextAlignment">1</int>
 							</object>
+							<object class="IBUILabel" id="332021207">
+								<reference key="NSNextResponder" ref="155564837"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{93, 93}, {102, 25}}</string>
+								<reference key="NSSuperview" ref="155564837"/>
+								<bool key="IBUIOpaque">NO</bool>
+								<bool key="IBUIClipsSubviews">YES</bool>
+								<int key="IBUIContentMode">7</int>
+								<int key="IBUITag">6</int>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<string key="IBUIText">Offer Validity</string>
+								<object class="NSFont" key="IBUIFont">
+									<string key="NSName">Georgia</string>
+									<double key="NSSize">9</double>
+									<int key="NSfFlags">16</int>
+								</object>
+								<reference key="IBUITextColor" ref="27954973"/>
+								<reference key="IBUIHighlightedColor" ref="337362231"/>
+								<int key="IBUIBaselineAdjustment">1</int>
+								<float key="IBUIMinimumFontSize">9</float>
+								<int key="IBUINumberOfLines">2</int>
+							</object>
 						</object>
 						<string key="NSFrameSize">{300, 120}</string>
 						<reference key="NSSuperview" ref="700044352"/>
@@ -277,6 +300,7 @@
 							<reference ref="603462120"/>
 							<reference ref="664725752"/>
 							<reference ref="56506613"/>
+							<reference ref="332021207"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -320,6 +344,11 @@
 						<reference key="object" ref="740485126"/>
 						<reference key="parent" ref="700044352"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">18</int>
+						<reference key="object" ref="332021207"/>
+						<reference key="parent" ref="700044352"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -335,6 +364,8 @@
 					<string>13.IBPluginDependency</string>
 					<string>15.IBPluginDependency</string>
 					<string>16.IBPluginDependency</string>
+					<string>18.IBPluginDependency</string>
+					<string>18.IBViewBoundsToFrameTransform</string>
 					<string>3.IBEditorWindowLastContentRect</string>
 					<string>3.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
@@ -355,7 +386,11 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{519, 463}, {300, 120}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABDHQAAwtgAAA</bytes>
+					</object>
+					<string>{{513, 491}, {300, 120}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -377,7 +412,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">17</int>
+			<int key="maxID">18</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

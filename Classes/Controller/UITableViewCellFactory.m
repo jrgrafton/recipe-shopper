@@ -19,6 +19,7 @@
 #define PRODUCT_TITLE_TAG 3
 #define PRODUCT_OFFER_IMAGE_TAG 4
 #define PRODUCT_OFFER_TAG 5
+#define PRODUCT_OFFER_VALIDITY_TAG 6
 
 #define RECIPE_IMAGE_TAG 1
 #define RECIPE_TITLE_TAG 2
@@ -130,6 +131,9 @@
 	label = (UILabel *)[cell viewWithTag:PRODUCT_OFFER_TAG];
 	[label setText:[product productOffer]];
 	
+	label = (UILabel *)[cell viewWithTag:PRODUCT_OFFER_VALIDITY_TAG];
+	[label setText:[product productOfferValidity]];
+
 	plusButton = (UIButton *)[cell viewWithTag:PLUS_BUTTON_TAG];
 	[plusButton setTag:[[product productBaseID] intValue]];
 	[buttons insertObject:plusButton atIndex:0];
