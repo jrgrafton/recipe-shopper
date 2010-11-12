@@ -60,7 +60,10 @@ static sqlite3 *database = nil;
 	sqlite3_stmt *selectstmt;
 	
 	/* create the query based on the category name */
-	const char *recipeQuery = [[NSString stringWithFormat:@"select * from recipes WHERE categoryName = '%@'", categoryName] UTF8String];
+	NSString *queryNSString = [NSString stringWithFormat:@"select * from recipes WHERE categoryName LIKE '%%%@%%'", categoryName];
+	const char *recipeQuery = [queryNSString UTF8String];
+	
+	NSLog(@"Query is %@",queryNSString);
 	
 	/* execute the query on the database */
 	if (sqlite3_prepare_v2(database, recipeQuery, -1, &selectstmt, NULL) == SQLITE_OK) {
@@ -69,10 +72,11 @@ static sqlite3 *database = nil;
 			[recipes addObject:[self createRecipe:selectstmt]];
 		}
 	} else {
-		const char *thing = sqlite3_errmsg(database);
-		[LogManager log:[NSString stringWithFormat:@"Select query failed: %s", thing] withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
+		const char *error = sqlite3_errmsg(database);
+		[LogManager log:[NSString stringWithFormat:@"Select query failed: %s", error] withLevel:LOG_ERROR fromClass:@"DatabaseRequestManager"];
 	}
 	
+	sqlite3_reset(selectstmt);
 	return [NSArray arrayWithArray:recipes];
 }
 
@@ -240,16 +244,20 @@ static sqlite3 *database = nil;
     NSString *productQuery = [NSString stringWithFormat:@"select * from products WHERE productBaseID = %@", productBaseID];
 	
     sqlite3_stmt *selectstmt;
+	Product *product = nil;
     
     if (sqlite3_prepare_v2(database, [productQuery UTF8String], -1, &selectstmt, NULL) == SQLITE_OK) {
         if (sqlite3_step(selectstmt) == SQLITE_ROW) {
-            return [self createProduct:selectstmt];
+            product = [self createProduct:selectstmt];
         } else {
             return nil;
         }
     } else {
         return nil;
     }
+	sqlite3_reset(selectstmt);
+	
+	return product;
 }
 
 - (Recipe *)createRecipe:(sqlite3_stmt *)selectstmt {

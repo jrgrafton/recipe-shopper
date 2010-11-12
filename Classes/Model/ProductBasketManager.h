@@ -17,9 +17,9 @@
 		DataManager *dataManager;
 }
 
-@property (nonatomic, retain) NSMutableDictionary *productBasket;
-@property (nonatomic, retain) NSString *productBasketPrice;
-@property (nonatomic, retain) NSNumber *shoppingListProducts;
+@property (retain) NSMutableDictionary *productBasket;
+@property (retain) NSString *productBasketPrice;
+@property (retain) NSNumber *shoppingListProducts;
 
 - (id)init;
 - (void)emptyProductBasket;
