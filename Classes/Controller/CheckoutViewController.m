@@ -51,17 +51,19 @@
 
 	[basketView setBackgroundColor: [UIColor clearColor]];
 	
-	/* add this object as an observer of the method that updates the product basket so we can remove the overlay view when the product basket update is complete */
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productBasketUpdateComplete) name:@"ProductBasketUpdateComplete" object:nil];
-
-	/* add this object as an observer of the change basket method so we can update the basket details when they change */
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onlineBasketUpdateComplete) name:@"OnlineBasketUpdateComplete" object:nil];
-	
 	/* prevent the rows from being selected */
 	[basketView setAllowsSelection:NO];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	/* add this object as an observer of the method that updates the product basket so we can remove the overlay view when the product basket update is complete */
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productBasketUpdateComplete) name:@"ProductBasketUpdateComplete" object:nil];
+	
+	/* add this object as an observer of the change basket method so we can update the basket details when they change */
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onlineBasketUpdateComplete) name:@"OnlineBasketUpdateComplete" object:nil];
+	
 	[super viewDidAppear:animated];
 	
 	/* scroll the basket to the top */
@@ -74,6 +76,12 @@
 	
 	/* Always ensure we have latest basket data loaded */
 	[NSThread detachNewThreadSelector:@selector(onlineBasketUpdateComplete) toTarget:self withObject:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (IBAction)transitionToDeliverySlotView:(id)sender {

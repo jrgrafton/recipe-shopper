@@ -16,10 +16,11 @@
 #define APPLICATION_KEY @"CA1A9E0437CBE399E890"
 #define REST_SERVICE_URL @"https://secure.techfortesco.com/groceryapi_b1/restservice.aspx"
 #define SHELF_SIMULATED_PAGE_SIZE 15
+#define MAX_RETRY_COUNT 3	//Maximum amount of times to API retry request before giving up
 
 @interface APIRequestManager()
 
-- (BOOL)apiRequest:(NSString *)requestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error;
+- (BOOL)apiRequest:(NSString *)requestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error requestAttempt:(NSInteger)requestAttempt;
 - (BOOL)login:(NSString *)email withPassword:(NSString *)password;
 - (NSString *)urlEncodeValue:(NSString *)requestString;
 - (Product *)createProductFromJSON:(NSDictionary *)productJSON fetchImages:(BOOL)fetchImages;
@@ -78,7 +79,7 @@
 	NSString *error;
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKETSUMMARY&sessionkey=%@", REST_SERVICE_URL, sessionKey];
 	
-	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error];
+	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1];
 	
 	if (apiRequestOK == YES) {
 		for (NSDictionary *product in [apiResults objectForKey:@"BasketLines"]) {
@@ -97,7 +98,7 @@
     NSString *error;
     Product *product;
     
-    if ([self apiRequest:requestString returningApiResults: &apiResults returningError:&error] == YES) {
+    if ([self apiRequest:requestString returningApiResults: &apiResults returningError:&error requestAttempt:1] == YES) {
         NSString *totalProducts = [apiResults objectForKey:@"TotalProductCount"];
         
         if ([totalProducts intValue] == 0) {
@@ -124,7 +125,7 @@
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTPRODUCTCATEGORIES&sessionkey=%@", REST_SERVICE_URL, sessionKey];
 	NSString *error;
 	
-	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error] == YES) {
+	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1] == YES) {
 		for (NSDictionary *department in [apiResults objectForKey:@"Departments"]) {
 			[departments setObject:[department objectForKey:@"Aisles"] forKey:[department objectForKey:@"Name"]];
 			
@@ -170,7 +171,7 @@
 		
 		//NSTimeInterval start = [[NSDate date]timeIntervalSince1970];
 		
-		if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error] == YES) {
+		if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1] == YES) {
 			for (NSDictionary *productInfo in [apiResults objectForKey:@"Products"]) {
 				[shelfProductCache addObject:[self createProductFromJSON:productInfo  fetchImages:NO]];
 			}
@@ -194,7 +195,7 @@
 	NSString *error;
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKET&sessionkey=%@", REST_SERVICE_URL, sessionKey];
 	
-	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error] == YES) {
+	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1] == YES) {
 		[basketDetails setObject:[apiResults objectForKey:@"BasketGuidePrice"] forKey:@"BasketPrice"];
 		[basketDetails setObject:[apiResults objectForKey:@"BasketGuideMultiBuySavings"] forKey:@"BasketSavings"];
 		[basketDetails setObject:[apiResults objectForKey:@"BasketTotalClubcardPoints"] forKey:@"BasketPoints"];
@@ -208,7 +209,7 @@
 	NSDictionary *apiResults;
 	NSString *error;
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&productid=%@&changequantity=%@&sessionkey=%@", REST_SERVICE_URL, productID, quantity, sessionKey];
-	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error];
+	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1];
 	
 	if (apiRequestOK == TRUE) {
 		basketAlteredOK = YES;
@@ -226,7 +227,7 @@
 	NSString *error;
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTDELIVERYSLOTS&sessionkey=%@", REST_SERVICE_URL, sessionKey];
 		
-	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error] == YES) {
+	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1] == YES) {
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setLocale:[[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease]];
 		[dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
@@ -288,7 +289,7 @@
 	NSDictionary *apiResults;
 	NSString *error;
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&page=%d&sessionkey=%@", REST_SERVICE_URL, searchTerm, page, sessionKey];
-	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error];
+	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1];
 	
 	if (apiRequestOK == TRUE) {
 		NSEnumerator *productsEnumerator = [[apiResults objectForKey:@"Products"] objectEnumerator];
@@ -308,9 +309,9 @@
 	NSDictionary *apiResults;
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=CHOOSEDELIVERYSLOT&deliveryslotid=%@&sessionkey=%@", REST_SERVICE_URL, deliverySlotID, sessionKey];
 
-	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:error] == YES) {
+	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:error requestAttempt:1] == YES) {
 		requestString = [NSString stringWithFormat:@"%@?command=READYFORCHECKOUT&sessionkey=%@", REST_SERVICE_URL, sessionKey];
-		return [self apiRequest:requestString returningApiResults:&apiResults returningError:error];
+		return [self apiRequest:requestString returningApiResults:&apiResults returningError:error requestAttempt:1];
 	} else {
 		return NO;
 	}
@@ -347,7 +348,7 @@
 #pragma mark -
 #pragma mark private functions
 
-- (BOOL)apiRequest:(NSString *)requestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error {
+- (BOOL)apiRequest:(NSString *)requestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error requestAttempt:(NSInteger)requestAttempt {
 	BOOL apiReqOK = YES;
 	
 	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];  
@@ -361,6 +362,11 @@
 	
 	if (data == nil) {
 		[LogManager log:@"Request fetched no/invalid results" withLevel:LOG_INFO fromClass:[[self class] description]];
+		if (requestAttempt < MAX_RETRY_COUNT) {
+			[LogManager log:[NSString stringWithFormat:@"Retrying request (attempt %d of %d)",requestAttempt, MAX_RETRY_COUNT] withLevel:LOG_INFO fromClass:[[self class] description]];
+			return [self apiRequest:requestString returningApiResults:apiResults returningError:error requestAttempt:++requestAttempt];
+		}
+		
 		apiReqOK = NO;
 	} else {	
 		NSMutableString *jsonString = [NSMutableString stringWithFormat:@"%@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]];
@@ -401,7 +407,7 @@
 	NSDictionary *apiResults;
 	NSString *error;
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=LOGIN&email=%@&password=%@&developerkey=%@&applicationkey=%@", REST_SERVICE_URL, email, password, DEVELOPER_KEY, APPLICATION_KEY];
-	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error];
+	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1];
 	
 	if (apiRequestOK == TRUE) {
 		[sessionKey = [apiResults objectForKey:@"SessionKey"] retain];

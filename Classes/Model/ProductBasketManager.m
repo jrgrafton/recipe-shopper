@@ -74,6 +74,7 @@
 
 - (void)dealloc {
 	[updateLock release];
+	[super dealloc];
 }
 
 @end

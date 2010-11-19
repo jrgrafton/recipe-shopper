@@ -308,7 +308,6 @@ static DataManager *sharedInstance = nil;
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productImageFetchStatusNotification:) name:@"productImageFetchComplete" object:nil];
 		
 		for (Product* product in productBatch) {
-			NSLog(@"Starting thread for product: %@", [product productID]);
 			productImageFetchThreads++;
 			[NSThread detachNewThreadSelector:@selector(fetchImagesForProduct:) toTarget:apiRequestManager withObject:product];
 			[LogManager log:[NSString stringWithFormat:@"Number of product image fetch requests is now %d", productImageFetchThreads] withLevel:LOG_INFO fromClass:[[self class] description]];
@@ -325,6 +324,7 @@ static DataManager *sharedInstance = nil;
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"productImageBatchFetchComplete" object:nil userInfo:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self];
 	}else {
+		[LogManager log:[NSString stringWithFormat:@"%d product(s) left to fetch",leftToFetch] withLevel:LOG_INFO fromClass:[[self class] description]];
 		[overlayViewController setOverlayLoadingLabelText:[NSString stringWithFormat:@"%d product(s) left to fetch",leftToFetch]];	
 	}
 }
