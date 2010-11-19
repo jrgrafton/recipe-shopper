@@ -23,6 +23,7 @@
 	if (self = [super init]) {
 		productBasket = [[NSMutableDictionary alloc] init];
 		dataManager = [DataManager getInstance];
+		updateLock = [[NSLock alloc] init];
 		[self setProductBasketPrice:@"£0.00"];
 		[self setShoppingListProducts:[NSNumber numberWithInt:0]];
 	}
@@ -49,8 +50,12 @@
 		[productBasket removeObjectForKey:[product retain]];
 	}
 	
+	/* Need to ensure only one thread at a time can re-calculate totals - don't wan't context switch here!!*/
+	[updateLock lock];
+	NSLog(@"INSIDE LOCK");
 	[self recalculateBasketPrice];
 	[self setShoppingListProducts:[NSNumber numberWithInt:[dataManager getTotalProductCount]]];
+	[updateLock unlock];
 }
 
 #pragma mark -
@@ -66,6 +71,10 @@
 	}
 	
 	[self setProductBasketPrice:[NSString stringWithFormat:@"£%.2f", basketPrice]];
+}
+
+- (void)dealloc {
+	[updateLock release];
 }
 
 @end

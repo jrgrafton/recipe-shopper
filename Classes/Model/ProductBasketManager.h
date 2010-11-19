@@ -15,6 +15,7 @@
 @interface ProductBasketManager : NSObject {
 	@private
 		DataManager *dataManager;
+		NSLock *updateLock;
 }
 
 @property (retain) NSMutableDictionary *productBasket;

@@ -350,7 +350,7 @@ static DataManager *sharedInstance = nil;
 	[self setUpdatingProductBasket:YES];
 	
 	for (NSString *recipeProductBaseID in [[recipe recipeProducts] allKeys]) {
-        NSMutableArray *recipeProduct = [NSMutableArray arrayWithCapacity:2];
+        NSMutableArray *recipeProduct = [[NSMutableArray alloc] initWithCapacity:2];
         [recipeProduct addObject:recipeProductBaseID];
         [recipeProduct addObject:[[recipe recipeProducts] objectForKey:recipeProductBaseID]];
         [NSThread detachNewThreadSelector:@selector(addRecipeProductToBasket:) toTarget:self withObject:recipeProduct];
@@ -359,7 +359,6 @@ static DataManager *sharedInstance = nil;
 
 - (void)addRecipeProductToBasket:(NSArray *)recipeProduct {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[recipeProduct retain];	//Since its coming from an external thread
 	
     Product *product;
     
@@ -379,7 +378,7 @@ static DataManager *sharedInstance = nil;
         [self updateBasketQuantity:product byQuantity:[recipeProduct objectAtIndex:1]];
     }
     
-	[recipeProduct release];
+	[recipeProduct release]; //Was alloc'd in parent thread, so must now release
     [pool release];
 }
 
