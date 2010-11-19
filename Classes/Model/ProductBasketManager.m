@@ -52,7 +52,6 @@
 	
 	/* Need to ensure only one thread at a time can re-calculate totals - don't wan't context switch here!!*/
 	[updateLock lock];
-	NSLog(@"INSIDE LOCK");
 	[self recalculateBasketPrice];
 	[self setShoppingListProducts:[NSNumber numberWithInt:[dataManager getTotalProductCount]]];
 	[updateLock unlock];
