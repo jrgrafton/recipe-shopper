@@ -144,7 +144,7 @@ static DataManager *sharedInstance = nil;
 	
 	/* if we're logged in, update this product in the online basket too (but in a separate thread so we don't hold up processing */
 	if ([apiRequestManager loggedIn] == YES) {
-		NSMutableArray *productDetails = [NSMutableArray arrayWithCapacity:2];
+		NSMutableArray *productDetails = [[NSMutableArray alloc] initWithCapacity:2];
 		[productDetails addObject:[product productID]];
 		[productDetails addObject:quantity];
 		[self setUpdatingOnlineBasket:YES];
@@ -170,7 +170,8 @@ static DataManager *sharedInstance = nil;
 		/* so notify the checkout controller so that it can remove the overlay view */
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"OnlineBasketUpdateComplete" object:self];
 	}
-		
+	
+	//[productDetails release];
 	[pool release];
 }
 

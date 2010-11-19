@@ -71,6 +71,9 @@
 		[dataManager showOverlayView:[[self view] window]];
 		[dataManager setOverlayLabelText:@"Updating basket"];
 	}
+	
+	/* Always ensure we have latest basket data loaded */
+	[NSThread detachNewThreadSelector:@selector(onlineBasketUpdateComplete) toTarget:self withObject:nil];
 }
 
 - (IBAction)transitionToDeliverySlotView:(id)sender {
@@ -203,14 +206,28 @@
 }
 
 - (void)onlineBasketUpdateComplete {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	/* Set updating basket back to yes so we still get spinners */
+	[dataManager setUpdatingOnlineBasket:YES];
+	
+	/* In case spinners have disappeared after basket updates finished */
+	[basketView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
+	
 	/* get the latest basket details (price, savings etc.) */
 	NSDictionary *basketDetails = [dataManager getBasketDetails];
+	
+	/* Now we have details, spinners can safely disappear*/
+	[dataManager setUpdatingOnlineBasket:NO];
+	
 	[self setBasketPrice:[basketDetails objectForKey:@"BasketPrice"]];
 	[self setBasketSavings:[basketDetails objectForKey:@"BasketSavings"]];
 	[self setBasketPoints:[basketDetails objectForKey:@"BasketPoints"]];
 	
 	/* reload the basket details section to show the new values */
 	[basketView reloadData];	
+
+	[pool release];
 }
 
 /*

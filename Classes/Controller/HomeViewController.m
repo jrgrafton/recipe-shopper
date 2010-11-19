@@ -10,7 +10,7 @@
 #import "RecipeShopperAppDelegate.h"
 #import "LogManager.h"
 
-@interface RecipeHistoryViewController()
+@interface HomeViewController()
 - (void)loginSuccess;
 - (void)loginFailed;
 @end
@@ -43,6 +43,13 @@
 	
 	/* Try and do a cheeky cached load of product departments */
 	[NSThread detachNewThreadSelector:@selector(getDepartments) toTarget:dataManager withObject:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	//If we have logged in elsewhere make sure our interface is in correct state
+	if ([dataManager loggedIn]) {
+		[self loginSuccess];
+	}
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {

@@ -63,8 +63,6 @@ static sqlite3 *database = nil;
 	NSString *queryNSString = [NSString stringWithFormat:@"select * from recipes WHERE categoryName LIKE '%%%@%%'", categoryName];
 	const char *recipeQuery = [queryNSString UTF8String];
 	
-	NSLog(@"Query is %@",queryNSString);
-	
 	/* execute the query on the database */
 	if (sqlite3_prepare_v2(database, recipeQuery, -1, &selectstmt, NULL) == SQLITE_OK) {
 		/* add each recipe found to the recipes array */
