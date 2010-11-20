@@ -351,7 +351,7 @@ static DataManager *sharedInstance = nil;
 	[self setUpdatingProductBasket:YES];
 	
 	for (NSString *recipeProductBaseID in [[recipe recipeProducts] allKeys]) {
-        NSMutableArray *recipeProduct = [[NSMutableArray alloc] initWithCapacity:2];
+        NSMutableArray *recipeProduct = [[NSMutableArray alloc] initWithCapacity:2]; //Will get released by child thread
         [recipeProduct addObject:recipeProductBaseID];
         [recipeProduct addObject:[[recipe recipeProducts] objectForKey:recipeProductBaseID]];
         [NSThread detachNewThreadSelector:@selector(addRecipeProductToBasket:) toTarget:self withObject:recipeProduct];
@@ -375,11 +375,12 @@ static DataManager *sharedInstance = nil;
 	
 	productBasketUpdates--;
 	
+	//If we have found the product either in the DB or online update product basket
     if (product != nil) {
         [self updateBasketQuantity:product byQuantity:[recipeProduct objectAtIndex:1]];
     }
     
-	[recipeProduct release]; //Was alloc'd in parent thread, so must now release
+	[recipeProduct release]; //Since it is alloc'd by parent thread passing in Array
     [pool release];
 }
 

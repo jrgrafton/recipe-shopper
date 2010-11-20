@@ -39,6 +39,7 @@
 		aisles = [[NSMutableDictionary alloc] init];
 		shelves = [[NSMutableDictionary alloc] init];
 		shelfProductCache = [[NSMutableArray alloc] init];
+		[self setLoggedIn:NO];
 		
 		sessionKey = @"";
 		
@@ -50,8 +51,6 @@
 				[LogManager log:[NSString stringWithFormat:@"Failed to create anonymous login"] withLevel:LOG_ERROR fromClass:[[self class] description]];
 			}
 		}
-		
-		[self setLoggedIn:NO];
 	}
 	
 	return self;

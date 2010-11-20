@@ -244,6 +244,8 @@ static sqlite3 *database = nil;
     sqlite3_stmt *selectstmt;
 	Product *product = nil;
     
+	[LogManager log:[NSString stringWithFormat:@"Executing query %@", productQuery] withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
+	
     if (sqlite3_prepare_v2(database, [productQuery UTF8String], -1, &selectstmt, NULL) == SQLITE_OK) {
         if (sqlite3_step(selectstmt) == SQLITE_ROW) {
             product = [self createProduct:selectstmt];

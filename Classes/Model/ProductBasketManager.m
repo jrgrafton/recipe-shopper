@@ -7,6 +7,7 @@
 //
 
 #import "ProductBasketManager.h"
+#import "RecipeShopperAppDelegate.h"
 #import "DataManager.h"
 
 @interface ProductBasketManager()

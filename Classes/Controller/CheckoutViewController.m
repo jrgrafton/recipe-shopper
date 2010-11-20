@@ -64,8 +64,6 @@
 	/* add this object as an observer of the change basket method so we can update the basket details when they change */
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onlineBasketUpdateComplete) name:@"OnlineBasketUpdateComplete" object:nil];
 	
-	[super viewDidAppear:animated];
-	
 	/* scroll the basket to the top */
 	[basketView setContentOffset:CGPointMake(0, 0) animated:NO];
 	
@@ -233,7 +231,7 @@
 	[self setBasketPoints:[basketDetails objectForKey:@"BasketPoints"]];
 	
 	/* reload the basket details section to show the new values */
-	[basketView reloadData];	
+	[basketView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
 
 	[pool release];
 }
