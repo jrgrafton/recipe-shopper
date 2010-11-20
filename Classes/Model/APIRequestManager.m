@@ -14,7 +14,7 @@
 
 #define DEVELOPER_KEY @"xIvRaeGkY6OavPL1XtX9"
 #define APPLICATION_KEY @"CA1A9E0437CBE399E890"
-#define REST_SERVICE_URL @"https://secure.techfortesco.com/groceryapi_b1/restservice.aspx"
+#define REST_SERVICE_URL @"https://secure.techfortesco.com/groceryapi/restservice.aspx"
 #define SHELF_SIMULATED_PAGE_SIZE 15
 #define MAX_RETRY_COUNT 3	//Maximum amount of times to API retry request before giving up
 
@@ -192,7 +192,7 @@
 	NSMutableDictionary *basketDetails = [NSMutableDictionary dictionary];
 	NSDictionary *apiResults;
 	NSString *error;
-	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKET&sessionkey=%@", REST_SERVICE_URL, sessionKey];
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKET&FAST=Y&sessionkey=%@", REST_SERVICE_URL, sessionKey];
 	
 	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1] == YES) {
 		[basketDetails setObject:[apiResults objectForKey:@"BasketGuidePrice"] forKey:@"BasketPrice"];
