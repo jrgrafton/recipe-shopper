@@ -11,19 +11,25 @@
 #import "Product.h"
 #import "LogManager.h"
 #import "DeliverySlot.h"
+#import "DataManager.h"
 
 #define DEVELOPER_KEY @"xIvRaeGkY6OavPL1XtX9"
 #define APPLICATION_KEY @"CA1A9E0437CBE399E890"
 #define REST_SERVICE_URL @"https://secure.techfortesco.com/groceryapi/restservice.aspx"
 #define SHELF_SIMULATED_PAGE_SIZE 15
 #define MAX_RETRY_COUNT 3	//Maximum amount of times to API retry request before giving up
+#define MIN_API_CALL_INTERVAL 200.0 //Minimum allowed time between subsequent API calls (in ms)
 
 @interface APIRequestManager()
 
-- (BOOL)apiRequest:(NSString *)requestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error requestAttempt:(NSInteger)requestAttempt;
+- (BOOL)apiRequest:(NSString *)initialRequestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error requestAttempt:(NSInteger)requestAttempt isLogin:(BOOL)isLogin;
+- (void)createAnonymousSessionKey;
 - (BOOL)login:(NSString *)email withPassword:(NSString *)password;
 - (NSString *)urlEncodeValue:(NSString *)requestString;
 - (Product *)createProductFromJSON:(NSDictionary *)productJSON fetchImages:(BOOL)fetchImages;
+
+@property (assign) double lastUpdateRequestTime;
+@property (assign) NSLock *requestLock;
 
 @end
 
@@ -32,6 +38,10 @@
 @synthesize offlineMode;
 @synthesize loggedIn;
 @synthesize customerName;
+@synthesize userEmail;
+@synthesize userPassword;
+@synthesize lastUpdateRequestTime;
+@synthesize requestLock;
 
 - (id)init {
 	if (self = [super init]) {
@@ -39,46 +49,34 @@
 		aisles = [[NSMutableDictionary alloc] init];
 		shelves = [[NSMutableDictionary alloc] init];
 		shelfProductCache = [[NSMutableArray alloc] init];
+		[self createAnonymousSessionKey];
+		[self setLastUpdateRequestTime:[[NSDate date] timeIntervalSince1970]];
 		[self setLoggedIn:NO];
-		
-		sessionKey = @"";
-		
-		if (sessionKey == @"") {
-			/* create an anonymous session key */
-			if ([self login:@"" withPassword:@""] == YES) {
-				[LogManager log:[NSString stringWithFormat:@"Created anonymous login with session key: %@", sessionKey] withLevel:LOG_INFO fromClass:[[self class] description]];
-			} else {
-				[LogManager log:[NSString stringWithFormat:@"Failed to create anonymous login"] withLevel:LOG_ERROR fromClass:[[self class] description]];
-			}
-		}
+		requestLock = [[NSLock alloc] init];
 	}
 	
 	return self;
 }
 
 - (BOOL)loginToStore:(NSString *)email withPassword:(NSString *)password {
+	[self setUserEmail:email];
+	[self setUserPassword:password];
 	[self setLoggedIn:[self login:email withPassword:password]];
 	return [self loggedIn];
 }
 
 - (void)logoutOfStore {
 	/* go back to using an anonymous session key */
-	if ([self login:@"" withPassword:@""] == YES) {
-		[LogManager log:[NSString stringWithFormat:@"Created anonymous login with session key: %@", sessionKey] withLevel:LOG_INFO fromClass:[[self class] description]];
-	} else {
-		[LogManager log:[NSString stringWithFormat:@"Failed to create anonymous login"] withLevel:LOG_ERROR fromClass:[[self class] description]];
-	}
-	
-	[self setLoggedIn:NO];
+	[self createAnonymousSessionKey];
 }
 
 - (NSDictionary *)getOnlineBasket {
 	NSMutableDictionary *onlineBasket = [[NSMutableDictionary alloc] init];
 	NSDictionary *apiResults;
 	NSString *error;
-	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKETSUMMARY&sessionkey=%@", REST_SERVICE_URL, sessionKey];
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKETSUMMARY", REST_SERVICE_URL];
 	
-	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1];
+	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1 isLogin:NO];
 	
 	if (apiRequestOK == YES) {
 		for (NSDictionary *product in [apiResults objectForKey:@"BasketLines"]) {
@@ -92,12 +90,12 @@
 }
 
 - (Product *)createProductFromProductBaseID:(NSString *)productBaseID fetchImages:(BOOL)fetchImages{
-    NSString *requestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&sessionkey=%@", REST_SERVICE_URL, productBaseID, sessionKey];
+    NSString *requestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@", REST_SERVICE_URL, productBaseID];
     NSDictionary *apiResults;
     NSString *error;
     Product *product;
     
-    if ([self apiRequest:requestString returningApiResults: &apiResults returningError:&error requestAttempt:1] == YES) {
+    if ([self apiRequest:requestString returningApiResults: &apiResults returningError:&error requestAttempt:1 isLogin:NO] == YES) {
         NSString *totalProducts = [apiResults objectForKey:@"TotalProductCount"];
         
         if ([totalProducts intValue] == 0) {
@@ -121,10 +119,10 @@
 	}
 	
 	NSDictionary *apiResults;
-	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTPRODUCTCATEGORIES&sessionkey=%@", REST_SERVICE_URL, sessionKey];
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTPRODUCTCATEGORIES", REST_SERVICE_URL];
 	NSString *error;
 	
-	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1] == YES) {
+	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1 isLogin:NO] == YES) {
 		for (NSDictionary *department in [apiResults objectForKey:@"Departments"]) {
 			[departments setObject:[department objectForKey:@"Aisles"] forKey:[department objectForKey:@"Name"]];
 			
@@ -165,18 +163,14 @@
 	if (page == 1) {
 		[shelfProductCache removeAllObjects];
 		NSDictionary *apiResults;
-		NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTPRODUCTSBYCATEGORY&category=%@&sessionkey=%@", REST_SERVICE_URL, [shelves objectForKey:shelf], sessionKey];
+		NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTPRODUCTSBYCATEGORY&category=%@", REST_SERVICE_URL, [shelves objectForKey:shelf]];
 		NSString *error;
 		
-		//NSTimeInterval start = [[NSDate date]timeIntervalSince1970];
-		
-		if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1] == YES) {
+		if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1 isLogin:NO] == YES) {
 			for (NSDictionary *productInfo in [apiResults objectForKey:@"Products"]) {
 				[shelfProductCache addObject:[self createProductFromJSON:productInfo  fetchImages:NO]];
 			}
 		}
-		//NSTimeInterval end = [[NSDate date] timeIntervalSince1970];
-		//NSLog(@"Operation took: %f secs",end - start);
 	}
 	
 	*totalPageCountHolder = ([shelfProductCache count] / SHELF_SIMULATED_PAGE_SIZE) + 1;
@@ -192,9 +186,9 @@
 	NSMutableDictionary *basketDetails = [NSMutableDictionary dictionary];
 	NSDictionary *apiResults;
 	NSString *error;
-	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKET&FAST=Y&sessionkey=%@", REST_SERVICE_URL, sessionKey];
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKET&FAST=Y", REST_SERVICE_URL];
 	
-	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1] == YES) {
+	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1 isLogin:NO] == YES) {
 		[basketDetails setObject:[apiResults objectForKey:@"BasketGuidePrice"] forKey:@"BasketPrice"];
 		[basketDetails setObject:[apiResults objectForKey:@"BasketGuideMultiBuySavings"] forKey:@"BasketSavings"];
 		[basketDetails setObject:[apiResults objectForKey:@"BasketTotalClubcardPoints"] forKey:@"BasketPoints"];
@@ -207,8 +201,8 @@
 	BOOL basketAlteredOK = NO;
 	NSDictionary *apiResults;
 	NSString *error;
-	NSString *requestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&productid=%@&changequantity=%@&sessionkey=%@", REST_SERVICE_URL, productID, quantity, sessionKey];
-	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1];
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=CHANGEBASKET&productid=%@&changequantity=%@", REST_SERVICE_URL, productID, quantity];
+	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1 isLogin:NO];
 	
 	if (apiRequestOK == TRUE) {
 		basketAlteredOK = YES;
@@ -224,9 +218,9 @@
 	NSMutableDictionary *deliveryDates = [[NSMutableDictionary alloc] init];
 	NSDictionary *apiResults;
 	NSString *error;
-	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTDELIVERYSLOTS&sessionkey=%@", REST_SERVICE_URL, sessionKey];
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTDELIVERYSLOTS", REST_SERVICE_URL];
 		
-	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1] == YES) {
+	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1 isLogin:NO] == YES) {
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setLocale:[[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease]];
 		[dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
@@ -287,8 +281,8 @@
 	NSMutableArray *products = [NSMutableArray array];
 	NSDictionary *apiResults;
 	NSString *error;
-	NSString *requestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&page=%d&sessionkey=%@", REST_SERVICE_URL, searchTerm, page, sessionKey];
-	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1];
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@&page=%d", REST_SERVICE_URL, searchTerm, page];
+	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1 isLogin:NO];
 	
 	if (apiRequestOK == TRUE) {
 		NSEnumerator *productsEnumerator = [[apiResults objectForKey:@"Products"] objectEnumerator];
@@ -306,11 +300,11 @@
 
 - (BOOL)chooseDeliverySlot:(NSString *)deliverySlotID returningError:(NSString **)error {
 	NSDictionary *apiResults;
-	NSString *requestString = [NSString stringWithFormat:@"%@?command=CHOOSEDELIVERYSLOT&deliveryslotid=%@&sessionkey=%@", REST_SERVICE_URL, deliverySlotID, sessionKey];
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=CHOOSEDELIVERYSLOT&deliveryslotid=%@", REST_SERVICE_URL, deliverySlotID];
 
-	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:error requestAttempt:1] == YES) {
-		requestString = [NSString stringWithFormat:@"%@?command=READYFORCHECKOUT&sessionkey=%@", REST_SERVICE_URL, sessionKey];
-		return [self apiRequest:requestString returningApiResults:&apiResults returningError:error requestAttempt:1];
+	if ([self apiRequest:requestString returningApiResults:&apiResults returningError:error requestAttempt:1 isLogin:NO] == YES) {
+		requestString = [NSString stringWithFormat:@"%@?command=READYFORCHECKOUT", REST_SERVICE_URL];
+		return [self apiRequest:requestString returningApiResults:&apiResults returningError:error requestAttempt:1 isLogin:NO];
 	} else {
 		return NO;
 	}
@@ -336,7 +330,6 @@
 	[product setProductImage:productImage];
 	[product setProductOfferImage:productOfferImage];
 	
-	
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[product productID],@"productID",nil];
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"productImageFetchComplete" object:self userInfo:userInfo];
@@ -345,12 +338,46 @@
 }
 
 #pragma mark -
+#pragma mark Button responders
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        /* switch to offline mode */
+        [[DataManager getInstance] setOfflineMode:YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"SwitchToOffline" object:self userInfo:nil];
+    } else {
+        /* retry the login attempt */
+        [self createAnonymousSessionKey];
+    }
+}
+
+#pragma mark -
 #pragma mark private functions
 
-- (BOOL)apiRequest:(NSString *)requestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error requestAttempt:(NSInteger)requestAttempt {
+- (BOOL)apiRequest:(NSString *)initialRequestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error requestAttempt:(NSInteger)requestAttempt isLogin:(BOOL)isLogin {
+	[[self requestLock] lock];
+	
+	double timeSinceLastRequest = [[NSDate date] timeIntervalSince1970] - [self lastUpdateRequestTime];
+	
+	if (timeSinceLastRequest < MIN_API_CALL_INTERVAL) {
+		[NSThread sleepForTimeInterval:((MIN_API_CALL_INTERVAL - timeSinceLastRequest) / 1000.0f)];
+	}
+	
+	[self setLastUpdateRequestTime:[[NSDate date] timeIntervalSince1970]];
+	
+	[[self requestLock] unlock];
+	
 	BOOL apiReqOK = YES;
 	
-	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];  
+	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
+	
+	/* add the session key (if necessary) here so that we can change it if it's expired and needs recreating */
+	NSMutableString *requestString = [NSMutableString stringWithString:initialRequestString];
+	
+	if (isLogin == NO) {
+		[requestString appendString:[NSString stringWithFormat:@"&sessionkey=%@", sessionKey]];
+	}
+	 
 	[request setURL:[NSURL URLWithString:[self urlEncodeValue:requestString]]];
 	[request setHTTPMethod:@"GET"];
 	
@@ -363,7 +390,7 @@
 		[LogManager log:@"Request fetched no/invalid results" withLevel:LOG_INFO fromClass:[[self class] description]];
 		if (requestAttempt < MAX_RETRY_COUNT) {
 			[LogManager log:[NSString stringWithFormat:@"Retrying request (attempt %d of %d)",requestAttempt, MAX_RETRY_COUNT] withLevel:LOG_INFO fromClass:[[self class] description]];
-			return [self apiRequest:requestString returningApiResults:apiResults returningError:error requestAttempt:++requestAttempt];
+			return [self apiRequest:initialRequestString returningApiResults:apiResults returningError:error requestAttempt:++requestAttempt isLogin:isLogin];
 		}
 		
 		apiReqOK = NO;
@@ -379,13 +406,39 @@
 		if (jsonResults == nil) {
 			[LogManager log:[NSString stringWithFormat:@"Error retrieving JSON results: %@", [jsonError localizedDescription]] withLevel:LOG_ERROR fromClass:[[self class] description]];
 			*error = [[[NSString alloc] initWithFormat:@"Tesco API endpoint unreachable"] autorelease];
+			
+			if (requestAttempt < MAX_RETRY_COUNT) {
+				[LogManager log:[NSString stringWithFormat:@"Retrying request (attempt %d of %d)",requestAttempt, MAX_RETRY_COUNT] withLevel:LOG_INFO fromClass:[[self class] description]];
+				return [self apiRequest:initialRequestString returningApiResults:apiResults returningError:error requestAttempt:++requestAttempt isLogin:isLogin];
+			}
+			
 			apiReqOK = NO;
 		} else {
 			NSNumber *statusCode = [jsonResults objectForKey:@"StatusCode"];
 			
 			if ([statusCode intValue] != 0) {
-				[LogManager log:[NSString stringWithFormat:@"API error: '%@'", jsonResults] withLevel:LOG_ERROR fromClass:[[self class] description]];
-				*error = [[[NSString alloc] initWithFormat:@"%@", [jsonResults objectForKey:@"StatusInfo"]] autorelease];
+				/* something's gone wrong with the API so we need to find out what has happened */
+				if (([statusCode intValue] == 120) || ([statusCode intValue] == 200)) {
+					[LogManager log:@"API call failed due to out of date/invalid session key" withLevel:LOG_ERROR fromClass:[[self class] description]];
+					
+					/* chances are, the user has left the app for ages and the session key is now invalid so we need a new one */
+					if (loggedIn == YES) {
+						/* user was logged in so use their original credentials to try and log them back in */
+						[LogManager log:@"User was logged in - logging back in" withLevel:LOG_ERROR fromClass:[[self class] description]];
+						[self login:[self userEmail] withPassword:[self userPassword]];
+					} else {
+						/* user was not logged in so create an anonymous session key */
+						[LogManager log:@"User was not logged in - recreating anonymous session key" withLevel:LOG_ERROR fromClass:[[self class] description]];
+						[self createAnonymousSessionKey];
+					}
+					
+					/* we need to resend the current request as it failed the last time - we should now have a valid session key */
+					return [self apiRequest:initialRequestString returningApiResults:apiResults returningError:error requestAttempt:++requestAttempt isLogin:isLogin];
+				} else {
+					[LogManager log:[NSString stringWithFormat:@"API error: '%@'", jsonResults] withLevel:LOG_ERROR fromClass:[[self class] description]];
+					*error = [[[NSString alloc] initWithFormat:@"%@", [jsonResults objectForKey:@"StatusInfo"]] autorelease];
+				}
+				
 				apiReqOK = NO;
 			} else {
 				*apiResults = jsonResults;
@@ -398,6 +451,20 @@
 	return apiReqOK;
 }
 
+- (void)createAnonymousSessionKey {
+    if ([self login:@"" withPassword:@""] == YES) {
+        [LogManager log:[NSString stringWithFormat:@"Created anonymous login with session key: %@", sessionKey] withLevel:LOG_INFO fromClass:[[self class] description]];
+    } else {
+        [LogManager log:[NSString stringWithFormat:@"Failed to create anonymous login"] withLevel:LOG_ERROR fromClass:[[self class] description]];
+        
+        UIAlertView *loginAlert = [[UIAlertView alloc] initWithTitle:@"Failed to connect to Tesco.com" message:@"Retry or switch to offline mode?" delegate:self cancelButtonTitle:@"Switch Mode" otherButtonTitles:@"Retry", nil];
+        [loginAlert show];
+        [loginAlert release];
+    }
+    
+    [self setLoggedIn:NO];
+}
+
 /*
  * Logs the user in to the Tesco store using email and password
  */
@@ -406,9 +473,9 @@
 	NSDictionary *apiResults;
 	NSString *error;
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=LOGIN&email=%@&password=%@&developerkey=%@&applicationkey=%@", REST_SERVICE_URL, email, password, DEVELOPER_KEY, APPLICATION_KEY];
-	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1];
+	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1 isLogin:YES];
 	
-	if (apiRequestOK == TRUE) {
+	if (apiRequestOK == YES) {
 		[sessionKey = [apiResults objectForKey:@"SessionKey"] retain];
 		[self setCustomerName:[apiResults objectForKey:@"CustomerName"]];
 		loggedInSuccessfully = YES;

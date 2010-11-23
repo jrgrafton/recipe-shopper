@@ -12,6 +12,8 @@
 
 @interface ProductBasketManager()
 - (void)recalculateBasketPrice;
+
+@property (assign) NSLock *updateLock;
 @end
 
 @implementation ProductBasketManager
@@ -19,6 +21,7 @@
 @synthesize productBasket;
 @synthesize productBasketPrice;
 @synthesize shoppingListProducts;
+@synthesize updateLock;
 
 - (id)init {
 	if (self = [super init]) {
@@ -52,10 +55,10 @@
 	}
 	
 	/* Need to ensure only one thread at a time can re-calculate totals - don't wan't context switch here!!*/
-	[updateLock lock];
+	[[self updateLock] lock];
 	[self recalculateBasketPrice];
 	[self setShoppingListProducts:[NSNumber numberWithInt:[dataManager getTotalProductCount]]];
-	[updateLock unlock];
+	[[self updateLock] unlock];
 }
 
 #pragma mark -

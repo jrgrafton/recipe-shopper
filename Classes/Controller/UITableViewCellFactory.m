@@ -135,12 +135,12 @@
 	[label setText:[product productOfferValidity]];
 
 	plusButton = (UIButton *)[cell viewWithTag:PLUS_BUTTON_TAG];
-	[plusButton setTag:[[product productBaseID] intValue]];
+	[plusButton setTag:[[product productID] intValue]];
 	[buttons insertObject:plusButton atIndex:0];
 	
 	label = (UILabel *)[cell viewWithTag:COUNT_TAG];
 	minusButton = (UIButton *)[cell viewWithTag:MINUS_BUTTON_TAG];
-	[minusButton setTag:[[product productBaseID] intValue]];
+	[minusButton setTag:[[product productID] intValue]];
 	[buttons insertObject:minusButton atIndex:1];
 	
 	if ([quantity intValue] > 0) {

@@ -241,16 +241,15 @@
  * to both the product basket and the online basket
  */
 - (void)addProductButtonClicked:(id)sender {
-	NSString *productBaseID = [NSString stringWithFormat:@"%d", [sender tag]];
+	NSString *productID = [NSString stringWithFormat:@"%d", [sender tag]];
 	
 	NSEnumerator *productsEnumerator = [[dataManager getProductBasket] keyEnumerator];
 	Product *product;
 	
 	while ((product = [productsEnumerator nextObject])) {
-		if ([[product productBaseID] intValue] == [productBaseID intValue]) {
+		if ([[product productID] intValue] == [productID intValue]) {
 			/* we've found the product that relates to this product ID so increase its quantity in the product basket */
 			[dataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:1]];
-			[NSThread sleepForTimeInterval:0.5];
 			
 			/* add the cost of one of these items to the basket price */
 			CGFloat productPrice = [[product productPrice] floatValue];
@@ -271,16 +270,15 @@
  * from both the product basket and the online basket
  */
 - (void)removeProductButtonClicked:(id)sender {
-	NSString *productBaseID = [NSString stringWithFormat:@"%d", [sender tag]];
+	NSString *productID = [NSString stringWithFormat:@"%d", [sender tag]];
 	
 	NSEnumerator *productsEnumerator = [[dataManager getProductBasket] keyEnumerator];
 	Product *product;
 	
 	while ((product = [productsEnumerator nextObject])) {
-		if ([[product productBaseID] intValue] == [productBaseID intValue]) {
+		if ([[product productID] intValue] == [productID intValue]) {
 			/* we've found the product that relates to this product ID so decrease its quantity in the product basket */
 			[dataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:-1]];
-			[NSThread sleepForTimeInterval:0.5];
 			
 			/* deduct the cost of one of these items from the basket price */
 			CGFloat productPrice = [[product productPrice] floatValue];

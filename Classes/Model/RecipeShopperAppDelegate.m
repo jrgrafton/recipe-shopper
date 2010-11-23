@@ -9,6 +9,10 @@
 #import "RecipeShopperAppDelegate.h"
 #import "DataManager.h"
 
+@interface RecipeShopperAppDelegate()
+- (void)startupAnimationDone:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context;
+@end
+
 @implementation RecipeShopperAppDelegate
 
 @synthesize window;
@@ -30,7 +34,26 @@
     [window addSubview:tabBarController.view];
     [window makeKeyAndVisible];
 
+	/* animate the splash screen's disappearance */
+	splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, 480)];
+	splashView.image = [UIImage imageNamed:@"Default.png"];
+	[window addSubview:splashView];
+	[window bringSubviewToFront:splashView];
+	[UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:2.0];
+	[UIView setAnimationTransition:UIViewAnimationTransitionNone forView:window cache:YES];
+	[UIView setAnimationDelegate:self]; 
+	[UIView setAnimationDidStopSelector:@selector(startupAnimationDone:finished:context:)];
+	splashView.alpha = 0.0;
+	splashView.frame = CGRectMake(-60, -85, 440, 635);
+	[UIView commitAnimations];
+	
     return YES;
+}
+
+- (void)startupAnimationDone:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
+	[splashView removeFromSuperview];
+	[splashView release];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {

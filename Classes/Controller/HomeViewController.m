@@ -11,6 +11,7 @@
 #import "LogManager.h"
 
 @interface HomeViewController()
+- (void)switchToOfflineMode;
 - (void)loginSuccess;
 - (void)loginFailed;
 @end
@@ -40,6 +41,9 @@
 		[dataManager setOfflineMode:NO];
 		[offlineModeSwitch setOn:NO];
 	}
+	
+	/* add ourselves as an observer for offline mode switch messages so we can set the switch if need be */
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToOfflineMode) name:@"SwitchToOffline" object:nil];
 	
 	/* Try and do a cheeky cached load of product departments */
 	[NSThread detachNewThreadSelector:@selector(getDepartments) toTarget:dataManager withObject:nil];
@@ -75,6 +79,10 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:@"LoginFailed" object:nil];
 	
 	[dataManager requestLoginToStore];
+}
+
+- (void)switchToOfflineMode {
+	[offlineModeSwitch setOn:YES];
 }
 
 - (void)loginSuccess {

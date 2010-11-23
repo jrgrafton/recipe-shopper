@@ -9,19 +9,20 @@
 #import <Foundation/Foundation.h>
 #import "Product.h"
 
-@interface APIRequestManager : NSObject {
+@interface APIRequestManager : NSObject <UIAlertViewDelegate> {
 @private 
 	NSString *sessionKey;
 	NSMutableDictionary *departments;
 	NSMutableDictionary *aisles;
 	NSMutableDictionary *shelves;
-	
 	NSMutableArray *shelfProductCache; /* Shelf result cache so we can simulate pagination */
 }
 
 @property (nonatomic) BOOL offlineMode;
 @property (nonatomic) BOOL loggedIn;
 @property (nonatomic, retain) NSString *customerName;
+@property (nonatomic, retain) NSString *userEmail;
+@property (nonatomic, retain) NSString *userPassword;
 
 - (BOOL)loginToStore:(NSString *)email withPassword:(NSString *)password;
 - (void)logoutOfStore;

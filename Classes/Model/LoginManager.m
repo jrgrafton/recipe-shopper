@@ -120,9 +120,11 @@
 		[self setLoginName:[details objectAtIndex:0]];
 		
 		/* empty the online basket  PROMPT TO EMPTY BASKET HERE*/
+		[dataManager setOverlayLoadingLabelText:@"Emptying online basket"];
 		[dataManager emptyOnlineBasket];
-		
+				
 		/* add any products which may be in the product basket to the online basket now */
+		[dataManager setOverlayLoadingLabelText:@"Adding products to online basket"];
 		[dataManager addProductBasketToOnlineBasket];
 		
 		[dataManager hideOverlayView];

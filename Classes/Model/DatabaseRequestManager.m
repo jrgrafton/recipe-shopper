@@ -93,15 +93,15 @@ static sqlite3 *database = nil;
 	
 	sqlite3_reset(selectstmt);
 	
-	const char *recipeProductsQuery = [[NSString stringWithFormat:@"Select productID,productQuantity from recipeProducts where recipeID = %@", [recipe recipeID]] UTF8String];
+	const char *recipeProductsQuery = [[NSString stringWithFormat:@"Select productBaseID,productQuantity from recipeProducts where recipeID = %@", [recipe recipeID]] UTF8String];
 	
 	NSMutableDictionary *recipeProducts = [[[NSMutableDictionary alloc] init] autorelease];
 	
 	if (sqlite3_prepare_v2(database, recipeProductsQuery, -1, &selectstmt, NULL) == SQLITE_OK) {
 		while(sqlite3_step(selectstmt) == SQLITE_ROW) {
-			NSString *productID =[NSString stringWithUTF8String:(const char *)sqlite3_column_text(selectstmt, 0)];
+			NSString *productBaseID =[NSString stringWithUTF8String:(const char *)sqlite3_column_text(selectstmt, 0)];
 			NSString *productQuantity = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(selectstmt, 1)];
-			[recipeProducts setObject:productQuantity forKey:productID];
+			[recipeProducts setObject:productQuantity forKey:productBaseID];
 		}
 	}
 	
@@ -320,12 +320,13 @@ static sqlite3 *database = nil;
 
 - (Product *)createProduct:(sqlite3_stmt *)selectstmt {
 	NSNumber *productBaseID = [NSNumber numberWithInt:sqlite3_column_int(selectstmt, 0)];
-	NSString *productName = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(selectstmt, 1)];
-	NSString *productPrice = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(selectstmt, 2)];
-	NSString *productImageString = [NSString stringWithUTF8String:(const char *)sqlite3_column_blob(selectstmt, 3)];
+	NSNumber *productID = [NSNumber numberWithInt:sqlite3_column_int(selectstmt, 1)];
+	NSString *productName = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(selectstmt, 2)];
+	NSString *productPrice = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(selectstmt, 3)];
+	NSString *productImageString = [NSString stringWithUTF8String:(const char *)sqlite3_column_blob(selectstmt, 4)];
 	UIImage *productImage = [UIImage imageWithData:[NSData dataWithBase64EncodedString:productImageString]];
 	
-	return [[[Product alloc] initWithProductBaseID:productBaseID andProductID:[NSNumber numberWithInt:0] andProductName:productName
+	return [[[Product alloc] initWithProductBaseID:productBaseID andProductID:productID andProductName:productName
 								   andProductPrice:productPrice andProductOffer:@"" andProductOfferValidity:@""
 								   andProductImage:productImage andProductOfferImage:NULL] autorelease];
 }

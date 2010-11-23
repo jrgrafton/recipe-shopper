@@ -127,7 +127,7 @@ static DataManager *sharedInstance = nil;
 - (void)updateBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity {
 	/* update this product in the product basket */
 	[productBasketManager updateProductBasketQuantity:product byQuantity:quantity];
-	
+
 	if ([overlayViewController isShowing]) {
 		[self performSelectorOnMainThread:@selector(setOverlayLoadingLabelText:) withObject:[NSString stringWithFormat:@"%d basket update(s) remaining",productBasketUpdates] waitUntilDone:YES];
 	}
