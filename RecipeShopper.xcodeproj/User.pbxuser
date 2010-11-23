@@ -16,7 +16,7 @@
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeBuildConfigurationName = Release;
 		activeExecutable = CE6FCBE5126BB6D400A55CB6 /* RecipeShopper */;
-		activeSDKPreference = iphonesimulator4.1;
+		activeSDKPreference = iphoneos4.1;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* RecipeShopper */;
 		addToTargets = (
 			1D6058900D05DD3D006BFB54 /* RecipeShopper */,
@@ -340,9 +340,9 @@
 	};
 	3EB5D51E1268AB3D009A80E0 /* CheckoutViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1524, 3991}}";
-			sepNavSelRange = "{52, 0}";
-			sepNavVisRange = "{0, 713}";
+			sepNavIntBoundsRect = "{{0, 0}, {1524, 4030}}";
+			sepNavSelRange = "{9352, 9}";
+			sepNavVisRange = "{8508, 1633}";
 		};
 	};
 	3EB5D51F1268AB3D009A80E0 /* OnlineShopViewController.h */ = {
@@ -484,9 +484,9 @@
 	};
 	3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1440, 2782}}";
-			sepNavSelRange = "{6823, 0}";
-			sepNavVisRange = "{6010, 1177}";
+			sepNavIntBoundsRect = "{{0, 0}, {1440, 2704}}";
+			sepNavSelRange = "{6544, 0}";
+			sepNavVisRange = "{4792, 1420}";
 		};
 	};
 	3EB5D5351268AB3D009A80E0 /* UITableViewCellFactory.h */ = {
@@ -909,7 +909,7 @@
 		fRef = 3EB5D5341268AB3D009A80E0 /* ShoppingListViewController.m */;
 		name = "ShoppingListViewController.m: 186";
 		rLen = 0;
-		rLoc = 6823;
+		rLoc = 6799;
 		rType = 0;
 		vrLen = 1177;
 		vrLoc = 6010;
