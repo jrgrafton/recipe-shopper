@@ -152,39 +152,84 @@ static DataManager *sharedInstance = nil;
 	}
 }
 
-- (BOOL)syncronizeOnlineOfflineBasket {
+- (BOOL) synchronizeOnlineOfflineBasket {
+	[LogManager log:@"Synching online/offline basket" withLevel:LOG_INFO fromClass:[[self class] description]];
+	
 	NSDictionary *onlineBasket = [apiRequestManager getOnlineBasket];
 	NSDictionary *offlineBasket = [productBasketManager productBasket];
+	BOOL madeChanges = NO;
 	
+	/* This first nested loop ensures that offline basket doesn't have anything it shouldn't have */
 	for (NSString *onlineProductID in [onlineBasket allKeys]) {
 		BOOL foundMatch = NO;
-		for (NSString *offlineProductID in [offlineBasket allKeys]) {
+		for (Product *offlineProduct in [offlineBasket allKeys]) {
+			NSString *offlineProductID = [NSString stringWithFormat:@"%@",[offlineProduct productID]]; 
 			if ([onlineProductID isEqualToString:offlineProductID]) {
-				/*Found match for ID now match quantity*/
-				NSInteger onlineCount = [onlineBasket objectForKey:onlineProductID];
-				NSInteger offlineCount = [offlineBasket objectForKey:offlineProductID];
-				NSInteger difference = onlineCount - offlineCount;
+				foundMatch = YES;
 				
-				if (difference != 0) {
+				/*Found match for ID now match quantity*/
+				NSInteger onlineCount = [[onlineBasket objectForKey:onlineProductID] intValue];
+				NSInteger offlineCount = [[offlineBasket objectForKey:offlineProduct] intValue];
+				NSNumber *difference = [NSNumber numberWithInt:(onlineCount - offlineCount)];
+				
+				if ([difference intValue] != 0) {
+					madeChanges = YES;
+					
 					NSMutableArray *productDetails = [[NSMutableArray alloc] initWithCapacity:2];
 					[productDetails addObject:onlineProductID];
 					[productDetails addObject:difference];
 					[self setUpdatingOnlineBasket:YES];
+					NSLog(@"id %@ online %@ offline %@",[productDetails objectAtIndex:0],onlineCount,offlineCount);
+					[LogManager log:[NSString stringWithFormat:@"Incorrect number of online product ID %@ found, needs adjusting by %@", [productDetails objectAtIndex:0],[productDetails objectAtIndex:1]] withLevel:LOG_INFO fromClass:[[self class] description]];
 					[NSThread detachNewThreadSelector:@selector(updateOnlineBasket:) toTarget:self withObject:productDetails];
+					break;
 				}
-				foundMatch = YES;
-				break;
 			}
 		}
 		
 		/* There is a product in our online basket that doesn't appear in our offline basket */
 		if (!foundMatch) {
-			NSMutableArray *recipeProduct = [[NSMutableArray alloc] initWithCapacity:2]; //Will get released by child thread
-			[recipeProduct addObject:onlineProductID];
-			[recipeProduct addObject:[onlineBasket objectForKey:onlineProductID]];
-			[NSThread detachNewThreadSelector:@selector(addRecipeProductToBasket:) toTarget:self withObject:recipeProduct];
+			/* Remove erranous product completely */
+			NSMutableArray *productDetails = [[NSMutableArray alloc] initWithCapacity:2];
+			[productDetails addObject:onlineProductID];
+			[productDetails addObject: [NSNumber numberWithInt:(0 - [[onlineBasket objectForKey:onlineProductID] intValue])]];
+			[self setUpdatingOnlineBasket:YES];
+			[LogManager log:[NSString stringWithFormat:@"Online product ID %@ not found in local basket, needs adjusting by %@", [productDetails objectAtIndex:0],[productDetails objectAtIndex:1]] withLevel:LOG_INFO fromClass:[[self class] description]];
+			[NSThread detachNewThreadSelector:@selector(updateOnlineBasket:) toTarget:self withObject:productDetails];
+			
+			madeChanges = YES;
 		}
 	}
+	
+	/* It still however may be the case that the product basket might have items the online basket doesn't even know of... */
+	for (Product *offlineProduct in [offlineBasket allKeys]) {
+		NSString *offlineProductID = [NSString stringWithFormat:@"%@",[offlineProduct productID]];
+		BOOL foundMatch = NO;
+		for (NSString *onlineProductID in [onlineBasket allKeys]) {
+			if ([onlineProductID isEqualToString:offlineProductID]) {
+				foundMatch = YES;
+				break;
+			}
+		}
+		
+		if (!foundMatch) {
+			/*Item needs adding to online basket */
+			NSMutableArray *productDetails = [[NSMutableArray alloc] initWithCapacity:2];
+			[productDetails addObject: offlineProductID];
+			[productDetails addObject: [offlineBasket objectForKey:offlineProduct]];
+			[self setUpdatingOnlineBasket:YES];
+			[LogManager log:[NSString stringWithFormat:@"Local product ID %@ not found in online basket, needs adjusting by %@", [productDetails objectAtIndex:0],[productDetails objectAtIndex:1]] withLevel:LOG_INFO fromClass:[[self class] description]];
+			[NSThread detachNewThreadSelector:@selector(updateOnlineBasket:) toTarget:self withObject:productDetails];
+			
+			madeChanges = YES;
+		}
+	}
+	
+	if (!madeChanges) {
+		[LogManager log:@"Online/Offline basket appear to match" withLevel:LOG_INFO fromClass:[[self class] description]];
+	}
+	
+	return madeChanges;
 }
 
 - (void)updateOnlineBasket:(NSArray *)productDetails {
@@ -199,11 +244,15 @@ static DataManager *sharedInstance = nil;
 	[LogManager log:[NSString stringWithFormat:@"Number of online basket updates remaining is %d", onlineBasketUpdates] withLevel:LOG_INFO fromClass:[[self class] description]];
 	
 	if (onlineBasketUpdates == 0) {
-		/* we've finished updating the online basket now */
-		[self setUpdatingOnlineBasket:NO];
-		
-		/* so notify the checkout controller so that it can remove the overlay view */
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"OnlineBasketUpdateComplete" object:self];
+		/* we've finished updating the online basket
+		   So now verify that offline basket agrees */
+		if (![self synchronizeOnlineOfflineBasket]) {
+			/* Only when baskets match can we send out notification */
+			[self setUpdatingOnlineBasket:NO];
+			
+			/* send out notification */
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"OnlineBasketUpdateComplete" object:self];
+		}
 	}
 	
 	//[productDetails release];

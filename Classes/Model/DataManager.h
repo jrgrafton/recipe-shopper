@@ -46,7 +46,7 @@
 - (void)uninitialiseAll;
 - (BOOL)phoneIsOnline;
 - (void)updateBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity;
-- (BOOL)syncronizeOnlineOfflineBasket;
+- (BOOL)synchronizeOnlineOfflineBasket;
 
 /* database manager calls */
 - (NSArray *)getAllRecipesInCategory:(NSString *)categoryName;

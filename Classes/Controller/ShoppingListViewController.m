@@ -134,8 +134,18 @@
 #pragma mark Private methods
 
 - (void)productBasketUpdateComplete {
+	NSLog(@"Update complete!!!!");
 	[dataManager hideOverlayView];
 	[productTableView reloadData];
+		[productTableView reloadData];
+		[productTableView reloadData];
+		[productTableView reloadData];
+		[productTableView reloadData];
+		[productTableView reloadData];
+		[productTableView reloadData];
+		[productTableView reloadData];
+		[productTableView reloadData];
+		[productTableView reloadData];
 }
 
 /*
