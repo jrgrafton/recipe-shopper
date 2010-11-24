@@ -18,7 +18,6 @@
 - (void)addProductButtonClicked:(id)sender;
 - (void)addProductButtonClicked:(id)sender;
 - (void)loadDeliveryDates;
-
 @end
 
 #define CELL_ACTIVITY_INDICATOR_TAG 6
@@ -220,6 +219,7 @@
 	/* In case spinners have disappeared after basket updates finished */
 	[basketView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
 	
+	
 	/* get the latest basket details (price, savings etc.) */
 	NSDictionary *basketDetails = [dataManager getBasketDetails];
 	
@@ -231,7 +231,7 @@
 	[self setBasketPoints:[basketDetails objectForKey:@"BasketPoints"]];
 	
 	/* reload the basket details section to show the new values */
-	[basketView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
+	[self performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
 
 	[pool release];
 }
