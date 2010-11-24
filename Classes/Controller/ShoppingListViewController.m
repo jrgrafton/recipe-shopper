@@ -54,8 +54,6 @@
 	/* scroll the list to the top */
 	[productTableView setContentOffset:CGPointMake(0, 0) animated:NO];
 	
-	[productTableView reloadData];
-	
 	if ([dataManager updatingProductBasket] == YES) {
 		[dataManager showOverlayView:[[self view] window]];
 		[dataManager setOverlayLabelText:@"Updating shopping list"];

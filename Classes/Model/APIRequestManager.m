@@ -15,10 +15,10 @@
 
 #define DEVELOPER_KEY @"xIvRaeGkY6OavPL1XtX9"
 #define APPLICATION_KEY @"CA1A9E0437CBE399E890"
-#define REST_SERVICE_URL @"https://secure.techfortesco.com/groceryapi/restservice.aspx"
+#define REST_SERVICE_URL @"https://secure.techfortesco.com/groceryapi_b1/restservice.aspx"
 #define SHELF_SIMULATED_PAGE_SIZE 15
 #define MAX_RETRY_COUNT 3	//Maximum amount of times to API retry request before giving up
-#define MIN_API_CALL_INTERVAL 200.0 //Minimum allowed time between subsequent API calls (in ms)
+#define MIN_API_CALL_INTERVAL 500.0 //Minimum allowed time between subsequent API calls (in ms)
 
 @interface APIRequestManager()
 
@@ -74,7 +74,7 @@
 	NSMutableDictionary *onlineBasket = [[NSMutableDictionary alloc] init];
 	NSDictionary *apiResults;
 	NSString *error;
-	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKETSUMMARY", REST_SERVICE_URL];
+	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKET&FAST=y", REST_SERVICE_URL];
 	
 	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1 isLogin:NO];
 	

@@ -152,6 +152,41 @@ static DataManager *sharedInstance = nil;
 	}
 }
 
+- (BOOL)syncronizeOnlineOfflineBasket {
+	NSDictionary *onlineBasket = [apiRequestManager getOnlineBasket];
+	NSDictionary *offlineBasket = [productBasketManager productBasket];
+	
+	for (NSString *onlineProductID in [onlineBasket allKeys]) {
+		BOOL foundMatch = NO;
+		for (NSString *offlineProductID in [offlineBasket allKeys]) {
+			if ([onlineProductID isEqualToString:offlineProductID]) {
+				/*Found match for ID now match quantity*/
+				NSInteger onlineCount = [onlineBasket objectForKey:onlineProductID];
+				NSInteger offlineCount = [offlineBasket objectForKey:offlineProductID];
+				NSInteger difference = onlineCount - offlineCount;
+				
+				if (difference != 0) {
+					NSMutableArray *productDetails = [[NSMutableArray alloc] initWithCapacity:2];
+					[productDetails addObject:onlineProductID];
+					[productDetails addObject:difference];
+					[self setUpdatingOnlineBasket:YES];
+					[NSThread detachNewThreadSelector:@selector(updateOnlineBasket:) toTarget:self withObject:productDetails];
+				}
+				foundMatch = YES;
+				break;
+			}
+		}
+		
+		/* There is a product in our online basket that doesn't appear in our offline basket */
+		if (!foundMatch) {
+			NSMutableArray *recipeProduct = [[NSMutableArray alloc] initWithCapacity:2]; //Will get released by child thread
+			[recipeProduct addObject:onlineProductID];
+			[recipeProduct addObject:[onlineBasket objectForKey:onlineProductID]];
+			[NSThread detachNewThreadSelector:@selector(addRecipeProductToBasket:) toTarget:self withObject:recipeProduct];
+		}
+	}
+}
+
 - (void)updateOnlineBasket:(NSArray *)productDetails {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	

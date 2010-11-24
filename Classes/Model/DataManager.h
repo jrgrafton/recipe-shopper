@@ -41,12 +41,12 @@
 
 + (DataManager *)getInstance;
 
+/* Combined manager calls */
 - (id)init;
 - (void)uninitialiseAll;
-
 - (BOOL)phoneIsOnline;
-
 - (void)updateBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity;
+- (BOOL)syncronizeOnlineOfflineBasket;
 
 /* database manager calls */
 - (NSArray *)getAllRecipesInCategory:(NSString *)categoryName;
