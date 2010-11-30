@@ -213,15 +213,8 @@ static DataManager *sharedInstance = nil;
 		}
 		
 		if (!foundMatch) {
-			/*Item needs adding to online basket */
-			NSMutableArray *productDetails = [[NSMutableArray alloc] initWithCapacity:2];
-			[productDetails addObject: offlineProductID];
-			[productDetails addObject: [offlineBasket objectForKey:offlineProduct]];
-			[self setUpdatingOnlineBasket:YES];
-			[LogManager log:[NSString stringWithFormat:@"Local product ID %@ not found in online basket, needs adjusting by %@", [productDetails objectAtIndex:0],[productDetails objectAtIndex:1]] withLevel:LOG_INFO fromClass:[[self class] description]];
-			[NSThread detachNewThreadSelector:@selector(updateOnlineBasket:) toTarget:self withObject:productDetails];
-			
-			madeChanges = YES;
+			[LogManager log:[NSString stringWithFormat:@"Local product ID %@ not found in online basket, adding to unavailable online collection", [offlineProduct productID]] withLevel:LOG_INFO fromClass:[[self class] description]];
+			[productBasketManager markProductUnavailableOnline:offlineProduct];
 		}
 	}
 	
@@ -245,7 +238,7 @@ static DataManager *sharedInstance = nil;
 	
 	if (onlineBasketUpdates == 0) {
 		/* we've finished updating the online basket
-		   So now verify that offline basket agrees */
+		   So now verify that offline basket agrees (note this will keep going around until it does! */
 		if (![self synchronizeOnlineOfflineBasket]) {
 			/* Only when baskets match can we send out notification */
 			[self setUpdatingOnlineBasket:NO];
@@ -547,6 +540,26 @@ static DataManager *sharedInstance = nil;
 
 - (NSNumber *)getProductQuantityFromBasket:(Product *)product {
 	return [[productBasketManager productBasket] objectForKey:product];
+}
+
+- (NSInteger)getDistinctUnavailableOnlineCount {
+	return [[[productBasketManager productsUnavailableOnline] allKeys] count];
+}
+
+- (Product *)getUnavailableOnlineProduct:(NSUInteger)productIndex {
+	return [[[productBasketManager productsUnavailableOnline] allKeys] objectAtIndex:productIndex];
+}
+
+- (NSInteger)getDistinctAvailableOnlineCount {
+	return [self getDistinctProductCount] - [self getDistinctUnavailableOnlineCount];
+}
+
+- (Product *)getAvailableOnlineProduct:(NSUInteger)productIndex {
+	NSArray* productBasketKeys = [[productBasketManager productBasket] allKeys];
+	NSMutableArray* availableOnlineKeys = [[[NSMutableArray alloc] initWithArray: productBasketKeys copyItems:YES] autorelease];
+	[availableOnlineKeys removeObjectsInArray:[[productBasketManager productsUnavailableOnline] allKeys]];
+	
+	return [availableOnlineKeys objectAtIndex:productIndex];
 }
 
 - (void)emptyProductBasket {

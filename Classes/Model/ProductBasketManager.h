@@ -18,11 +18,13 @@
 }
 
 @property (retain) NSMutableDictionary *productBasket;
+@property (retain) NSMutableDictionary *productsUnavailableOnline;
 @property (retain) NSString *productBasketPrice;
 @property (retain) NSNumber *shoppingListProducts;
 
 - (id)init;
 - (void)emptyProductBasket;
 - (void)updateProductBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity;
+- (void)markProductUnavailableOnline:(Product *)product;
 
 @end

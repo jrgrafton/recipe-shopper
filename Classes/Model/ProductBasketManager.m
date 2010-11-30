@@ -19,6 +19,7 @@
 @implementation ProductBasketManager
 
 @synthesize productBasket;
+@synthesize productsUnavailableOnline;
 @synthesize productBasketPrice;
 @synthesize shoppingListProducts;
 @synthesize updateLock;
@@ -26,8 +27,8 @@
 - (id)init {
 	if (self = [super init]) {
 		productBasket = [[NSMutableDictionary alloc] init];
+		productsUnavailableOnline = [[NSMutableDictionary alloc] init];
 		dataManager = [DataManager getInstance];
-		updateLock = [[NSLock alloc] init];
 		[self setProductBasketPrice:@"£0.00"];
 		[self setShoppingListProducts:[NSNumber numberWithInt:0]];
 	}
@@ -41,24 +42,34 @@
 }
 
 - (void)updateProductBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity {
-	int newQuantity = [[productBasket objectForKey:product] intValue] + [quantity intValue];
-	
-	if ((newQuantity > 0) && (newQuantity <= 99)) {
-		/* just change the quantity for this product to the new value */
-		[productBasket setObject:[NSNumber numberWithInt:newQuantity] forKey:[product retain]];
-	} else if (newQuantity > 99) {
-		/* can't have more than 99 so just set it to 99 */
-		[productBasket setObject:[NSNumber numberWithInt:99] forKey:[product retain]];
-	} else {
-		/* must have removed all of this product so remove the product altogether */
-		[productBasket removeObjectForKey:[product retain]];
+	/* Need to ensure only one thread at a time can access, so we don't simultaneous read/write*/
+	@synchronized(self) {	
+		int newQuantity = [[productBasket objectForKey:product] intValue] + [quantity intValue];
+		
+		if ((newQuantity > 0) && (newQuantity <= 99)) {
+			/* just change the quantity for this product to the new value */
+			[productBasket setObject:[NSNumber numberWithInt:newQuantity] forKey:[product retain]];
+		} else if (newQuantity > 99) {
+			/* can't have more than 99 so just set it to 99 */
+			[productBasket setObject:[NSNumber numberWithInt:99] forKey:[product retain]];
+		} else {
+			/* must have removed all of this product so remove the product altogether */
+			[productBasket removeObjectForKey:[product retain]];
+			/* Remove it from unavailable online as well!*/
+			[productsUnavailableOnline removeObjectForKey:[product retain]];
+		}
+		
+		[self recalculateBasketPrice];
+		[self setShoppingListProducts:[NSNumber numberWithInt:[dataManager getTotalProductCount]]];
 	}
-	
-	/* Need to ensure only one thread at a time can re-calculate totals - don't wan't context switch here!!*/
-	[[self updateLock] lock];
-	[self recalculateBasketPrice];
-	[self setShoppingListProducts:[NSNumber numberWithInt:[dataManager getTotalProductCount]]];
-	[[self updateLock] unlock];
+}
+
+- (void)markProductUnavailableOnline:(Product *)product {
+	@synchronized(self) {	
+		if ([productsUnavailableOnline objectForKey:[product productID]] == nil) {
+			[productsUnavailableOnline setObject:[product productID] forKey:[product retain]];
+		}
+	}
 }
 
 #pragma mark -
@@ -77,7 +88,8 @@
 }
 
 - (void)dealloc {
-	[updateLock release];
+	[productsUnavailableOnline release];
+	[productBasket release];
 	[super dealloc];
 }
 

@@ -93,6 +93,10 @@
 - (NSInteger)getTotalProductCount;
 - (Product *)getProductFromBasket:(NSUInteger)productIndex;
 - (NSNumber *)getProductQuantityFromBasket:(Product *)product;
+- (NSInteger)getDistinctUnavailableOnlineCount;
+- (Product *)getUnavailableOnlineProduct:(NSUInteger)productIndex;
+- (NSInteger)getDistinctAvailableOnlineCount;
+- (Product *)getAvailableOnlineProduct:(NSUInteger)productIndex;
 - (void)emptyProductBasket;
 
 /* login manager calls */

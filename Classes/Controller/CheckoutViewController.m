@@ -75,6 +75,19 @@
 	[NSThread detachNewThreadSelector:@selector(onlineBasketUpdateComplete) toTarget:self withObject:nil];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	/* Does not cover the case where online basket is still updating when view appears... */
+	if ([dataManager getDistinctUnavailableOnlineCount] != 0) {
+		UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Some products are not available in your area" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil,nil];
+		[warningAlert show];
+		[warningAlert release];
+		[basketView setContentOffset:CGPointMake(0, basketView.contentSize.height - basketView.frame.size.height ) animated:NO];
+	}
+
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	
@@ -121,23 +134,28 @@
 		/* this is the shopping list summary section */
 		return ([indexPath row] == 0)? 70:50;
 	} else {
-		/* this is the shopping list itself */
+		/* this is the shopping list or unavailble online section */
 		return ([indexPath row] == 0)? 135:120;
 	}
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return ([dataManager getDistinctUnavailableOnlineCount] == 0)? 2:3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
 		/* this is the basket summary section */
 		return 4;
-	} else {
+	} else if (section == 1) {
 		/* this is the basket itself */
-		return [dataManager getDistinctProductCount];
+		return [dataManager getDistinctAvailableOnlineCount];
+	} else if (section == 2) {
+		/* this is the unavailable online collection */
+		return [dataManager getDistinctUnavailableOnlineCount];
 	}
+	
+	return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -181,13 +199,13 @@
 		}
 	} else if (indexPath.section == 1) {
 		/* this is the basket itself */
-		static NSString *ProductBasketCellIdentifier = @"ProductBasketCell";
+		NSString *CellIdentifier = ([indexPath row] == 0)? @"ProductBasketCellHeader":@"ProductBasketCell";
 		
-		cell = [tableView dequeueReusableCellWithIdentifier:ProductBasketCellIdentifier];
+		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
-		Product *product = [dataManager getProductFromBasket:[indexPath row]];
+		Product *product = [dataManager getAvailableOnlineProduct:[indexPath row]];
 		NSNumber *quantity = [dataManager getProductQuantityFromBasket:product];
-		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:ProductBasketCellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isHeader:([indexPath row] == 0)];
+		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isHeader:([indexPath row] == 0)];
 		
 		[[buttons objectAtIndex:0] addTarget:self action:@selector(addProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 		
@@ -197,6 +215,24 @@
 		
 		UILabel *headerLabel = (UILabel *)[cell viewWithTag:13];
 		[headerLabel setText:@"Product Basket"];
+	} else if (indexPath.section == 2) {
+		/* this is the basket itself */
+		NSString *CellIdentifier = ([indexPath row] == 0)? @"UnavailbleOnlineCellHeader":@"UnavailbleOnlineCell";
+		
+		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		
+		Product *product = [dataManager getUnavailableOnlineProduct:[indexPath row]];
+		NSNumber *quantity = [dataManager getProductQuantityFromBasket:product];
+		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isHeader:([indexPath row] == 0)];
+		
+		[[buttons objectAtIndex:0] addTarget:self action:@selector(addProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+		
+		if ([buttons count] > 1) {
+			[[buttons objectAtIndex:1] addTarget:self action:@selector(removeProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+		}
+		
+		UILabel *headerLabel = (UILabel *)[cell viewWithTag:13];
+		[headerLabel setText:@"Unavailble In Your Area"];
 	}
 	
 	return cell;	
@@ -219,7 +255,6 @@
 	/* In case spinners have disappeared after basket updates finished */
 	[basketView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
 	
-	
 	/* get the latest basket details (price, savings etc.) */
 	NSDictionary *basketDetails = [dataManager getBasketDetails];
 	
@@ -231,7 +266,7 @@
 	[self setBasketPoints:[basketDetails objectForKey:@"BasketPoints"]];
 	
 	/* reload the basket details section to show the new values */
-	[self performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
+	[basketView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
 
 	[pool release];
 }

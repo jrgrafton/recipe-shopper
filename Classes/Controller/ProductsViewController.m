@@ -48,9 +48,13 @@
 	[productsView setAllowsSelection:NO];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[productsView reloadData];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	[productsView reloadData];
 	
 	/* Notification when batch of product images have finished being fetched */
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productImageBatchFetchCompleteNotification) name:@"productImageBatchFetchComplete" object:nil];

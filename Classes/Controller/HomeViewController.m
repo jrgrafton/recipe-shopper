@@ -100,9 +100,9 @@
 - (void)loginFailed {
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	
-	UIAlertView *successAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Login failed" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry",nil];
-	[successAlert show];
-	[successAlert release];
+	UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Login failed" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry",nil];
+	[errorAlert show];
+	[errorAlert release];
 }
 
 - (IBAction)logout:(id)sender {
