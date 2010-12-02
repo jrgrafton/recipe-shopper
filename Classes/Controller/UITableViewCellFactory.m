@@ -89,7 +89,7 @@
 	[label setText:serves];
 }
 
-+ (NSArray *)createProductTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withProduct:(Product *)product andQuantity:(NSNumber *)quantity forShoppingList:(BOOL)forShoppingList isHeader:(BOOL)isHeader {
++ (NSArray *)createProductTableCell:(UITableViewCell **)cellReference withIdentifier:(NSString *)cellIdentifier withProduct:(Product *)product andQuantity:(NSNumber *)quantity forShoppingList:(BOOL)forShoppingList isProductUnavailableCell:(BOOL)isProductUnavailableCell isHeader:(BOOL)isHeader {
 	UILabel *label;
 	UIImageView *image;
 	UIButton *plusButton, *minusButton;
@@ -102,9 +102,17 @@
         NSArray *bundle;	
 		
 		if (isHeader) {
-			bundle = [[NSBundle mainBundle] loadNibNamed:@"ProductCellHeader" owner:self options:nil];
+			if (isProductUnavailableCell) {
+				bundle = [[NSBundle mainBundle] loadNibNamed:@"ProductUnavailableCellHeader" owner:self options:nil];
+			}else {
+				bundle = [[NSBundle mainBundle] loadNibNamed:@"ProductCellHeader" owner:self options:nil];
+			}
 		}else{
-			bundle = [[NSBundle mainBundle] loadNibNamed:@"ProductCell" owner:self options:nil];
+			if (isProductUnavailableCell) {
+				bundle = [[NSBundle mainBundle] loadNibNamed:@"ProductUnavailableCell" owner:self options:nil];
+			}else {
+				bundle = [[NSBundle mainBundle] loadNibNamed:@"ProductCell" owner:self options:nil];
+			}
 		}
 		
         for (id viewElement in bundle) {

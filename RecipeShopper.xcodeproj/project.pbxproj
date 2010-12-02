@@ -163,6 +163,12 @@
 		CE76EC0C1274DE8900903FCC /* TotalCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE76EC0B1274DE8900903FCC /* TotalCell.xib */; };
 		CE76EC0E1274DE9B00903FCC /* TotalCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE76EC0D1274DE9B00903FCC /* TotalCellHeader.xib */; };
 		CE76EC181274EAB700903FCC /* ProductCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE76EC171274EAB700903FCC /* ProductCellHeader.xib */; };
+		CE77C65A12A82CC700031799 /* ProductUnavailableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE77C65912A82CC700031799 /* ProductUnavailableCell.xib */; };
+		CE77C65E12A82CE600031799 /* ProductUnavailableCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE77C65D12A82CE600031799 /* ProductUnavailableCellHeader.xib */; };
+		CE77C66512A8323C00031799 /* remove.png in Resources */ = {isa = PBXBuildFile; fileRef = CE77C66112A8323C00031799 /* remove.png */; };
+		CE77C66612A8323C00031799 /* remove@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE77C66212A8323C00031799 /* remove@2x.png */; };
+		CE77C66712A8323C00031799 /* replace.png in Resources */ = {isa = PBXBuildFile; fileRef = CE77C66312A8323C00031799 /* replace.png */; };
+		CE77C66812A8323C00031799 /* replace@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE77C66412A8323C00031799 /* replace@2x.png */; };
 		CE81C89E1271967200D8A725 /* header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81C89C1271967200D8A725 /* header@2x.png */; };
 		CE81C90B1271B73500D8A725 /* recentRecipesHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE81C90A1271B73500D8A725 /* recentRecipesHeader@2x.png */; };
 		CE81C9991271FA4500D8A725 /* RecipeCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE81C9981271FA4500D8A725 /* RecipeCellHeader.xib */; };
@@ -374,6 +380,12 @@
 		CE76EC0B1274DE8900903FCC /* TotalCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TotalCell.xib; sourceTree = "<group>"; };
 		CE76EC0D1274DE9B00903FCC /* TotalCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TotalCellHeader.xib; sourceTree = "<group>"; };
 		CE76EC171274EAB700903FCC /* ProductCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductCellHeader.xib; sourceTree = "<group>"; };
+		CE77C65912A82CC700031799 /* ProductUnavailableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ProductUnavailableCell.xib; path = View/ProductUnavailableCell.xib; sourceTree = "<group>"; };
+		CE77C65D12A82CE600031799 /* ProductUnavailableCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ProductUnavailableCellHeader.xib; path = View/ProductUnavailableCellHeader.xib; sourceTree = "<group>"; };
+		CE77C66112A8323C00031799 /* remove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remove.png; sourceTree = "<group>"; };
+		CE77C66212A8323C00031799 /* remove@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "remove@2x.png"; sourceTree = "<group>"; };
+		CE77C66312A8323C00031799 /* replace.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = replace.png; sourceTree = "<group>"; };
+		CE77C66412A8323C00031799 /* replace@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "replace@2x.png"; sourceTree = "<group>"; };
 		CE81C89C1271967200D8A725 /* header@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header@2x.png"; sourceTree = "<group>"; };
 		CE81C90A1271B73500D8A725 /* recentRecipesHeader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "recentRecipesHeader@2x.png"; sourceTree = "<group>"; };
 		CE81C9981271FA4500D8A725 /* RecipeCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeCellHeader.xib; sourceTree = "<group>"; };
@@ -525,8 +537,10 @@
 				3EB5D4F11268AB29009A80E0 /* MoreSearchResultsCell.xib */,
 				3EB5D4F41268AB29009A80E0 /* OverlayView.xib */,
 				3EB5D4F61268AB29009A80E0 /* ProductsView.xib */,
-				3EB5D4F71268AB29009A80E0 /* ProductCell.xib */,
 				CE76EC171274EAB700903FCC /* ProductCellHeader.xib */,
+				3EB5D4F71268AB29009A80E0 /* ProductCell.xib */,
+				CE77C65D12A82CE600031799 /* ProductUnavailableCellHeader.xib */,
+				CE77C65912A82CC700031799 /* ProductUnavailableCell.xib */,
 				3EB5D4F81268AB29009A80E0 /* RecipeBasketView.xib */,
 				3EB5D4F91268AB29009A80E0 /* RecipeCategoryView.xib */,
 				3EB5D4FA1268AB29009A80E0 /* RecipeHistoryView.xib */,
@@ -637,6 +651,10 @@
 		3EB5D6771268ABBB009A80E0 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				CE77C66112A8323C00031799 /* remove.png */,
+				CE77C66212A8323C00031799 /* remove@2x.png */,
+				CE77C66312A8323C00031799 /* replace.png */,
+				CE77C66412A8323C00031799 /* replace@2x.png */,
 				CE74CC031273366500B5566E /* basketHome.png */,
 				CE74CC041273366500B5566E /* basketHome@2x.png */,
 				3EB5D6781268ABBB009A80E0 /* bottom-fade.png */,
@@ -934,6 +952,12 @@
 				CECA3AE1128853F800DD2363 /* icon_shopping@2x.png in Resources */,
 				CECA3AE2128853F800DD2363 /* icon_todo@2x.png in Resources */,
 				CE73381A1297D81800250439 /* iTunesArtwork in Resources */,
+				CE77C65A12A82CC700031799 /* ProductUnavailableCell.xib in Resources */,
+				CE77C65E12A82CE600031799 /* ProductUnavailableCellHeader.xib in Resources */,
+				CE77C66512A8323C00031799 /* remove.png in Resources */,
+				CE77C66612A8323C00031799 /* remove@2x.png in Resources */,
+				CE77C66712A8323C00031799 /* replace.png in Resources */,
+				CE77C66812A8323C00031799 /* replace@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

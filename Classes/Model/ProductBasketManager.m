@@ -67,6 +67,7 @@
 - (void)markProductUnavailableOnline:(Product *)product {
 	@synchronized(self) {	
 		if ([productsUnavailableOnline objectForKey:[product productID]] == nil) {
+			[product removeProductOffer]; /* Don't care about product offer if it doesn't exist online! */
 			[productsUnavailableOnline setObject:[product productID] forKey:[product retain]];
 		}
 	}

@@ -15,8 +15,6 @@
 
 - (void)productBasketUpdateComplete;
 - (void)onlineBasketUpdateComplete;
-- (void)addProductButtonClicked:(id)sender;
-- (void)addProductButtonClicked:(id)sender;
 - (void)loadDeliveryDates;
 @end
 
@@ -80,10 +78,7 @@
 	
 	/* Does not cover the case where online basket is still updating when view appears... */
 	if ([dataManager getDistinctUnavailableOnlineCount] != 0) {
-		UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Some products are not available in your area" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil,nil];
-		[warningAlert show];
-		[warningAlert release];
-		[basketView setContentOffset:CGPointMake(0, basketView.contentSize.height - basketView.frame.size.height ) animated:NO];
+		[self scrollToBottomOfTable];
 	}
 
 }
@@ -205,12 +200,12 @@
 		
 		Product *product = [dataManager getAvailableOnlineProduct:[indexPath row]];
 		NSNumber *quantity = [dataManager getProductQuantityFromBasket:product];
-		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isHeader:([indexPath row] == 0)];
+		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isProductUnavailableCell:NO isHeader:([indexPath row] == 0)];
 		
-		[[buttons objectAtIndex:0] addTarget:self action:@selector(addProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+		[[buttons objectAtIndex:0] addTarget:self action:@selector(plusProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 		
 		if ([buttons count] > 1) {
-			[[buttons objectAtIndex:1] addTarget:self action:@selector(removeProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+			[[buttons objectAtIndex:1] addTarget:self action:@selector(minusProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 		}
 		
 		UILabel *headerLabel = (UILabel *)[cell viewWithTag:13];
@@ -223,13 +218,10 @@
 		
 		Product *product = [dataManager getUnavailableOnlineProduct:[indexPath row]];
 		NSNumber *quantity = [dataManager getProductQuantityFromBasket:product];
-		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isHeader:([indexPath row] == 0)];
+		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isProductUnavailableCell:YES isHeader:([indexPath row] == 0)];
 		
-		[[buttons objectAtIndex:0] addTarget:self action:@selector(addProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-		
-		if ([buttons count] > 1) {
-			[[buttons objectAtIndex:1] addTarget:self action:@selector(removeProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-		}
+		[[buttons objectAtIndex:0] addTarget:self action:@selector(removeProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+		[[buttons objectAtIndex:1] addTarget:self action:@selector(removeProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 		
 		UILabel *headerLabel = (UILabel *)[cell viewWithTag:13];
 		[headerLabel setText:@"Unavailble In Your Area"];
@@ -243,11 +235,20 @@
 
 - (void)productBasketUpdateComplete {
 	[dataManager hideOverlayView];
-	[basketView reloadData];
+	/*[basketView reloadData];*/
+}
+
+- (void)scrollToBottomOfTable {
+	[basketView setContentOffset:CGPointMake(0, basketView.contentSize.height - basketView.frame.size.height ) animated:YES];
 }
 
 - (void)onlineBasketUpdateComplete {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	/* Scroll to bottom if we have any products that are unavailable */
+	if ([dataManager getDistinctUnavailableOnlineCount] != 0) {
+		[self performSelectorOnMainThread:@selector(scrollToBottomOfTable) withObject:nil waitUntilDone:YES];
+	}
 	
 	/* Set updating basket back to yes so we still get spinners */
 	[dataManager setUpdatingOnlineBasket:YES];
@@ -275,7 +276,7 @@
  * Add this cell's product (identified by the tag of the sender, which will be the product ID)
  * to both the product basket and the online basket
  */
-- (void)addProductButtonClicked:(id)sender {
+- (void)plusProductButtonClicked:(id)sender {
 	NSString *productID = [NSString stringWithFormat:@"%d", [sender tag]];
 	
 	NSEnumerator *productsEnumerator = [[dataManager getProductBasket] keyEnumerator];
@@ -304,7 +305,7 @@
  * Remove this cell's product (identified by the tag of the sender, which will be the product ID)
  * from both the product basket and the online basket
  */
-- (void)removeProductButtonClicked:(id)sender {
+- (void)minusProductButtonClicked:(id)sender {
 	NSString *productID = [NSString stringWithFormat:@"%d", [sender tag]];
 	
 	NSEnumerator *productsEnumerator = [[dataManager getProductBasket] keyEnumerator];
@@ -327,6 +328,45 @@
 	
 	/* reload the data so the new values are displayed */
 	[basketView reloadData];
+}
+
+/*
+ * Remove this cell's product (identified by the tag of the sender, which will be the product ID)
+ * from both the product basket and the online basket
+ */
+- (void)removeProductButtonClicked:(id)sender {
+	NSString *productID = [NSString stringWithFormat:@"%d", [sender tag]];
+	
+	NSEnumerator *productsEnumerator = [[dataManager getProductBasket] keyEnumerator];
+	Product *product;
+	
+	while ((product = [productsEnumerator nextObject])) {
+		if ([[product productID] intValue] == [productID intValue]) {
+			/* we've found the product that relates to this product ID so decrease its quantity in the product basket */
+			NSNumber *removeTotal = [NSNumber numberWithInt:(0 - [[dataManager getProductQuantityFromBasket:product] intValue])];
+			[dataManager updateBasketQuantity:product byQuantity:removeTotal];
+			
+			/* deduct the cost of one of these items from the basket price */
+			CGFloat productPrice = [[product productPrice] floatValue];
+			CGFloat currentBasketPrice  = [[self basketPrice] floatValue];
+			[self setBasketPrice:[NSString stringWithFormat:@"%.2f", currentBasketPrice - productPrice]];
+			
+			/* stop looking - we've found it */
+			break;			
+		}
+	}
+	
+	/* reload the data so the new values are displayed */
+	[basketView reloadData];
+}
+
+- (void)replaceProductButtonClicked:(id)sender {
+	/* Remove item from basket */
+	[self removeProductButtonClicked:sender];
+	
+	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
+	[[appDelegate onlineShopViewController] popToRootViewControllerAnimated:FALSE];
+	[[appDelegate tabBarController] setSelectedIndex:2];
 }
 
 - (void)didReceiveMemoryWarning {

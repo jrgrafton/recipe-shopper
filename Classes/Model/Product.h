@@ -33,4 +33,6 @@
 	andProductOfferValidity:(NSString *)inProductOfferValidity andProductImage:(UIImage *)inProductImage 
 	   andProductOfferImage:(UIImage *)inProductOfferImage andProductFetchedOffline:(BOOL)productFetchedOffline;
 
+- (void)removeProductOffer;
+
 @end

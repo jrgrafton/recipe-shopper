@@ -19,8 +19,6 @@
 @synthesize productImage;
 @synthesize productOfferImage;
 @synthesize productFetchedOffline;
-
-//Fields used for fetching data JIT
 @synthesize productOfferImageURL;
 @synthesize productImageURL;
 
@@ -60,15 +58,39 @@
 	return self;
 }
 
+- (void)removeProductOffer {
+	if (productOffer != nil) {
+		[productOffer release];
+	}
+	if (productOfferValidity != nil) {
+		[productOfferValidity release];
+	}
+	if (productOfferImage != nil) {
+		[productOfferImage release];
+	}
+	if (productOfferImageURL != nil) {
+		[productOfferImageURL release];
+	}
+}
+
 - (void)dealloc {
 	[productBaseID release];
 	[productID release];
 	[productName release];
 	[productPrice release];
-	[productOffer release];
-	[productOfferValidity release];
+	if (productOffer != nil) {
+		[productOffer release];
+	}
+	if (productOfferValidity != nil) {
+		[productOfferValidity release];
+	}
+	if (productOfferImage != nil) {
+		[productOfferImage release];
+	}
+	if (productOfferImageURL != nil) {
+		[productOfferImageURL release];
+	}
 	[productImage release];
-	[productOfferImage release];
 	[super dealloc];
 }
 

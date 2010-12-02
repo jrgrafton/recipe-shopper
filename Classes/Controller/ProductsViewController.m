@@ -117,12 +117,12 @@
 	Product *product = [products objectAtIndex:[indexPath row]];
 	
 	NSNumber *quantity = [dataManager getProductQuantityFromBasket:product];
-	NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isHeader:([indexPath row] == 0)];
+	NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isProductUnavailableCell:YES isHeader:([indexPath row] == 0)];
 	
-	[[buttons objectAtIndex:0] addTarget:self action:@selector(addProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+	[[buttons objectAtIndex:0] addTarget:self action:@selector(plusProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 	
 	if ([buttons count] > 1) {
-		[[buttons objectAtIndex:1] addTarget:self action:@selector(removeProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+		[[buttons objectAtIndex:1] addTarget:self action:@selector(minusProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 	}
 	
 	if ([indexPath row] == 0) {
@@ -189,7 +189,7 @@
  * Add this cell's product (identified by the tag of the sender, which will be the product ID)
  * to both the product basket and the online basket
  */
-- (void)addProductButtonClicked:(id)sender {
+- (void)plusProductButtonClicked:(id)sender {
 	NSString *productID = [NSString stringWithFormat:@"%d", [sender tag]];
 	
 	NSEnumerator *productsEnumerator = [products objectEnumerator];
@@ -211,7 +211,7 @@
  * Remove this cell's product (identified by the tag of the sender, which will be the product ID)
  * from both the product basket and the online basket
  */
-- (void)removeProductButtonClicked:(id)sender {
+- (void)minusProductButtonClicked:(id)sender {
 	NSString *productID = [NSString stringWithFormat:@"%d", [sender tag]];
 	
 	NSEnumerator *productsEnumerator = [products objectEnumerator];
