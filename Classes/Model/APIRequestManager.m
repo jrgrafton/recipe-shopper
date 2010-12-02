@@ -513,7 +513,7 @@
 	Product *product = [[[Product alloc] initWithProductBaseID:productBaseID andProductID:productID andProductName:productName
 											   andProductPrice:productPrice andProductOffer:productOffer 
 									   andProductOfferValidity:productOfferValidity andProductImage:nil 
-										  andProductOfferImage:nil] autorelease];
+										  andProductOfferImage:nil andProductFetchedOffline:NO] autorelease];
 									 
 	[product setProductImageURL:productImageURL];
 	[product setProductOfferImageURL:productOfferImageURL];

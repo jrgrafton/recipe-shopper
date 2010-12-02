@@ -16,13 +16,14 @@
 static sqlite3 *database = nil;
 
 @interface DatabaseRequestManager()
-
 - (Recipe *)createRecipe:(sqlite3_stmt *)selectstmt;
 - (Product *)createProduct:(sqlite3_stmt *)selectstmt;
-
+@property (assign) NSLock *dbLock;
 @end
 
 @implementation DatabaseRequestManager
+
+@synthesize dbLock;
 
 - (id)init {
 	if (self = [super init]) {
@@ -31,6 +32,8 @@ static sqlite3 *database = nil;
 		NSArray *docPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory , NSUserDomainMask, YES);
 		NSString *dbPath = [[docPaths objectAtIndex:0] stringByAppendingPathComponent:databaseName];
 				
+		dbLock = [[NSLock alloc] init];
+		
 		if ([fileManager fileExistsAtPath:dbPath]) {
 			[LogManager log:[NSString stringWithFormat:@"Database %@ found at path %@", databaseName, dbPath] withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
 		} else {
@@ -246,6 +249,8 @@ static sqlite3 *database = nil;
     
 	[LogManager log:[NSString stringWithFormat:@"Executing query %@", productQuery] withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
 	
+	[[self dbLock] lock];
+	
     if (sqlite3_prepare_v2(database, [productQuery UTF8String], -1, &selectstmt, NULL) == SQLITE_OK) {
         if (sqlite3_step(selectstmt) == SQLITE_ROW) {
             product = [self createProduct:selectstmt];
@@ -255,7 +260,10 @@ static sqlite3 *database = nil;
     } else {
         return nil;
     }
+	
 	sqlite3_reset(selectstmt);
+	
+	[[self dbLock] unlock];
 	
 	return product;
 }
@@ -328,7 +336,7 @@ static sqlite3 *database = nil;
 	
 	return [[[Product alloc] initWithProductBaseID:productBaseID andProductID:productID andProductName:productName
 								   andProductPrice:productPrice andProductOffer:@"" andProductOfferValidity:@""
-								   andProductImage:productImage andProductOfferImage:NULL] autorelease];
+								   andProductImage:productImage andProductOfferImage:NULL andProductFetchedOffline:YES] autorelease];
 }
 
 @end

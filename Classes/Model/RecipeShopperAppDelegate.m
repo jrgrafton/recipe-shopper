@@ -10,7 +10,10 @@
 #import "DataManager.h"
 
 @interface RecipeShopperAppDelegate()
+- (void)loginFailed;
 - (void)startupAnimationDone:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context;
+- (void)transitionToOnlineShop;
+- (void)transitionToCheckout;
 @end
 
 @implementation RecipeShopperAppDelegate
@@ -49,11 +52,6 @@
 	[UIView commitAnimations];
 	
     return YES;
-}
-
-- (void)startupAnimationDone:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
-	[splashView removeFromSuperview];
-	[splashView release];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -119,6 +117,17 @@
 		[offlineAlert show];
 		[offlineAlert release];
 		return NO;
+	} else if (([dataManager loggedIn] == NO) && (viewController == [theTabBarController.viewControllers objectAtIndex:2])) {
+		[dataManager requestLoginToStore];
+		
+		/* add ourselves as an observer for logged in messages so we can transition when the user has logged in */
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transitionToOnlineShop) name:@"LoggedIn" object:nil];
+		
+		/* add ourselves as an observer for login failed so we can prompt user */
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:@"LoginFailed" object:nil];
+		
+		/* and make sure we don't transition yet */
+		return NO;
 	} else if (([dataManager loggedIn] == NO) && (viewController == [theTabBarController.viewControllers objectAtIndex:3])) {
 		[dataManager requestLoginToStore];
 		
@@ -135,12 +144,26 @@
 	return YES;
 }
 
+#pragma mark -
+#pragma mark Private methods
+
 - (void)loginFailed {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
 	UIAlertView *successAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Login failed" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry",nil];
 	[successAlert show];
 	[successAlert release];
+}
+
+- (void)startupAnimationDone:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
+	[splashView removeFromSuperview];
+	[splashView release];
+}
+
+- (void)transitionToOnlineShop {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	/* transition to the online shop view */
+	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
+	[[appDelegate tabBarController] setSelectedViewController:[tabBarController.viewControllers objectAtIndex:2]];
 }
 
 - (void)transitionToCheckout {
@@ -155,12 +178,11 @@
 #pragma mark UIAlertView responders
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	//In case user clicks cancel on login
-	[[NSNotificationCenter defaultCenter] removeObserver: self];
-	
-	if ([alertView title] == @"Error" && buttonIndex == 1) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transitionToCheckout) name:@"LoggedIn" object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:@"LoginFailed" object:nil];
+	if ([alertView title] == @"Error" && buttonIndex == 0) {
+		/* user has selected cancel so remove all observers and exit (leaving the user on the original screen) */
+		[[NSNotificationCenter defaultCenter] removeObserver: self];
+	} else if ([alertView title] == @"Error" && buttonIndex == 1) {
+		/* user has selected retry so leave observers as they are and ask for login again */
 		[dataManager requestLoginToStore];
 	}
 }

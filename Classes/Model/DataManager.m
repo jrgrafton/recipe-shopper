@@ -11,9 +11,8 @@
 #import "LogManager.h"
 
 @interface DataManager()
-
 - (void)updateOnlineBasket:(NSArray *)productDetails;
-
+- (void)updateProduct:(Product *)product;
 @end
 
 static DataManager *sharedInstance = nil;
@@ -225,33 +224,6 @@ static DataManager *sharedInstance = nil;
 	return madeChanges;
 }
 
-- (void)updateOnlineBasket:(NSArray *)productDetails {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	NSString *productID = [productDetails objectAtIndex:0];
-	NSNumber *quantity = [productDetails objectAtIndex:1];
-	onlineBasketUpdates++;
-	[apiRequestManager updateBasketQuantity:productID byQuantity:quantity];
-	onlineBasketUpdates--;
-	
-	[LogManager log:[NSString stringWithFormat:@"Number of online basket updates remaining is %d", onlineBasketUpdates] withLevel:LOG_INFO fromClass:[[self class] description]];
-	
-	if (onlineBasketUpdates == 0) {
-		/* we've finished updating the online basket
-		   So now verify that offline basket agrees (note this will keep going around until it does! */
-		if (![self synchronizeOnlineOfflineBasket]) {
-			/* Only when baskets match can we send out notification */
-			[self setUpdatingOnlineBasket:NO];
-			
-			/* send out notification */
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"OnlineBasketUpdateComplete" object:self];
-		}
-	}
-	
-	//[productDetails release];
-	[pool release];
-}
-
 #pragma mark -
 #pragma mark Database Manager calls
 
@@ -318,6 +290,12 @@ static DataManager *sharedInstance = nil;
 	NSDictionary *productBasket = [self getProductBasket];
 	
 	for (Product *product in productBasket) {
+		/* anything that is in the product basket at this point may have been put there in offline mode
+		 so we need to do a product search on it in case there is a product offer for it now */
+		if ([product productFetchedOffline] == YES) {
+			[NSThread detachNewThreadSelector:@selector(updateProduct:) toTarget:self withObject:product];
+		}
+		
 		NSMutableArray *productDetails = [NSMutableArray arrayWithCapacity:2];
 		[productDetails addObject:[product productID]];
 		[productDetails addObject:[productBasket objectForKey:product]];
@@ -602,6 +580,46 @@ static DataManager *sharedInstance = nil;
 
 - (void)setOverlayLoadingLabelText:(NSString *)text {
 	[overlayViewController performSelectorOnMainThread:@selector(setOverlayLoadingLabelText:) withObject:text waitUntilDone:YES];
+}
+
+#pragma mark -
+#pragma mark Private methods
+
+- (void)updateOnlineBasket:(NSArray *)productDetails {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	NSString *productID = [productDetails objectAtIndex:0];
+	NSNumber *quantity = [productDetails objectAtIndex:1];
+	onlineBasketUpdates++;
+	[apiRequestManager updateBasketQuantity:productID byQuantity:quantity];
+	onlineBasketUpdates--;
+	
+	[LogManager log:[NSString stringWithFormat:@"Number of online basket updates remaining is %d", onlineBasketUpdates] withLevel:LOG_INFO fromClass:[[self class] description]];
+	
+	if (onlineBasketUpdates == 0) {
+		/* we've finished updating the online basket
+		 So now verify that offline basket agrees (note this will keep going around until it does! */
+		if (![self synchronizeOnlineOfflineBasket]) {
+			/* Only when baskets match can we send out notification */
+			[self setUpdatingOnlineBasket:NO];
+			
+			/* send out notification */
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"OnlineBasketUpdateComplete" object:self];
+		}
+	}
+	
+	[pool release];
+}
+
+- (void)updateProduct:(Product *)product {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	Product *updatedProduct = [apiRequestManager createProductFromProductBaseID:[NSString stringWithFormat:@"%d", [[product productID] intValue]] fetchImages:YES];
+	[product setProductOffer:[updatedProduct productOffer]];
+	[product setProductOfferImage:[updatedProduct productOfferImage]];
+	[product setProductOfferValidity:[updatedProduct productOfferValidity]];
+
+	[pool release];
 }
 
 @end

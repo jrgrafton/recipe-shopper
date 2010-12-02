@@ -18,6 +18,7 @@
 @property (nonatomic, retain) NSString *productPrice;
 @property (nonatomic, retain) NSString *productOffer;
 @property (nonatomic, retain) NSString *productOfferValidity;
+@property (nonatomic) BOOL productFetchedOffline;
 
 /* These may have concurrent read/write access */
 @property (retain) UIImage *productImage;
@@ -30,6 +31,6 @@
 - (id)initWithProductBaseID:(NSNumber *)inProductBaseID andProductID:(NSNumber *)productID andProductName:(NSString *)inProductName 
 			andProductPrice:(NSString *)inProductPrice andProductOffer:(NSString *)inProductOffer
 	andProductOfferValidity:(NSString *)inProductOfferValidity andProductImage:(UIImage *)inProductImage 
-	   andProductOfferImage:(UIImage *)inProductOfferImage;
+	   andProductOfferImage:(UIImage *)inProductOfferImage andProductFetchedOffline:(BOOL)productFetchedOffline;
 
 @end

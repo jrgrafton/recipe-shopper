@@ -18,6 +18,7 @@
 @synthesize productOfferValidity;
 @synthesize productImage;
 @synthesize productOfferImage;
+@synthesize productFetchedOffline;
 
 //Fields used for fetching data JIT
 @synthesize productOfferImageURL;
@@ -37,13 +38,13 @@
 	return [[Product allocWithZone:zone] initWithProductBaseID:productBaseID andProductID:productID andProductName:productName
 											   andProductPrice:productPrice andProductOffer:productOffer
 									   andProductOfferValidity:productOfferValidity andProductImage:productImage 
-										  andProductOfferImage:productOfferImage];
+										  andProductOfferImage:productOfferImage andProductFetchedOffline:productFetchedOffline];
 }
 
 - (id)initWithProductBaseID:(NSNumber *)inProductBaseID andProductID:(NSNumber *)inProductID andProductName:(NSString *)inProductName 
 			andProductPrice:(NSString *)inProductPrice andProductOffer:(NSString *)inProductOffer
 	andProductOfferValidity:(NSString *)inProductOfferValidity andProductImage:(UIImage *)inProductImage 
-	   andProductOfferImage:(UIImage *)inProductOfferImage {
+	   andProductOfferImage:(UIImage *)inProductOfferImage andProductFetchedOffline:(BOOL)inProductFetchedOffline {
 	if (self = [super init]) {
 		[self setProductBaseID:inProductBaseID];
 		[self setProductID:inProductID];
@@ -53,6 +54,7 @@
 		[self setProductOfferValidity:inProductOfferValidity];
 		[self setProductImage:inProductImage];
 		[self setProductOfferImage:inProductOfferImage];
+		[self setProductFetchedOffline:inProductFetchedOffline];
 	}
 	
 	return self;

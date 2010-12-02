@@ -111,11 +111,11 @@
 	
 	[dataManager setOverlayLabelText:@"Logging in ..."];
 	
+	/* save username and password in preferences */
+	[dataManager setUserPreference:@"login.email" prefValue:[details objectAtIndex:0]];
+	[dataManager setUserPreference:@"login.password" prefValue:[details objectAtIndex:1]];
+	
 	if ([dataManager loginToStore:[details objectAtIndex:0] withPassword:[details objectAtIndex:1]] == YES) {
-		/* save username and password in preferences */
-		[dataManager setUserPreference:@"login.email" prefValue:[details objectAtIndex:0]];
-		[dataManager setUserPreference:@"login.password" prefValue:[details objectAtIndex:1]];
-		
 		/* save the login name so we can display it on the home page */
 		[self setLoginName:[details objectAtIndex:0]];
 		
