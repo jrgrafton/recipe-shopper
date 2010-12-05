@@ -20,9 +20,9 @@
 
 @synthesize window;
 @synthesize tabBarController;
-@synthesize homeViewController;
-@synthesize onlineShopViewController;
-@synthesize checkoutViewController;
+@synthesize homeViewNavController;
+@synthesize onlineShopViewNavController;
+@synthesize checkoutViewNavController;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -128,17 +128,23 @@
 		
 		/* and make sure we don't transition yet */
 		return NO;
-	} else if (([dataManager loggedIn] == NO) && (viewController == [theTabBarController.viewControllers objectAtIndex:3])) {
-		[dataManager requestLoginToStore];
+	} else if (viewController == [theTabBarController.viewControllers objectAtIndex:3]) {
+		/* Always ensure we pop back to root controller when selecting checkout tab */
+		[checkoutViewNavController popToRootViewControllerAnimated:FALSE];
 		
-		/* add ourselves as an observer for logged in messages so we can transition when the user has logged in */
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transitionToCheckout) name:@"LoggedIn" object:nil];
-		
-		/* add ourselves as an observer for login failed so we can prompt user */
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:@"LoginFailed" object:nil];
-		
-		/* and make sure we don't transition yet */
-		return NO;
+		if ([dataManager loggedIn] == NO) {
+			/* Don't select tab until user is authenticated */
+			[dataManager requestLoginToStore];
+			
+			/* add ourselves as an observer for logged in messages so we can transition when the user has logged in */
+			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transitionToCheckout) name:@"LoggedIn" object:nil];
+			
+			/* add ourselves as an observer for login failed so we can prompt user */
+			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:@"LoginFailed" object:nil];
+			
+			/* and make sure we don't transition yet */
+			return NO;
+		}
 	}
 	
 	return YES;
@@ -198,9 +204,9 @@
 
 
 - (void)dealloc {
-	[homeViewController release];
-	[onlineShopViewController release];
-	[checkoutViewController release];
+	[homeViewNavController release];
+	[onlineShopViewNavController release];
+	[checkoutViewNavController release];
     [tabBarController release];
     [window release];
     [super dealloc];

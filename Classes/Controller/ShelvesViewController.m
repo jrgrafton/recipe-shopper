@@ -138,7 +138,7 @@
 	
 	/* transition to products view only after we know its completely finished loading */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[[appDelegate onlineShopViewController] pushViewController:self.productsViewController animated:YES];
+	[[appDelegate onlineShopViewNavController] pushViewController:self.productsViewController animated:YES];
 }
 
 #pragma mark -

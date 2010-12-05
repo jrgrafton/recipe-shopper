@@ -15,12 +15,15 @@
 	
 @private 
 	DataManager *dataManager;
+	BOOL userWantsToProceed;
 }
 
 @property (nonatomic, retain) DeliverySlotsViewController *deliverySlotsViewController;
+
 @property (nonatomic, retain) NSString *basketPrice;
 @property (nonatomic, retain) NSString *basketSavings;
 @property (nonatomic, retain) NSNumber *basketPoints;
+
 
 - (IBAction)transitionToDeliverySlotView:(id)sender;
 

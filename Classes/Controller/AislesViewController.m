@@ -104,7 +104,7 @@
 	
 	/* transition to shelves view */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[[appDelegate onlineShopViewController] pushViewController:self.shelvesViewController animated:YES];
+	[[appDelegate onlineShopViewNavController] pushViewController:self.shelvesViewController animated:YES];
 }
 
 #pragma mark -

@@ -62,7 +62,7 @@
 	
 	/* transition to new view */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[[appDelegate homeViewController] pushViewController:self.recipeListViewController animated:YES];
+	[[appDelegate homeViewNavController] pushViewController:self.recipeListViewController animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

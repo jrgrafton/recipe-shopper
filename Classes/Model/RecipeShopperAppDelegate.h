@@ -18,8 +18,8 @@
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
-@property (nonatomic, retain) IBOutlet UINavigationController *homeViewController;
-@property (nonatomic, retain) IBOutlet UINavigationController *onlineShopViewController;
-@property (nonatomic, retain) IBOutlet UINavigationController *checkoutViewController;
+@property (nonatomic, retain) IBOutlet UINavigationController *homeViewNavController;
+@property (nonatomic, retain) IBOutlet UINavigationController *onlineShopViewNavController;
+@property (nonatomic, retain) IBOutlet UINavigationController *checkoutViewNavController;
 
 @end

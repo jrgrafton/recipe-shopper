@@ -24,6 +24,8 @@ static DataManager *sharedInstance = nil;
 @synthesize updatingOnlineBasket;
 @synthesize loadingDepartmentList;
 @synthesize departmentListHasLoaded;
+@synthesize replaceMode;
+@synthesize replaceString;
 @synthesize productBasketUpdates;
 @synthesize onlineBasketUpdates;
 @synthesize productImageFetchThreads;
@@ -95,6 +97,8 @@ static DataManager *sharedInstance = nil;
 		[self setUpdatingOnlineBasket:NO];
 		[self setLoadingDepartmentList:NO];
 		[self setDepartmentListHasLoaded:NO];
+		[self setReplaceMode:NO];
+		[self setReplaceString:@""];
 		[self setProductBasketUpdates:0];
 		[self setOnlineBasketUpdates:0];
 		[self setProductImageFetchThreads:0];
@@ -178,7 +182,6 @@ static DataManager *sharedInstance = nil;
 					[productDetails addObject:onlineProductID];
 					[productDetails addObject:difference];
 					[self setUpdatingOnlineBasket:YES];
-					NSLog(@"id %@ online %@ offline %@",[productDetails objectAtIndex:0],onlineCount,offlineCount);
 					[LogManager log:[NSString stringWithFormat:@"Incorrect number of online product ID %@ found, needs adjusting by %@", [productDetails objectAtIndex:0],[productDetails objectAtIndex:1]] withLevel:LOG_INFO fromClass:[[self class] description]];
 					[NSThread detachNewThreadSelector:@selector(updateOnlineBasket:) toTarget:self withObject:productDetails];
 					break;
@@ -503,7 +506,7 @@ static DataManager *sharedInstance = nil;
 }
 
 - (NSInteger)getTotalProductCount {
-	int totalProductCount = 0;
+	NSInteger totalProductCount = 0;
 	
 	for (NSNumber *quantity in [[productBasketManager productBasket] allValues]) {
 		totalProductCount += [quantity intValue];
@@ -513,7 +516,8 @@ static DataManager *sharedInstance = nil;
 }
 
 - (Product *)getProductFromBasket:(NSUInteger)productIndex {
-	return [[[productBasketManager productBasket] allKeys] objectAtIndex:productIndex];
+	return ([[[productBasketManager productBasket] allKeys] count] > productIndex)? 
+		[[[productBasketManager productBasket] allKeys] objectAtIndex:productIndex]:nil;
 }
 
 - (NSNumber *)getProductQuantityFromBasket:(Product *)product {
@@ -525,7 +529,8 @@ static DataManager *sharedInstance = nil;
 }
 
 - (Product *)getUnavailableOnlineProduct:(NSUInteger)productIndex {
-	return [[[productBasketManager productsUnavailableOnline] allKeys] objectAtIndex:productIndex];
+	return ([[[productBasketManager productsUnavailableOnline] allKeys] count] > productIndex)? 
+		[[[productBasketManager productsUnavailableOnline] allKeys] objectAtIndex:productIndex]:nil;
 }
 
 - (NSInteger)getDistinctAvailableOnlineCount {
@@ -537,7 +542,7 @@ static DataManager *sharedInstance = nil;
 	NSMutableArray* availableOnlineKeys = [[[NSMutableArray alloc] initWithArray: productBasketKeys copyItems:YES] autorelease];
 	[availableOnlineKeys removeObjectsInArray:[[productBasketManager productsUnavailableOnline] allKeys]];
 	
-	return [availableOnlineKeys objectAtIndex:productIndex];
+	return ([availableOnlineKeys count] > productIndex)? [availableOnlineKeys objectAtIndex:productIndex]:nil;
 }
 
 - (void)emptyProductBasket {
@@ -579,6 +584,7 @@ static DataManager *sharedInstance = nil;
 }
 
 - (void)setOverlayLoadingLabelText:(NSString *)text {
+	NSLog(@"SETTING LOADING LABEL TEXT (DATAMANAGER");
 	[overlayViewController performSelectorOnMainThread:@selector(setOverlayLoadingLabelText:) withObject:text waitUntilDone:YES];
 }
 
@@ -592,11 +598,14 @@ static DataManager *sharedInstance = nil;
 	NSNumber *quantity = [productDetails objectAtIndex:1];
 	onlineBasketUpdates++;
 	[apiRequestManager updateBasketQuantity:productID byQuantity:quantity];
+	[self setOverlayLoadingLabelText: [NSString stringWithFormat:@"%d update(s) left",onlineBasketUpdates]];
 	onlineBasketUpdates--;
 	
 	[LogManager log:[NSString stringWithFormat:@"Number of online basket updates remaining is %d", onlineBasketUpdates] withLevel:LOG_INFO fromClass:[[self class] description]];
 	
 	if (onlineBasketUpdates == 0) {
+		[self setOverlayLoadingLabelText:@""];
+		
 		/* we've finished updating the online basket
 		 So now verify that offline basket agrees (note this will keep going around until it does! */
 		if (![self synchronizeOnlineOfflineBasket]) {

@@ -126,7 +126,7 @@
 	
 	/* transition to recipe category view */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[[appDelegate homeViewController] pushViewController:self.recipeCategoryViewController animated:YES];
+	[[appDelegate homeViewNavController] pushViewController:self.recipeCategoryViewController animated:YES];
 }
 
 - (IBAction)transitionToRecipeBasketView:(id)sender {
@@ -138,7 +138,7 @@
 	
 	/* transition to recipe basket view */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[[appDelegate homeViewController] pushViewController:self.recipeBasketViewController animated:YES];
+	[[appDelegate homeViewNavController] pushViewController:self.recipeBasketViewController animated:YES];
 }
 
 - (IBAction)transitionToRecipeHistoryView:(id)sender {
@@ -150,7 +150,7 @@
 	
 	/* transition to recipe category view */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[[appDelegate homeViewController] pushViewController:self.recipeHistoryViewController animated:YES];
+	[[appDelegate homeViewNavController] pushViewController:self.recipeHistoryViewController animated:YES];
 }
 
 - (IBAction)offlineModeValueChanged:(id)sender {

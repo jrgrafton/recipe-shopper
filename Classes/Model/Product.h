@@ -16,17 +16,15 @@
 @property (nonatomic, retain) NSNumber *productID;
 @property (nonatomic, retain) NSString *productName;
 @property (nonatomic, retain) NSString *productPrice;
-@property (nonatomic, retain) NSString *productOffer;
-@property (nonatomic, retain) NSString *productOfferValidity;
 @property (nonatomic) BOOL productFetchedOffline;
+@property (nonatomic, retain) NSURL *productImageURL;
 
 /* These may have concurrent read/write access */
 @property (retain) UIImage *productImage;
 @property (retain) UIImage *productOfferImage;
-
-/* Fields used for fetching data JIT */
-@property (nonatomic, retain) NSURL *productOfferImageURL;
-@property (nonatomic, retain) NSURL *productImageURL;
+@property (retain) NSString *productOffer;
+@property (retain) NSString *productOfferValidity;
+@property (retain) NSURL *productOfferImageURL;
 
 - (id)initWithProductBaseID:(NSNumber *)inProductBaseID andProductID:(NSNumber *)productID andProductName:(NSString *)inProductName 
 			andProductPrice:(NSString *)inProductPrice andProductOffer:(NSString *)inProductOffer

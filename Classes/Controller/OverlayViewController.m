@@ -50,6 +50,7 @@
 }
 
 - (void)setOverlayLoadingLabelText:(NSString *)text {
+	NSLog(@"SETTING LOADING LABEL TEXT");
 	[overlayLoadingLabel setText:text];
 }
 

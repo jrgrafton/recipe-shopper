@@ -13,8 +13,8 @@
 
 @interface ProductsViewController()
 
-- (void)addProductButtonClicked:(id)sender;
-- (void)removeProductButtonClicked:(id)sender;
+- (void)plusProductButtonClicked:(id)sender;
+- (void)minusProductButtonClicked:(id)sender;
 - (void)fetchMoreProducts;
 - (void)productImageBatchFetchCompleteNotification;
 
@@ -117,7 +117,7 @@
 	Product *product = [products objectAtIndex:[indexPath row]];
 	
 	NSNumber *quantity = [dataManager getProductQuantityFromBasket:product];
-	NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isProductUnavailableCell:YES isHeader:([indexPath row] == 0)];
+	NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isProductUnavailableCell:NO isHeader:([indexPath row] == 0)];
 	
 	[[buttons objectAtIndex:0] addTarget:self action:@selector(plusProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 	

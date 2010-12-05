@@ -7,6 +7,7 @@
 //
 
 #import "CheckoutViewController.h"
+#import "OnlineShopViewController.h"
 #import "RecipeShopperAppDelegate.h"
 #import "UITableViewCellFactory.h"
 #import "LogManager.h"
@@ -16,6 +17,8 @@
 - (void)productBasketUpdateComplete;
 - (void)onlineBasketUpdateComplete;
 - (void)loadDeliveryDates;
+- (void)scrollToBottomOfTable;
+
 @end
 
 #define CELL_ACTIVITY_INDICATOR_TAG 6
@@ -36,6 +39,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	
+	//By default user does not want to proceed
+	userWantsToProceed = NO;
 	
 	//initWithNib does not get called when controller is root in navigation stack
 	dataManager = [DataManager getInstance];
@@ -68,7 +74,6 @@
 		[dataManager showOverlayView:[[self view] window]];
 		[dataManager setOverlayLabelText:@"Updating basket"];
 	}
-	
 	/* Always ensure we have latest basket data loaded */
 	[NSThread detachNewThreadSelector:@selector(onlineBasketUpdateComplete) toTarget:self withObject:nil];
 }
@@ -80,11 +85,13 @@
 	if ([dataManager getDistinctUnavailableOnlineCount] != 0) {
 		[self scrollToBottomOfTable];
 	}
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
+	
+	//By default user does not want to proceed
+	userWantsToProceed = NO;
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -96,29 +103,55 @@
 		[deliverySlotsView release];
 	}
 	
+	//Can't proceed with less than 5 items
 	if ([dataManager getTotalProductCount] < 5) {
 		UIAlertView *tooFewItemsAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Fewer than 5 items in the basket" delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
 		[tooFewItemsAlert show];
 		[tooFewItemsAlert release];
-	} else {
-		/* load the delivery slots into the delivery slot view before we transition */
+	} //Ensure we do one final product basket validation
+	else if ([dataManager updatingOnlineBasket]) {
+		//Wait for basket to finish updating
 		[dataManager showOverlayView:[[self view] window]];
-		[dataManager setOverlayLabelText:@"Loading delivery slots"];
+		[dataManager setOverlayLabelText:@"Waiting basket updates to complete"];
+		userWantsToProceed = YES;
+	} else {
+		/* load the delivery slots into the delivery slot view and transition */
+		[dataManager showOverlayView:[[self view] window]];
 		[NSThread detachNewThreadSelector:@selector(loadDeliveryDates) toTarget:self withObject:nil];
 	}
 }
 
 - (void)loadDeliveryDates {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[dataManager performSelectorOnMainThread:@selector(setOverlayLabelText:) withObject:@"Verifying Basket" waitUntilDone:YES];
+	[dataManager synchronizeOnlineOfflineBasket];
 	
+	if ([dataManager getDistinctUnavailableOnlineCount] != 0) {
+		/* User needs to deal with all unavailable products before proceeding */
+		[self performSelectorOnMainThread:@selector(productsNeedReplacingBeforeProceeding) withObject:nil waitUntilDone:YES];
+		return;
+	}
+	
+	[dataManager performSelectorOnMainThread:@selector(setOverlayLabelText:) withObject:@"Loading delivery slots" waitUntilDone:YES];
 	[deliverySlotsViewController loadDeliveryDates];
 	[dataManager hideOverlayView];
 	
 	/* transition to delivery slot view */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[[appDelegate checkoutViewController] pushViewController:self.deliverySlotsViewController animated:YES];
+	[[appDelegate checkoutViewNavController] pushViewController:self.deliverySlotsViewController animated:YES];
 	
 	[pool release];
+}
+
+- (void)productsNeedReplacingBeforeProceeding {
+	[dataManager hideOverlayView];
+	[basketView reloadData];
+	
+	UIAlertView *productNeedsReplacingAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please replace all unavailble products before proceeding" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[productNeedsReplacingAlert show];
+	[productNeedsReplacingAlert release];
+	
+	//[self scrollToBottomOfTable];
 }
 
 #pragma mark -
@@ -164,6 +197,8 @@
 		NSArray *keyValue;
 		
 		if ([indexPath row] == 0) {
+			NSInteger test = 0;
+			test = [dataManager getTotalProductCount];
 			keyValue = [NSArray arrayWithObjects:@"Number Of Items",[NSString stringWithFormat:@"%d",[dataManager getTotalProductCount]],nil];
 			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:YES];
 			UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];
@@ -199,6 +234,12 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
 		Product *product = [dataManager getAvailableOnlineProduct:[indexPath row]];
+		if (product == nil) {
+			/* Something's gone wrong... Better reload data! */
+			[basketView reloadData];
+			return cell;
+		}
+		
 		NSNumber *quantity = [dataManager getProductQuantityFromBasket:product];
 		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isProductUnavailableCell:NO isHeader:([indexPath row] == 0)];
 		
@@ -217,11 +258,17 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
 		Product *product = [dataManager getUnavailableOnlineProduct:[indexPath row]];
+		if (product == nil) {
+			/* Something's gone wrong... Better reload data! */
+			[basketView reloadData];
+			return cell;
+		}
+		
 		NSNumber *quantity = [dataManager getProductQuantityFromBasket:product];
 		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isProductUnavailableCell:YES isHeader:([indexPath row] == 0)];
 		
 		[[buttons objectAtIndex:0] addTarget:self action:@selector(removeProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-		[[buttons objectAtIndex:1] addTarget:self action:@selector(removeProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+		[[buttons objectAtIndex:1] addTarget:self action:@selector(replaceProductButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 		
 		UILabel *headerLabel = (UILabel *)[cell viewWithTag:13];
 		[headerLabel setText:@"Unavailble In Your Area"];
@@ -239,37 +286,44 @@
 }
 
 - (void)scrollToBottomOfTable {
-	[basketView setContentOffset:CGPointMake(0, basketView.contentSize.height - basketView.frame.size.height ) animated:YES];
+	[basketView setContentOffset:CGPointMake(0, basketView.contentSize.height - basketView.frame.size.height) animated:YES];
 }
 
 - (void)onlineBasketUpdateComplete {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	/* Scroll to bottom if we have any products that are unavailable */
-	if ([dataManager getDistinctUnavailableOnlineCount] != 0) {
-		[self performSelectorOnMainThread:@selector(scrollToBottomOfTable) withObject:nil waitUntilDone:YES];
+	@synchronized(self) {
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		
+		/* Set updating basket back to yes so we still get spinners */
+		[dataManager setUpdatingOnlineBasket:YES];
+		
+		/* In case spinners have disappeared after basket updates finished */
+		[basketView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
+		
+		/* get the latest basket details (price, savings etc.) */
+		NSDictionary *basketDetails = [dataManager getBasketDetails];
+		
+		/* Now we have details, spinners can safely disappear*/
+		[dataManager setUpdatingOnlineBasket:NO];
+		
+		[self setBasketPrice:[basketDetails objectForKey:@"BasketPrice"]];
+		[self setBasketSavings:[basketDetails objectForKey:@"BasketSavings"]];
+		[self setBasketPoints:[basketDetails objectForKey:@"BasketPoints"]];
+		
+		/* reload the basket details section to show the new values */
+		[basketView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
+		
+		/* Scroll to bottom if we have any products that are unavailable */
+		if ([dataManager getDistinctUnavailableOnlineCount] != 0) {
+			[self performSelectorOnMainThread:@selector(scrollToBottomOfTable) withObject:nil waitUntilDone:YES];
+		}
+		
+		/* If the user has already clicked delivery slot button try and proceed to deliveries */
+		if (userWantsToProceed) {
+			userWantsToProceed = NO;
+			[self loadDeliveryDates];
+		}
+		[pool release];
 	}
-	
-	/* Set updating basket back to yes so we still get spinners */
-	[dataManager setUpdatingOnlineBasket:YES];
-	
-	/* In case spinners have disappeared after basket updates finished */
-	[basketView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
-	
-	/* get the latest basket details (price, savings etc.) */
-	NSDictionary *basketDetails = [dataManager getBasketDetails];
-	
-	/* Now we have details, spinners can safely disappear*/
-	[dataManager setUpdatingOnlineBasket:NO];
-	
-	[self setBasketPrice:[basketDetails objectForKey:@"BasketPrice"]];
-	[self setBasketSavings:[basketDetails objectForKey:@"BasketSavings"]];
-	[self setBasketPoints:[basketDetails objectForKey:@"BasketPoints"]];
-	
-	/* reload the basket details section to show the new values */
-	[basketView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
-
-	[pool release];
 }
 
 /*
@@ -361,11 +415,32 @@
 }
 
 - (void)replaceProductButtonClicked:(id)sender {
-	/* Remove item from basket */
+	/* Prompt user to replace by moving them to online shop tab */
+	NSString *productID = [NSString stringWithFormat:@"%d", [sender tag]];
+	
+	NSEnumerator *productsEnumerator = [[dataManager getProductBasket] keyEnumerator];
+	Product *product;
+	NSString *productName = @"";
+	
+	while ((product = [productsEnumerator nextObject])) {
+		if ([[product productID] intValue] == [productID intValue]) {
+			productName = [product productName];
+			break;
+		}
+	}
+	
+	[self performSelectorOnMainThread:@selector(replaceAction:) withObject:productName waitUntilDone:YES];
+	
+	/* Now remove item from basket */
 	[self removeProductButtonClicked:sender];
+}
+
+- (void)replaceAction:(NSString*)productName {
+	[dataManager setReplaceMode:YES];
+	[dataManager setReplaceString:productName];
 	
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[[appDelegate onlineShopViewController] popToRootViewControllerAnimated:FALSE];
+	[[appDelegate onlineShopViewNavController] popToRootViewControllerAnimated:FALSE];
 	[[appDelegate tabBarController] setSelectedIndex:2];
 }
 

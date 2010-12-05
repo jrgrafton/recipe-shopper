@@ -61,15 +61,19 @@
 - (void)removeProductOffer {
 	if (productOffer != nil) {
 		[productOffer release];
+		productOffer = nil;
 	}
 	if (productOfferValidity != nil) {
 		[productOfferValidity release];
+		productOfferValidity = nil;
 	}
 	if (productOfferImage != nil) {
 		[productOfferImage release];
+		productOfferImage = nil;
 	}
 	if (productOfferImageURL != nil) {
 		[productOfferImageURL release];
+		productOfferImageURL = nil;
 	}
 }
 

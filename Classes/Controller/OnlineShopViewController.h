@@ -21,5 +21,6 @@
 @property (nonatomic, retain) AislesViewController *aislesViewController;
 @property (nonatomic, retain) ProductsViewController *searchResultsViewController;
 @property (nonatomic, retain) NSArray *departments;
+@property (nonatomic, retain) UISearchBar *searchBarView;
 
 @end

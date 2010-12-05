@@ -16,6 +16,7 @@
 @synthesize aislesViewController;
 @synthesize searchResultsViewController;
 @synthesize departments;
+@synthesize searchBarView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -26,7 +27,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
 	//initWithNib does not get called when controller is root in navigation stack
 	dataManager = [DataManager getInstance];
 	
@@ -56,7 +56,17 @@
 	 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-
+	if ([dataManager replaceMode]) {
+		//Set text and show keyboard if we are in replace mode
+		[searchBarView setText:[dataManager replaceString]];
+		[searchBarView becomeFirstResponder];
+		
+		//Now set replace mode to false
+		[dataManager setReplaceMode:NO];
+		[dataManager setReplaceString:@""];
+	}
+	
+	
 	if (departments == nil) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(departmentListFinishedLoading:) name:@"departmentListFinishedLoading" object:nil];
 		
@@ -180,7 +190,7 @@
 	
 	/* transition to aisles view */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[[appDelegate onlineShopViewController] pushViewController:self.aislesViewController animated:YES];
+	[[appDelegate onlineShopViewNavController] pushViewController:self.aislesViewController animated:YES];
 }
 
 #pragma mark -
@@ -197,7 +207,7 @@
 	
 	/* transition to products view only after we know its completely finished loading */
 	RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[[appDelegate onlineShopViewController] pushViewController:self.searchResultsViewController animated:YES];
+	[[appDelegate onlineShopViewNavController] pushViewController:self.searchResultsViewController animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

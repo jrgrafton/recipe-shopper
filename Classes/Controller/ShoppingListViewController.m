@@ -12,8 +12,8 @@
 @interface ShoppingListViewController()
 
 - (void)productBasketUpdateComplete;
-- (void)addProductButtonClicked:(id)sender;
-- (void)removeProductButtonClicked:(id)sender;
+- (void)plusProductButtonClicked:(id)sender;
+- (void)minusProductButtonClicked:(id)sender;
 
 @end
 
