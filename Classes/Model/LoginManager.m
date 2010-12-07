@@ -81,8 +81,9 @@
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	if ([[alertView title] isEqualToString:@"Login"] && [alertView cancelButtonIndex] != buttonIndex) {
-		NSString *emailText = [[[alertView subviews] objectAtIndex:4] text];
-		NSString *passwordText = [[[alertView subviews] objectAtIndex:5] text];
+		NSArray *subViews = [alertView subviews];
+		NSString *emailText = [[subViews objectAtIndex:([subViews count] - 2)] text];
+		NSString *passwordText = [[subViews objectAtIndex:([subViews count] - 1)] text];
 		
 		if (emailText == nil) {
 			emailText = @"";
