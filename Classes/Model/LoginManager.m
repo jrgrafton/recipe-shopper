@@ -184,12 +184,15 @@
 }
 
 - (void)mergeBaskets {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emptyOnlineBasketAndAddLocal) name:@"OnlineBasketDownloadComplete" object:nil];
 	
 	/* empty the online basket */
 	[dataManager setOverlayLabelText:@"Merging baskets..."];
 	[dataManager addOnlineToLocalBasket];
 	
+	[pool release];
 }
 
 @end
