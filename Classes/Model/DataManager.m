@@ -247,9 +247,8 @@ static DataManager *sharedInstance = nil;
 	onlineBasketDownloads++;
 	Product *product = [apiRequestManager createProductFromProductBaseID:[productInfo objectAtIndex:0] fetchImages:YES];
 	[productBasketManager updateProductBasketQuantity:product byQuantity:[productInfo objectAtIndex:1]];
+	[self setOverlayLoadingLabelText: [NSString stringWithFormat:@"%d download(s) left",onlineBasketDownloads]];
 	onlineBasketDownloads--;
-	
-	[self setOverlayLoadingLabelText: [NSString stringWithFormat:@"%d download(s) left",onlineBasketUpdates]];
 	
 	if (onlineBasketDownloads == 0) {
 		[self setOverlayLoadingLabelText:@""];
@@ -532,7 +531,7 @@ static DataManager *sharedInstance = nil;
 }
 
 - (NSDictionary *)getProductBasket {
-	return [productBasketManager productBasket];
+	return [productBasketManager getProductBasketSync];
 }
 
 - (NSString *)getProductBasketPrice {

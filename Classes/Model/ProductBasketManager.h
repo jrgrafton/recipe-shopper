@@ -15,6 +15,7 @@
 @interface ProductBasketManager : NSObject {
 	@private
 		DataManager *dataManager;
+		NSLock *updateLock;
 }
 
 @property (retain) NSMutableDictionary *productBasket;
@@ -24,6 +25,7 @@
 
 - (id)init;
 - (void)emptyProductBasket;
+- (NSDictionary*)getProductBasketSync;
 - (void)updateProductBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity;
 - (void)markProductUnavailableOnline:(Product *)product;
 

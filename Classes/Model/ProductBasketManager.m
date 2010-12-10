@@ -12,8 +12,6 @@
 
 @interface ProductBasketManager()
 - (void)recalculateBasketPrice;
-
-@property (assign) NSLock *updateLock;
 @end
 
 @implementation ProductBasketManager
@@ -22,13 +20,13 @@
 @synthesize productsUnavailableOnline;
 @synthesize productBasketPrice;
 @synthesize shoppingListProducts;
-@synthesize updateLock;
 
 - (id)init {
 	if (self = [super init]) {
 		productBasket = [[NSMutableDictionary alloc] init];
 		productsUnavailableOnline = [[NSMutableDictionary alloc] init];
-		dataManager = [DataManager getInstance];
+		dataManager = [DataManager getInstance]; 
+		updateLock = [[NSLock alloc] init];
 		[self setProductBasketPrice:@"£0.00"];
 		[self setShoppingListProducts:[NSNumber numberWithInt:0]];
 	}
@@ -40,30 +38,38 @@
 	/* remove any objects currently in the product basket */
 	[productBasket removeAllObjects];
 }
+					   
+- (NSDictionary*) getProductBasketSync {
+	[updateLock lock]; /* Ensure we can not get the product basket as its being updated */
+	[updateLock unlock];
+	return productBasket;
+}
 
 - (void)updateProductBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity {
-	[product retain];
+	[product retain]; /* Temporary fix!!! */	
+	
 	/* Need to ensure only one thread at a time can access, so we don't simultaneous read/write*/
-	@synchronized(self) {	
-		int newQuantity = [[productBasket objectForKey:product] intValue] + [quantity intValue];
-		
-		if ((newQuantity > 0) && (newQuantity <= 99)) {
-			/* just change the quantity for this product to the new value */
-			[productBasket setObject:[NSNumber numberWithInt:newQuantity] forKey:product];
-		} else if (newQuantity > 99) {
-			/* can't have more than 99 so just set it to 99 */
-			[productBasket setObject:[NSNumber numberWithInt:99] forKey:product];
-		} else {
-			/* must have removed all of this product so remove the product altogether */
-			[productBasket removeObjectForKey:product];
-			/* Remove it from unavailable online as well (will do nothing if it doesn't exist there) */
-			[productsUnavailableOnline removeObjectForKey:product];
-		}
-		
-		[self recalculateBasketPrice];
-		[self setShoppingListProducts:[NSNumber numberWithInt:[dataManager getTotalProductCount]]];
+	[updateLock lock];
+	
+	int newQuantity = [[productBasket objectForKey:product] intValue] + [quantity intValue];
+	
+	if ((newQuantity > 0) && (newQuantity <= 99)) {
+		/* just change the quantity for this product to the new value */
+		[productBasket setObject:[NSNumber numberWithInt:newQuantity] forKey:product];
+	} else if (newQuantity > 99) {
+		/* can't have more than 99 so just set it to 99 */
+		[productBasket setObject:[NSNumber numberWithInt:99] forKey:product];
+	} else {
+		/* must have removed all of this product so remove the product altogether */
+		[productBasket removeObjectForKey:product];
+		/* Remove it from unavailable online as well (will do nothing if it doesn't exist there) */
+		[productsUnavailableOnline removeObjectForKey:product];
 	}
-	[product release];
+	
+	[self recalculateBasketPrice];
+	[self setShoppingListProducts:[NSNumber numberWithInt:[dataManager getTotalProductCount]]];
+	
+	[updateLock unlock];
 }
 
 - (void)markProductUnavailableOnline:(Product *)product {
