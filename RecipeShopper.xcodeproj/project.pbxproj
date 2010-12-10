@@ -1041,13 +1041,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: james grafton (CWWZ65GR72)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Assentec Global";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_VERSION = 4.2;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				PRODUCT_NAME = Recipes;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C31CF20C-59A5-46E5-B6EE-F501C16162E4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "569B3884-A755-4B8D-A510-2354D7B0D4AD";
 				SDKROOT = iphoneos4.2;
 			};
 			name = Debug;
@@ -1056,14 +1057,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: james grafton (CWWZ65GR72)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Assentec Global";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_VERSION = 4.2;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
 				PRODUCT_NAME = Recipes;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C5DF6C44-CB12-4A15-92DE-96853AF7F5F5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "569B3884-A755-4B8D-A510-2354D7B0D4AD";
 				SDKROOT = iphoneos4.2;
 			};
 			name = Release;

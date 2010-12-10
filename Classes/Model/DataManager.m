@@ -124,9 +124,13 @@ static DataManager *sharedInstance = nil;
 	if (offlineMode == YES) {
 		return NO;
 	} else {
-		NetworkStatus internetStatus = [[Reachability reachabilityWithHostName:@"google.com"] currentReachabilityStatus];
-		return ((internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN));
+		return [self phoneHasNetworkConnection];
 	}
+}
+
+- (BOOL)phoneHasNetworkConnection {
+	NetworkStatus internetStatus = [[Reachability reachabilityWithHostName:@"google.com"] currentReachabilityStatus];
+	return ((internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN));
 }
 
 - (void)updateBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity {

@@ -155,7 +155,7 @@
 
 - (IBAction)offlineModeValueChanged:(id)sender {
 	if (![offlineModeSwitch isOn]) {
-		if (![dataManager phoneIsOnline]) {
+		if (![dataManager phoneHasNetworkConnection]) {
 			/* If phone has not network connect don't allow user to go online */
 			[offlineModeSwitch setOn:YES];
 			UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Unable to shop online while phone has no network connection" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];

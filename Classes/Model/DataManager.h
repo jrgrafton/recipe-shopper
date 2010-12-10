@@ -48,6 +48,7 @@
 - (id)init;
 - (void)uninitialiseAll;
 - (BOOL)phoneIsOnline;
+- (BOOL)phoneHasNetworkConnection;
 - (void)updateBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity;
 - (BOOL)synchronizeOnlineOfflineBasket;
 
