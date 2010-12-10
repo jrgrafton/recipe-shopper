@@ -10,6 +10,14 @@
 #import "RecipeShopperAppDelegate.h"
 #import "DataManager.h"
 
+@interface LoginManager ()
+
+- (void) showBasketNotEmptyWarning;
+- (void) emptyOnlineBasketAndAddLocal;
+- (void) mergeBaskets;
+
+@end
+
 @implementation LoginManager
 
 @synthesize loginName;
@@ -77,6 +85,16 @@
 		UITextField *emailField = [[alertView subviews] objectAtIndex:4];
 		[emailField resignFirstResponder];
 	}
+	/* Assume warning title implies online basket was non empty */
+	else if ([[alertView title] isEqualToString:@"Warning"] && [alertView cancelButtonIndex] != buttonIndex) {
+		if (buttonIndex == 0) {
+			/* Download and merge */
+			[NSThread detachNewThreadSelector:@selector(mergeBaskets) toTarget:self withObject:nil];
+		}else {
+			/* Empty */
+			[self emptyOnlineBasketAndAddLocal];
+		}
+	}
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -120,18 +138,16 @@
 		/* save the login name so we can display it on the home page */
 		[self setLoginName:[details objectAtIndex:0]];
 		
-		/* empty the online basket  PROMPT TO EMPTY BASKET HERE*/
-		[dataManager setOverlayLoadingLabelText:@"Emptying online basket"];
-		[dataManager emptyOnlineBasket];
-				
-		/* add any products which may be in the product basket to the online basket now */
-		[dataManager setOverlayLoadingLabelText:@"Adding products to online basket"];
-		[dataManager addProductBasketToOnlineBasket];
+		/* Check to see if online basket is empty */
+		NSDictionary *basketDetails = [dataManager getBasketDetails];
+		float basketPrice = [[basketDetails objectForKey:@"BasketPrice"] floatValue];
 		
-		[dataManager hideOverlayView];
-		
-		/* inform any observers that the user has logged in */
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"LoggedIn" object:self];
+		if (basketPrice != 0) {
+			[self performSelectorOnMainThread:@selector(showBasketNotEmptyWarning) withObject:nil waitUntilDone:YES];
+		}
+		else {
+			[self emptyOnlineBasketAndAddLocal];
+		}
 	}else{
 		/* LOGIN FAILED */
 		[dataManager hideOverlayView];
@@ -141,6 +157,39 @@
 	}
 	
 	[pool release];
+}
+
+- (void)showBasketNotEmptyWarning {
+	UIAlertView *basketNotEmptyPrompt = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Online basket already contains items" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Download",@"Empty", nil];
+	[basketNotEmptyPrompt show];
+	[basketNotEmptyPrompt release];
+}
+
+- (void)emptyOnlineBasketAndAddLocal {
+	/* empty the online basket */
+	[dataManager setOverlayLoadingLabelText:@"Emptying online basket"];
+	[dataManager emptyOnlineBasket];
+	
+	/* add any products which may be in the product basket to the online basket now */
+	[dataManager setOverlayLoadingLabelText:@"Making online basket adjustments"];
+	[dataManager addProductBasketToOnlineBasket];
+	
+	[dataManager hideOverlayView];
+	
+	/* In case we have registered for OnlineBasketDownloadComplete notification */
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	/* inform any observers that the user has logged in */
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"LoggedIn" object:self];
+}
+
+- (void)mergeBaskets {
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emptyOnlineBasketAndAddLocal) name:@"OnlineBasketDownloadComplete" object:nil];
+	
+	/* empty the online basket */
+	[dataManager setOverlayLabelText:@"Merging baskets..."];
+	[dataManager addOnlineToLocalBasket];
+	
 }
 
 @end

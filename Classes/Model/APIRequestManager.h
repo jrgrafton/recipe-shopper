@@ -26,6 +26,7 @@
 
 - (BOOL)loginToStore:(NSString *)email withPassword:(NSString *)password;
 - (void)logoutOfStore;
+- (void)createAnonymousSessionKey;
 - (NSDictionary *)getOnlineBasket;
 - (Product *)createProductFromProductBaseID:(NSString *)productBaseID fetchImages:(BOOL)fetchImages;
 - (NSArray *)getDepartments;

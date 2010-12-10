@@ -28,6 +28,7 @@ static DataManager *sharedInstance = nil;
 @synthesize replaceString;
 @synthesize productBasketUpdates;
 @synthesize onlineBasketUpdates;
+@synthesize onlineBasketDownloads;
 @synthesize productImageFetchThreads;
 @synthesize productImageFetchLastBatchSize;
 @synthesize productImageFetchSuccessCount;
@@ -101,6 +102,7 @@ static DataManager *sharedInstance = nil;
 		[self setReplaceString:@""];
 		[self setProductBasketUpdates:0];
 		[self setOnlineBasketUpdates:0];
+		[self setOnlineBasketDownloads:0];
 		[self setProductImageFetchThreads:0];
 		[self setProductImageFetchLastBatchSize:0];
 		[self setProductImageFetchSuccessCount:0];
@@ -205,6 +207,7 @@ static DataManager *sharedInstance = nil;
 	
 	/* It still however may be the case that the product basket might have items the online basket doesn't even know of... */
 	for (Product *offlineProduct in [offlineBasket allKeys]) {
+		/* If so we assume that its just not available online and needs replacement */
 		NSString *offlineProductID = [NSString stringWithFormat:@"%@",[offlineProduct productID]];
 		BOOL foundMatch = NO;
 		for (NSString *onlineProductID in [onlineBasket allKeys]) {
@@ -221,10 +224,42 @@ static DataManager *sharedInstance = nil;
 	}
 	
 	if (!madeChanges) {
-		[LogManager log:@"Online/Offline basket appear to match" withLevel:LOG_INFO fromClass:[[self class] description]];
+		[LogManager log:@"Online basket quantities match" withLevel:LOG_INFO fromClass:[[self class] description]];
 	}
 	
+	/* True if we have had to make changes to ONLINE basket */
 	return madeChanges;
+}
+
+- (void)addOnlineToLocalBasket {
+	NSDictionary *onlineBasket = [apiRequestManager getOnlineBasket];
+	for (NSString *onlineProductID in [onlineBasket allKeys]) {
+		NSMutableArray *productDetails = [[NSMutableArray alloc] initWithCapacity:2];
+		[productDetails addObject: onlineProductID];
+		[productDetails addObject: [NSNumber numberWithInt:[[onlineBasket objectForKey:onlineProductID] intValue]]];
+		[NSThread detachNewThreadSelector:@selector(downloadProductToLocalBasket:) toTarget:self withObject:productDetails];
+	}
+}
+
+- (void)downloadProductToLocalBasket:(NSArray*)productInfo {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	onlineBasketDownloads++;
+	Product *product = [apiRequestManager createProductFromProductBaseID:[productInfo objectAtIndex:0] fetchImages:YES];
+	[productBasketManager updateProductBasketQuantity:product byQuantity:[productInfo objectAtIndex:1]];
+	onlineBasketDownloads--;
+	
+	[self setOverlayLoadingLabelText: [NSString stringWithFormat:@"%d download(s) left",onlineBasketUpdates]];
+	
+	if (onlineBasketDownloads == 0) {
+		[self setOverlayLoadingLabelText:@""];
+		
+		/* send out notification */
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"OnlineBasketDownloadComplete" object:self];
+	}
+	
+	[productInfo release];
+	[pool release];
 }
 
 #pragma mark -
@@ -426,6 +461,9 @@ static DataManager *sharedInstance = nil;
     if ([self phoneIsOnline] == YES) {
 		/* phone is online so create the products for this recipe using the online store */
         product = [apiRequestManager createProductFromProductBaseID:[recipeProduct objectAtIndex:0] fetchImages:YES];
+		
+		/* product not found online, fetch from DB, user will be prompted to replace before checkout */
+		product = [databaseRequestManager createProductFromProductBaseID:[recipeProduct objectAtIndex:0]];
 	} else {
 		/* we're using offline mode so create the products for this recipe using the database */
 		product = [databaseRequestManager createProductFromProductBaseID:[recipeProduct objectAtIndex:0]];
@@ -584,7 +622,6 @@ static DataManager *sharedInstance = nil;
 }
 
 - (void)setOverlayLoadingLabelText:(NSString *)text {
-	NSLog(@"SETTING LOADING LABEL TEXT (DATAMANAGER");
 	[overlayViewController performSelectorOnMainThread:@selector(setOverlayLoadingLabelText:) withObject:text waitUntilDone:YES];
 }
 
@@ -607,14 +644,14 @@ static DataManager *sharedInstance = nil;
 		[self setOverlayLoadingLabelText:@""];
 		
 		/* we've finished updating the online basket
-		 So now verify that offline basket agrees (note this will keep going around until it does! */
-		if (![self synchronizeOnlineOfflineBasket]) {
-			/* Only when baskets match can we send out notification */
-			[self setUpdatingOnlineBasket:NO];
-			
-			/* send out notification */
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"OnlineBasketUpdateComplete" object:self];
-		}
+		 So now sync baskets - returns true if online basket needed adjusting */
+		[self synchronizeOnlineOfflineBasket];
+		
+		/* Only when baskets match can we send out notification */
+		[self setUpdatingOnlineBasket:NO];
+		
+		/* send out notification */
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"OnlineBasketUpdateComplete" object:self];
 	}
 	
 	[pool release];

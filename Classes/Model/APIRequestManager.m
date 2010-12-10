@@ -19,6 +19,7 @@
 #define SHELF_SIMULATED_PAGE_SIZE 15
 #define MAX_RETRY_COUNT 3	//Maximum amount of times to API retry request before giving up
 #define MIN_API_CALL_INTERVAL 500.0 //Minimum allowed time between subsequent API calls (in ms)
+#define TIMEOUT_SECS 30	//Amount of secs before request will timeout
 
 @interface APIRequestManager()
 
@@ -68,6 +69,20 @@
 - (void)logoutOfStore {
 	/* go back to using an anonymous session key */
 	[self createAnonymousSessionKey];
+}
+
+- (void)createAnonymousSessionKey {
+    if ([self login:@"" withPassword:@""] == YES) {
+        [LogManager log:[NSString stringWithFormat:@"Created anonymous login with session key: %@", sessionKey] withLevel:LOG_INFO fromClass:[[self class] description]];
+    } else {
+        [LogManager log:[NSString stringWithFormat:@"Failed to create anonymous login"] withLevel:LOG_ERROR fromClass:[[self class] description]];
+        
+        UIAlertView *loginAlert = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Failed to connect to Tesco.com. Retry or switch to offline mode?" delegate:self cancelButtonTitle:@"Switch Mode" otherButtonTitles:@"Retry", nil];
+        [loginAlert show];
+        [loginAlert release];
+    }
+    
+    [self setLoggedIn:NO];
 }
 
 - (NSDictionary *)getOnlineBasket {
@@ -370,6 +385,7 @@
 	BOOL apiReqOK = YES;
 	
 	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
+	[request setTimeoutInterval: TIMEOUT_SECS];
 	
 	/* add the session key (if necessary) here so that we can change it if it's expired and needs recreating */
 	NSMutableString *requestString = [NSMutableString stringWithString:initialRequestString];
@@ -449,20 +465,6 @@
 	[LogManager log:[NSString stringWithFormat:@"Received response for request: '%@'", requestString] withLevel:LOG_INFO fromClass:[[self class] description]];
 	
 	return apiReqOK;
-}
-
-- (void)createAnonymousSessionKey {
-    if ([self login:@"" withPassword:@""] == YES) {
-        [LogManager log:[NSString stringWithFormat:@"Created anonymous login with session key: %@", sessionKey] withLevel:LOG_INFO fromClass:[[self class] description]];
-    } else {
-        [LogManager log:[NSString stringWithFormat:@"Failed to create anonymous login"] withLevel:LOG_ERROR fromClass:[[self class] description]];
-        
-        UIAlertView *loginAlert = [[UIAlertView alloc] initWithTitle:@"Failed to connect to Tesco.com" message:@"Retry or switch to offline mode?" delegate:self cancelButtonTitle:@"Switch Mode" otherButtonTitles:@"Retry", nil];
-        [loginAlert show];
-        [loginAlert release];
-    }
-    
-    [self setLoggedIn:NO];
 }
 
 /*

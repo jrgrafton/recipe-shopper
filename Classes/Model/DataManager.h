@@ -37,6 +37,7 @@
 @property (copy)   NSString* replaceString;
 @property (assign) NSInteger productBasketUpdates;
 @property (assign) NSInteger onlineBasketUpdates;
+@property (assign) NSInteger onlineBasketDownloads;
 @property (assign) NSInteger productImageFetchThreads;
 @property (assign) NSInteger productImageFetchLastBatchSize;
 @property (assign) NSInteger productImageFetchSuccessCount;
@@ -75,6 +76,9 @@
 - (NSString *)getCustomerName;
 - (void)fetchImagesForProductBatch:(NSArray*) productBatch;
 - (void)productImageFetchStatusNotification: (NSNotification *)notification;
+- (void)addOnlineToLocalBasket;
+- (void)downloadProductToLocalBasket:(NSArray*)productInfo;
+
 
 /* recipe basket manager calls */
 - (NSArray *)getRecipeBasket;

@@ -154,6 +154,17 @@
 }
 
 - (IBAction)offlineModeValueChanged:(id)sender {
+	if (![offlineModeSwitch isOn]) {
+		if (![dataManager phoneIsOnline]) {
+			/* If phone has not network connect don't allow user to go online */
+			[offlineModeSwitch setOn:YES];
+			UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Unable to shop online while phone has no network connection" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[warningAlert show];
+			[warningAlert release];
+			return;
+		}
+	}
+	
 	[dataManager setOfflineMode:[offlineModeSwitch isOn]];
 	
 	if ([offlineModeSwitch isOn] == YES) {
@@ -164,9 +175,16 @@
 }
 
 - (IBAction)createAccount:(id)sender {
-	UIAlertView *successAlert = [[UIAlertView alloc] initWithTitle:@"New Account" message:@"You will now be transferred to Tesco.com for account creation" delegate:self cancelButtonTitle:@"Proceed" otherButtonTitles:nil];
-	[successAlert show];
-	[successAlert release];
+	if (![dataManager phoneIsOnline]) {
+		UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Unable to create account while offline" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[warningAlert show];
+		[warningAlert release];
+		return;
+	}else {
+		UIAlertView *successAlert = [[UIAlertView alloc] initWithTitle:@"New Account" message:@"You will now be transferred to Tesco.com for account creation" delegate:self cancelButtonTitle:@"Proceed" otherButtonTitles:nil];
+		[successAlert show];
+		[successAlert release];
+	}
 }
 
 #pragma mark -

@@ -14,6 +14,8 @@
 
 @interface CheckoutViewController()
 
+- (void)productsNeedReplacingBeforeProceeding;
+- (void)basketHasBeenModified;
 - (void)productBasketUpdateComplete;
 - (void)onlineBasketUpdateComplete;
 - (void)loadDeliveryDates;
@@ -124,11 +126,17 @@
 - (void)loadDeliveryDates {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[dataManager performSelectorOnMainThread:@selector(setOverlayLabelText:) withObject:@"Verifying Basket" waitUntilDone:YES];
-	[dataManager synchronizeOnlineOfflineBasket];
+	BOOL basketHasBeenModified = [dataManager synchronizeOnlineOfflineBasket];
 	
 	if ([dataManager getDistinctUnavailableOnlineCount] != 0) {
 		/* User needs to deal with all unavailable products before proceeding */
 		[self performSelectorOnMainThread:@selector(productsNeedReplacingBeforeProceeding) withObject:nil waitUntilDone:YES];
+		return;
+	}
+	
+	if (basketHasBeenModified) {
+		/* User needs to confirm they are OK with basket modifications before proceeding */
+		[self performSelectorOnMainThread:@selector(basketHasBeenModified) withObject:nil waitUntilDone:YES];
 		return;
 	}
 	
@@ -150,8 +158,15 @@
 	UIAlertView *productNeedsReplacingAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please replace all unavailble products before proceeding" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[productNeedsReplacingAlert show];
 	[productNeedsReplacingAlert release];
+}
+
+- (void)basketHasBeenModified {
+	[dataManager hideOverlayView];
+	[basketView reloadData];
 	
-	//[self scrollToBottomOfTable];
+	UIAlertView *basketModified = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Basket has been modified, please review contents" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[basketModified show];
+	[basketModified release];
 }
 
 #pragma mark -
