@@ -111,7 +111,7 @@
 		[tooFewItemsAlert show];
 		[tooFewItemsAlert release];
 	} //Ensure we do one final product basket validation
-	else if ([dataManager updatingOnlineBasket]) {
+	else if ([dataManager onlineBasketUpdates] != 0) {
 		//Wait for basket to finish updating
 		[dataManager showOverlayView:[[self view] window]];
 		[dataManager setOverlayLabelText:@"Waiting basket updates to complete"];
@@ -126,7 +126,17 @@
 - (void)loadDeliveryDates {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[dataManager performSelectorOnMainThread:@selector(setOverlayLabelText:) withObject:@"Verifying Basket" waitUntilDone:YES];
-	BOOL basketHasBeenModified = [dataManager synchronizeOnlineOfflineBasket];
+	
+	BOOL basketHasBeenModified;
+	
+	if ([dataManager updatingOnlineBasket]) {
+		/* If we are performing online updates at this point it must mean that 
+		 completion of last update batch ended in disparency between baskets */
+		basketHasBeenModified = YES;
+	}else {
+		/* No resych going in background so lets check for ourselves */
+		basketHasBeenModified = [dataManager synchronizeOnlineOfflineBasket];
+	}
 	
 	if ([dataManager getDistinctUnavailableOnlineCount] != 0) {
 		/* User needs to deal with all unavailable products before proceeding */

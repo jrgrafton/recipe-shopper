@@ -26,6 +26,15 @@
 @property (retain) NSString *productOfferValidity;
 @property (retain) NSURL *productOfferImageURL;
 
+/* Only used for products fetched online */
+@property (assign) NSInteger maxAmount;
+
+/* Occasionally API can misreport max number of items - need to ensure we track
+ whether attempts have been made to update the quantity online (so then next time we
+ can adjust local basket instead */
+@property (assign) BOOL quantityUpdateAttempted;
+
+
 - (id)initWithProductBaseID:(NSNumber *)inProductBaseID andProductID:(NSNumber *)productID andProductName:(NSString *)inProductName 
 			andProductPrice:(NSString *)inProductPrice andProductOffer:(NSString *)inProductOffer
 	andProductOfferValidity:(NSString *)inProductOfferValidity andProductImage:(UIImage *)inProductImage 

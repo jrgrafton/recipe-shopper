@@ -15,7 +15,7 @@
 @interface ProductBasketManager : NSObject {
 	@private
 		DataManager *dataManager;
-		NSLock *updateLock;
+		NSRecursiveLock *updateLock;
 }
 
 @property (retain) NSMutableDictionary *productBasket;
@@ -25,7 +25,16 @@
 
 - (id)init;
 - (void)emptyProductBasket;
+- (NSInteger)getTotalProductCount;
+- (NSInteger)getDistinctProductCount;
+- (Product *)getProductFromBasket:(NSUInteger)productIndex;
+- (NSNumber *)getProductQuantityFromBasket:(Product *)product;
+- (NSInteger)getDistinctUnavailableOnlineCount;
+- (Product *)getUnavailableOnlineProduct:(NSUInteger)productIndex;
+- (NSInteger)getDistinctAvailableOnlineCount;
+- (Product *)getAvailableOnlineProduct:(NSUInteger)productIndex;
 - (NSDictionary*)getProductBasketSync;
+- (Product*)getProductByBaseID:(NSString*)productBaseID;
 - (void)updateProductBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity;
 - (void)markProductUnavailableOnline:(Product *)product;
 

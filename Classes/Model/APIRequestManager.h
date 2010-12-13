@@ -11,13 +11,13 @@
 
 @interface APIRequestManager : NSObject <UIAlertViewDelegate> {
 @private 
-	NSString *sessionKey;
 	NSMutableDictionary *departments;
 	NSMutableDictionary *aisles;
 	NSMutableDictionary *shelves;
 	NSMutableArray *shelfProductCache; /* Shelf result cache so we can simulate pagination */
 }
 
+@property (retain) NSString *sessionKey;
 @property (nonatomic) BOOL offlineMode;
 @property (nonatomic) BOOL loggedIn;
 @property (nonatomic, retain) NSString *customerName;

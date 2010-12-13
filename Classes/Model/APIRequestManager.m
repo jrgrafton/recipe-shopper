@@ -18,8 +18,8 @@
 #define REST_SERVICE_URL @"https://secure.techfortesco.com/groceryapi_b1/restservice.aspx"
 #define SHELF_SIMULATED_PAGE_SIZE 15
 #define MAX_RETRY_COUNT 3	//Maximum amount of times to API retry request before giving up
-#define MIN_API_CALL_INTERVAL 500.0 //Minimum allowed time between subsequent API calls (in ms)
-#define TIMEOUT_SECS 30	//Amount of secs before request will timeout
+#define MIN_API_CALL_INTERVAL 1000 //Minimum allowed time between subsequent API calls (in ms)
+#define TIMEOUT_SECS 15	//Amount of secs before request will timeout
 
 @interface APIRequestManager()
 
@@ -30,12 +30,13 @@
 - (Product *)createProductFromJSON:(NSDictionary *)productJSON fetchImages:(BOOL)fetchImages;
 
 @property (assign) double lastUpdateRequestTime;
-@property (assign) NSLock *requestLock;
+@property (retain) NSRecursiveLock *requestLock;
 
 @end
 
 @implementation APIRequestManager
 
+@synthesize sessionKey;
 @synthesize offlineMode;
 @synthesize loggedIn;
 @synthesize customerName;
@@ -46,14 +47,13 @@
 
 - (id)init {
 	if (self = [super init]) {
+		requestLock = [[NSRecursiveLock alloc] init];
 		departments = [[NSMutableDictionary alloc] init];
 		aisles = [[NSMutableDictionary alloc] init];
 		shelves = [[NSMutableDictionary alloc] init];
 		shelfProductCache = [[NSMutableArray alloc] init];
-		[self createAnonymousSessionKey];
 		[self setLastUpdateRequestTime:[[NSDate date] timeIntervalSince1970]];
 		[self setLoggedIn:NO];
-		requestLock = [[NSLock alloc] init];
 	}
 	
 	return self;
@@ -69,20 +69,27 @@
 - (void)logoutOfStore {
 	/* go back to using an anonymous session key */
 	[self createAnonymousSessionKey];
+	[self setLoggedIn:NO];
 }
 
 - (void)createAnonymousSessionKey {
-    if ([self login:@"" withPassword:@""] == YES) {
-        [LogManager log:[NSString stringWithFormat:@"Created anonymous login with session key: %@", sessionKey] withLevel:LOG_INFO fromClass:[[self class] description]];
-    } else {
-        [LogManager log:[NSString stringWithFormat:@"Failed to create anonymous login"] withLevel:LOG_ERROR fromClass:[[self class] description]];
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	BOOL loginFailed = YES;
+	
+	if ([self login:@"" withPassword:@""]) {
+			[LogManager log:[NSString stringWithFormat:@"Created anonymous login with session key: %@", [self sessionKey]] withLevel:LOG_INFO fromClass:[[self class] description]];
+			loginFailed = NO;
+	}
+	if (loginFailed) {
+		[LogManager log:[NSString stringWithFormat:@"Failed to create anonymous login"] withLevel:LOG_ERROR fromClass:[[self class] description]];
         
         UIAlertView *loginAlert = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Failed to connect to Tesco.com. Retry or switch to offline mode?" delegate:self cancelButtonTitle:@"Switch Mode" otherButtonTitles:@"Retry", nil];
         [loginAlert show];
         [loginAlert release];
-    }
-    
-    [self setLoggedIn:NO];
+	}
+
+	[pool release];
 }
 
 - (NSDictionary *)getOnlineBasket {
@@ -371,6 +378,10 @@
 
 - (BOOL)apiRequest:(NSString *)initialRequestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error requestAttempt:(NSInteger)requestAttempt isLogin:(BOOL)isLogin {
 	[[self requestLock] lock];
+	/* If we have no session key try and generate new Anonymous key */
+	if ([[self sessionKey] length] == 0 && !isLogin) {
+		[self createAnonymousSessionKey];
+	}
 	
 	double timeSinceLastRequest = [[NSDate date] timeIntervalSince1970] - [self lastUpdateRequestTime];
 	
@@ -434,7 +445,7 @@
 			
 			if ([statusCode intValue] != 0) {
 				/* something's gone wrong with the API so we need to find out what has happened */
-				if (([statusCode intValue] == 120) || ([statusCode intValue] == 200)) {
+				if ([statusCode intValue] == 120) {
 					[LogManager log:@"API call failed due to out of date/invalid session key" withLevel:LOG_ERROR fromClass:[[self class] description]];
 					
 					/* chances are, the user has left the app for ages and the session key is now invalid so we need a new one */
@@ -478,7 +489,7 @@
 	BOOL apiRequestOK = [self apiRequest:requestString returningApiResults:&apiResults returningError:&error requestAttempt:1 isLogin:YES];
 	
 	if (apiRequestOK == YES) {
-		[sessionKey = [apiResults objectForKey:@"SessionKey"] retain];
+		[self setSessionKey: [apiResults objectForKey:@"SessionKey"]];
 		[self setCustomerName:[apiResults objectForKey:@"CustomerName"]];
 		loggedInSuccessfully = YES;
 	}
@@ -523,7 +534,7 @@
 		[self fetchImagesForProduct:product];
 	}
 	
-	
+	[product setMaxAmount:[[productJSON objectForKey:@"MaximumPurchaseQuantity"] intValue]];
 	return product;
 }
 

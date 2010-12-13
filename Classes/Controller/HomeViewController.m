@@ -42,15 +42,17 @@
 		[offlineModeSwitch setOn:NO];
 	}
 	
-	/* add ourselves as an observer for offline mode switch messages so we can set the switch if need be */
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToOfflineMode) name:@"SwitchToOffline" object:nil];
-	
 	/* Try and do a cheeky cached load of product departments */
 	[NSThread detachNewThreadSelector:@selector(getDepartments) toTarget:dataManager withObject:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+	
+	/* add ourselves as an observer for offline mode switch messages so we can set the switch if need be */
+	/* Note this notification is sent whenever anon session key can not be generated and user selects offline mode from alert */
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToOfflineMode) name:@"SwitchToOffline" object:nil];
+	
 	//If we have logged in elsewhere make sure our interface is in correct state
 	if ([dataManager loggedIn]) {
 		[self loginSuccess];
@@ -105,16 +107,25 @@
 	[errorAlert release];
 }
 
-- (IBAction)logout:(id)sender {
-	/* log out of the store */
-	[dataManager logoutOfStore];
-	
+- (void)logoutComplete {
 	/* then replace the logout button and the greeting with the login button and register link again */
 	[loginButton setHidden:NO];
 	[logoutButton setHidden:YES];
 	[createAccountButton setHidden:NO];
 	[loggedInGreetingLabel setHidden:YES];
 	[loggedOutGreetingLabel setHidden:NO];
+	
+	[dataManager hideOverlayView];
+}
+
+- (IBAction)logout:(id)sender {
+	[dataManager showOverlayView:[[self view] window]];
+	[dataManager setOverlayLabelText:@"Logging out"];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logoutComplete) name:@"LogoutComplete" object:nil];
+	
+	/* log out of the store */
+	[NSThread detachNewThreadSelector:@selector(logoutOfStore) toTarget:dataManager withObject:nil];
 }
 
 - (IBAction)transitionToRecipeCategoryView:(id)sender {

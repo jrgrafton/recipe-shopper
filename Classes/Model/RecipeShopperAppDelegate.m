@@ -30,6 +30,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	dataManager = [DataManager getInstance];
 	
+	/* Session key has to be generated in background so that iOS doesn't kill app due to UI unresponsiveness */
+	[NSThread detachNewThreadSelector:@selector(createAnonymousSessionKey) toTarget:dataManager withObject:nil];
+	
 	[dataManager addShoppingListProductsObserver:self];
 	[dataManager addBasketProductsObserver:self];
 	

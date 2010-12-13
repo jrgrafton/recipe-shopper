@@ -23,10 +23,11 @@
 
 - (id)init {
 	if (self = [super init]) {
+		updateLock = [[NSRecursiveLock alloc] init];
 		productBasket = [[NSMutableDictionary alloc] init];
 		productsUnavailableOnline = [[NSMutableDictionary alloc] init];
 		dataManager = [DataManager getInstance]; 
-		updateLock = [[NSLock alloc] init];
+
 		[self setProductBasketPrice:@"£0.00"];
 		[self setShoppingListProducts:[NSNumber numberWithInt:0]];
 	}
@@ -45,6 +46,87 @@
 	return productBasket;
 }
 
+- (NSInteger)getTotalProductCount {
+	[updateLock lock];
+	NSInteger totalProductCount = 0;
+	
+	for (NSNumber *quantity in [productBasket allValues]) {
+		totalProductCount += [quantity intValue];
+	}
+    [updateLock unlock];
+	return totalProductCount;
+}
+
+- (NSInteger)getDistinctProductCount {
+	[updateLock lock];
+	[updateLock unlock];
+	return [[productBasket allKeys] count];
+}
+
+- (Product *)getProductFromBasket:(NSUInteger)productIndex {
+	[updateLock lock];
+	[updateLock unlock];
+	
+	return ([[productBasket allKeys] count] > productIndex)? 
+	[[productBasket allKeys] objectAtIndex:productIndex]:nil;
+	
+}
+
+- (NSNumber *)getProductQuantityFromBasket:(Product *)product {
+	[updateLock lock];
+	[updateLock unlock];
+	return [productBasket objectForKey:product];
+}
+
+- (NSInteger)getDistinctUnavailableOnlineCount {
+	[updateLock lock];
+	[updateLock unlock];
+	
+	return [[productsUnavailableOnline allKeys] count];
+}
+
+- (Product *)getUnavailableOnlineProduct:(NSUInteger)productIndex {
+	[updateLock lock];
+	[updateLock unlock];
+	
+	return ([[productsUnavailableOnline allKeys] count] > productIndex)? 
+	[[productsUnavailableOnline allKeys] objectAtIndex:productIndex]:nil;
+}
+
+- (NSInteger)getDistinctAvailableOnlineCount {
+	return [self getDistinctProductCount] - [self getDistinctUnavailableOnlineCount];
+}
+
+- (Product *)getAvailableOnlineProduct:(NSUInteger)productIndex {
+	[updateLock lock];
+	
+	NSArray* productBasketKeys = [productBasket allKeys];
+	NSMutableArray* availableOnlineKeys = [[[NSMutableArray alloc] initWithArray: productBasketKeys copyItems:YES] autorelease];
+	[availableOnlineKeys removeObjectsInArray:[[self productsUnavailableOnline] allKeys]];
+	
+	[updateLock unlock];
+	
+	return ([availableOnlineKeys count] > productIndex)? [availableOnlineKeys objectAtIndex:productIndex]:nil;
+	
+	
+}
+
+- (Product*)getProductByBaseID:(NSString*)productBaseID {
+	[updateLock lock];
+	NSEnumerator *productsEnumerator = [productBasket keyEnumerator];
+	Product *product;
+	
+	while ((product = [productsEnumerator nextObject])) {
+		if ([productBaseID intValue] == [[product productBaseID] intValue]) {
+			[updateLock unlock];
+			return product;
+		}
+	}
+	
+	[updateLock unlock];
+	return nil;
+}
+
 - (void)updateProductBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity {
 	[product retain]; /* Temporary fix!!! */	
 	
@@ -53,12 +135,12 @@
 	
 	int newQuantity = [[productBasket objectForKey:product] intValue] + [quantity intValue];
 	
-	if ((newQuantity > 0) && (newQuantity <= 99)) {
+	if ((newQuantity > 0) && (newQuantity <= [product maxAmount])) {
 		/* just change the quantity for this product to the new value */
 		[productBasket setObject:[NSNumber numberWithInt:newQuantity] forKey:product];
-	} else if (newQuantity > 99) {
-		/* can't have more than 99 so just set it to 99 */
-		[productBasket setObject:[NSNumber numberWithInt:99] forKey:product];
+	} else if (newQuantity > [product maxAmount]) {
+		/* ensure we cap quantities at maxAmount */
+		[productBasket setObject: [NSNumber numberWithInt:[product maxAmount]] forKey:product];
 	} else {
 		/* must have removed all of this product so remove the product altogether */
 		[productBasket removeObjectForKey:product];
@@ -73,18 +155,22 @@
 }
 
 - (void)markProductUnavailableOnline:(Product *)product {
-	@synchronized(self) {	
-		if ([productsUnavailableOnline objectForKey:[product productID]] == nil) {
-			[product removeProductOffer]; /* Don't care about product offer if it doesn't exist online */
-			[productsUnavailableOnline setObject:[product productID] forKey:product];
-		}
+	[updateLock lock];	
+	
+	if ([productsUnavailableOnline objectForKey:[product productID]] == nil) {
+		[product removeProductOffer]; /* Don't care about product offer if it doesn't exist online */
+		[productsUnavailableOnline setObject:[product productID] forKey:product];
 	}
+
+	[updateLock unlock];
 }
 
 #pragma mark -
 #pragma mark Private methods
 
 - (void)recalculateBasketPrice {
+	[updateLock lock];
+	
 	NSEnumerator *productsEnumerator = [productBasket keyEnumerator];
 	Product *product;
 	CGFloat basketPrice = 0;
@@ -94,6 +180,8 @@
 	}
 	
 	[self setProductBasketPrice:[NSString stringWithFormat:@"£%.2f", basketPrice]];
+
+	[updateLock unlock];
 }
 
 - (void)dealloc {

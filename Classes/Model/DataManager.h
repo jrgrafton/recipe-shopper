@@ -37,7 +37,6 @@
 @property (copy)   NSString* replaceString;
 @property (assign) NSInteger productBasketUpdates;
 @property (assign) NSInteger onlineBasketUpdates;
-@property (assign) NSInteger onlineBasketDownloads;
 @property (assign) NSInteger productImageFetchThreads;
 @property (assign) NSInteger productImageFetchLastBatchSize;
 @property (assign) NSInteger productImageFetchSuccessCount;
@@ -61,6 +60,7 @@
 - (void)clearRecipeHistory;
 
 /* api manager calls */
+- (void)createAnonymousSessionKey;
 - (BOOL)loggedIn;
 - (BOOL)loginToStore:(NSString *)email withPassword:(NSString *)password;
 - (void)logoutOfStore;
@@ -77,7 +77,7 @@
 - (NSString *)getCustomerName;
 - (void)fetchImagesForProductBatch:(NSArray*) productBatch;
 - (void)productImageFetchStatusNotification: (NSNotification *)notification;
-- (void)addOnlineToLocalBasket;
+- (void)mergeOnlineOfflineBaskets;
 - (void)downloadProductToLocalBasket:(NSArray*)productInfo;
 
 

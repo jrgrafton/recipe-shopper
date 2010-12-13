@@ -21,6 +21,8 @@
 @synthesize productFetchedOffline;
 @synthesize productOfferImageURL;
 @synthesize productImageURL;
+@synthesize maxAmount;
+@synthesize quantityUpdateAttempted;
 
 - (BOOL)isEqual:(id)anObject {
 	if (![anObject isKindOfClass:[Product class]]) return NO;
@@ -53,6 +55,8 @@
 		[self setProductImage:inProductImage];
 		[self setProductOfferImage:inProductOfferImage];
 		[self setProductFetchedOffline:inProductFetchedOffline];
+		[self setMaxAmount:99];	//Assume max amount to be 99 to begin with
+		[self setQuantityUpdateAttempted:NO];
 	}
 	
 	return self;

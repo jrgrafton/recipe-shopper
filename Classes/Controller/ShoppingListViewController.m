@@ -51,9 +51,6 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	
-	/* scroll the list to the top */
-	[productTableView setContentOffset:CGPointMake(0, 0) animated:NO];
-	
 	if ([dataManager updatingProductBasket] == YES) {
 		[dataManager showOverlayView:[[self view] window]];
 		[dataManager setOverlayLabelText:@"Updating shopping list"];

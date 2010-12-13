@@ -203,6 +203,12 @@
 		NSMutableArray *sortedDeliveryTimesArray = [NSMutableArray arrayWithArray:[timesToSlots allKeys]];
 		[sortedDeliveryTimesArray sortUsingSelector:@selector(compare:)];
 		
+		//If both wheels are spun too quickly  selectedRowInComponent:0 and row for component 1 can be
+		//incorrectly reported 
+		if (row >= [sortedDeliveryTimesArray count] ) {
+			row = [sortedDeliveryTimesArray count] - 1;
+		}
+		
 		DeliverySlot *deliverySlot = [timesToSlots objectForKey:[sortedDeliveryTimesArray objectAtIndex:row]];
 		
 		[label setText:[NSString stringWithFormat:@"%@ - %@", [timeFormatter stringFromDate:[deliverySlot deliverySlotStartTime]], [timeFormatter stringFromDate:[deliverySlot deliverySlotEndTime]]]];
@@ -238,7 +244,14 @@
 		selectedDeliverySlot = [deliveryTimeToSlot objectForKey:[sortedDeliveryTimesArray objectAtIndex:0]];
 		deliveryTimesReset = NO;
 	} else {
-		NSDate *selectedTime = [sortedDeliveryTimesArray objectAtIndex:[deliverySlotPickerView selectedRowInComponent:1]];
+		NSInteger timeRowSelectedIndex = [deliverySlotPickerView selectedRowInComponent:1];
+		//If both wheels are spun too quickly simultaneously selectedRowInComponent:0 and row for component 1 can be
+		//incorrectly reported 
+		if (timeRowSelectedIndex >= [sortedDeliveryTimesArray count] ) {
+			timeRowSelectedIndex = [sortedDeliveryTimesArray count] - 1;
+		}
+		
+		NSDate *selectedTime = [sortedDeliveryTimesArray objectAtIndex:timeRowSelectedIndex];
 		selectedDeliverySlot = [deliveryTimeToSlot objectForKey:selectedTime];
 	}
 	

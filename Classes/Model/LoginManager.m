@@ -13,8 +13,10 @@
 @interface LoginManager ()
 
 - (void) showBasketNotEmptyWarning;
-- (void) emptyOnlineBasketAndAddLocal;
+- (void) showLoginPrompt;
 - (void) mergeBaskets;
+- (void) emptyOnlineBasket;
+- (void) loginComplete;
 
 @end
 
@@ -28,47 +30,27 @@
 	return self;
 }
 
+- (void)productBasketUpdateComplete {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	[dataManager hideOverlayView];
+	[self performSelectorOnMainThread:@selector(showLoginPrompt) withObject:nil waitUntilDone:YES];
+}
+
 - (void)requestLoginToStore {
 	if ([dataManager loggedIn] == NO) {
 		if ([dataManager phoneIsOnline] == YES) {
-			UIAlertView *loginPrompt = [[UIAlertView alloc] initWithTitle:@"Login" message:@"Please login to your account\n\n\n\n\n" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-			
-			UITextField *emailField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 80.0, 260.0, 30.0)];
-			[emailField setBackgroundColor:[UIColor whiteColor]];
-			[emailField setPlaceholder:@"john@example.com"];
-			[emailField setAutocorrectionType: UITextAutocorrectionTypeNo];
-			[emailField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-			[emailField setBorderStyle:UITextBorderStyleBezel];
-			[emailField setKeyboardType:UIKeyboardTypeEmailAddress];
-			
-			NSString *cachedEmail = [dataManager getUserPreference:@"login.email"];
-			
-			if (cachedEmail != nil) {
-				[emailField setText:cachedEmail];
+			if ([dataManager updatingProductBasket]) {
+				[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productBasketUpdateComplete) name:@"ProductBasketUpdateComplete" object:nil];
+				
+				RecipeShopperAppDelegate *appDelegate = (RecipeShopperAppDelegate *)[[UIApplication sharedApplication] delegate];
+				UIViewController * viewController = [[appDelegate tabBarController] selectedViewController];
+				
+				[dataManager showOverlayView:[[viewController view] window]];
+				[dataManager setOverlayLabelText:@"Updating shopping list"];
+			}else {
+				[self showLoginPrompt];
 			}
-			
-			[loginPrompt addSubview:emailField];
-			
-			UITextField *passwordField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 120.0, 260.0, 30.0)];
-			[passwordField setBackgroundColor:[UIColor whiteColor]];
-			[passwordField setPlaceholder:@"Password"];
-			[passwordField setSecureTextEntry:YES];
-			[passwordField setAutocorrectionType: UITextAutocorrectionTypeNo];
-			[passwordField setBorderStyle:UITextBorderStyleBezel];
-			
-			NSString *cachedPassword = [dataManager getUserPreference:@"login.password"];
-			
-			if (cachedPassword != nil) {
-				[passwordField setText:cachedPassword];
-			}
-			
-			[loginPrompt addSubview:passwordField];
-			
-			[emailField becomeFirstResponder];
-			[loginPrompt show];
-			[loginPrompt release];
-			[passwordField release];
-			[emailField release];
 		} else {
 			UIAlertView *networkError = [[UIAlertView alloc] initWithTitle:@"Network error" message:@"Feature unavailable offline" delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
 			[networkError show];
@@ -77,6 +59,46 @@
 	}
 }
 
+- (void)showLoginPrompt {
+	UIAlertView *loginPrompt = [[UIAlertView alloc] initWithTitle:@"Login" message:@"Please login to your account\n\n\n\n\n" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+	
+	UITextField *emailField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 80.0, 260.0, 30.0)];
+	[emailField setBackgroundColor:[UIColor whiteColor]];
+	[emailField setPlaceholder:@"john@example.com"];
+	[emailField setAutocorrectionType: UITextAutocorrectionTypeNo];
+	[emailField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+	[emailField setBorderStyle:UITextBorderStyleBezel];
+	[emailField setKeyboardType:UIKeyboardTypeEmailAddress];
+	
+	NSString *cachedEmail = [dataManager getUserPreference:@"login.email"];
+	
+	if (cachedEmail != nil) {
+		[emailField setText:cachedEmail];
+	}
+	
+	[loginPrompt addSubview:emailField];
+	
+	UITextField *passwordField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 120.0, 260.0, 30.0)];
+	[passwordField setBackgroundColor:[UIColor whiteColor]];
+	[passwordField setPlaceholder:@"Password"];
+	[passwordField setSecureTextEntry:YES];
+	[passwordField setAutocorrectionType: UITextAutocorrectionTypeNo];
+	[passwordField setBorderStyle:UITextBorderStyleBezel];
+	
+	NSString *cachedPassword = [dataManager getUserPreference:@"login.password"];
+	
+	if (cachedPassword != nil) {
+		[passwordField setText:cachedPassword];
+	}
+	
+	[loginPrompt addSubview:passwordField];
+	
+	[emailField becomeFirstResponder];
+	[loginPrompt show];
+	[loginPrompt release];
+	[passwordField release];
+	[emailField release];
+}
 #pragma mark -
 #pragma mark Buttons responders
 
@@ -92,7 +114,13 @@
 			[NSThread detachNewThreadSelector:@selector(mergeBaskets) toTarget:self withObject:nil];
 		}else {
 			/* Empty */
-			[self emptyOnlineBasketAndAddLocal];
+			[self emptyOnlineBasket];
+			
+			/* add any products which may be in the product basket to the online basket now */
+			[dataManager setOverlayLoadingLabelText:@"Making online basket adjustments"];
+			[dataManager addProductBasketToOnlineBasket];
+			
+			[self loginComplete];
 		}
 	}
 }
@@ -146,7 +174,13 @@
 			[self performSelectorOnMainThread:@selector(showBasketNotEmptyWarning) withObject:nil waitUntilDone:YES];
 		}
 		else {
-			[self emptyOnlineBasketAndAddLocal];
+			[self emptyOnlineBasket];
+			
+			/* add any products which may be in the product basket to the online basket now */
+			[dataManager setOverlayLoadingLabelText:@"Making online basket adjustments"];
+			[dataManager addProductBasketToOnlineBasket];
+			
+			[self loginComplete];
 		}
 	}else{
 		/* LOGIN FAILED */
@@ -160,39 +194,37 @@
 }
 
 - (void)showBasketNotEmptyWarning {
-	UIAlertView *basketNotEmptyPrompt = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Online basket already contains items" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Download",@"Empty", nil];
+	UIAlertView *basketNotEmptyPrompt = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Online basket already contains items" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Merge",@"Replace", nil];
 	[basketNotEmptyPrompt show];
 	[basketNotEmptyPrompt release];
 }
 
-- (void)emptyOnlineBasketAndAddLocal {
+- (void) emptyOnlineBasket {
 	/* empty the online basket */
 	[dataManager setOverlayLoadingLabelText:@"Emptying online basket"];
 	[dataManager emptyOnlineBasket];
-	
-	/* add any products which may be in the product basket to the online basket now */
-	[dataManager setOverlayLoadingLabelText:@"Making online basket adjustments"];
-	[dataManager addProductBasketToOnlineBasket];
-	
-	[dataManager hideOverlayView];
-	
-	/* In case we have registered for OnlineBasketDownloadComplete notification */
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
-	/* inform any observers that the user has logged in */
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"LoggedIn" object:self];
 }
 
 - (void)mergeBaskets {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emptyOnlineBasketAndAddLocal) name:@"OnlineBasketDownloadComplete" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginComplete) name:@"OnlineBasketDownloadComplete" object:nil];
 	
 	/* empty the online basket */
 	[dataManager setOverlayLabelText:@"Merging baskets..."];
-	[dataManager addOnlineToLocalBasket];
+	[dataManager mergeOnlineOfflineBaskets];
 	
 	[pool release];
+}
+
+- (void)loginComplete {
+	/* We may be listening for OnlineBasketDownloadComplete at this point */
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	[dataManager hideOverlayView];
+	
+	/* inform any observers that the user has logged in */
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"LoggedIn" object:self];
 }
 
 @end
