@@ -16,6 +16,7 @@
 @private 
 	DataManager *dataManager;
 	BOOL userWantsToProceed;
+	BOOL fetchingOnlineBasketInfo;
 }
 
 @property (nonatomic, retain) DeliverySlotsViewController *deliverySlotsViewController;

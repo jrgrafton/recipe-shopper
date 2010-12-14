@@ -43,6 +43,17 @@
 	return self;
 }
 
+- (NSComparisonResult)compare:(id)otherObject {
+    return [[self deliverySlotStartTime] compare:[otherObject deliverySlotStartTime]];
+}
+
+- (NSString *)description {
+	return [NSString stringWithFormat:@"Delivery Slot: deliverySlotID=%@ deliverySlotBranchNumber=%@"
+			"deliverySlotDate=%@ deliverySlotStartTime=%@ deliverySlotEndTime=%@ deliverySlotCost=%@"
+			,deliverySlotID,deliverySlotBranchNumber,deliverySlotDate,deliverySlotStartTime,deliverySlotEndTime,
+			deliverySlotCost];
+}
+
 - (void)dealloc {
 	[deliverySlotID release];
 	[deliverySlotBranchNumber release];

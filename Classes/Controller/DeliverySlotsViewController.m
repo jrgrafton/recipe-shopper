@@ -15,15 +15,17 @@
 					
 @interface DeliverySlotsViewController()
 
-- (void)reloadDeliveryInfo;
 - (void)transitionToCheckout:(id)sender;
-- (void)verifyDeliverySlot;
 
 @end
 
 @implementation DeliverySlotsViewController
 
 - (void)loadDeliveryDates {
+	if (deliveryDates != nil) {
+		[deliveryDates release];
+	}
+	
 	deliveryDates = [[dataManager getDeliveryDates] retain];
 	sortedDeliveryDatesArray = [[NSMutableArray arrayWithArray:[deliveryDates allKeys]] retain];
 	[sortedDeliveryDatesArray sortUsingSelector:@selector(compare:)];
@@ -56,6 +58,8 @@
 		
 	deliveryTimesReset = NO;
 	
+	[deliverySlotPickerView setShowsSelectionIndicator:YES];
+	
 	UIBarButtonItem *checkoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Payment" style:UIBarButtonItemStyleBordered target:self action:@selector(transitionToCheckout:)];
 	self.navigationItem.rightBarButtonItem = checkoutButton;
 }
@@ -67,7 +71,11 @@
 	[deliverySlotPickerView selectRow:0 inComponent:0 animated:FALSE];
 	[deliverySlotPickerView selectRow:0 inComponent:1 animated:FALSE];
 	[deliverySlotPickerView reloadAllComponents];
-	[self reloadDeliveryInfo];
+	
+	NSDate *selectedDate = [sortedDeliveryDatesArray objectAtIndex: 0];
+	NSMutableArray *deliverySlots = [deliveryDates objectForKey:selectedDate];
+	
+	selectedDeliverySlot = [deliverySlots objectAtIndex:0];
 }
 
 - (void)transitionToCheckout:(id)sender {
@@ -166,15 +174,24 @@
 #pragma mark Picker View delegate
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+	NSDate *selectedDate = [sortedDeliveryDatesArray objectAtIndex:[pickerView selectedRowInComponent:0]];
+	NSMutableArray *deliverySlots = [deliveryDates objectForKey:selectedDate];
+	[deliverySlots sortUsingSelector:@selector(compare:)];
+	
 	if (component == 0) {
 		/* if user has changed the delivery date, we need to update the delivery times */
 		[deliverySlotPickerView selectRow:0 inComponent:1 animated:YES];
 		[deliverySlotPickerView reloadComponent:1];
 		deliveryTimesReset = YES;
-	} 
+		selectedDeliverySlot = [deliverySlots objectAtIndex:0];
+	} else {
+		selectedDeliverySlot = [deliverySlots objectAtIndex:[pickerView selectedRowInComponent:1]];
+	}
+
 	
 	/* refresh the delivery info */
-	[self reloadDeliveryInfo];
+	//[self reloadDeliveryInfo];
+	[deliveryInfoView reloadData];
 }
 
 - (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
@@ -198,18 +215,17 @@
 		NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
 		[timeFormatter setTimeStyle:NSDateFormatterShortStyle];
 		[timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
-		NSDate *selectedDate = [sortedDeliveryDatesArray objectAtIndex:[pickerView selectedRowInComponent:0]];
-		NSDictionary *timesToSlots = [deliveryDates objectForKey:selectedDate];
-		NSMutableArray *sortedDeliveryTimesArray = [NSMutableArray arrayWithArray:[timesToSlots allKeys]];
-		[sortedDeliveryTimesArray sortUsingSelector:@selector(compare:)];
 		
-		//If both wheels are spun too quickly  selectedRowInComponent:0 and row for component 1 can be
-		//incorrectly reported 
-		if (row >= [sortedDeliveryTimesArray count] ) {
-			row = [sortedDeliveryTimesArray count] - 1;
+		NSDate *selectedDate = [sortedDeliveryDatesArray objectAtIndex:[pickerView selectedRowInComponent:0]];
+		NSMutableArray *deliverySlots = [deliveryDates objectForKey:selectedDate];
+		[deliverySlots sortUsingSelector:@selector(compare:)];
+		
+		/* If we spin both wheels simultaneously there is a possibility for them to go out of synch */
+		if (row >= [deliverySlots count] ) {
+			return label;
 		}
 		
-		DeliverySlot *deliverySlot = [timesToSlots objectForKey:[sortedDeliveryTimesArray objectAtIndex:row]];
+		DeliverySlot *deliverySlot = [deliverySlots objectAtIndex:row];
 		
 		[label setText:[NSString stringWithFormat:@"%@ - %@", [timeFormatter stringFromDate:[deliverySlot deliverySlotStartTime]], [timeFormatter stringFromDate:[deliverySlot deliverySlotEndTime]]]];
 		[timeFormatter release];
@@ -232,32 +248,6 @@
 
 #pragma mark -
 #pragma mark Private methods
-
-- (void)reloadDeliveryInfo {
-	NSString *selectedDate = [sortedDeliveryDatesArray objectAtIndex:[deliverySlotPickerView selectedRowInComponent:0]];
-	NSDictionary *deliveryTimeToSlot = [deliveryDates objectForKey:selectedDate];
-	NSMutableArray *sortedDeliveryTimesArray = [NSMutableArray arrayWithArray:[deliveryTimeToSlot allKeys]];
-	[sortedDeliveryTimesArray sortUsingSelector:@selector(compare:)];
-	
-	if (deliveryTimesReset == YES) {
-		/* use the first item in the times array as that is where the spinner is headed, even if it isn't there yet! */
-		selectedDeliverySlot = [deliveryTimeToSlot objectForKey:[sortedDeliveryTimesArray objectAtIndex:0]];
-		deliveryTimesReset = NO;
-	} else {
-		NSInteger timeRowSelectedIndex = [deliverySlotPickerView selectedRowInComponent:1];
-		//If both wheels are spun too quickly simultaneously selectedRowInComponent:0 and row for component 1 can be
-		//incorrectly reported 
-		if (timeRowSelectedIndex >= [sortedDeliveryTimesArray count] ) {
-			timeRowSelectedIndex = [sortedDeliveryTimesArray count] - 1;
-		}
-		
-		NSDate *selectedTime = [sortedDeliveryTimesArray objectAtIndex:timeRowSelectedIndex];
-		selectedDeliverySlot = [deliveryTimeToSlot objectForKey:selectedTime];
-	}
-	
-	/* reload the delivery info */
-	[deliveryInfoView reloadData];
-}
 
 - (void)verifyDeliverySlot {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];

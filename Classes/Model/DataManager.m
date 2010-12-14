@@ -126,8 +126,17 @@ static DataManager *sharedInstance = nil;
 }
 
 - (BOOL)phoneHasNetworkConnection {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
 	NetworkStatus internetStatus = [[Reachability reachabilityWithHostName:@"google.com"] currentReachabilityStatus];
-	return ((internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN));
+	if ((internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN)) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"PhoneHasNetworkConnection" object:self];
+	}else {
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"PhoneHasNoNetworkConnection" object:self];
+	}
+	
+	[pool release];
+	return (internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN);
 }
 
 - (void)updateBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity {
@@ -676,9 +685,12 @@ static DataManager *sharedInstance = nil;
 	if (onlineBasketUpdates == 0) {
 		[self setOverlayLoadingLabelText:@""];
 		
-		/* we've finished updating the online basket
-		 So now sync baskets - returns true if online basket needed adjusting */
-		[self synchronizeOnlineOfflineBasket];
+		/* If synch is gonna cause more updates return before returning complete */
+		if ([self synchronizeOnlineOfflineBasket]) {
+			return;
+		}
+		
+		[LogManager log:@"Online basket update complete, with no additional requests generated after synch" withLevel:LOG_INFO fromClass:[[self class] description]];
 		
 		/* Only when baskets match can we send out notification */
 		[self setUpdatingOnlineBasket:NO];

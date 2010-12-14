@@ -237,7 +237,7 @@
  * Gets a list of available delivery slots and their price
  */
 - (NSDictionary *)getDeliveryDates {
-	NSMutableDictionary *deliveryDates = [[NSMutableDictionary alloc] init];
+	NSMutableDictionary *deliveryDates = [[[NSMutableDictionary alloc] init] autorelease];
 	NSDictionary *apiResults;
 	NSString *error;
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTDELIVERYSLOTS", REST_SERVICE_URL];
@@ -278,14 +278,14 @@
 			
 			if ([deliveryDates objectForKey:deliverySlotDate] == nil) {
 				/* create a dictionary of times and delivery slots and add the current combination */
-				NSMutableDictionary *deliveryTimeToSlot = [[NSMutableDictionary alloc] init];
-				[deliveryTimeToSlot setObject:deliverySlot forKey:deliverySlotStartTime];
+				NSMutableArray *deliverySlotsForDate = [[NSMutableArray alloc] init];
+				[deliverySlotsForDate addObject:deliverySlot];
 				
 				/* add this delivery date (and corresponding time/slot array) to the delivery dates */
-				[deliveryDates setObject:deliveryTimeToSlot forKey:deliverySlotDate];
+				[deliveryDates setObject:deliverySlotsForDate forKey:deliverySlotDate];
 			} else {
 				/* this delivery date is already in the list so just add this delivery time to its time/slots array */
-				[[deliveryDates objectForKey:deliverySlotDate] setObject:deliverySlot forKey:deliverySlotStartTime];
+				[[deliveryDates objectForKey:deliverySlotDate] addObject:deliverySlot];
 			}
 		}
 		

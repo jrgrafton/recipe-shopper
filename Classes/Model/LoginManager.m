@@ -15,7 +15,7 @@
 - (void) showBasketNotEmptyWarning;
 - (void) showLoginPrompt;
 - (void) mergeBaskets;
-- (void) emptyOnlineBasket;
+- (void) replaceOnlineBasket;
 - (void) loginComplete;
 
 @end
@@ -114,11 +114,7 @@
 			[NSThread detachNewThreadSelector:@selector(mergeBaskets) toTarget:self withObject:nil];
 		}else {
 			/* Empty */
-			[self emptyOnlineBasket];
-			
-			/* add any products which may be in the product basket to the online basket now */
-			[dataManager setOverlayLoadingLabelText:@"Making online basket adjustments"];
-			[dataManager addProductBasketToOnlineBasket];
+			[NSThread detachNewThreadSelector:@selector(replaceOnlineBasket) toTarget:self withObject:nil];
 			
 			[self loginComplete];
 		}
@@ -174,10 +170,7 @@
 			[self performSelectorOnMainThread:@selector(showBasketNotEmptyWarning) withObject:nil waitUntilDone:YES];
 		}
 		else {
-			[self emptyOnlineBasket];
-			
 			/* add any products which may be in the product basket to the online basket now */
-			[dataManager setOverlayLoadingLabelText:@"Making online basket adjustments"];
 			[dataManager addProductBasketToOnlineBasket];
 			
 			[self loginComplete];
@@ -199,10 +192,18 @@
 	[basketNotEmptyPrompt release];
 }
 
-- (void) emptyOnlineBasket {
+- (void) replaceOnlineBasket {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
 	/* empty the online basket */
 	[dataManager setOverlayLoadingLabelText:@"Emptying online basket"];
 	[dataManager emptyOnlineBasket];
+	
+	/* add any products which may be in the product basket to the online basket now */
+	[dataManager setOverlayLoadingLabelText:@"Making online basket adjustments"];
+	[dataManager addProductBasketToOnlineBasket];
+	
+	[pool release];
 }
 
 - (void)mergeBaskets {

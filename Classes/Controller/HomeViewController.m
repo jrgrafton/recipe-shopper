@@ -14,6 +14,8 @@
 - (void)switchToOfflineMode;
 - (void)loginSuccess;
 - (void)loginFailed;
+- (void)networkConnectionSucceeded;
+- (void)networkConnectionFailed;
 @end
 
 @implementation HomeViewController
@@ -165,24 +167,38 @@
 }
 
 - (IBAction)offlineModeValueChanged:(id)sender {
-	if (![offlineModeSwitch isOn]) {
-		if (![dataManager phoneHasNetworkConnection]) {
-			/* If phone has not network connect don't allow user to go online */
-			[offlineModeSwitch setOn:YES];
-			UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Unable to shop online while phone has no network connection" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-			[warningAlert show];
-			[warningAlert release];
-			return;
-		}
-	}
-	
-	[dataManager setOfflineMode:[offlineModeSwitch isOn]];
-	
-	if ([offlineModeSwitch isOn] == YES) {
+	if ([offlineModeSwitch isOn] == NO) {
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkConnectionSucceeded) name:@"PhoneHasNetworkConnection" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkConnectionFailed) name:@"PhoneHasNoNetworkConnection" object:nil];
+		
+		[NSThread detachNewThreadSelector:@selector(phoneHasNetworkConnection) toTarget:dataManager withObject:nil];
+	}else {
+		[dataManager setOfflineMode:YES];
 		[dataManager setUserPreference:@"offlineMode" prefValue:@"YES"];
-	} else {
-		[dataManager setUserPreference:@"offlineMode" prefValue:@"NO"];
 	}
+}
+
+- (void)networkConnectionSucceeded {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	[offlineModeSwitch setOn:NO];
+	[dataManager setOfflineMode:NO];
+	[dataManager setUserPreference:@"offlineMode" prefValue:@"NO"];
+}
+
+- (void)networkConnectionFailed {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	[offlineModeSwitch setOn:YES];
+	[dataManager setOfflineMode:YES];
+	UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Unable to shop online while phone has no network connection" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[warningAlert show];
+	[warningAlert release];
+	
+	[dataManager setUserPreference:@"offlineMode" prefValue:@"YES"];
+	
+	return;
 }
 
 - (IBAction)createAccount:(id)sender {

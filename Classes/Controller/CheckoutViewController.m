@@ -45,6 +45,9 @@
 	//By default user does not want to proceed
 	userWantsToProceed = NO;
 	
+	//And we're not fetching online basket info
+	fetchingOnlineBasketInfo = NO;
+	
 	//initWithNib does not get called when controller is root in navigation stack
 	dataManager = [DataManager getInstance];
 	
@@ -69,15 +72,15 @@
 	/* add this object as an observer of the change basket method so we can update the basket details when they change */
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onlineBasketUpdateComplete) name:@"OnlineBasketUpdateComplete" object:nil];
 	
-	/* scroll the basket to the top */
-	[basketView setContentOffset:CGPointMake(0, 0) animated:NO];
-	
 	if ([dataManager updatingProductBasket] == YES) {
 		[dataManager showOverlayView:[[self view] window]];
 		[dataManager setOverlayLabelText:@"Updating basket"];
 	}
-	/* Always ensure we have latest basket data loaded */
-	[NSThread detachNewThreadSelector:@selector(onlineBasketUpdateComplete) toTarget:self withObject:nil];
+	
+	/* Update online basket information unless we are already updating online basket */
+	if (![dataManager updatingOnlineBasket]) {
+		[NSThread detachNewThreadSelector:@selector(onlineBasketUpdateComplete) toTarget:self withObject:nil];
+	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -111,7 +114,7 @@
 		[tooFewItemsAlert show];
 		[tooFewItemsAlert release];
 	} //Ensure we do one final product basket validation
-	else if ([dataManager onlineBasketUpdates] != 0) {
+	else if ([dataManager updatingOnlineBasket]) {
 		//Wait for basket to finish updating
 		[dataManager showOverlayView:[[self view] window]];
 		[dataManager setOverlayLabelText:@"Waiting basket updates to complete"];
@@ -244,7 +247,7 @@
 			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:NO];
 			UIActivityIndicatorView *activityIndicator = (UIActivityIndicatorView *)[cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
 			
-			if ([dataManager updatingOnlineBasket] == YES) {
+			if ([dataManager updatingOnlineBasket] == YES || fetchingOnlineBasketInfo) {
 				[activityIndicator startAnimating];
 				[activityIndicator setHidden:NO];
 			} else {
@@ -259,11 +262,6 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
 		Product *product = [dataManager getAvailableOnlineProduct:[indexPath row]];
-		if (product == nil) {
-			/* Something's gone wrong... Better reload data! */
-			[basketView reloadData];
-			return cell;
-		}
 		
 		NSNumber *quantity = [dataManager getProductQuantityFromBasket:product];
 		NSArray *buttons = [UITableViewCellFactory createProductTableCell:&cell withIdentifier:CellIdentifier withProduct:product andQuantity:quantity forShoppingList:NO isProductUnavailableCell:NO isHeader:([indexPath row] == 0)];
@@ -307,7 +305,6 @@
 
 - (void)productBasketUpdateComplete {
 	[dataManager hideOverlayView];
-	/*[basketView reloadData];*/
 }
 
 - (void)scrollToBottomOfTable {
@@ -318,8 +315,7 @@
 	@synchronized(self) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		
-		/* Set updating basket back to yes so we still get spinners */
-		[dataManager setUpdatingOnlineBasket:YES];
+		fetchingOnlineBasketInfo = YES;
 		
 		/* In case spinners have disappeared after basket updates finished */
 		[basketView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
@@ -327,14 +323,13 @@
 		/* get the latest basket details (price, savings etc.) */
 		NSDictionary *basketDetails = [dataManager getBasketDetails];
 		
-		/* Now we have details, spinners can safely disappear*/
-		[dataManager setUpdatingOnlineBasket:NO];
-		
 		[self setBasketPrice:[basketDetails objectForKey:@"BasketPrice"]];
 		[self setBasketSavings:[basketDetails objectForKey:@"BasketSavings"]];
 		[self setBasketPoints:[basketDetails objectForKey:@"BasketPoints"]];
 		
-		/* reload the basket details section to show the new values */
+		fetchingOnlineBasketInfo = NO;
+		
+		/* reload the basket details section to show the new values and hide spinners */
 		[basketView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
 		
 		/* Scroll to bottom if we have any products that are unavailable */
@@ -347,6 +342,7 @@
 			userWantsToProceed = NO;
 			[self loadDeliveryDates];
 		}
+		
 		[pool release];
 	}
 }
