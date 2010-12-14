@@ -48,13 +48,16 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productBasketUpdateComplete) name:@"ProductBasketUpdateComplete" object:nil];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 	
 	if ([dataManager updatingProductBasket] == YES) {
 		[dataManager showOverlayView:[[self view] window]];
 		[dataManager setOverlayLabelText:@"Updating shopping list"];
+	}else {
+		[productTableView reloadData];
 	}
+
 }
 
 #pragma mark -

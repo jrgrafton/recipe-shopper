@@ -75,7 +75,10 @@
 	if ([dataManager updatingProductBasket] == YES) {
 		[dataManager showOverlayView:[[self view] window]];
 		[dataManager setOverlayLabelText:@"Updating basket"];
+	}else {
+		[basketView reloadData];
 	}
+
 	
 	/* Update online basket information unless we are already updating online basket */
 	if (![dataManager updatingOnlineBasket]) {
@@ -304,6 +307,7 @@
 #pragma mark Private methods
 
 - (void)productBasketUpdateComplete {
+	[basketView reloadData];
 	[dataManager hideOverlayView];
 }
 
