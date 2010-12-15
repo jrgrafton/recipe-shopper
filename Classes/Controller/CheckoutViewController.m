@@ -174,6 +174,8 @@
 	UIAlertView *productNeedsReplacingAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please replace all unavailble products before proceeding" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[productNeedsReplacingAlert show];
 	[productNeedsReplacingAlert release];
+	
+	[self scrollToBottomOfTable];
 }
 
 - (void)basketHasBeenModified {
@@ -422,6 +424,9 @@
 }
 
 - (void)replaceProductButtonClicked:(id)sender {
+	/* Remove item from basket */
+	[self removeProductButtonClicked:sender];
+	
 	/* Prompt user to replace by moving them to online shop tab */
 	NSString *productBaseID = [NSString stringWithFormat:@"%d", [sender tag]];
 	
@@ -430,9 +435,6 @@
 	if (product != nil) {
 		[self performSelectorOnMainThread:@selector(replaceAction:) withObject:[product productName] waitUntilDone:YES];
 	}
-	
-	/* Now remove item from basket */
-	[self removeProductButtonClicked:sender];
 }
 
 - (void)replaceAction:(NSString*)productName {
