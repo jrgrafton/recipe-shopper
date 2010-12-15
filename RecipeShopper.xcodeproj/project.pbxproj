@@ -131,6 +131,8 @@
 		CE6F022B12764A37003696FA /* AisleCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6F022A12764A37003696FA /* AisleCellHeader.xib */; };
 		CE6F026512764FF9003696FA /* ShelfCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6F026412764FF9003696FA /* ShelfCell.xib */; };
 		CE6F026712765008003696FA /* ShelfCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6F026612765008003696FA /* ShelfCellHeader.xib */; };
+		CE70DF4012B82B0100FADE5C /* NSString-Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = CE70DF3F12B82B0100FADE5C /* NSString-Extended.m */; };
+		CE70DF4312B82BAA00FADE5C /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = CE70DF4212B82BAA00FADE5C /* GTMNSString+HTML.m */; };
 		CE73381A1297D81800250439 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = CE7338191297D81800250439 /* iTunesArtwork */; };
 		CE73D1531277742700325A43 /* DeliverySlotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE73D1521277742700325A43 /* DeliverySlotCell.xib */; };
 		CE73D1551277743300325A43 /* DeliverySlotCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE73D1541277743300325A43 /* DeliverySlotCellHeader.xib */; };
@@ -348,6 +350,11 @@
 		CE6F022A12764A37003696FA /* AisleCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AisleCellHeader.xib; sourceTree = "<group>"; };
 		CE6F026412764FF9003696FA /* ShelfCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShelfCell.xib; sourceTree = "<group>"; };
 		CE6F026612765008003696FA /* ShelfCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShelfCellHeader.xib; sourceTree = "<group>"; };
+		CE70DF3E12B82B0100FADE5C /* NSString-Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString-Extended.h"; sourceTree = "<group>"; };
+		CE70DF3F12B82B0100FADE5C /* NSString-Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString-Extended.m"; sourceTree = "<group>"; };
+		CE70DF4112B82BAA00FADE5C /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
+		CE70DF4212B82BAA00FADE5C /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
+		CE70DF4812B82DB300FADE5C /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
 		CE7338191297D81800250439 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		CE73D1521277742700325A43 /* DeliverySlotCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeliverySlotCell.xib; sourceTree = "<group>"; };
 		CE73D1541277743300325A43 /* DeliverySlotCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeliverySlotCellHeader.xib; sourceTree = "<group>"; };
@@ -512,8 +519,13 @@
 				3EB5D56C1268AB4C009A80E0 /* RecipeBasketManager.m */,
 				3EB5D56D1268AB4C009A80E0 /* RecipeShopperAppDelegate.h */,
 				3EB5D56E1268AB4C009A80E0 /* RecipeShopperAppDelegate.m */,
-				3EB5D5701268AB4C009A80E0 /* UIImage-Extended.m */,
 				3EB5D56F1268AB4C009A80E0 /* UIImage-Extended.h */,
+				3EB5D5701268AB4C009A80E0 /* UIImage-Extended.m */,
+				CE70DF3E12B82B0100FADE5C /* NSString-Extended.h */,
+				CE70DF3F12B82B0100FADE5C /* NSString-Extended.m */,
+				CE70DF4112B82BAA00FADE5C /* GTMNSString+HTML.h */,
+				CE70DF4212B82BAA00FADE5C /* GTMNSString+HTML.m */,
+				CE70DF4812B82DB300FADE5C /* GTMDefines.h */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1004,6 +1016,8 @@
 				3EB5D5821268AB4C009A80E0 /* RecipeBasketManager.m in Sources */,
 				3EB5D5831268AB4C009A80E0 /* RecipeShopperAppDelegate.m in Sources */,
 				3EB5D5841268AB4C009A80E0 /* UIImage-Extended.m in Sources */,
+				CE70DF4012B82B0100FADE5C /* NSString-Extended.m in Sources */,
+				CE70DF4312B82BAA00FADE5C /* GTMNSString+HTML.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1058,7 +1072,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer: james grafton (CWWZ65GR72)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Assentec Global";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: james grafton (CWWZ65GR72)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = 4.2;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1067,7 +1081,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Recipes;
 				PROVISIONING_PROFILE = "C5DF6C44-CB12-4A15-92DE-96853AF7F5F5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "569B3884-A755-4B8D-A510-2354D7B0D4AD";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C5DF6C44-CB12-4A15-92DE-96853AF7F5F5";
 				SDKROOT = iphoneos4.2;
 			};
 			name = Release;

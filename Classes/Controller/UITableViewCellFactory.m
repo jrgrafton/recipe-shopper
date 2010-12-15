@@ -8,6 +8,7 @@
 
 #import "UITableViewCellFactory.h"
 #import "UIImage-Extended.h"
+#import "NSString-Extended.h"
 
 @implementation UITableViewCellFactory
 
@@ -77,7 +78,8 @@
 	[image setImage:[[recipe largeRecipeImage] resizedImage:CGSizeMake(150,150) interpolationQuality:kCGInterpolationHigh andScale:2.0]];
 	
 	label = (UILabel *)[cell viewWithTag:RECIPE_TITLE_TAG];
-    [label setText:[[recipe recipeName] stringByReplacingOccurrencesOfString:@"Recipe for " withString:@""]];
+    [label setText:[[[recipe recipeName] stringByReplacingOccurrencesOfString:@"Recipe for " withString:@""
+					options:NSCaseInsensitiveSearch range:NSMakeRange(0, [[recipe recipeName] length])] stringByDecodingHTMLEntities]];
 	
 	NSString *serves = @"";
 	
@@ -143,12 +145,12 @@
 	[label setText:[product productOfferValidity]];
 
 	plusButton = (UIButton *)[cell viewWithTag:PLUS_BUTTON_TAG];
-	[plusButton setTag:[[product productID] intValue]];
+	[plusButton setTag:[[product productBaseID] intValue]];
 	[buttons insertObject:plusButton atIndex:0];
 	
 	label = (UILabel *)[cell viewWithTag:COUNT_TAG];
 	minusButton = (UIButton *)[cell viewWithTag:MINUS_BUTTON_TAG];
-	[minusButton setTag:[[product productID] intValue]];
+	[minusButton setTag:[[product productBaseID] intValue]];
 	[buttons insertObject:minusButton atIndex:1];
 	
 	if ([quantity intValue] > 0) {

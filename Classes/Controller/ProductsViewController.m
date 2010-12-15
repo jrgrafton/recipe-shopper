@@ -190,13 +190,13 @@
  * to both the product basket and the online basket
  */
 - (void)plusProductButtonClicked:(id)sender {
-	NSString *productID = [NSString stringWithFormat:@"%d", [sender tag]];
+	NSString *productBaseID = [NSString stringWithFormat:@"%d", [sender tag]];
 	
 	NSEnumerator *productsEnumerator = [products objectEnumerator];
 	Product *product;
 	
 	while ((product = [productsEnumerator nextObject])) {
-		if ([[product productID] intValue] == [productID intValue]) {
+		if ([[product productBaseID] intValue] == [productBaseID intValue]) {
 			/* we've found the product that relates to this product ID so increase its quantity in the basket */
 			[dataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:1]];
 			break;
@@ -212,13 +212,13 @@
  * from both the product basket and the online basket
  */
 - (void)minusProductButtonClicked:(id)sender {
-	NSString *productID = [NSString stringWithFormat:@"%d", [sender tag]];
+	NSString *productBaseID = [NSString stringWithFormat:@"%d", [sender tag]];
 	
 	NSEnumerator *productsEnumerator = [products objectEnumerator];
 	Product *product;
 	
 	while ((product = [productsEnumerator nextObject])) {
-		if ([[product productID] intValue] == [productID intValue]) {
+		if ([[product productBaseID] intValue] == [productBaseID intValue]) {
 			/* we've found the product that relates to this product ID so decrease its quantity in the basket */
 			[dataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:-1]];
 			break;

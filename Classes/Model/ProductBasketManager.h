@@ -16,10 +16,11 @@
 	@private
 		DataManager *dataManager;
 		NSRecursiveLock *updateLock;
+		NSMutableArray *backingProductArray;
+		NSMutableArray *productsUnavailableOnline;
 }
 
 @property (retain) NSMutableDictionary *productBasket;
-@property (retain) NSMutableDictionary *productsUnavailableOnline;
 @property (retain) NSString *productBasketPrice;
 @property (retain) NSNumber *shoppingListProducts;
 

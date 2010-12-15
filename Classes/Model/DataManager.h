@@ -25,6 +25,7 @@
 	APIRequestManager *apiRequestManager;
 	LoginManager *loginManager;
 	OverlayViewController *overlayViewController;
+	NSLock *onlineUpdateLock;
 }
 
 /* Not explicitly stating non-atomic means we get atomic vars */
@@ -99,6 +100,7 @@
 - (NSInteger)getDistinctProductCount;
 - (NSInteger)getTotalProductCount;
 - (Product *)getProductFromBasket:(NSUInteger)productIndex;
+- (Product*)getProductByBaseID:(NSString*)productBaseID;
 - (NSNumber *)getProductQuantityFromBasket:(Product *)product;
 - (NSInteger)getDistinctUnavailableOnlineCount;
 - (Product *)getUnavailableOnlineProduct:(NSUInteger)productIndex;

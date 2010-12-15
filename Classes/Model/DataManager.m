@@ -74,6 +74,7 @@ static DataManager *sharedInstance = nil;
 - (id)init {
 	@synchronized(self) {
 		[super init];
+		onlineUpdateLock = [[NSLock alloc] init];
 		
 		/* initialise the database */
 		databaseRequestManager = [[DatabaseRequestManager alloc] init];
@@ -277,18 +278,20 @@ static DataManager *sharedInstance = nil;
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	
-	@synchronized(self) {
-		[self setOnlineBasketUpdates: ++onlineBasketUpdates];
-	}
+	[onlineUpdateLock lock];
+	[self setOnlineBasketUpdates: ++onlineBasketUpdates];
+	[LogManager log:[NSString stringWithFormat:@"Number of online basket updates remaining is %d", onlineBasketUpdates] withLevel:LOG_INFO fromClass:[[self class] description]];
+	[self setOverlayLoadingLabelText: [NSString stringWithFormat:@"%d updates(s) left",onlineBasketUpdates]];
+	[onlineUpdateLock unlock];
 	
 	Product *product = [apiRequestManager createProductFromProductBaseID:[productInfo objectAtIndex:0] fetchImages:YES];
 	[productBasketManager updateProductBasketQuantity:product byQuantity:[productInfo objectAtIndex:1]];
 	
-	@synchronized(self) {
-		[LogManager log:[NSString stringWithFormat:@"Number of online basket updates remaining is %d", onlineBasketUpdates] withLevel:LOG_INFO fromClass:[[self class] description]];
-		[self setOverlayLoadingLabelText: [NSString stringWithFormat:@"%d updates(s) left",onlineBasketUpdates]];
-		[self setOnlineBasketUpdates: --onlineBasketUpdates];
-	}
+	[onlineUpdateLock lock];
+	[self setOnlineBasketUpdates: --onlineBasketUpdates];
+	[LogManager log:[NSString stringWithFormat:@"Number of online basket updates remaining is %d", onlineBasketUpdates] withLevel:LOG_INFO fromClass:[[self class] description]];
+	[self setOverlayLoadingLabelText: [NSString stringWithFormat:@"%d updates(s) left",onlineBasketUpdates]];
+	[onlineUpdateLock unlock];
 	
 	if (onlineBasketUpdates == 0) {
 		[self setOverlayLoadingLabelText:@""];
@@ -363,7 +366,6 @@ static DataManager *sharedInstance = nil;
 
 - (void)addProductBasketToOnlineBasket {
 	if ([self getTotalProductCount] == 0) {
-		[self setUpdatingOnlineBasket:NO];
 		return;
 	}
 	
@@ -500,7 +502,9 @@ static DataManager *sharedInstance = nil;
 	
     Product *product;
     
-	productBasketUpdates++;
+	@synchronized(self) {
+		++productBasketUpdates;
+	}
 	
     if ([self phoneIsOnline] == YES) {
 		/* phone is online so create the products for this recipe using the online store */
@@ -515,7 +519,9 @@ static DataManager *sharedInstance = nil;
 		product = [databaseRequestManager createProductFromProductBaseID:[recipeProduct objectAtIndex:0]];
 	}
 	
-	productBasketUpdates--;
+	@synchronized(self) {
+		--productBasketUpdates;
+	}
 	
 	//Can now update with nil product (ensures we always remove loading view no matter what happens)
 	[self updateBasketQuantity:product byQuantity:[recipeProduct objectAtIndex:1]];
@@ -525,9 +531,9 @@ static DataManager *sharedInstance = nil;
 }
 
 - (void)removeRecipeFromBasket:(Recipe *)recipe {
-    [recipeBasketManager removeRecipeFromBasket:recipe];
-	
 	[self setUpdatingProductBasket:YES];
+	
+    [recipeBasketManager removeRecipeFromBasket:recipe];
 	
     for (NSString *recipeProductBaseID in [[recipe recipeProducts] allKeys]) {
         NSMutableArray *recipeProduct = [[NSMutableArray alloc] initWithCapacity:2]; //Will get released by child thread;
@@ -594,6 +600,9 @@ static DataManager *sharedInstance = nil;
 
 - (Product *)getProductFromBasket:(NSUInteger)productIndex {
 	return [productBasketManager getProductFromBasket:productIndex];
+}
+- (Product*)getProductByBaseID:(NSString*)productBaseID {
+	return [productBasketManager getProductByBaseID:productBaseID];
 }
 
 - (NSNumber *)getProductQuantityFromBasket:(Product *)product {
@@ -664,28 +673,33 @@ static DataManager *sharedInstance = nil;
 - (void)updateOnlineBasket:(NSArray *)productDetails {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
+	[self setUpdatingOnlineBasket:YES];
+	
 	NSString *productID = [productDetails objectAtIndex:0];
 	NSNumber *quantity = [productDetails objectAtIndex:1];
 	
-	@synchronized(self) {
-		//Need to ensure correct value ends up being assigned
-		[self setOnlineBasketUpdates: ++onlineBasketUpdates];
-	}
+	[onlineUpdateLock lock];
+	//Need to ensure correct value ends up being assigned
+	[self setOnlineBasketUpdates: ++onlineBasketUpdates];
+	[LogManager log:[NSString stringWithFormat:@"Number of online basket updates remaining is %d", onlineBasketUpdates] withLevel:LOG_INFO fromClass:[[self class] description]];
+	[self setOverlayLoadingLabelText: [NSString stringWithFormat:@"%d update(s) left",onlineBasketUpdates]];
+	[onlineUpdateLock unlock];
 	
 	
 	[apiRequestManager updateBasketQuantity:productID byQuantity:quantity];
 	
-	@synchronized(self) {
-		[LogManager log:[NSString stringWithFormat:@"Number of online basket updates remaining is %d", onlineBasketUpdates] withLevel:LOG_INFO fromClass:[[self class] description]];
-		[self setOverlayLoadingLabelText: [NSString stringWithFormat:@"%d update(s) left",onlineBasketUpdates]];
-		//Need to ensure correct value ends up being assigned
-		[self setOnlineBasketUpdates: --onlineBasketUpdates];
-	}
+	[onlineUpdateLock lock];
+	//Need to ensure correct value ends up being assigned
+	[self setOnlineBasketUpdates: --onlineBasketUpdates];
+	
+	[LogManager log:[NSString stringWithFormat:@"Number of online basket updates remaining is %d", onlineBasketUpdates] withLevel:LOG_INFO fromClass:[[self class] description]];
+	[self setOverlayLoadingLabelText: [NSString stringWithFormat:@"%d update(s) left",onlineBasketUpdates]];
+	[onlineUpdateLock unlock];
 	
 	if (onlineBasketUpdates == 0) {
 		[self setOverlayLoadingLabelText:@""];
 		
-		/* If synch is gonna cause more updates return before returning complete */
+		/* If synch is gonna cause more updates return (since were gonna end up here again!) */
 		if ([self synchronizeOnlineOfflineBasket]) {
 			return;
 		}

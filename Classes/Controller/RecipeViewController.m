@@ -140,7 +140,8 @@
 	recipeHtml = [recipeHtml stringByReplacingOccurrencesOfString:@"{css}" withString:cssFile];
 	
 	/* recipe title (also gets rid of the "Recipe for" parts of any title) */
-	recipeHtml = [recipeHtml stringByReplacingOccurrencesOfString:@"{title}" withString:[[recipe recipeName] stringByReplacingOccurrencesOfString:@"Recipe for" withString:@""]];
+	recipeHtml = [recipeHtml stringByReplacingOccurrencesOfString:@"{title}" withString:[[recipe recipeName] stringByReplacingOccurrencesOfString:@"Recipe for" withString:@"" 
+																					options:NSCaseInsensitiveSearch range:NSMakeRange(0, [[recipe recipeName] length])]];
 	
 	/* recipe description */
 	if ([recipe recipeDescription] != nil) {

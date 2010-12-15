@@ -43,21 +43,30 @@
 	[productTableView setBackgroundColor: [UIColor clearColor]];
 	
 	[productTableView setAllowsSelection:NO];
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 	
 	/* add this object as an observer of the method that updates the product basket so we can remove the overlay view when the product basket update is complete */
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productBasketUpdateComplete) name:@"ProductBasketUpdateComplete" object:nil];
+	
+	if ([dataManager updatingProductBasket] == NO) {
+		[productTableView reloadData];
+	}
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
+- (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
 	
 	if ([dataManager updatingProductBasket] == YES) {
 		[dataManager showOverlayView:[[self view] window]];
 		[dataManager setOverlayLabelText:@"Updating shopping list"];
-	}else {
-		[productTableView reloadData];
 	}
+}
 
+- (void) viewWillDisappear:(BOOL)animated {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark -
@@ -143,23 +152,18 @@
  * to both the product basket and the online basket
  */
 - (void)plusProductButtonClicked:(id)sender {
-	NSString *productID = [NSString stringWithFormat:@"%d", [sender tag]];
+	NSString *productBaseID = [NSString stringWithFormat:@"%d", [sender tag]];
+
+	Product *product = [dataManager getProductByBaseID:productBaseID];
 	
-	NSEnumerator *productsEnumerator = [[dataManager getProductBasket] keyEnumerator];
-	Product *product;
-	
-	while ((product = [productsEnumerator nextObject])) {
-		if ([[product productID] intValue] == [productID intValue]) {
-			/* we've found the product that relates to this product ID so increase its quantity in the product basket */
-			[dataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:1]];
-			
-			/* add the cost of one of these items to the shopping list price */
-			CGFloat productPrice = [[product productPrice] floatValue];
-			CGFloat currentBasketPrice  = [[self basketPrice] floatValue];
-			[self setBasketPrice:[NSString stringWithFormat:@"%.2f", currentBasketPrice + productPrice]];
-			
-			break;
-		}
+	if (product != nil) {
+		/* we've found the product that relates to this product ID so increase its quantity in the product basket */
+		[dataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:1]];
+		
+		/* add the cost of one of these items to the shopping list price */
+		CGFloat productPrice = [[product productPrice] floatValue];
+		CGFloat currentBasketPrice  = [[self basketPrice] floatValue];
+		[self setBasketPrice:[NSString stringWithFormat:@"%.2f", currentBasketPrice + productPrice]];
 	}
 	
 	/* reload the data so the new values are displayed */
@@ -171,23 +175,18 @@
  * from both the product basket and the online basket
  */
 - (void)minusProductButtonClicked:(id)sender {
-	NSString *productID = [NSString stringWithFormat:@"%d", [sender tag]];
+	NSString *productBaseID = [NSString stringWithFormat:@"%d", [sender tag]];
 	
-	NSEnumerator *productsEnumerator = [[dataManager getProductBasket] keyEnumerator];
-	Product *product;
+	Product *product = [dataManager getProductByBaseID:productBaseID];
 	
-	while ((product = [productsEnumerator nextObject])) {
-		if ([[product productID] intValue] == [productID intValue]) {
-			/* we've found the product that relates to this product ID so decrease its quantity in the product basket */
-			[dataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:-1]];
-			
-			/* deduct the cost of one of these items from the shopping list price */
-			CGFloat productPrice = [[product productPrice] floatValue];
-			CGFloat currentBasketPrice  = [[self basketPrice] floatValue];
-			[self setBasketPrice:[NSString stringWithFormat:@"%.2f", currentBasketPrice - productPrice]];
-			
-			break;
-		}
+	if (product != nil) {
+		/* we've found the product that relates to this product ID so decrease its quantity in the product basket */
+		[dataManager updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:-1]];
+		
+		/* deduct the cost of one of these items from the shopping list price */
+		CGFloat productPrice = [[product productPrice] floatValue];
+		CGFloat currentBasketPrice  = [[self basketPrice] floatValue];
+		[self setBasketPrice:[NSString stringWithFormat:@"%.2f", currentBasketPrice - productPrice]];
 	}
 	
 	/* reload the data so the new values are displayed */

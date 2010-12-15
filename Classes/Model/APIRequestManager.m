@@ -30,7 +30,7 @@
 - (Product *)createProductFromJSON:(NSDictionary *)productJSON fetchImages:(BOOL)fetchImages;
 
 @property (assign) double lastUpdateRequestTime;
-@property (retain) NSRecursiveLock *requestLock;
+@property (retain) NSLock *generatingSessionKeyLock;
 
 @end
 
@@ -43,11 +43,11 @@
 @synthesize userEmail;
 @synthesize userPassword;
 @synthesize lastUpdateRequestTime;
-@synthesize requestLock;
+@synthesize generatingSessionKeyLock;
 
 - (id)init {
 	if (self = [super init]) {
-		requestLock = [[NSRecursiveLock alloc] init];
+		generatingSessionKeyLock = [[NSLock alloc] init];
 		departments = [[NSMutableDictionary alloc] init];
 		aisles = [[NSMutableDictionary alloc] init];
 		shelves = [[NSMutableDictionary alloc] init];
@@ -214,6 +214,7 @@
 		[basketDetails setObject:[apiResults objectForKey:@"BasketGuidePrice"] forKey:@"BasketPrice"];
 		[basketDetails setObject:[apiResults objectForKey:@"BasketGuideMultiBuySavings"] forKey:@"BasketSavings"];
 		[basketDetails setObject:[apiResults objectForKey:@"BasketTotalClubcardPoints"] forKey:@"BasketPoints"];
+		[basketDetails setObject:[apiResults objectForKey:@"BasketQuantity"] forKey:@"BasketQuantity"];
 	}
 	
 	return basketDetails;
@@ -377,21 +378,28 @@
 #pragma mark private functions
 
 - (BOOL)apiRequest:(NSString *)initialRequestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error requestAttempt:(NSInteger)requestAttempt isLogin:(BOOL)isLogin {
-	[[self requestLock] lock];
-	/* If we have no session key try and generate new Anonymous key */
-	if ([[self sessionKey] length] == 0 && !isLogin) {
-		[self createAnonymousSessionKey];
+	/* If this is not a login request block until all login requests finish first! */
+	if (!isLogin) {
+		[generatingSessionKeyLock lock];
+		[generatingSessionKeyLock unlock];
 	}
 	
-	double timeSinceLastRequest = [[NSDate date] timeIntervalSince1970] - [self lastUpdateRequestTime];
+	@synchronized(self) {
+		/* If we have no session key try and generate new Anonymous key */
+		if ([[self sessionKey] length] == 0 && !isLogin) {
+			[LogManager log:@"API request without key; generating an anonymous one" withLevel:LOG_INFO fromClass:[[self class] description]];
+			[self createAnonymousSessionKey];
+		}
+		
+		double timeSinceLastRequest = [[NSDate date] timeIntervalSince1970] - [self lastUpdateRequestTime];
+		
+		if (timeSinceLastRequest < MIN_API_CALL_INTERVAL) {
+			[NSThread sleepForTimeInterval:((MIN_API_CALL_INTERVAL - timeSinceLastRequest) / 1000.0f)];
+		}
+		
+		[self setLastUpdateRequestTime:[[NSDate date] timeIntervalSince1970]];
 	
-	if (timeSinceLastRequest < MIN_API_CALL_INTERVAL) {
-		[NSThread sleepForTimeInterval:((MIN_API_CALL_INTERVAL - timeSinceLastRequest) / 1000.0f)];
 	}
-	
-	[self setLastUpdateRequestTime:[[NSDate date] timeIntervalSince1970]];
-	
-	[[self requestLock] unlock];
 	
 	BOOL apiReqOK = YES;
 	
@@ -482,6 +490,8 @@
  * Logs the user in to the Tesco store using email and password
  */
 - (BOOL)login:(NSString *)email withPassword:(NSString *)password {
+	[generatingSessionKeyLock lock];
+	
 	BOOL loggedInSuccessfully = NO;
 	NSDictionary *apiResults;
 	NSString *error;
@@ -494,6 +504,7 @@
 		loggedInSuccessfully = YES;
 	}
 	
+	[generatingSessionKeyLock unlock];
 	return loggedInSuccessfully;
 }
 

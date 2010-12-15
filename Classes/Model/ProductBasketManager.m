@@ -17,15 +17,15 @@
 @implementation ProductBasketManager
 
 @synthesize productBasket;
-@synthesize productsUnavailableOnline;
 @synthesize productBasketPrice;
 @synthesize shoppingListProducts;
 
 - (id)init {
 	if (self = [super init]) {
 		updateLock = [[NSRecursiveLock alloc] init];
+		backingProductArray = [[NSMutableArray alloc] init];
 		productBasket = [[NSMutableDictionary alloc] init];
-		productsUnavailableOnline = [[NSMutableDictionary alloc] init];
+		productsUnavailableOnline = [[NSMutableArray alloc] init];
 		dataManager = [DataManager getInstance]; 
 
 		[self setProductBasketPrice:@"£0.00"];
@@ -38,6 +38,8 @@
 - (void)emptyProductBasket {
 	/* remove any objects currently in the product basket */
 	[productBasket removeAllObjects];
+	[backingProductArray removeAllObjects];
+	[productsUnavailableOnline removeAllObjects];
 }
 					   
 - (NSDictionary*) getProductBasketSync {
@@ -60,15 +62,15 @@
 - (NSInteger)getDistinctProductCount {
 	[updateLock lock];
 	[updateLock unlock];
-	return [[productBasket allKeys] count];
+	return [backingProductArray count];
 }
 
 - (Product *)getProductFromBasket:(NSUInteger)productIndex {
 	[updateLock lock];
 	[updateLock unlock];
 	
-	return ([[productBasket allKeys] count] > productIndex)? 
-	[[productBasket allKeys] objectAtIndex:productIndex]:nil;
+	return ([backingProductArray count] > productIndex)? 
+	[backingProductArray objectAtIndex:productIndex] : nil;
 	
 }
 
@@ -82,15 +84,15 @@
 	[updateLock lock];
 	[updateLock unlock];
 	
-	return [[productsUnavailableOnline allKeys] count];
+	return [productsUnavailableOnline count];
 }
 
 - (Product *)getUnavailableOnlineProduct:(NSUInteger)productIndex {
 	[updateLock lock];
 	[updateLock unlock];
 	
-	return ([[productsUnavailableOnline allKeys] count] > productIndex)? 
-	[[productsUnavailableOnline allKeys] objectAtIndex:productIndex]:nil;
+	return ([productsUnavailableOnline count] > productIndex)? 
+	[productsUnavailableOnline objectAtIndex:productIndex] : nil;
 }
 
 - (NSInteger)getDistinctAvailableOnlineCount {
@@ -100,23 +102,18 @@
 - (Product *)getAvailableOnlineProduct:(NSUInteger)productIndex {
 	[updateLock lock];
 	
-	NSArray* productBasketKeys = [productBasket allKeys];
-	NSMutableArray* availableOnlineKeys = [[[NSMutableArray alloc] initWithArray: productBasketKeys copyItems:YES] autorelease];
-	[availableOnlineKeys removeObjectsInArray:[[self productsUnavailableOnline] allKeys]];
+	NSMutableArray* availableOnlineProducts = [[[NSMutableArray alloc] initWithArray: backingProductArray copyItems:YES] autorelease];
+	[availableOnlineProducts removeObjectsInArray: productsUnavailableOnline];
 	
 	[updateLock unlock];
 	
-	return ([availableOnlineKeys count] > productIndex)? [availableOnlineKeys objectAtIndex:productIndex]:nil;
-	
-	
+	return ([availableOnlineProducts count] > productIndex)? [availableOnlineProducts objectAtIndex:productIndex] : nil;
 }
 
 - (Product*)getProductByBaseID:(NSString*)productBaseID {
 	[updateLock lock];
-	NSEnumerator *productsEnumerator = [productBasket keyEnumerator];
-	Product *product;
 	
-	while ((product = [productsEnumerator nextObject])) {
+	for (Product *product in backingProductArray) {
 		if ([productBaseID intValue] == [[product productBaseID] intValue]) {
 			[updateLock unlock];
 			return product;
@@ -128,12 +125,19 @@
 }
 
 - (void)updateProductBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity {
-	[product retain]; /* Temporary fix!!! */	
+	[product retain];	
 	
 	/* Need to ensure only one thread at a time can access, so we don't simultaneous read/write*/
 	[updateLock lock];
 	
-	int newQuantity = [[productBasket objectForKey:product] intValue] + [quantity intValue];
+	int currentValue = [[productBasket objectForKey:product] intValue];
+	
+	if (currentValue == 0) {
+		/* If we have new product add it to backing productArray */
+		[backingProductArray addObject:product];
+	}
+	
+	int newQuantity = currentValue + [quantity intValue];
 	
 	if ((newQuantity > 0) && (newQuantity <= [product maxAmount])) {
 		/* just change the quantity for this product to the new value */
@@ -145,7 +149,9 @@
 		/* must have removed all of this product so remove the product altogether */
 		[productBasket removeObjectForKey:product];
 		/* Remove it from unavailable online as well (will do nothing if it doesn't exist there) */
-		[productsUnavailableOnline removeObjectForKey:product];
+		[productsUnavailableOnline removeObject:product];
+		/* Remove it from backing array as well*/
+		[backingProductArray removeObject:product];
 	}
 	
 	[self recalculateBasketPrice];
@@ -157,9 +163,9 @@
 - (void)markProductUnavailableOnline:(Product *)product {
 	[updateLock lock];	
 	
-	if ([productsUnavailableOnline objectForKey:[product productID]] == nil) {
-		[product removeProductOffer]; /* Don't care about product offer if it doesn't exist online */
-		[productsUnavailableOnline setObject:[product productID] forKey:product];
+	if (![productsUnavailableOnline containsObject:product]) {
+		[product removeProductOffer];
+		[productsUnavailableOnline addObject:product];
 	}
 
 	[updateLock unlock];
@@ -187,6 +193,7 @@
 - (void)dealloc {
 	[productsUnavailableOnline release];
 	[productBasket release];
+	[backingProductArray release];
 	[super dealloc];
 }
 

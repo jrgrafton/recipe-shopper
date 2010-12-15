@@ -12,11 +12,11 @@
 
 @interface LoginManager ()
 
-- (void) showBasketNotEmptyWarning;
-- (void) showLoginPrompt;
-- (void) mergeBaskets;
-- (void) replaceOnlineBasket;
-- (void) loginComplete;
+- (void)showBasketNotEmptyWarning: (NSString*)numberProductsInBasket;
+- (void)showLoginPrompt;
+- (void)mergeBaskets;
+- (void)replaceOnlineBasket;
+- (void)loginComplete;
 
 @end
 
@@ -164,10 +164,10 @@
 		
 		/* Check to see if online basket is empty */
 		NSDictionary *basketDetails = [dataManager getBasketDetails];
-		float basketPrice = [[basketDetails objectForKey:@"BasketPrice"] floatValue];
+		NSString *basketQuantity = [basketDetails objectForKey:@"BasketQuantity"];
 		
-		if (basketPrice != 0) {
-			[self performSelectorOnMainThread:@selector(showBasketNotEmptyWarning) withObject:nil waitUntilDone:YES];
+		if ([basketQuantity intValue] != 0) {
+			[self performSelectorOnMainThread:@selector(showBasketNotEmptyWarning:) withObject:basketQuantity waitUntilDone:YES];
 		}
 		else {
 			/* add any products which may be in the product basket to the online basket now */
@@ -186,8 +186,8 @@
 	[pool release];
 }
 
-- (void)showBasketNotEmptyWarning {
-	UIAlertView *basketNotEmptyPrompt = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Online basket already contains items" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Merge",@"Replace", nil];
+- (void)showBasketNotEmptyWarning: (NSString*)numberProductsInBasket {
+	UIAlertView *basketNotEmptyPrompt = [[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat:@"Online basket already contains %@ items", numberProductsInBasket] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Merge",@"Replace", nil];
 	[basketNotEmptyPrompt show];
 	[basketNotEmptyPrompt release];
 }
