@@ -82,6 +82,8 @@ static DataManager *sharedInstance = nil;
 - (id)init {
 	@synchronized(self) {
 		[super init];
+		
+		networkAvailabilityLock = [[NSConditionLock alloc] initWithCondition:CONNECTIVITY_CHECK_FAILURE];
 		onlineUpdateLock = [[NSLock alloc] init];
 		
 		/* initialise the database */
@@ -139,18 +141,27 @@ static DataManager *sharedInstance = nil;
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	/* Initialise with as yet unmet condition */
-	networkAvailabilityLock = [[[NSConditionLock alloc] initWithCondition:CONNECTIVITY_CHECK_FAILURE] autorelease];
+	if ([networkAvailabilityLock condition] == CONNECTIVITY_CHECK_SUCCESS) {
+		/* Restet lock if its been used before */
+		[networkAvailabilityLock release];
+		NSLog(@"REALLOCATING LOCK");
+		networkAvailabilityLock = [[NSConditionLock alloc] initWithCondition:CONNECTIVITY_CHECK_FAILURE];
+	}
 	
 	/* Dispatch Thread to check network connection */	
+	NSLog(@"CREATING THREAD");
 	[NSThread detachNewThreadSelector:@selector(checkNetworkConnection) toTarget:self withObject:nil];
 	
+	NSLog(@"BLOCKING ON THREAD");
 	/* Now block until we get connectivity success */
 	if ([networkAvailabilityLock lockWhenCondition:CONNECTIVITY_CHECK_SUCCESS beforeDate:[NSDate dateWithTimeIntervalSinceNow:CONNECTIVITY_CHECK_TIMEOUT]]) {
 		/* We gained the lock - checkNetworkConnection must have responded in a timely mannor */
+		NSLog(@"TIMELY RESPONSE");
 		[networkAvailabilityLock unlock];
 	}
 	/* Lock timed out before we could verify network connectivity */
 	else {
+		NSLog(@"RESPONSE TIMED OUT");
 		/* We never gained the lock, assume phone is offline */
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"PhoneHasNoNetworkConnection" object:self];
 		lastNetworkCheckResult = NO;
@@ -164,8 +175,11 @@ static DataManager *sharedInstance = nil;
 - (void)checkNetworkConnection {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
+	NSLog(@"THREAD: STARTED");
 	/* Double locking to ensure that child thread acquires main lock first */ 
 	[networkAvailabilityLock lock];
+	
+	NSLog(@"THREAD: ACQUIRED LOCK");
 	
 	uint64_t startTime = mach_absolute_time();
 	NetworkStatus internetStatus = [[Reachability reachabilityWithHostName:@"google.com"] currentReachabilityStatus];
@@ -177,6 +191,7 @@ static DataManager *sharedInstance = nil;
 	
 	/* Only care about results if we have fetched them fast enough */
 	if (timeTaken < CONNECTIVITY_CHECK_TIMEOUT) {
+		NSLog(@"THREAD: CHECKED NETWORK WITHIN TIME");
 		/* Set success condition for lock so parent thread knows we are OK */
 		[networkAvailabilityLock unlockWithCondition:CONNECTIVITY_CHECK_SUCCESS];
 		
@@ -188,8 +203,9 @@ static DataManager *sharedInstance = nil;
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"PhoneHasNoNetworkConnection" object:self];
 		}
 	}else {
+		NSLog(@"THREAD: TIMED OUT CHECKING NETWORK WITHIN TIME");
 		/* Simply unlock since calling thread will have already assumed no network connection */
-		[networkAvailabilityLock unlock];
+		[networkAvailabilityLock unlockWithCondition:CONNECTIVITY_CHECK_FAILURE];
 	}
 	
 	[pool release];

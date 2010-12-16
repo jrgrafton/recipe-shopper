@@ -551,9 +551,9 @@
 	};
 	3EB5D54C1268AB4C009A80E0 /* DataManager.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1153, 10634}}";
-			sepNavSelRange = "{16716, 16}";
-			sepNavVisRange = "{3434, 1886}";
+			sepNavIntBoundsRect = "{{0, 0}, {1153, 10426}}";
+			sepNavSelRange = "{5030, 0}";
+			sepNavVisRange = "{5439, 518}";
 			sepNavWindowFrame = "{{61, 128}, {1133, 650}}";
 		};
 	};
@@ -1217,7 +1217,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 508";
 		rLen = 0;
-		rLoc = 21309;
+		rLoc = 21921;
 		rType = 0;
 		vrLen = 1098;
 		vrLoc = 17905;
@@ -1276,7 +1276,7 @@
 		isa = PBXTextBookmark;
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		rLen = 1;
-		rLoc = 444;
+		rLoc = 460;
 		rType = 1;
 	};
 	CE70E02112B8514C00FADE5C /* PBXTextBookmark */ = {
@@ -1284,7 +1284,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 391";
 		rLen = 16;
-		rLoc = 16716;
+		rLoc = 17328;
 		rType = 0;
 		vrLen = 1876;
 		vrLoc = 24900;
@@ -1354,7 +1354,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 391";
 		rLen = 16;
-		rLoc = 16716;
+		rLoc = 17328;
 		rType = 0;
 		vrLen = 1876;
 		vrLoc = 24900;
@@ -1408,7 +1408,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 391";
 		rLen = 16;
-		rLoc = 16716;
+		rLoc = 17328;
 		rType = 0;
 		vrLen = 1876;
 		vrLoc = 24900;
@@ -1446,7 +1446,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 169;
+		rLoc = 183;
 		rType = 1;
 	};
 	CE78D8F812B99BD000BE4E97 /* PBXTextBookmark */ = {
@@ -1454,7 +1454,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 157";
 		rLen = 0;
-		rLoc = 4621;
+		rLoc = 5084;
 		rType = 0;
 		vrLen = 585;
 		vrLoc = 3940;
@@ -1485,7 +1485,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 173;
+		rLoc = 187;
 		rType = 1;
 	};
 	CE78D8FE12B99C2600BE4E97 /* PBXTextBookmark */ = {
@@ -1493,7 +1493,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 164";
 		rLen = 0;
-		rLoc = 4780;
+		rLoc = 5243;
 		rType = 0;
 		vrLen = 676;
 		vrLoc = 4140;
@@ -1523,7 +1523,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 168";
 		rLen = 0;
-		rLoc = 4780;
+		rLoc = 5243;
 		rType = 0;
 		vrLen = 812;
 		vrLoc = 4393;
@@ -1553,7 +1553,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 173";
 		rLen = 0;
-		rLoc = 4780;
+		rLoc = 5243;
 		rType = 0;
 		vrLen = 812;
 		vrLoc = 4568;
@@ -1583,7 +1583,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 173";
 		rLen = 0;
-		rLoc = 4780;
+		rLoc = 5243;
 		rType = 0;
 		vrLen = 711;
 		vrLoc = 4522;
@@ -1613,7 +1613,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 173";
 		rLen = 0;
-		rLoc = 4780;
+		rLoc = 5243;
 		rType = 0;
 		vrLen = 816;
 		vrLoc = 4522;
@@ -1643,7 +1643,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 180";
 		rLen = 0;
-		rLoc = 4780;
+		rLoc = 5243;
 		rType = 0;
 		vrLen = 812;
 		vrLoc = 4803;
@@ -1673,7 +1673,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 180";
 		rLen = 0;
-		rLoc = 4780;
+		rLoc = 5243;
 		rType = 0;
 		vrLen = 812;
 		vrLoc = 4803;
@@ -1703,7 +1703,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 180";
 		rLen = 0;
-		rLoc = 4780;
+		rLoc = 5243;
 		rType = 0;
 		vrLen = 812;
 		vrLoc = 4803;
@@ -1733,7 +1733,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 180";
 		rLen = 0;
-		rLoc = 4780;
+		rLoc = 5243;
 		rType = 0;
 		vrLen = 814;
 		vrLoc = 4801;
@@ -1763,7 +1763,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 175";
 		rLen = 0;
-		rLoc = 4780;
+		rLoc = 5243;
 		rType = 0;
 		vrLen = 518;
 		vrLoc = 5624;
@@ -1853,7 +1853,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 172";
 		rLen = 0;
-		rLoc = 4618;
+		rLoc = 5045;
 		rType = 0;
 		vrLen = 1091;
 		vrLoc = 3690;
@@ -1863,7 +1863,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 139";
 		rLen = 0;
-		rLoc = 3433;
+		rLoc = 3536;
 		rType = 0;
 		vrLen = 1344;
 		vrLoc = 4356;
@@ -1873,7 +1873,7 @@
 		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
 		name = "DataManager.m: 446";
 		rLen = 16;
-		rLoc = 16716;
+		rLoc = 17328;
 		rType = 0;
 		vrLen = 1886;
 		vrLoc = 3434;
