@@ -133,12 +133,15 @@ static DataManager *sharedInstance = nil;
 	if (offlineMode == YES) {
 		return NO;
 	} else {
+		NSLog(@"!!!PHONE IS ONLINE CALL");
 		return [self phoneHasNetworkConnection];
 	}
 }
 
 - (BOOL)phoneHasNetworkConnection {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	NSLog(@"!!!PHONE HAS NETWORK CONNECTION CALL");
 	
 	/* Initialise with as yet unmet condition */
 	if ([networkAvailabilityLock condition] == CONNECTIVITY_CHECK_SUCCESS) {
@@ -150,7 +153,14 @@ static DataManager *sharedInstance = nil;
 	
 	/* Dispatch Thread to check network connection */	
 	NSLog(@"CREATING THREAD");
-	[NSThread detachNewThreadSelector:@selector(checkNetworkConnection) toTarget:self withObject:nil];
+	NSThread *checkNetworkThread = [[[NSThread alloc] initWithTarget:self selector:@selector(checkNetworkConnection) object:nil] autorelease];
+	[checkNetworkThread start];
+	
+	/* Yes it can finish before we even get here!! */
+	while (![checkNetworkThread isExecuting] && ![checkNetworkThread isFinished]) {
+		NSLog(@"WAITING FOR THREAD TO START");
+		[NSThread sleepForTimeInterval:0.1];
+	}
 	
 	NSLog(@"BLOCKING ON THREAD");
 	/* Now block until we get connectivity success */
@@ -181,13 +191,22 @@ static DataManager *sharedInstance = nil;
 	
 	NSLog(@"THREAD: ACQUIRED LOCK");
 	
+	/* Get the timebase info */
+	mach_timebase_info_data_t info;
+	mach_timebase_info(&info);
+	
 	uint64_t startTime = mach_absolute_time();
 	NetworkStatus internetStatus = [[Reachability reachabilityWithHostName:@"google.com"] currentReachabilityStatus];
 	uint64_t endTime = mach_absolute_time();
+	uint64_t elapsed = endTime - startTime;
 	
-	double timeTaken = (double) ((endTime - startTime) / 1000000000.0);
+	/* Convert to nanoseconds */
+	elapsed *= info.numer;
+	elapsed /= info.denom;
 	
-	[LogManager log:[NSString stringWithFormat:@"Network connection took %f seconds to check", timeTaken] withLevel:LOG_INFO fromClass:[[self class] description]];
+	double timeTaken = (double) (elapsed / 1000000000.0);
+	
+	[LogManager log:[NSString stringWithFormat:@"Network connection took %f (nanos: %llu) seconds to check", timeTaken, elapsed] withLevel:LOG_INFO fromClass:[[self class] description]];
 	
 	/* Only care about results if we have fetched them fast enough */
 	if (timeTaken < CONNECTIVITY_CHECK_TIMEOUT) {
