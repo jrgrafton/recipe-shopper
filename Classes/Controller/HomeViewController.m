@@ -43,9 +43,6 @@
 		[dataManager setOfflineMode:NO];
 		[offlineModeSwitch setOn:NO];
 	}
-	
-	/* Try and do a cheeky cached load of product departments */
-	[NSThread detachNewThreadSelector:@selector(getDepartments) toTarget:dataManager withObject:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

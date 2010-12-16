@@ -191,15 +191,18 @@ static DataManager *sharedInstance = nil;
 	
 	/* Only care about results if we have fetched them fast enough */
 	if (timeTaken < CONNECTIVITY_CHECK_TIMEOUT) {
-		NSLog(@"THREAD: CHECKED NETWORK WITHIN TIME");
-		/* Set success condition for lock so parent thread knows we are OK */
-		[networkAvailabilityLock unlockWithCondition:CONNECTIVITY_CHECK_SUCCESS];
-		
+		NSLog(@"THREAD: CHECKED NETWORK WITHIN TIME");		
 		if ((internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN)) {
 			lastNetworkCheckResult = YES;
+			
+			/* Only ever unlock after setting result */
+			[networkAvailabilityLock unlockWithCondition:CONNECTIVITY_CHECK_SUCCESS];
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"PhoneHasNetworkConnection" object:self];
 		}else {
 			lastNetworkCheckResult = NO;
+			
+			/* Only ever unlock after setting result */
+			[networkAvailabilityLock unlockWithCondition:CONNECTIVITY_CHECK_SUCCESS];
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"PhoneHasNoNetworkConnection" object:self];
 		}
 	}else {

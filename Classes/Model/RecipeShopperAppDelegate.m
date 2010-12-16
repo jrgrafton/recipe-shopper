@@ -33,6 +33,9 @@
 	/* Session key has to be generated in background so that iOS doesn't kill app due to UI unresponsiveness */
 	[NSThread detachNewThreadSelector:@selector(createAnonymousSessionKey) toTarget:dataManager withObject:nil];
 	
+	/* Try and do a cheeky cached load of product departments (Will automagically get queue'd behind session key request */
+	[NSThread detachNewThreadSelector:@selector(getDepartments) toTarget:dataManager withObject:nil];
+	
 	[dataManager addShoppingListProductsObserver:self];
 	[dataManager addBasketProductsObserver:self];
 	
