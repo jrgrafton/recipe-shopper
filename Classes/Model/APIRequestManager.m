@@ -387,8 +387,14 @@
 	@synchronized(self) {
 		/* If we have no session key try and generate new Anonymous key */
 		if ([[self sessionKey] length] == 0 && !isLogin) {
-			[LogManager log:@"API request without key; generating an anonymous one" withLevel:LOG_INFO fromClass:[[self class] description]];
-			[self createAnonymousSessionKey];
+			[LogManager log:@"API request without key; checking online connectivity" withLevel:LOG_INFO fromClass:[[self class] description]];
+			if ([[DataManager getInstance] phoneIsOnline]) {
+				[LogManager log:@"Phone is online; generating anonymous key" withLevel:LOG_INFO fromClass:[[self class] description]];
+				[self createAnonymousSessionKey];
+			}else {
+				[LogManager log:@"Phone is offline; cancelling request" withLevel:LOG_INFO fromClass:[[self class] description]];
+				return NO;
+			}
 		}
 		
 		double timeSinceLastRequest = [[NSDate date] timeIntervalSince1970] - [self lastUpdateRequestTime];

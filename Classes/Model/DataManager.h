@@ -26,6 +26,7 @@
 	LoginManager *loginManager;
 	OverlayViewController *overlayViewController;
 	NSLock *onlineUpdateLock;
+	NSConditionLock *networkAvailabilityLock;
 }
 
 /* Not explicitly stating non-atomic means we get atomic vars */
@@ -35,6 +36,7 @@
 @property (assign) BOOL loadingDepartmentList;
 @property (assign) BOOL departmentListHasLoaded;
 @property (assign) BOOL replaceMode;
+@property (assign) BOOL lastNetworkCheckResult;
 @property (copy)   NSString* replaceString;
 @property (assign) NSInteger productBasketUpdates;
 @property (assign) NSInteger onlineBasketUpdates;

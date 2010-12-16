@@ -6,9 +6,16 @@
 //  Copyright (c) 2010 Assentec. All rights reserved.
 //
 
+#include <mach/mach_time.h>
+
 #import "DataManager.h"
 #import "Reachability.h"
 #import "LogManager.h"
+
+// Timeout in seconds for network connectivity
+#define CONNECTIVITY_CHECK_TIMEOUT 2.0
+#define CONNECTIVITY_CHECK_SUCCESS 1
+#define CONNECTIVITY_CHECK_FAILURE 0
 
 @interface DataManager()
 - (void)updateOnlineBasket:(NSArray *)productDetails;
@@ -25,6 +32,7 @@ static DataManager *sharedInstance = nil;
 @synthesize loadingDepartmentList;
 @synthesize departmentListHasLoaded;
 @synthesize replaceMode;
+@synthesize lastNetworkCheckResult;
 @synthesize replaceString;
 @synthesize productBasketUpdates;
 @synthesize onlineBasketUpdates;
@@ -99,6 +107,7 @@ static DataManager *sharedInstance = nil;
 		[self setLoadingDepartmentList:NO];
 		[self setDepartmentListHasLoaded:NO];
 		[self setReplaceMode:NO];
+		[self setLastNetworkCheckResult:NO];
 		[self setReplaceString:@""];
 		[self setProductBasketUpdates:0];
 		[self setProductImageFetchThreads:0];
@@ -129,15 +138,61 @@ static DataManager *sharedInstance = nil;
 - (BOOL)phoneHasNetworkConnection {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	NetworkStatus internetStatus = [[Reachability reachabilityWithHostName:@"google.com"] currentReachabilityStatus];
-	if ((internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN)) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"PhoneHasNetworkConnection" object:self];
-	}else {
+	/* Initialise with as yet unmet condition */
+	networkAvailabilityLock = [[[NSConditionLock alloc] initWithCondition:CONNECTIVITY_CHECK_FAILURE] autorelease];
+	
+	/* Dispatch Thread to check network connection */	
+	[NSThread detachNewThreadSelector:@selector(checkNetworkConnection) toTarget:self withObject:nil];
+	
+	/* Now block until we get connectivity success */
+	if ([networkAvailabilityLock lockWhenCondition:CONNECTIVITY_CHECK_SUCCESS beforeDate:[NSDate dateWithTimeIntervalSinceNow:CONNECTIVITY_CHECK_TIMEOUT]]) {
+		/* We gained the lock - checkNetworkConnection must have responded in a timely mannor */
+		[networkAvailabilityLock unlock];
+	}
+	/* Lock timed out before we could verify network connectivity */
+	else {
+		/* We never gained the lock, assume phone is offline */
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"PhoneHasNoNetworkConnection" object:self];
+		lastNetworkCheckResult = NO;
+	}
+
+	[pool release];
+	
+	return lastNetworkCheckResult;
+}
+
+- (void)checkNetworkConnection {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	/* Double locking to ensure that child thread acquires main lock first */ 
+	[networkAvailabilityLock lock];
+	
+	uint64_t startTime = mach_absolute_time();
+	NetworkStatus internetStatus = [[Reachability reachabilityWithHostName:@"google.com"] currentReachabilityStatus];
+	uint64_t endTime = mach_absolute_time();
+	
+	double timeTaken = (double) ((endTime - startTime) / 1000000000.0);
+	
+	[LogManager log:[NSString stringWithFormat:@"Network connection took %f seconds to check", timeTaken] withLevel:LOG_INFO fromClass:[[self class] description]];
+	
+	/* Only care about results if we have fetched them fast enough */
+	if (timeTaken < CONNECTIVITY_CHECK_TIMEOUT) {
+		/* Set success condition for lock so parent thread knows we are OK */
+		[networkAvailabilityLock unlockWithCondition:CONNECTIVITY_CHECK_SUCCESS];
+		
+		if ((internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN)) {
+			lastNetworkCheckResult = YES;
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"PhoneHasNetworkConnection" object:self];
+		}else {
+			lastNetworkCheckResult = NO;
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"PhoneHasNoNetworkConnection" object:self];
+		}
+	}else {
+		/* Simply unlock since calling thread will have already assumed no network connection */
+		[networkAvailabilityLock unlock];
 	}
 	
 	[pool release];
-	return (internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN);
 }
 
 - (void)updateBasketQuantity:(Product *)product byQuantity:(NSNumber *)quantity {
