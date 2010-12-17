@@ -424,9 +424,6 @@
 }
 
 - (void)replaceProductButtonClicked:(id)sender {
-	/* Remove item from basket */
-	[self removeProductButtonClicked:sender];
-	
 	/* Prompt user to replace by moving them to online shop tab */
 	NSString *productBaseID = [NSString stringWithFormat:@"%d", [sender tag]];
 	
@@ -435,6 +432,9 @@
 	if (product != nil) {
 		[self performSelectorOnMainThread:@selector(replaceAction:) withObject:[product productName] waitUntilDone:YES];
 	}
+	
+	/* Remove item from basket */
+	[self removeProductButtonClicked:sender];
 }
 
 - (void)replaceAction:(NSString*)productName {

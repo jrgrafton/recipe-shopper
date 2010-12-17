@@ -27,6 +27,7 @@
 	OverlayViewController *overlayViewController;
 	NSLock *onlineUpdateLock;
 	NSConditionLock *networkAvailabilityLock;
+	NSThread *networkAvailabilityThread;
 }
 
 /* Not explicitly stating non-atomic means we get atomic vars */

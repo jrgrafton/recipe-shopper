@@ -79,6 +79,9 @@
 	/* add ourselves as an observer for login failed so we can prompt user */
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:@"LoginFailed" object:nil];
 	
+	/* add ourselves as an observer for login cancelled so we can remove ourselves as observer */
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginCancelled) name:@"LoginCancelled" object:nil];
+	
 	[dataManager requestLoginToStore];
 }
 
@@ -104,6 +107,10 @@
 	UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Login failed" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry",nil];
 	[errorAlert show];
 	[errorAlert release];
+}
+
+- (void)loginCancelled {
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
 - (void)logoutComplete {
@@ -225,6 +232,7 @@
 			[LogManager log:@"Unable to open Tesco.com registration page" withLevel:LOG_ERROR fromClass:@"HomeViewController"];
 		}
 	}else if ([alertView title] == @"Error" && buttonIndex == 1) {
+		/* Retry on login failed screen */
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:@"LoggedIn" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:@"LoginFailed" object:nil];
 		[dataManager requestLoginToStore];

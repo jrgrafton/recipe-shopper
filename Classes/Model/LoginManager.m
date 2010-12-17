@@ -104,6 +104,7 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if ([[alertView title] isEqualToString:@"Login"] && [alertView cancelButtonIndex] != buttonIndex) {
+		/* Dismiss keyboard when OK is pressed */
 		UITextField *emailField = [[alertView subviews] objectAtIndex:4];
 		[emailField resignFirstResponder];
 	}
@@ -115,7 +116,6 @@
 		}else {
 			/* Empty */
 			[NSThread detachNewThreadSelector:@selector(replaceOnlineBasket) toTarget:self withObject:nil];
-			
 			[self loginComplete];
 		}
 	}
@@ -123,6 +123,7 @@
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	if ([[alertView title] isEqualToString:@"Login"] && [alertView cancelButtonIndex] != buttonIndex) {
+		/* OK button */
 		NSArray *subViews = [alertView subviews];
 		NSString *emailText = [[subViews objectAtIndex:([subViews count] - 2)] text];
 		NSString *passwordText = [[subViews objectAtIndex:([subViews count] - 1)] text];
@@ -143,9 +144,9 @@
 		[dataManager showOverlayView:[[[[appDelegate tabBarController] selectedViewController] view] window]];
 		
 		[NSThread detachNewThreadSelector:@selector(loginToStore:) toTarget:self withObject:details];
-	} else if ([[alertView title] isEqualToString:@""] && [alertView cancelButtonIndex] != buttonIndex) {
-		/* retry button after failed login */
-		[self requestLoginToStore];
+	}else if ([[alertView title] isEqualToString:@"Login"] && [alertView cancelButtonIndex] == buttonIndex) {
+		/* inform any observers that the loggin has been cancelled */
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"LoginCancelled" object:self];
 	}
 }
 
@@ -176,7 +177,7 @@
 			[self loginComplete];
 		}
 	}else{
-		/* LOGIN FAILED */
+		/* Login Failed */
 		[dataManager hideOverlayView];
 		
 		/* inform any observers that the loggin has failed */

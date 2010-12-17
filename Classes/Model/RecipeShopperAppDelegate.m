@@ -118,12 +118,12 @@
 #pragma mark Tab Bar Controller delegate
 
 - (BOOL)tabBarController:(UITabBarController *)theTabBarController shouldSelectViewController:(UIViewController *)viewController {
-	if (([dataManager phoneIsOnline] == NO) && ((viewController == [theTabBarController.viewControllers objectAtIndex:2]) || (viewController == [theTabBarController.viewControllers objectAtIndex:3]))) {
+	if (((viewController == [theTabBarController.viewControllers objectAtIndex:2]) || (viewController == [theTabBarController.viewControllers objectAtIndex:3])) && ([dataManager phoneIsOnline] == NO)) {
 		UIAlertView *offlineAlert = [[UIAlertView alloc] initWithTitle:@"Offline mode" message:@"Feature unavailable offline" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[offlineAlert show];
 		[offlineAlert release];
 		return NO;
-	} else if (([dataManager loggedIn] == NO) && (viewController == [theTabBarController.viewControllers objectAtIndex:2])) {
+	} else if ((viewController == [theTabBarController.viewControllers objectAtIndex:2]) && ([dataManager loggedIn] == NO)) {
 		[dataManager requestLoginToStore];
 		
 		/* add ourselves as an observer for logged in messages so we can transition when the user has logged in */
@@ -131,6 +131,9 @@
 		
 		/* add ourselves as an observer for login failed so we can prompt user */
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:@"LoginFailed" object:nil];
+		
+		/* add ourselves as an observer for login cancelled so we can remove ourselves as observer */
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginCancelled) name:@"LoginCancelled" object:nil];
 		
 		/* and make sure we don't transition yet */
 		return NO;
@@ -148,6 +151,9 @@
 			/* add ourselves as an observer for login failed so we can prompt user */
 			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:@"LoginFailed" object:nil];
 			
+			/* add ourselves as an observer for login cancelled so we can remove ourselves as observer */
+			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginCancelled) name:@"LoginCancelled" object:nil];
+			
 			/* and make sure we don't transition yet */
 			return NO;
 		}
@@ -163,6 +169,10 @@
 	UIAlertView *successAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Login failed" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry",nil];
 	[successAlert show];
 	[successAlert release];
+}
+
+- (void)loginCancelled {
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
 - (void)startupAnimationDone:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
@@ -191,7 +201,7 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if ([alertView title] == @"Error" && buttonIndex == 0) {
-		/* user has selected cancel so remove all observers and exit (leaving the user on the original screen) */
+		/* user has selected cancel so remove all observers (they will be re-added if they select tab again) */
 		[[NSNotificationCenter defaultCenter] removeObserver: self];
 	} else if ([alertView title] == @"Error" && buttonIndex == 1) {
 		/* user has selected retry so leave observers as they are and ask for login again */
