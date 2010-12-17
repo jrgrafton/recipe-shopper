@@ -167,7 +167,7 @@ static DataManager *sharedInstance = nil;
 		}
 		
 		/* Dispatch Thread to check network connection */	
-		NSLog(@"CREATING THREAD");
+	//	NSLog(@"CREATING THREAD");
 		if (networkAvailabilityThread != nil) {
 			/* Will only equal nil for very first call */
 			[networkAvailabilityThread release];
