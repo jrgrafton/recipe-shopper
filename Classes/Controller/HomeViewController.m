@@ -173,6 +173,7 @@
 - (IBAction)offlineModeValueChanged:(id)sender {
 	if ([offlineModeSwitch isOn] == NO) {
 		
+		[dataManager setUserPreference:@"offlineMode" prefValue:@"NO"];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkConnectionSucceeded) name:@"PhoneHasNetworkConnection" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkConnectionFailed) name:@"PhoneHasNoNetworkConnection" object:nil];
 		

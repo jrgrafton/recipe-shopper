@@ -255,10 +255,9 @@ static sqlite3 *database = nil;
         if (sqlite3_step(selectstmt) == SQLITE_ROW) {
             product = [self createProduct:selectstmt];
         } else {
-            return nil;
+			[LogManager log:[NSString stringWithFormat:@"Product %@ not found", productBaseID] withLevel:LOG_INFO fromClass:@"DatabaseRequestManager"];
+            product = nil;
         }
-    } else {
-        return nil;
     }
 	
 	sqlite3_reset(selectstmt);

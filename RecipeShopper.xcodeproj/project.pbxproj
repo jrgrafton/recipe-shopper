@@ -355,7 +355,7 @@
 		CE70DF4112B82BAA00FADE5C /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
 		CE70DF4212B82BAA00FADE5C /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
 		CE70DF4812B82DB300FADE5C /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
-		CE7338191297D81800250439 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
+		CE7338191297D81800250439 /* iTunesArtwork */ = {isa = PBXFileReference; explicitFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		CE73D1521277742700325A43 /* DeliverySlotCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeliverySlotCell.xib; sourceTree = "<group>"; };
 		CE73D1541277743300325A43 /* DeliverySlotCellHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeliverySlotCellHeader.xib; sourceTree = "<group>"; };
 		CE74CBBA12732B1200B5566E /* recipesHome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recipesHome.png; sourceTree = "<group>"; };
@@ -1062,7 +1062,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				PRODUCT_NAME = Recipes;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C5DF6C44-CB12-4A15-92DE-96853AF7F5F5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D8CE6A20-39B4-4223-9177-959C62197260";
 				SDKROOT = iphoneos4.2;
 			};
 			name = Debug;
@@ -1081,7 +1081,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Recipes;
 				PROVISIONING_PROFILE = "C5DF6C44-CB12-4A15-92DE-96853AF7F5F5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C5DF6C44-CB12-4A15-92DE-96853AF7F5F5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D8CE6A20-39B4-4223-9177-959C62197260";
 				SDKROOT = iphoneos4.2;
 			};
 			name = Release;

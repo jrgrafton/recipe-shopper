@@ -19,7 +19,7 @@
 #define SHELF_SIMULATED_PAGE_SIZE 15
 #define MAX_RETRY_COUNT 3	//Maximum amount of times to API retry request before giving up
 #define MIN_API_CALL_INTERVAL 1000 //Minimum allowed time between subsequent API calls (in ms)
-#define TIMEOUT_SECS 15	//Amount of secs before request will timeout
+#define TIMEOUT_SECS 10	//Amount of secs before request will timeout
 
 @interface APIRequestManager()
 
@@ -75,18 +75,22 @@
 - (void)createAnonymousSessionKey {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	BOOL loginFailed = YES;
 	
-	if ([self login:@"" withPassword:@""]) {
+	if (![[DataManager getInstance] phoneIsOnline]) {
+		[LogManager log:@"Phone is either offline or offline mode has been set. Refusing to create anonymous key" withLevel:LOG_INFO fromClass:[[self class] description]];
+	} else {
+		BOOL loginFailed = YES;
+		if ([self login:@"" withPassword:@""]) {
 			[LogManager log:[NSString stringWithFormat:@"Created anonymous login with session key: %@", [self sessionKey]] withLevel:LOG_INFO fromClass:[[self class] description]];
 			loginFailed = NO;
-	}
-	if (loginFailed) {
-		[LogManager log:[NSString stringWithFormat:@"Failed to create anonymous login"] withLevel:LOG_ERROR fromClass:[[self class] description]];
-        
-        UIAlertView *loginAlert = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Failed to connect to Tesco.com. Retry or switch to offline mode?" delegate:self cancelButtonTitle:@"Switch Mode" otherButtonTitles:@"Retry", nil];
-        [loginAlert show];
-        [loginAlert release];
+		}
+		if (loginFailed) {
+			[LogManager log:[NSString stringWithFormat:@"Failed to create anonymous login"] withLevel:LOG_ERROR fromClass:[[self class] description]];
+			
+			UIAlertView *loginAlert = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Failed to connect to Tesco.com. Retry or switch to offline mode?" delegate:self cancelButtonTitle:@"Switch Mode" otherButtonTitles:@"Retry", nil];
+			[loginAlert show];
+			[loginAlert release];
+		}
 	}
 
 	[pool release];
@@ -370,7 +374,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SwitchToOffline" object:self userInfo:nil];
     } else {
         /* retry the login attempt */
-        [self createAnonymousSessionKey];
+        [NSThread detachNewThreadSelector:@selector(createAnonymousSessionKey) toTarget:self withObject:nil];
     }
 }
 
@@ -392,7 +396,7 @@
 				[LogManager log:@"Phone is online; generating anonymous key" withLevel:LOG_INFO fromClass:[[self class] description]];
 				[self createAnonymousSessionKey];
 			}else {
-				[LogManager log:@"Phone is offline; cancelling request" withLevel:LOG_INFO fromClass:[[self class] description]];
+				[LogManager log: [NSString stringWithFormat:@"Phone is offline; cancelling request %@", initialRequestString] withLevel:LOG_INFO fromClass:[[self class] description]];
 				return NO;
 			}
 		}
