@@ -51,16 +51,16 @@
 		/* load the recipe view cell nib */
         NSArray *bundle;
 		UIImage *disclosureImage = [UIImage imageNamed:@"disclosure.png"];
-		UIImageView *imageView = [[UIImageView alloc] initWithImage: disclosureImage];
+		UIImageView *imageView = [[[UIImageView alloc] initWithImage: disclosureImage] autorelease];
 		UIView *accessoryView;		
 		
 		if (isHeader) {
 			bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeCellHeader" owner:self options:nil];
-			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height + DISCLOSURE_OFFSET)];
+			accessoryView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height + DISCLOSURE_OFFSET)] autorelease];
 			[imageView setFrame:CGRectMake(0, DISCLOSURE_OFFSET, [imageView frame].size.width, [imageView frame].size.height)];
 		}else{
 			bundle = [[NSBundle mainBundle] loadNibNamed:@"RecipeCell" owner:self options:nil];
-			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height)];
+			accessoryView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height)] autorelease];
 		}
 		
         for (id viewElement in bundle) {
@@ -232,16 +232,16 @@
 		/* load the product view cell nib */
 		NSArray *bundle;
 		UIImage *disclosureImage = [UIImage imageNamed:@"disclosure.png"];
-		UIImageView *imageView = [[UIImageView alloc] initWithImage: disclosureImage];
+		UIImageView *imageView = [[[UIImageView alloc] initWithImage: disclosureImage] autorelease];
 		UIView *accessoryView;
 		
 		if (isHeader) {
 			bundle = [[NSBundle mainBundle] loadNibNamed:@"AisleCellHeader" owner:self options:nil];
-			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height + DISCLOSURE_OFFSET)];
+			accessoryView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height + DISCLOSURE_OFFSET)] autorelease];
 			[imageView setFrame:CGRectMake(0, DISCLOSURE_OFFSET, [imageView frame].size.width, [imageView frame].size.height)];
 		}else{
 			bundle = [[NSBundle mainBundle] loadNibNamed:@"AisleCell" owner:self options:nil];
-			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height)];
+			accessoryView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height)] autorelease];
 		}
 		
         for (id viewElement in bundle) {
@@ -267,16 +267,16 @@
 		/* load the product view cell nib */
 		NSArray *bundle;
 		UIImage *disclosureImage = [UIImage imageNamed:@"disclosure.png"];
-		UIImageView *imageView = [[UIImageView alloc] initWithImage: disclosureImage];
+		UIImageView *imageView = [[[UIImageView alloc] initWithImage: disclosureImage] autorelease];
 		UIView *accessoryView;
 		
 		if (isHeader) {
 			bundle = [[NSBundle mainBundle] loadNibNamed:@"ShelfCellHeader" owner:self options:nil];
-			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height + DISCLOSURE_OFFSET)];
+			accessoryView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height + DISCLOSURE_OFFSET)] autorelease];
 			[imageView setFrame:CGRectMake(0, DISCLOSURE_OFFSET, [imageView frame].size.width, [imageView frame].size.height)];
 		}else{
 			bundle = [[NSBundle mainBundle] loadNibNamed:@"ShelfCell" owner:self options:nil];
-			accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height)];
+			accessoryView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, [imageView frame].size.width,[imageView frame].size.height)] autorelease];
 		}
 		
         for (id viewElement in bundle) {

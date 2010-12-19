@@ -1062,7 +1062,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				PRODUCT_NAME = Recipes;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D8CE6A20-39B4-4223-9177-959C62197260";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C5DF6C44-CB12-4A15-92DE-96853AF7F5F5";
 				SDKROOT = iphoneos4.2;
 			};
 			name = Debug;
@@ -1081,10 +1081,42 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Recipes;
 				PROVISIONING_PROFILE = "C5DF6C44-CB12-4A15-92DE-96853AF7F5F5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D8CE6A20-39B4-4223-9177-959C62197260";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C5DF6C44-CB12-4A15-92DE-96853AF7F5F5";
 				SDKROOT = iphoneos4.2;
 			};
 			name = Release;
+		};
+		CE78341112BE9D1900401B22 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Assentec Global";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Assentec Global";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PREBINDING = NO;
+				PRODUCT_NAME = Recipes;
+				PROVISIONING_PROFILE = "7A5804BF-BCD9-4396-98A8-C37F92050E19";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7A5804BF-BCD9-4396-98A8-C37F92050E19";
+				SDKROOT = iphoneos4.2;
+			};
+			name = Distribution;
+		};
+		CE78341212BE9D1900401B22 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = RecipeShopper_Prefix.pch;
+				INFOPLIST_FILE = "RecipeShopper-Info.plist";
+				PRODUCT_NAME = Recipes;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Distribution;
 		};
 /* End XCBuildConfiguration section */
 
@@ -1094,6 +1126,7 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
+				CE78341212BE9D1900401B22 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1103,6 +1136,7 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+				CE78341112BE9D1900401B22 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

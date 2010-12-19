@@ -206,13 +206,12 @@
 		[label setFont:[UIFont boldSystemFontOfSize:14]];
 		[label setNumberOfLines:2];
 		[label setLineBreakMode:UILineBreakModeWordWrap];
-		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
 		[dateFormatter setDateFormat:@"EEEE\nMMMM d"];
 		[label setText:[dateFormatter stringFromDate:[sortedDeliveryDatesArray objectAtIndex:row]]];
-		[dateFormatter release];
 	} else {
 		[label setFont:[UIFont boldSystemFontOfSize:12]];
-		NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+		NSDateFormatter *timeFormatter = [[[NSDateFormatter alloc] init] autorelease];
 		[timeFormatter setTimeStyle:NSDateFormatterShortStyle];
 		[timeFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
 		
@@ -228,7 +227,6 @@
 		DeliverySlot *deliverySlot = [deliverySlots objectAtIndex:row];
 		
 		[label setText:[NSString stringWithFormat:@"%@ - %@", [timeFormatter stringFromDate:[deliverySlot deliverySlotStartTime]], [timeFormatter stringFromDate:[deliverySlot deliverySlotEndTime]]]];
-		[timeFormatter release];
 	}
 	
 	return label;

@@ -97,7 +97,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell *cell;
+	UITableViewCell *cell = nil;
 	
 	if (indexPath.section == 0) {
 		/* this is the shopping list summary section */

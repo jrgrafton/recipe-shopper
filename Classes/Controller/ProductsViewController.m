@@ -143,7 +143,7 @@
 		[products removeAllObjects];
 	}
 	
-	NSArray *result;
+	NSArray *result = [NSArray array];
 	
 	switch (productViewFor) {
 		case PRODUCT_SHELF:

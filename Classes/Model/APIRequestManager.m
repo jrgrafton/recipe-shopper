@@ -97,7 +97,7 @@
 }
 
 - (NSDictionary *)getOnlineBasket {
-	NSMutableDictionary *onlineBasket = [[NSMutableDictionary alloc] init];
+	NSMutableDictionary *onlineBasket = [[[NSMutableDictionary alloc] init] autorelease];
 	NSDictionary *apiResults;
 	NSString *error;
 	NSString *requestString = [NSString stringWithFormat:@"%@?command=LISTBASKET&FAST=y", REST_SERVICE_URL];
@@ -283,7 +283,7 @@
 			
 			if ([deliveryDates objectForKey:deliverySlotDate] == nil) {
 				/* create a dictionary of times and delivery slots and add the current combination */
-				NSMutableArray *deliverySlotsForDate = [[NSMutableArray alloc] init];
+				NSMutableArray *deliverySlotsForDate = [[[NSMutableArray alloc] init] autorelease];
 				[deliverySlotsForDate addObject:deliverySlot];
 				
 				/* add this delivery date (and corresponding time/slot array) to the delivery dates */

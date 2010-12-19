@@ -28,7 +28,7 @@
 			break;
 	}
 	
-#ifdef DEBUG
+#ifdef OUTPUT_DEBUG
 	NSLog(@"[%@]%@ %@", className, levelStr, msg);
 #endif
 }

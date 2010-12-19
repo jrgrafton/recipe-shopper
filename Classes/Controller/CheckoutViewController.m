@@ -117,7 +117,7 @@
 		[tooFewItemsAlert show];
 		[tooFewItemsAlert release];
 	} //Ensure we do one final product basket validation
-	else if ([dataManager updatingOnlineBasket]) {
+	else if ([dataManager updatingOnlineBasket] == YES) {
 		//Wait for basket to finish updating
 		[dataManager showOverlayView:[[self view] window]];
 		[dataManager setOverlayLabelText:@"Waiting basket updates to complete"];
@@ -131,14 +131,15 @@
 
 - (void)loadDeliveryDates {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[dataManager performSelectorOnMainThread:@selector(setOverlayLabelText:) withObject:@"Verifying Basket" waitUntilDone:YES];
+	[dataManager setOverlayLabelText: @"Verifying Basket"];
 	
 	BOOL basketHasBeenModified;
 	
-	if ([dataManager updatingOnlineBasket]) {
-		/* If we are performing online updates at this point it must mean that 
-		 completion of last update batch ended in disparency between baskets */
-		basketHasBeenModified = YES;
+	if ([dataManager updatingOnlineBasket] == YES) {
+		/* May be the case online basket updates have started inbetween thread
+		 first being started and this line */
+		[self transitionToDeliverySlotView: nil];
+		return;
 	}else {
 		/* No resych going in background so lets check for ourselves */
 		basketHasBeenModified = [dataManager synchronizeOnlineOfflineBasket];
@@ -156,7 +157,7 @@
 		return;
 	}
 	
-	[dataManager performSelectorOnMainThread:@selector(setOverlayLabelText:) withObject:@"Loading delivery slots" waitUntilDone:YES];
+	[dataManager setOverlayLabelText: @"Loading delivery slots"];
 	[deliverySlotsViewController loadDeliveryDates];
 	[dataManager hideOverlayView];
 	
@@ -220,7 +221,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell *cell;
+	UITableViewCell *cell = nil;
 	
 	if (indexPath.section == 0) {
 		/* this is the basket summary section */
@@ -230,8 +231,6 @@
 		NSArray *keyValue;
 		
 		if ([indexPath row] == 0) {
-			NSInteger test = 0;
-			test = [dataManager getTotalProductCount];
 			keyValue = [NSArray arrayWithObjects:@"Number Of Items",[NSString stringWithFormat:@"%d",[dataManager getTotalProductCount]],nil];
 			[UITableViewCellFactory createTotalTableCell:&cell withIdentifier:CellIdentifier withNameValuePair:keyValue isHeader:YES];
 			UILabel *headerLabel = (UILabel *)[cell viewWithTag:4];

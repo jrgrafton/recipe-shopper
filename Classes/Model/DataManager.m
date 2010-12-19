@@ -149,7 +149,7 @@ static DataManager *sharedInstance = nil;
 		if ([networkAvailabilityLock lockWhenCondition:CONNECTIVITY_CHECK_SUCCESS beforeDate:[NSDate dateWithTimeIntervalSinceNow:CONNECTIVITY_CHECK_TIMEOUT]]) {
 			/* We gained the lock - last checkNetworkConnection must have responded in a timely mannor */
 			// NSLog(@"RECURSIVE: TIMELY RESPONSE");
-			[networkAvailabilityLock unlockWithCondition:CONNECTIVITY_CHECK_FAILURE];
+			[networkAvailabilityLock unlock];
 			lastNetworkCheckResult = YES;
 		}else {
 			// NSLog(@"RECURSIVE: RESPONSE TIMED OUT");
@@ -176,7 +176,7 @@ static DataManager *sharedInstance = nil;
 			
 			/* Yes it can finish before we even get here!! */
 			while (![networkAvailabilityThread isExecuting] && ![networkAvailabilityThread isFinished]) {
-				//NSLog(@"WAITING FOR THREAD TO START");
+			//	NSLog(@"WAITING FOR THREAD TO START");
 				[NSThread sleepForTimeInterval:0.1];
 			}
 		}
@@ -186,7 +186,7 @@ static DataManager *sharedInstance = nil;
 		if ([networkAvailabilityLock lockWhenCondition:CONNECTIVITY_CHECK_SUCCESS beforeDate:[NSDate dateWithTimeIntervalSinceNow:CONNECTIVITY_CHECK_TIMEOUT]]) {
 			/* We gained the lock - checkNetworkConnection must have responded in a timely mannor */
 			// NSLog(@"TIMELY RESPONSE");
-			[networkAvailabilityLock unlockWithCondition:CONNECTIVITY_CHECK_FAILURE];
+			[networkAvailabilityLock unlock];
 		}
 		/* Lock timed out before we could verify network connectivity */
 		else {
@@ -267,7 +267,7 @@ static DataManager *sharedInstance = nil;
 		
 		/* if we're logged in, update this product in the online basket too (but in a separate thread so we don't hold up processing */
 		if ([apiRequestManager loggedIn] == YES) {
-			NSMutableArray *productDetails = [[NSMutableArray alloc] initWithCapacity:2];
+			NSMutableArray *productDetails = [[[NSMutableArray alloc] initWithCapacity:2] autorelease];
 			[productDetails addObject:[product productID]];
 			[productDetails addObject:quantity];
 			[self setUpdatingOnlineBasket:YES];
@@ -323,7 +323,7 @@ static DataManager *sharedInstance = nil;
 						}
 					}else {
 						/* This is first attempt at update, and we don't think that the quantity cap has been reached */
-						NSMutableArray *productDetails = [[NSMutableArray alloc] initWithCapacity:2];
+						NSMutableArray *productDetails = [[[NSMutableArray alloc] initWithCapacity:2] autorelease];
 						[productDetails addObject:onlineProductID];
 						[productDetails addObject:difference];
 						[self setUpdatingOnlineBasket:YES];
@@ -341,7 +341,7 @@ static DataManager *sharedInstance = nil;
 			/* Occasionally we find items in online that exist but have 0 quantity */
 			if ([[onlineBasket objectForKey:onlineProductID] intValue] != 0) {
 				/* Remove erranous product completely */
-				NSMutableArray *productDetails = [[NSMutableArray alloc] initWithCapacity:2];
+				NSMutableArray *productDetails = [[[NSMutableArray alloc] initWithCapacity:2] autorelease];
 				[productDetails addObject:onlineProductID];
 				[productDetails addObject: [NSNumber numberWithInt:(0 - [[onlineBasket objectForKey:onlineProductID] intValue])]];
 				[self setUpdatingOnlineBasket:YES];
@@ -386,7 +386,7 @@ static DataManager *sharedInstance = nil;
 	[self addProductBasketToOnlineBasket];
 	
 	for (NSString *onlineProductID in [onlineBasket allKeys]) {
-		NSMutableArray *productDetails = [[NSMutableArray alloc] initWithCapacity:2];
+		NSMutableArray *productDetails = [[[NSMutableArray alloc] initWithCapacity:2] autorelease];
 		[productDetails addObject: onlineProductID];
 		[productDetails addObject: [NSNumber numberWithInt:[[onlineBasket objectForKey:onlineProductID] intValue]]];
 		[NSThread detachNewThreadSelector:@selector(downloadProductToLocalBasket:) toTarget:self withObject:productDetails];
@@ -609,7 +609,7 @@ static DataManager *sharedInstance = nil;
 	[self setUpdatingProductBasket:YES];
 	
 	for (NSString *recipeProductBaseID in [[recipe recipeProducts] allKeys]) {
-        NSMutableArray *recipeProduct = [[NSMutableArray alloc] initWithCapacity:2]; //Will get released by child thread
+        NSMutableArray *recipeProduct = [[[NSMutableArray alloc] initWithCapacity:2] autorelease]; //Will get released by child thread
         [recipeProduct addObject:recipeProductBaseID];
         [recipeProduct addObject:[[recipe recipeProducts] objectForKey:recipeProductBaseID]];
         [NSThread detachNewThreadSelector:@selector(addRecipeProductToBasket:) toTarget:self withObject:recipeProduct];
@@ -645,7 +645,6 @@ static DataManager *sharedInstance = nil;
 	//Can now update with nil product (ensures we always remove loading view no matter what happens)
 	[self updateBasketQuantity:product byQuantity:[recipeProduct objectAtIndex:1]];
 	
-	[recipeProduct release]; //Since it is alloc'd by parent thread passing in Array
     [pool release];
 }
 
@@ -655,7 +654,7 @@ static DataManager *sharedInstance = nil;
     [recipeBasketManager removeRecipeFromBasket:recipe];
 	
     for (NSString *recipeProductBaseID in [[recipe recipeProducts] allKeys]) {
-        NSMutableArray *recipeProduct = [[NSMutableArray alloc] initWithCapacity:2]; //Will get released by child thread;
+        NSMutableArray *recipeProduct = [[[NSMutableArray alloc] initWithCapacity:2] autorelease]; //Will get released by child thread;
         [recipeProduct addObject:recipeProductBaseID];
         [recipeProduct addObject:[[recipe recipeProducts] objectForKey:recipeProductBaseID]];
         [NSThread detachNewThreadSelector:@selector(removeRecipeProductFromBasket:) toTarget:self withObject:recipeProduct];
@@ -682,7 +681,6 @@ static DataManager *sharedInstance = nil;
 	//Can now update with nil product (ensures we always remove loading view no matter what happens)
 	[self updateBasketQuantity:product byQuantity:[NSNumber numberWithInt:(0 - [[recipeProduct objectAtIndex:1] intValue])]];
 	
-	[recipeProduct release];
     [pool release];
 }
 
