@@ -383,13 +383,13 @@
 #pragma mark private functions
 
 - (BOOL)apiRequest:(NSString *)initialRequestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error requestAttempt:(NSInteger)requestAttempt isLogin:(BOOL)isLogin {
-	/* If this is not a login request block until all login requests finish first! */
-	[apiRequestLock lock];
-	
 	if (!isLogin) {
 		[generatingSessionKeyLock lock];
 		[generatingSessionKeyLock unlock];
 	}
+	
+	/* If this is not a login request block until all login requests finish first! */
+	[apiRequestLock lock];
 	
 	/* If we have no session key try and generate new Anonymous key */
 	if ([[self sessionKey] length] == 0 && !isLogin) {
