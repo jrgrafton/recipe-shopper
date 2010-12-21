@@ -384,35 +384,34 @@
 
 - (BOOL)apiRequest:(NSString *)initialRequestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error requestAttempt:(NSInteger)requestAttempt isLogin:(BOOL)isLogin {
 	if (!isLogin) {
+		/* If this is not a login request block until all login requests finish first! */
 		[generatingSessionKeyLock lock];
 		[generatingSessionKeyLock unlock];
-	}
-	
-	/* If this is not a login request block until all login requests finish first! */
-	[apiRequestLock lock];
-	
-	/* If we have no session key try and generate new Anonymous key */
-	if ([[self sessionKey] length] == 0 && !isLogin) {
-		[LogManager log:@"API request without key; checking online connectivity" withLevel:LOG_INFO fromClass:[[self class] description]];
-		if ([[DataManager getInstance] phoneIsOnline]) {
-			[LogManager log:@"Phone is online; generating anonymous key" withLevel:LOG_INFO fromClass:[[self class] description]];
-			[self createAnonymousSessionKey];
-		}else {
-			[LogManager log: [NSString stringWithFormat:@"Phone is offline; cancelling request %@", initialRequestString] withLevel:LOG_INFO fromClass:[[self class] description]];
-			[apiRequestLock unlock];
-			return NO;
+		
+		[apiRequestLock lock];
+		
+		if ([[self sessionKey] length] == 0 && !isLogin) {
+			[LogManager log:@"API request without key; checking online connectivity" withLevel:LOG_INFO fromClass:[[self class] description]];
+			if ([[DataManager getInstance] phoneIsOnline]) {
+				[LogManager log:@"Phone is online; generating anonymous key" withLevel:LOG_INFO fromClass:[[self class] description]];
+				[self createAnonymousSessionKey];
+			}else {
+				[LogManager log: [NSString stringWithFormat:@"Phone is offline; cancelling request %@", initialRequestString] withLevel:LOG_INFO fromClass:[[self class] description]];
+				[apiRequestLock unlock];
+				return NO;
+			}
 		}
+		
+		double timeSinceLastRequest = [[NSDate date] timeIntervalSince1970] - [self lastUpdateRequestTime];
+		
+		if (timeSinceLastRequest < MIN_API_CALL_INTERVAL) {
+			[NSThread sleepForTimeInterval:((MIN_API_CALL_INTERVAL - timeSinceLastRequest) / 1000.0f)];
+		}
+		
+		[self setLastUpdateRequestTime:[[NSDate date] timeIntervalSince1970]];
+		
+		[apiRequestLock unlock];
 	}
-	
-	double timeSinceLastRequest = [[NSDate date] timeIntervalSince1970] - [self lastUpdateRequestTime];
-	
-	if (timeSinceLastRequest < MIN_API_CALL_INTERVAL) {
-		[NSThread sleepForTimeInterval:((MIN_API_CALL_INTERVAL - timeSinceLastRequest) / 1000.0f)];
-	}
-	
-	[self setLastUpdateRequestTime:[[NSDate date] timeIntervalSince1970]];
-	
-	[apiRequestLock unlock];
 
 	BOOL apiReqOK = YES;
 	

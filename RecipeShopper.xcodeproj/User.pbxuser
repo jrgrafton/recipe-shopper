@@ -184,6 +184,9 @@
 		};
 		perUserProjectItems = {
 			CE6F284312C042EC004CDAA5 /* PBXTextBookmark */ = CE6F284312C042EC004CDAA5 /* PBXTextBookmark */;
+			CE6F286112C043DF004CDAA5 /* PBXTextBookmark */ = CE6F286112C043DF004CDAA5 /* PBXTextBookmark */;
+			CE6F286212C043DF004CDAA5 /* PBXTextBookmark */ = CE6F286212C043DF004CDAA5 /* PBXTextBookmark */;
+			CE6F287312C0443D004CDAA5 /* PBXTextBookmark */ = CE6F287312C0443D004CDAA5 /* PBXTextBookmark */;
 			CE7051CD12BEEDE70060A06A = CE7051CD12BEEDE70060A06A /* PBXTextBookmark */;
 			CE7051CE12BEEDE70060A06A = CE7051CE12BEEDE70060A06A /* PBXTextBookmark */;
 			CE70523C12BEF9490060A06A = CE70523C12BEF9490060A06A /* PBXTextBookmark */;
@@ -450,9 +453,9 @@
 	};
 	3EB5D5481268AB4C009A80E0 /* APIRequestManager.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1692, 7241}}";
-			sepNavSelRange = "{16394, 0}";
-			sepNavVisRange = "{15817, 1226}";
+			sepNavIntBoundsRect = "{{0, 0}, {1692, 7410}}";
+			sepNavSelRange = "{16946, 0}";
+			sepNavVisRange = "{15841, 1456}";
 			sepNavWindowFrame = "{{15, 223}, {1133, 650}}";
 		};
 	};
@@ -717,6 +720,36 @@
 		vrLen = 666;
 		vrLoc = 0;
 	};
+	CE6F286112C043DF004CDAA5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D54C1268AB4C009A80E0 /* DataManager.m */;
+		name = "DataManager.m: 17";
+		rLen = 0;
+		rLoc = 350;
+		rType = 0;
+		vrLen = 666;
+		vrLoc = 0;
+	};
+	CE6F286212C043DF004CDAA5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5481268AB4C009A80E0 /* APIRequestManager.m */;
+		name = "APIRequestManager.m: 402";
+		rLen = 0;
+		rLoc = 16277;
+		rType = 0;
+		vrLen = 1313;
+		vrLoc = 16164;
+	};
+	CE6F287312C0443D004CDAA5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3EB5D5481268AB4C009A80E0 /* APIRequestManager.m */;
+		name = "APIRequestManager.m: 402";
+		rLen = 0;
+		rLoc = 16277;
+		rType = 0;
+		vrLen = 1456;
+		vrLoc = 15841;
+	};
 	CE6FCBE5126BB6D400A55CB6 /* RecipeShopper */ = {
 		isa = PBXExecutable;
 		activeArgIndices = (
@@ -909,7 +942,7 @@
 		fRef = 3EB5D5481268AB4C009A80E0 /* APIRequestManager.m */;
 		name = "APIRequestManager.m: 395";
 		rLen = 0;
-		rLoc = 16394;
+		rLoc = 16277;
 		rType = 0;
 		vrLen = 1226;
 		vrLoc = 15817;
