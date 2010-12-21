@@ -39,6 +39,8 @@ static DataManager *sharedInstance = nil;
 @synthesize productImageFetchThreads;
 @synthesize productImageFetchLastBatchSize;
 @synthesize productImageFetchSuccessCount;
+@synthesize networkAvailabilityThread;
+@synthesize networkAvailabilityLock;
 
 + (DataManager *)getInstance {
 	@synchronized(self){
@@ -80,44 +82,42 @@ static DataManager *sharedInstance = nil;
 }
 
 - (id)init {
-	@synchronized(self) {
-		[super init];
-		
-		networkAvailabilityThread = nil;
-		networkAvailabilityLock = [[NSConditionLock alloc] initWithCondition:CONNECTIVITY_CHECK_FAILURE];
-		onlineUpdateLock = [[NSLock alloc] init];
-		
-		/* initialise the database */
-		databaseRequestManager = [[DatabaseRequestManager alloc] init];
-		
-		/* initialise the recipe basket */
-		recipeBasketManager = [[RecipeBasketManager alloc] init];
-		
-		/* initialise the product basket */
-		productBasketManager = [[ProductBasketManager alloc] init];
-		
-		/* initialise the Tesco API */
-		apiRequestManager = [[APIRequestManager alloc] init];
-		
-		/* initialise the login manager */
-		loginManager = [[LoginManager alloc] init];
-		
-		/* initialise the overlay view */
-		overlayViewController = [[OverlayViewController alloc] initWithNibName:@"OverlayView" bundle:[NSBundle mainBundle]];
-		
-		[self setUpdatingProductBasket:NO];
-		[self setUpdatingOnlineBasket:NO];
-		[self setLoadingDepartmentList:NO];
-		[self setDepartmentListHasLoaded:NO];
-		[self setReplaceMode:NO];
-		[self setLastNetworkCheckResult:NO];
-		[self setReplaceString:@""];
-		[self setProductBasketUpdates:0];
-		[self setProductImageFetchThreads:0];
-		[self setProductImageFetchLastBatchSize:0];
-		[self setProductImageFetchSuccessCount:0];
-	}
+	[super init];
 	
+	onlineUpdateLock = [[NSLock alloc] init];
+	
+	/* initialise the database */
+	databaseRequestManager = [[DatabaseRequestManager alloc] init];
+	
+	/* initialise the recipe basket */
+	recipeBasketManager = [[RecipeBasketManager alloc] init];
+	
+	/* initialise the product basket */
+	productBasketManager = [[ProductBasketManager alloc] init];
+	
+	/* initialise the Tesco API */
+	apiRequestManager = [[APIRequestManager alloc] init];
+	
+	/* initialise the login manager */
+	loginManager = [[LoginManager alloc] init];
+	
+	/* initialise the overlay view */
+	overlayViewController = [[OverlayViewController alloc] initWithNibName:@"OverlayView" bundle:[NSBundle mainBundle]];
+	
+	[self setUpdatingProductBasket:NO];
+	[self setUpdatingOnlineBasket:NO];
+	[self setLoadingDepartmentList:NO];
+	[self setDepartmentListHasLoaded:NO];
+	[self setReplaceMode:NO];
+	[self setLastNetworkCheckResult:NO];
+	[self setReplaceString:@""];
+	[self setProductBasketUpdates:0];
+	[self setProductImageFetchThreads:0];
+	[self setProductImageFetchLastBatchSize:0];
+	[self setProductImageFetchSuccessCount:0];
+	[self setNetworkAvailabilityThread:nil];
+	[self setNetworkAvailabilityLock: [[NSConditionLock alloc] initWithCondition:CONNECTIVITY_CHECK_FAILURE]];
+
 	return self;
 }
 
@@ -134,7 +134,6 @@ static DataManager *sharedInstance = nil;
 	if (offlineMode == YES) {
 		return NO;
 	} else {
-	//	NSLog(@"!!!PHONE IS ONLINE CALL");
 		return [self phoneHasNetworkConnection];
 	}
 }
@@ -142,26 +141,32 @@ static DataManager *sharedInstance = nil;
 - (BOOL)phoneHasNetworkConnection {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	// NSLog(@"!!!PHONE HAS NETWORK CONNECTION CALL");
-	if (networkAvailabilityThread != nil && ![networkAvailabilityThread isFinished]) {
+	if ([self networkAvailabilityThread] != nil && ![[self networkAvailabilityThread] isFinished]) {
 		// NSLog(@"RECURSIVE: LAST THREAD STILL RUNNING - BLOCKING");
 		/* If last attempt is still going block on it */
-		if ([networkAvailabilityLock lockWhenCondition:CONNECTIVITY_CHECK_SUCCESS beforeDate:[NSDate dateWithTimeIntervalSinceNow:CONNECTIVITY_CHECK_TIMEOUT]]) {
+		if ([[self networkAvailabilityLock] lockWhenCondition:CONNECTIVITY_CHECK_SUCCESS beforeDate:[NSDate dateWithTimeIntervalSinceNow:CONNECTIVITY_CHECK_TIMEOUT]]) {
 			/* We gained the lock - last checkNetworkConnection must have responded in a timely mannor */
 			// NSLog(@"RECURSIVE: TIMELY RESPONSE");
-			[networkAvailabilityLock unlock];
-			lastNetworkCheckResult = YES;
+			[self setLastNetworkCheckResult: YES];
+			[[self networkAvailabilityLock] unlock];
 		}else {
 			// NSLog(@"RECURSIVE: RESPONSE TIMED OUT");
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"PhoneHasNoNetworkConnection" object:self];
-			lastNetworkCheckResult = NO;
+			[self setLastNetworkCheckResult: NO];
 		}
 	}else {
 		@synchronized(self) {
-			if ([networkAvailabilityLock condition] == CONNECTIVITY_CHECK_SUCCESS) {
+			/* By doing all thread creation in a synchronized block we can gaurantee that
+			 only one thread is ever running at a time and we don't release one thats currently
+			 executing */
+			if ([self networkAvailabilityThread] != nil && ![[self networkAvailabilityThread] isFinished]) {
+				return [self phoneHasNetworkConnection];
+			}
+			
+			if ([[self networkAvailabilityLock] condition] == CONNECTIVITY_CHECK_SUCCESS) {
 				/* Reset lock if its been used before */
-				if ([networkAvailabilityLock tryLock]) {
-					[networkAvailabilityLock unlockWithCondition:CONNECTIVITY_CHECK_FAILURE];
+				if ([[self networkAvailabilityLock] tryLock]) {
+					[[self networkAvailabilityLock] unlockWithCondition:CONNECTIVITY_CHECK_FAILURE];
 				}
 			}
 			
@@ -170,34 +175,34 @@ static DataManager *sharedInstance = nil;
 			if (networkAvailabilityThread != nil) {
 				/* Will only equal nil for very first call */
 				[networkAvailabilityThread release];
+				networkAvailabilityThread = nil;
 			}
-			networkAvailabilityThread = [[NSThread alloc] initWithTarget:self selector:@selector(checkNetworkConnection) object:nil];
-			[networkAvailabilityThread start];
+			[self setNetworkAvailabilityThread: [[NSThread alloc] initWithTarget:self selector:@selector(checkNetworkConnection) object:nil]];
+			[[self networkAvailabilityThread] start];
 			
 			/* Yes it can finish before we even get here!! */
-			while (![networkAvailabilityThread isExecuting] && ![networkAvailabilityThread isFinished]) {
-			//	NSLog(@"WAITING FOR THREAD TO START");
+			while (![[self networkAvailabilityThread] isExecuting] && ![[self networkAvailabilityThread] isFinished]) {
 				[NSThread sleepForTimeInterval:0.1];
 			}
 		}
 		
 		// NSLog(@"BLOCKING ON THREAD");
 		/* Now block until we get connectivity success */
-		if ([networkAvailabilityLock lockWhenCondition:CONNECTIVITY_CHECK_SUCCESS beforeDate:[NSDate dateWithTimeIntervalSinceNow:CONNECTIVITY_CHECK_TIMEOUT]]) {
+		if ([[self networkAvailabilityLock] lockWhenCondition:CONNECTIVITY_CHECK_SUCCESS beforeDate:[NSDate dateWithTimeIntervalSinceNow:CONNECTIVITY_CHECK_TIMEOUT]]) {
 			/* We gained the lock - checkNetworkConnection must have responded in a timely mannor */
-			// NSLog(@"TIMELY RESPONSE");
-			[networkAvailabilityLock unlock];
+			//	 NSLog(@"TIMELY RESPONSE");
+			[[self networkAvailabilityLock] unlock];
 		}
 		/* Lock timed out before we could verify network connectivity */
 		else {
-			// NSLog(@"RESPONSE TIMED OUT");
+			//	 NSLog(@"RESPONSE TIMED OUT");
 			/* We never gained the lock, assume phone is offline */
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"PhoneHasNoNetworkConnection" object:self];
-			lastNetworkCheckResult = NO;
+			[self setLastNetworkCheckResult: NO];
 		}
 	}
 
-	if (!lastNetworkCheckResult) {
+	if (![self lastNetworkCheckResult]) {
 		[LogManager log:@"Phone failed network connection test" withLevel:LOG_INFO fromClass:[[self class] description]];
 	}else {
 		[LogManager log:@"Phone passed network connection test" withLevel:LOG_INFO fromClass:[[self class] description]];
@@ -211,9 +216,10 @@ static DataManager *sharedInstance = nil;
 - (void)checkNetworkConnection {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	// NSLog(@"THREAD: STARTED");
-	/* Double locking to ensure that child thread acquires main lock first */
-	[networkAvailabilityLock lock];
+	if (![[self networkAvailabilityLock] lockBeforeDate:[NSDate dateWithTimeIntervalSinceNow:CONNECTIVITY_CHECK_TIMEOUT]]) {
+		/* Something has gone wrong, return! */
+		return;
+	}
 	
 	// NSLog(@"THREAD: ACQUIRED LOCK");
 	
@@ -236,24 +242,23 @@ static DataManager *sharedInstance = nil;
 	
 	/* Only care about results if we have fetched them fast enough */
 	if (timeTaken < CONNECTIVITY_CHECK_TIMEOUT) {
-		// NSLog(@"THREAD: CHECKED NETWORK WITHIN TIME");		
+	//	 NSLog(@"THREAD: CHECKED NETWORK WITHIN TIME");		
 		if ((internetStatus == ReachableViaWiFi) || (internetStatus == ReachableViaWWAN)) {
-			lastNetworkCheckResult = YES;
+			[self setLastNetworkCheckResult: YES];
 			
 			/* Only ever unlock after setting result */
-			[networkAvailabilityLock unlockWithCondition:CONNECTIVITY_CHECK_SUCCESS];
+			[[self networkAvailabilityLock] unlockWithCondition:CONNECTIVITY_CHECK_SUCCESS];
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"PhoneHasNetworkConnection" object:self];
 		}else {
-			lastNetworkCheckResult = NO;
+			[self setLastNetworkCheckResult: NO];
 			
 			/* Only ever unlock after setting result */
-			[networkAvailabilityLock unlockWithCondition:CONNECTIVITY_CHECK_SUCCESS];
+			[[self networkAvailabilityLock] unlockWithCondition:CONNECTIVITY_CHECK_SUCCESS];
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"PhoneHasNoNetworkConnection" object:self];
 		}
 	}else {
-		// NSLog(@"THREAD: TIMED OUT CHECKING NETWORK WITHIN TIME");
 		/* Simply unlock since calling thread will have already assumed no network connection */
-		[networkAvailabilityLock unlockWithCondition:CONNECTIVITY_CHECK_FAILURE];
+		[[self networkAvailabilityLock] unlockWithCondition:CONNECTIVITY_CHECK_FAILURE];
 	}
 	
 	[pool release];
@@ -609,7 +614,7 @@ static DataManager *sharedInstance = nil;
 	[self setUpdatingProductBasket:YES];
 	
 	for (NSString *recipeProductBaseID in [[recipe recipeProducts] allKeys]) {
-        NSMutableArray *recipeProduct = [[[NSMutableArray alloc] initWithCapacity:2] autorelease]; //Will get released by child thread
+        NSMutableArray *recipeProduct = [[[NSMutableArray alloc] initWithCapacity:2] autorelease];
         [recipeProduct addObject:recipeProductBaseID];
         [recipeProduct addObject:[[recipe recipeProducts] objectForKey:recipeProductBaseID]];
         [NSThread detachNewThreadSelector:@selector(addRecipeProductToBasket:) toTarget:self withObject:recipeProduct];
@@ -641,7 +646,7 @@ static DataManager *sharedInstance = nil;
 	@synchronized(self) {
 		--productBasketUpdates;
 	}
-	
+
 	//Can now update with nil product (ensures we always remove loading view no matter what happens)
 	[self updateBasketQuantity:product byQuantity:[recipeProduct objectAtIndex:1]];
 	

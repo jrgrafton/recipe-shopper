@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#define DEBUG /* Without this define products wont be downloaded to basket */
-
 //#define OUTPUT_DEBUG
 
 typedef enum LogLevel

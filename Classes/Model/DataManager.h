@@ -26,8 +26,6 @@
 	LoginManager *loginManager;
 	OverlayViewController *overlayViewController;
 	NSLock *onlineUpdateLock;
-	NSConditionLock *networkAvailabilityLock;
-	NSThread *networkAvailabilityThread;
 }
 
 /* Not explicitly stating non-atomic means we get atomic vars */
@@ -44,6 +42,8 @@
 @property (assign) NSInteger productImageFetchThreads;
 @property (assign) NSInteger productImageFetchLastBatchSize;
 @property (assign) NSInteger productImageFetchSuccessCount;
+@property (assign) NSThread *networkAvailabilityThread;
+@property (assign) NSConditionLock *networkAvailabilityLock;
 
 + (DataManager *)getInstance;
 

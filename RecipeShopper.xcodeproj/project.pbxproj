@@ -1071,7 +1071,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: james grafton (CWWZ65GR72)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Assentec Global";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: james grafton (CWWZ65GR72)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = 4.2;
@@ -1080,7 +1080,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
 				PRODUCT_NAME = Recipes;
-				PROVISIONING_PROFILE = "C5DF6C44-CB12-4A15-92DE-96853AF7F5F5";
+				PROVISIONING_PROFILE = "569B3884-A755-4B8D-A510-2354D7B0D4AD";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C5DF6C44-CB12-4A15-92DE-96853AF7F5F5";
 				SDKROOT = iphoneos4.2;
 			};

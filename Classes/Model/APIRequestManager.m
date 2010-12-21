@@ -18,7 +18,7 @@
 #define REST_SERVICE_URL @"https://secure.techfortesco.com/groceryapi_b1/restservice.aspx"
 #define SHELF_SIMULATED_PAGE_SIZE 15
 #define MAX_RETRY_COUNT 3	//Maximum amount of times to API retry request before giving up
-#define MIN_API_CALL_INTERVAL 1000 //Minimum allowed time between subsequent API calls (in ms)
+#define MIN_API_CALL_INTERVAL 750 //Minimum allowed time between subsequent API calls (in ms)
 #define TIMEOUT_SECS 10	//Amount of secs before request will timeout
 
 @interface APIRequestManager()
@@ -30,7 +30,8 @@
 - (Product *)createProductFromJSON:(NSDictionary *)productJSON fetchImages:(BOOL)fetchImages;
 
 @property (assign) double lastUpdateRequestTime;
-@property (retain) NSLock *generatingSessionKeyLock;
+@property (assign) NSRecursiveLock *generatingSessionKeyLock;
+@property (assign) NSRecursiveLock *apiRequestLock;
 
 @end
 
@@ -44,10 +45,12 @@
 @synthesize userPassword;
 @synthesize lastUpdateRequestTime;
 @synthesize generatingSessionKeyLock;
+@synthesize apiRequestLock;
 
 - (id)init {
 	if (self = [super init]) {
-		generatingSessionKeyLock = [[NSLock alloc] init];
+		generatingSessionKeyLock = [[NSRecursiveLock alloc] init];
+		apiRequestLock = [[NSRecursiveLock alloc] init];
 		departments = [[NSMutableDictionary alloc] init];
 		aisles = [[NSMutableDictionary alloc] init];
 		shelves = [[NSMutableDictionary alloc] init];
@@ -74,7 +77,6 @@
 
 - (void)createAnonymousSessionKey {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
 	
 	if (![[DataManager getInstance] phoneIsOnline]) {
 		[LogManager log:@"Phone is either offline or offline mode has been set. Refusing to create anonymous key" withLevel:LOG_INFO fromClass:[[self class] description]];
@@ -115,12 +117,11 @@
 	return onlineBasket;
 }
 
-- (Product *)createProductFromProductBaseID:(NSString *)productBaseID fetchImages:(BOOL)fetchImages{
+- (Product *)createProductFromProductBaseID:(NSString *)productBaseID fetchImages:(BOOL)fetchImages {
     NSString *requestString = [NSString stringWithFormat:@"%@?command=PRODUCTSEARCH&searchtext=%@", REST_SERVICE_URL, productBaseID];
     NSDictionary *apiResults;
     NSString *error;
     Product *product;
-    
     if ([self apiRequest:requestString returningApiResults: &apiResults returningError:&error requestAttempt:1 isLogin:NO] == YES) {
         NSString *totalProducts = [apiResults objectForKey:@"TotalProductCount"];
         
@@ -383,34 +384,35 @@
 
 - (BOOL)apiRequest:(NSString *)initialRequestString returningApiResults:(NSDictionary **)apiResults returningError:(NSString **)error requestAttempt:(NSInteger)requestAttempt isLogin:(BOOL)isLogin {
 	/* If this is not a login request block until all login requests finish first! */
+	[apiRequestLock lock];
+	
 	if (!isLogin) {
 		[generatingSessionKeyLock lock];
 		[generatingSessionKeyLock unlock];
 	}
 	
-	@synchronized(self) {
-		/* If we have no session key try and generate new Anonymous key */
-		if ([[self sessionKey] length] == 0 && !isLogin) {
-			[LogManager log:@"API request without key; checking online connectivity" withLevel:LOG_INFO fromClass:[[self class] description]];
-			if ([[DataManager getInstance] phoneIsOnline]) {
-				[LogManager log:@"Phone is online; generating anonymous key" withLevel:LOG_INFO fromClass:[[self class] description]];
-				[self createAnonymousSessionKey];
-			}else {
-				[LogManager log: [NSString stringWithFormat:@"Phone is offline; cancelling request %@", initialRequestString] withLevel:LOG_INFO fromClass:[[self class] description]];
-				return NO;
-			}
+	/* If we have no session key try and generate new Anonymous key */
+	if ([[self sessionKey] length] == 0 && !isLogin) {
+		[LogManager log:@"API request without key; checking online connectivity" withLevel:LOG_INFO fromClass:[[self class] description]];
+		if ([[DataManager getInstance] phoneIsOnline]) {
+			[LogManager log:@"Phone is online; generating anonymous key" withLevel:LOG_INFO fromClass:[[self class] description]];
+			[self createAnonymousSessionKey];
+		}else {
+			[LogManager log: [NSString stringWithFormat:@"Phone is offline; cancelling request %@", initialRequestString] withLevel:LOG_INFO fromClass:[[self class] description]];
+			return NO;
 		}
-		
-		double timeSinceLastRequest = [[NSDate date] timeIntervalSince1970] - [self lastUpdateRequestTime];
-		
-		if (timeSinceLastRequest < MIN_API_CALL_INTERVAL) {
-			[NSThread sleepForTimeInterval:((MIN_API_CALL_INTERVAL - timeSinceLastRequest) / 1000.0f)];
-		}
-		
-		[self setLastUpdateRequestTime:[[NSDate date] timeIntervalSince1970]];
-	
 	}
 	
+	double timeSinceLastRequest = [[NSDate date] timeIntervalSince1970] - [self lastUpdateRequestTime];
+	
+	if (timeSinceLastRequest < MIN_API_CALL_INTERVAL) {
+		[NSThread sleepForTimeInterval:((MIN_API_CALL_INTERVAL - timeSinceLastRequest) / 1000.0f)];
+	}
+	
+	[self setLastUpdateRequestTime:[[NSDate date] timeIntervalSince1970]];
+	
+	[apiRequestLock unlock];
+
 	BOOL apiReqOK = YES;
 	
 	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];

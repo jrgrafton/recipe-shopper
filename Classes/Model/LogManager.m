@@ -11,6 +11,8 @@
 @implementation LogManager
 
 + (void)log:(NSString *)msg withLevel:(LogLevel)level fromClass:(NSString *)className {
+#ifdef OUTPUT_DEBUG
+	
 	NSString* levelStr = @"";
 	
 	switch (level) {
@@ -28,7 +30,7 @@
 			break;
 	}
 	
-#ifdef OUTPUT_DEBUG
+
 	NSLog(@"[%@]%@ %@", className, levelStr, msg);
 #endif
 }

@@ -317,9 +317,9 @@
 }
 
 - (void)onlineBasketUpdateComplete {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
 	@synchronized(self) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		
 		fetchingOnlineBasketInfo = YES;
 		
 		/* In case spinners have disappeared after basket updates finished */
@@ -347,9 +347,9 @@
 			userWantsToProceed = NO;
 			[self loadDeliveryDates];
 		}
-		
-		[pool release];
 	}
+	
+	[pool release];
 }
 
 /*
