@@ -399,6 +399,7 @@
 			[self createAnonymousSessionKey];
 		}else {
 			[LogManager log: [NSString stringWithFormat:@"Phone is offline; cancelling request %@", initialRequestString] withLevel:LOG_INFO fromClass:[[self class] description]];
+			[apiRequestLock unlock];
 			return NO;
 		}
 	}
