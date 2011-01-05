@@ -12,6 +12,7 @@
 
 @interface RecipeListViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,UIWebViewDelegate> {
 	IBOutlet UITableView *recipeListView;
+	RecipeViewController *recipeViewController;
 	
 @private
 	DataManager *dataManager;

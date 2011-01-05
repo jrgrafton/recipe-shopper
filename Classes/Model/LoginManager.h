@@ -11,6 +11,7 @@
 @class DataManager;
 
 @interface LoginManager : NSObject <UIAlertViewDelegate> {
+	NSString *loginName;
 	
 @private 
 	DataManager *dataManager;

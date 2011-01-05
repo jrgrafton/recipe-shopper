@@ -12,6 +12,10 @@
 
 @interface CheckoutViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>  {
 	IBOutlet UITableView *basketView;
+	DeliverySlotsViewController *deliverySlotsViewController;
+	NSString *basketPrice;
+	NSString *basketSavings;
+	NSNumber *basketPoints;
 	
 @private 
 	DataManager *dataManager;

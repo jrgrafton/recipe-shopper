@@ -19,6 +19,9 @@
 	IBOutlet UILabel *loggedInGreetingLabel;
 	IBOutlet UILabel *loggedOutGreetingLabel;
 	IBOutlet UISwitch *offlineModeSwitch;
+	RecipeBasketViewController *recipeBasketViewController;
+	RecipeHistoryViewController *recipeHistoryViewController;
+	RecipeCategoryViewController *recipeCategoryViewController;	
 	
 @private 
 	DataManager *dataManager;

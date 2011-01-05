@@ -11,6 +11,7 @@
 #import "Product.h"
 
 @interface DatabaseRequestManager : NSObject {
+	NSLock *dbLock;
 }
 
 - (NSString *)getUserPreference:(NSString *)prefName;

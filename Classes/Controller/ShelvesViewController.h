@@ -12,6 +12,8 @@
 
 @interface ShelvesViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 	IBOutlet UITableView *shelvesView;
+	ProductsViewController *productsViewController;
+	NSString *aisle;
 	
 @private 
 	DataManager *dataManager;

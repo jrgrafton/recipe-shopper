@@ -12,6 +12,8 @@
 
 @interface RecipeHistoryViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,UIWebViewDelegate, UIAlertViewDelegate> {
 	IBOutlet UITableView *recipeHistoryView;
+	RecipeViewController *recipeViewController;
+	NSArray *recentRecipes;
 	
 @private 
 	DataManager *dataManager;

@@ -10,6 +10,9 @@
 
 @interface OverlayViewController : UIViewController {
 	IBOutlet UIActivityIndicatorView *overlayIndicator;
+	UILabel *overlayLabel;
+	UILabel *overlayLoadingLabel;
+	BOOL isShowing;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *overlayLabel;

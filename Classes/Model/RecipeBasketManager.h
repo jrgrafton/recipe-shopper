@@ -10,6 +10,7 @@
 #import "Recipe.h"
 
 @interface RecipeBasketManager : NSObject {
+	NSMutableArray *recipeBasket;
 }
 
 @property (nonatomic, retain) NSMutableArray *recipeBasket;

@@ -10,7 +10,24 @@
 
 
 @interface Recipe : NSObject {
-
+	NSNumber *recipeID;
+	NSString *recipeName;
+	NSString *categoryName;
+	NSString *recipeDescription;
+	NSNumber *rating;
+	NSInteger ratingCount;
+	NSString *contributor;
+	NSString *cookingTime;
+	NSString *preparationTime;
+	NSString *serves;
+	UIImage *smallRecipeImage;
+	NSString *largeRecipeImageRaw;
+	UIImage *largeRecipeImage;
+	NSDictionary *recipeProducts;
+	NSArray *textIngredients;
+	NSArray *instructions;
+	NSArray *nutritionalInfo;
+	NSArray *nutritionalInfoPercent;
 }
 
 @property (readwrite,copy) NSNumber *recipeID;

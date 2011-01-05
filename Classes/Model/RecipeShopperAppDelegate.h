@@ -11,6 +11,11 @@
 @class DataManager;
 
 @interface RecipeShopperAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate, UIAlertViewDelegate> {
+	IBOutlet UIWindow *window;
+	IBOutlet UITabBarController *tabBarController;
+	IBOutlet UINavigationController *homeViewNavController;
+	IBOutlet UINavigationController *onlineShopViewNavController;
+	IBOutlet UINavigationController *checkoutViewNavController;
 @private
 	UIImageView *splashView;
 	DataManager *dataManager;

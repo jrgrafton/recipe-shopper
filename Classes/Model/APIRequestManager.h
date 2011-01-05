@@ -10,6 +10,16 @@
 #import "Product.h"
 
 @interface APIRequestManager : NSObject <UIAlertViewDelegate> {
+	NSString *sessionKey;
+	BOOL loggedIn;
+	NSRecursiveLock *generatingSessionKeyLock;
+	NSRecursiveLock *apiRequestLock;
+	BOOL offlineMode;
+	NSString *customerName;
+	NSString *userEmail;
+	NSString *userPassword;
+	double lastUpdateRequestTime;
+	
 @private 
 	NSMutableDictionary *departments;
 	NSMutableDictionary *aisles;

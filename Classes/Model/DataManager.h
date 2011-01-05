@@ -17,6 +17,21 @@
 #import "Product.h"
 
 @interface DataManager : NSObject {
+	BOOL offlineMode;
+	NSThread *networkAvailabilityThread;
+	BOOL lastNetworkCheckResult;
+	NSInteger productBasketUpdates;
+	NSInteger onlineBasketUpdates;
+	NSInteger productImageFetchSuccessCount;
+	NSInteger productImageFetchThreads;
+	NSInteger productImageFetchLastBatchSize;
+	BOOL updatingProductBasket;
+	BOOL updatingOnlineBasket;
+	BOOL loadingDepartmentList;
+	BOOL departmentListHasLoaded;
+	BOOL replaceMode;
+	NSString* replaceString;
+	NSConditionLock *networkAvailabilityLock;
 	
 @private 
 	DatabaseRequestManager *databaseRequestManager;

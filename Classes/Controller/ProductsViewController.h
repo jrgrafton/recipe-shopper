@@ -17,6 +17,9 @@ typedef enum ProductViewFor
 
 @interface ProductsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 	IBOutlet UITableView *productsView;
+	NSString *productTerm;
+	NSInteger currentPage;
+	ProductViewFor productViewFor;
 	
 @private 
 	DataManager *dataManager;

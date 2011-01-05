@@ -11,6 +11,7 @@
 
 @interface ShoppingListViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 	IBOutlet UITableView *productTableView;
+	NSString *basketPrice;
 	
 @private
 	DataManager *dataManager;

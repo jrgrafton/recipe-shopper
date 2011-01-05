@@ -13,6 +13,9 @@
 @class DataManager;
 
 @interface ProductBasketManager : NSObject {
+	NSMutableDictionary *productBasket;
+	NSNumber *shoppingListProducts;
+	NSString *productBasketPrice;
 	@private
 		DataManager *dataManager;
 		NSRecursiveLock *updateLock;

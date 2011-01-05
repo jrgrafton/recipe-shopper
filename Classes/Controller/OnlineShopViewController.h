@@ -13,6 +13,10 @@
 @interface OnlineShopViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate> {
 	IBOutlet UISearchBar *searchBarView;
 	IBOutlet UITableView *onlineShopView;
+	AislesViewController *aislesViewController;
+	ProductsViewController *searchResultsViewController;
+	NSArray *departments;
+	
 @private 
 	DataManager *dataManager;
 	NSDictionary *departmentImages;

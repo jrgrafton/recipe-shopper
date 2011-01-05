@@ -9,7 +9,19 @@
 #import <Foundation/Foundation.h>
 
 @interface Product : NSObject {
-	
+	NSNumber *productBaseID;
+	NSNumber *productID;
+	NSString *productName;
+	NSString *productPrice;
+	BOOL productFetchedOffline;
+	NSURL *productImageURL;
+	UIImage *productImage;
+	UIImage *productOfferImage;
+	NSString *productOffer;
+	NSString *productOfferValidity;
+	NSURL *productOfferImageURL;
+	NSInteger maxAmount;
+	BOOL quantityUpdateAttempted;
 }
 
 @property (nonatomic, retain) NSNumber *productBaseID;

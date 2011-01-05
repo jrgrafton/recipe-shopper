@@ -77,7 +77,9 @@
     
     // Get the resized image from the context and a UIImage
     CGImageRef newImageRef = CGBitmapContextCreateImage(bitmap);
-    UIImage *newImage = [UIImage imageWithCGImage:newImageRef scale:inScale orientation:UIImageOrientationUp];
+	UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
+    // only available in ios 4.0 and above
+	// UIImage *newImage = [UIImage imageWithCGImage:newImageRef scale:inScale orientation:UIImageOrientationUp];
     
     // Clean up
     CGContextRelease(bitmap);

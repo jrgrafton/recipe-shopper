@@ -9,6 +9,12 @@
 #import <Foundation/Foundation.h>
 
 @interface DeliverySlot : NSObject {
+	NSString *deliverySlotID;
+	NSString *deliverySlotBranchNumber;
+	NSDate *deliverySlotDate;
+	NSDate *deliverySlotStartTime;
+	NSDate *deliverySlotEndTime;
+	NSString *deliverySlotCost;
 }
 
 @property (readonly,copy) NSString *deliverySlotID;

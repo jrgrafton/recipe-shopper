@@ -13,6 +13,7 @@
 
 @interface RecipeBasketViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,UIWebViewDelegate> {
 	IBOutlet UITableView *recipeBasketTableView;
+	RecipeViewController *recipeViewController;
 	
 @private
 	DataManager *dataManager;
