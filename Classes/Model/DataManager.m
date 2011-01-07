@@ -401,7 +401,6 @@ static DataManager *sharedInstance = nil;
 - (void)downloadProductToLocalBasket:(NSArray*)productInfo {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	
 	[onlineUpdateLock lock];
 	[self setOnlineBasketUpdates: ++onlineBasketUpdates];
 	[LogManager log:[NSString stringWithFormat:@"Number of online basket updates remaining is %d", onlineBasketUpdates] withLevel:LOG_INFO fromClass:[[self class] description]];
@@ -420,11 +419,12 @@ static DataManager *sharedInstance = nil;
 	if (onlineBasketUpdates == 0) {
 		[self setOverlayLoadingLabelText:@""];
 		
+		[self setUpdatingOnlineBasket:NO];
+		
 		/* send out notification */
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"OnlineBasketDownloadComplete" object:self];
 	}
 	
-	[productInfo release];
 	[pool release];
 }
 

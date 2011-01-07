@@ -21,6 +21,11 @@ div #addtocart {
   margin-top: -10px;
 }
 
+div #addtocartlarge {
+  margin-top: -8px;
+  margin-bottom: 5px;
+}
+
 #title {
   float:right;
   font-size:18px;

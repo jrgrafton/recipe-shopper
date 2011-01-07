@@ -213,7 +213,7 @@
 		[warningAlert release];
 		return;
 	}else {
-		UIAlertView *successAlert = [[UIAlertView alloc] initWithTitle:@"New Account" message:@"You will now be transferred to Tesco.com for account creation" delegate:self cancelButtonTitle:@"Proceed" otherButtonTitles:nil];
+		UIAlertView *successAlert = [[UIAlertView alloc] initWithTitle:@"New Account" message:@"You will now be transferred to Tesco.com for account creation" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Proceed",nil];
 		[successAlert show];
 		[successAlert release];
 	}
@@ -226,7 +226,7 @@
 	//In case user clicks cancel on login
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	
-	if ([alertView title] == @"New Account") {
+	if ([alertView title] == @"New Account" && buttonIndex != [alertView cancelButtonIndex]) {
 		NSURL *url = [NSURL URLWithString:@"https://secure.tesco.com/register/default.aspx?newReg=true&ui=iphone"];
 		
 		if (![[UIApplication sharedApplication] openURL:url]){

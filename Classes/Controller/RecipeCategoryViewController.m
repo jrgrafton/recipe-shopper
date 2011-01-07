@@ -22,9 +22,16 @@
 	self.navigationItem.titleView = imageView;
 	[imageView release];
 	
+	/* ensure the recipe category view is the right size */
+	[recipeCategoryView setContentSize: CGSizeMake(320.0f, 1175.0f)];
+	[recipeCategoryView setContentOffset: CGPointMake(0,0)];
+	
 	//Add watermark to scroll view
 	UIImage *watermark = [UIImage imageNamed:@"watermarkScroll.png"];
-	[recipeCategoryView setBackgroundColor:[UIColor colorWithPatternImage:watermark]];
+	UIImageView *background = [[UIImageView alloc] initWithImage: watermark];
+	[recipeCategoryView addSubview:background];
+	[recipeCategoryView sendSubviewToBack:background];
+	[background release];
 	
     categoryMappings = [[NSDictionary dictionaryWithObjectsAndKeys:
 						 @"Bread, cakes & biscuits", [NSNumber numberWithInt:CAKES], 
@@ -41,9 +48,12 @@
 						 @"Soups", [NSNumber numberWithInt:SOUPS],
 						 @"Starter", [NSNumber numberWithInt:STARTERS],
 						 nil] retain];
-	
-	/* ensure the recipe category view is the right size */
-	[recipeCategoryView setContentSize: CGSizeMake(320.0f, 1145.0f)];	
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+	NSArray* subviews = [scrollView subviews];
+	UIImageView *background = [subviews objectAtIndex:0];
+	[background setFrame:CGRectMake(0, scrollView.contentOffset.y, background.frame.size.width, background.frame.size.height)];
 }
 
 - (IBAction)categoryChosen:(id)sender {

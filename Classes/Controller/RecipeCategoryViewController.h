@@ -27,7 +27,7 @@ typedef enum RecipeCategory
 	STARTERS = 12
 } RecipeCategory;
 
-@interface RecipeCategoryViewController : UIViewController {
+@interface RecipeCategoryViewController : UIViewController <UIScrollViewDelegate> {
 	IBOutlet UIScrollView *recipeCategoryView;
 	RecipeListViewController *recipeListViewController;
 	

@@ -30,13 +30,11 @@
 		NSString *userDocsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory , NSUserDomainMask, YES) objectAtIndex:0];
 		
 		NSString *documentsImgPath = [userDocsPath stringByAppendingPathComponent:@"imgs"];
-		
-		if ([fileManager fileExistsAtPath:documentsImgPath] == NO) {
-			NSError *error;
-			NSBundle *bundle = [NSBundle mainBundle];
-			NSString *localImagePath = [bundle pathForResource:@"imgs" ofType:nil];
-			[fileManager copyItemAtPath:localImagePath toPath:documentsImgPath error:&error];
-		}		
+
+		NSError *error;
+		NSBundle *bundle = [NSBundle mainBundle];
+		NSString *localImagePath = [bundle pathForResource:@"imgs" ofType:nil];
+		[fileManager copyItemAtPath:localImagePath toPath:documentsImgPath error:&error];
     }
 	
     return self;
@@ -65,6 +63,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+	[webView setNeedsDisplay];
+	[webView setNeedsLayout];
 	
 	/* switch delegate back to us so we can intercept links */
 	[webView setDelegate:self];
@@ -114,17 +114,19 @@
 	/* now get the extended data for this recipe (only get this when we actually want to display it) */
 	[dataManager fetchExtendedDataForRecipe:currentRecipe];
 
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	//NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSString *userDocsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 	
 	NSString *recipeHtmlFile = [userDocsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.html", [recipe recipeID]]];
 	NSString *recipeCssFile = [userDocsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.css", [recipe recipeID]]];
 	
-	if (([fileManager fileExistsAtPath:recipeHtmlFile] == NO) || ([fileManager fileExistsAtPath:recipeCssFile] == NO)) {
-		/* we don't have the HTML or CSS for this recipe yet, so create it and write it to file now */
-		[[self createRecipeHtml:recipe withCssFile:recipeCssFile] writeToFile:recipeHtmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
-		[[self createRecipeCss:recipe] writeToFile:recipeCssFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
-	}
+	//if (([fileManager fileExistsAtPath:recipeHtmlFile] == NO) || ([fileManager fileExistsAtPath:recipeCssFile] == NO)) {
+	/* we don't have the HTML or CSS for this recipe yet, so create it and write it to file now */
+	
+	//Never cache HTML resources
+	[[self createRecipeHtml:recipe withCssFile:recipeCssFile] writeToFile:recipeHtmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
+	[[self createRecipeCss:recipe] writeToFile:recipeCssFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
+	//}
 
 	/* set delegate so that it can only start transition when webview has finished loading */
 	[webView setDelegate:webViewDelegate];

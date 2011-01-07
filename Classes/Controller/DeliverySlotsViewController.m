@@ -185,12 +185,13 @@
 		deliveryTimesReset = YES;
 		selectedDeliverySlot = [deliverySlots objectAtIndex:0];
 	} else {
-		selectedDeliverySlot = [deliverySlots objectAtIndex:[pickerView selectedRowInComponent:1]];
+		if ([pickerView selectedRowInComponent:1] < [deliverySlots count]) {
+			selectedDeliverySlot = [deliverySlots objectAtIndex:[pickerView selectedRowInComponent:1]];
+		}else {
+			selectedDeliverySlot = [deliverySlots objectAtIndex:[deliverySlots count] - 1];
+		}
+		
 	}
-
-	
-	/* refresh the delivery info */
-	//[self reloadDeliveryInfo];
 	[deliveryInfoView reloadData];
 }
 
